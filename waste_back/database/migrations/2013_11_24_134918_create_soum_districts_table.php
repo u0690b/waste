@@ -13,16 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('soum_districts', function (Blueprint $table) {
             $table->id();
+            $table->string('code');
             $table->string('name');
-            $table->string('username')->unique();
-            $table->string('password');
             $table->foreignId('aimag_city_id')->constrained('aimag_cities');
-            $table->foreignId('soum_district_id')->constrained('soum_districts');
-            $table->foreignId('bag_horoo_id')->constrained('bag_horoos');
-            $table->json('roles');
-            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('soum_districts');
     }
 };

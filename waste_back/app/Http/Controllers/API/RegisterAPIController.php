@@ -1,0 +1,123 @@
+<?php
+
+namespace App\Http\Controllers\API;
+
+use App\Http\Requests\API\CreateRegisterAPIRequest;
+use App\Http\Requests\API\UpdateRegisterAPIRequest;
+use App\Models\Register;
+use Illuminate\Http\Request;
+use App\Http\Controllers\AppBaseController;
+use Response;
+
+/**
+ * Class RegisterController
+ * @package App\Http\Controllers\API
+ */
+
+class RegisterAPIController extends AppBaseController
+{
+    /**
+     * Display a listing of the Register.
+     * GET|HEAD /registers
+     *
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        $query = Register::query();
+
+        if ($request->get('skip')) {
+            $query->skip($request->get('skip'));
+        }
+        if ($request->get('limit')) {
+            $query->limit($request->get('limit'));
+        }
+
+        $registers = $query->get();
+
+        return $this->sendResponse($registers->toArray(), 'Registers retrieved successfully');
+    }
+
+    /**
+     * Store a newly created Register in storage.
+     * POST /registers
+     *
+     * @return Response
+     */
+    public function store(CreateRegisterAPIRequest $request)
+    {
+        $input = $request->all();
+
+        /** @var Register $register */
+        $register = Register::create($input);
+
+        return $this->sendResponse($register->toArray(), 'Register saved successfully');
+    }
+
+    /**
+     * Display the specified Register.
+     * GET|HEAD /registers/{id}
+     *
+     * @param Register $registers
+     *
+     * @return Response
+     */
+    public function show($id)
+    {
+        /** @var Register $register */
+        $register = Register::find($id);
+
+        if (empty($register)) {
+            return $this->sendError('Register not found');
+        }
+
+        return $this->sendResponse($register->toArray(), 'Register retrieved successfully');
+    }
+
+    /**
+     * Update the specified Register in storage.
+     * PUT/PATCH /registers/{id}
+     *
+     * @param Register $registers
+     *
+     * @return Response
+     */
+    public function update($id, UpdateRegisterAPIRequest $request)
+    {
+        /** @var Register $register */
+        $register = Register::find($id);
+
+        if (empty($register)) {
+            return $this->sendError('Register not found');
+        }
+
+        $register->fill($request->all());
+        $register->save();
+
+        return $this->sendResponse($register->toArray(), 'Register updated successfully');
+    }
+
+    /**
+     * Remove the specified Register from storage.
+     * DELETE /registers/{id}
+     *
+     * @param Register $registers
+     *
+     * @throws \Exception
+     *
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        /** @var Register $register */
+        $register = Register::find($id);
+
+        if (empty($register)) {
+            return $this->sendError('Register not found');
+        }
+
+        $register->delete();
+
+        return $this->sendSuccess('Register deleted successfully');
+    }
+}
