@@ -18,13 +18,14 @@ class PlaceController extends Controller
      */
     public function index()
     {
-        $places = Place::filter(Request::all(["search", ...Place::$searchIn]))->paginate();
+        $places = Place::filter(Request::all(["search", ...Place::$searchIn]));
         if (Request::has('only')) {
-            return json_encode($places->only('id', 'name'));
+            return json_encode($places->paginate(Request::input('per_page'),['id', 'name']));
         }
         return Inertia::render('Admin/places/Index', [
             'filters' => Request::only(["search", ...Place::$searchIn]),
             'datas' => $places
+                ->paginate(Request::input('per_page'))
                 ->withQueryString()
                 ->through(fn ($row) => $row->only('id','name')),
             'host' => config('app.url'),

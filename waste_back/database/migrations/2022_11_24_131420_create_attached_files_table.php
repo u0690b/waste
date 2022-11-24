@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('attached_files', function (Blueprint $table) {
             $table->id();
-            $table->string('path');
-            $table->string('type');
+            $table->string('path')->comment('файлын зам');;
+            $table->string('type')->comment('Төрөл');;
             $table->timestamps();
         });
     }

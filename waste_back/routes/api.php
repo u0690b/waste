@@ -52,3 +52,13 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'admin'], function () {
     Route::resource('register_histories', App\Http\Controllers\API\RegisterHistoryAPIController::class);
 });
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('aimag_cities', App\Http\Controllers\API\AimagCityAPIController::class);
+});
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('soum_districts', App\Http\Controllers\API\SoumDistrictAPIController::class);
+});

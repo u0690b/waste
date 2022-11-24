@@ -18,13 +18,14 @@ class StatusController extends Controller
      */
     public function index()
     {
-        $statuses = Status::filter(Request::all(["search", ...Status::$searchIn]))->paginate();
+        $statuses = Status::filter(Request::all(["search", ...Status::$searchIn]));
         if (Request::has('only')) {
-            return json_encode($statuses->only('id', 'name'));
+            return json_encode($statuses->paginate(Request::input('per_page'),['id', 'name']));
         }
         return Inertia::render('Admin/statuses/Index', [
             'filters' => Request::only(["search", ...Status::$searchIn]),
             'datas' => $statuses
+                ->paginate(Request::input('per_page'))
                 ->withQueryString()
                 ->through(fn ($row) => $row->only('id','name')),
             'host' => config('app.url'),

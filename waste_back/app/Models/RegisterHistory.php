@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class RegisterHistory
  * @package App\Models
- * @version November 24, 2022, 2:55 pm UTC
+ * @version November 24, 2022, 6:56 pm UTC
  *
  * @property \App\Models\AimagCity $aimagCity
  * @property \App\Models\BagHoroo $bagHoroo
@@ -179,24 +179,14 @@ class RegisterHistory extends Model
 
     /**
     * Filter Model
-    * param Array $filters
-    * return RegisterHistory
+    * @param Array $filters
+    * @return App\Models\RegisterHistory
     */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
-            foreach ($filters as $key => $value) {
-                if (! $value) {
-                    continue;
-                }
-                if ($key === 'search') {
-                    $this->buildSearch($query, $filters['search'] ?? '', RegisterHistory::$searchIn);
-                } elseif (is_array($value)) {
-                    $query = $query->whereIn($key, $value);
-                } else {
-                    $query->where($key, $value);
-                }
-            }
+            $this->buildFilter($query, $filters, RegisterHistory::$searchIn);
         }
+        return $this;
     }
 }

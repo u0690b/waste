@@ -18,13 +18,14 @@ class RegisterHistoryController extends Controller
      */
     public function index()
     {
-        $registerHistories = RegisterHistory::filter(Request::all(["search", ...RegisterHistory::$searchIn]))->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('reason:id,name')->with('register:id,name')->with('soum_district:id,name')->with('status:id,name')->with('user:id,name')->paginate();
+        $registerHistories = RegisterHistory::filter(Request::all(["search", ...RegisterHistory::$searchIn]))->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('reason:id,name')->with('register:id,name')->with('soum_district:id,name')->with('status:id,name')->with('user:id,name');
         if (Request::has('only')) {
-            return json_encode($registerHistories->only('id', 'name'));
+            return json_encode($registerHistories->paginate(Request::input('per_page'),['id', 'name']));
         }
         return Inertia::render('Admin/register_histories/Index', [
             'filters' => Request::only(["search", ...RegisterHistory::$searchIn]),
             'datas' => $registerHistories
+                ->paginate(Request::input('per_page'))
                 ->withQueryString()
                 ->through(fn ($row) => $row->only('id','register','register_id','long','lat','description','resolve_desc','reason','reason_id','status','status_id','aimag_city','aimag_city_id','soum_district','soum_district_id','bag_horoo','bag_horoo_id','address','user','user_id')),
             'host' => config('app.url'),

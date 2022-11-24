@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('soum_districts', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
-            $table->string('name');
-            $table->foreignId('aimag_city_id')->constrained('aimag_cities');
+            $table->string('code')->comment('Код');
+            $table->string('name')->comment('Аймаг нэр');;
+            $table->foreignId('aimag_city_id')->comment('Аймаг/Нийслэл')->constrained('aimag_cities');;
             $table->timestamps();
         });
     }

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class BagHoroo
  * @package App\Models
- * @version November 24, 2022, 2:55 pm UTC
+ * @version November 24, 2022, 6:36 pm UTC
  *
  * @property \App\Models\SoumDistrict $soumDistrict
  * @property \Illuminate\Database\Eloquent\Collection $registers
@@ -107,24 +107,14 @@ class BagHoroo extends Model
 
     /**
     * Filter Model
-    * param Array $filters
-    * return BagHoroo
+    * @param Array $filters
+    * @return App\Models\BagHoroo
     */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
-            foreach ($filters as $key => $value) {
-                if (! $value) {
-                    continue;
-                }
-                if ($key === 'search') {
-                    $this->buildSearch($query, $filters['search'] ?? '', BagHoroo::$searchIn);
-                } elseif (is_array($value)) {
-                    $query = $query->whereIn($key, $value);
-                } else {
-                    $query->where($key, $value);
-                }
-            }
+            $this->buildFilter($query, $filters, BagHoroo::$searchIn);
         }
+        return $this;
     }
 }

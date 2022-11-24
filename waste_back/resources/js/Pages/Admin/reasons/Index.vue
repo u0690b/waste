@@ -3,7 +3,7 @@
     <h1 class="mb-8 font-bold text-3xl">Reasons</h1>
     <div class="mb-6 flex justify-between items-center">
       <search-filter v-model="form.search" class="w-full max-w-md mr-4" @reset="reset">
-        <my-select v-model="form.place_id" label="Place Id" :url="`${host}/places`" />
+        <MySelect v-model="form.place_id" label="Харьялагдах Газар" :url="`/admin/places`" />
       </search-filter>
       <inertia-link class="btn-indigo" :href="route('admin.reasons.create')">
         <span>Create</span>
@@ -11,7 +11,7 @@
       </inertia-link>
     </div>
     <div class="bg-white rounded shadow overflow-x-auto">
-      <admin-table :headers="['name','place.name','place_id']" :datas="datas" url="admin.reasons.edit"/>
+      <admin-table :headers="{'name':'Шалтгаан','place.name':'Харьялагдах газар','place_id':'Харьялагдах газар'}" :datas="datas" url="admin.reasons.edit"/>
       
     </div>
     <pagination :links="datas.links" />
@@ -19,14 +19,14 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Admin'
+import Layout from '@/Layouts/Admin.vue'
 import mapValues from 'lodash/mapValues'
-import Pagination from '@/Components/Pagination'
+import Pagination from '@/Components/Pagination.vue'
 import pickBy from 'lodash/pickBy'
-import SearchFilter from '@/Components/SearchFilter'
+import SearchFilter from '@/Components/SearchFilter.vue'
 import debounce from 'lodash/debounce'
 import AdminTable from '@/Components/AdminTable.vue'
-import MySelect from '@/Components/MySelect'
+import MySelect from '@/Components/MySelect.vue'
 export default {
   metaInfo: { title: 'Reasons' },
   components: {

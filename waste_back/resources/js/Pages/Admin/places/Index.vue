@@ -11,7 +11,7 @@
       </inertia-link>
     </div>
     <div class="bg-white rounded shadow overflow-x-auto">
-      <admin-table :headers="['name']" :datas="datas" url="admin.places.edit"/>
+      <admin-table :headers="{'name':'Газрын нэр'}" :datas="datas" url="admin.places.edit"/>
       
     </div>
     <pagination :links="datas.links" />
@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Admin'
+import Layout from '@/Layouts/Admin.vue'
 import mapValues from 'lodash/mapValues'
-import Pagination from '@/Components/Pagination'
+import Pagination from '@/Components/Pagination.vue'
 import pickBy from 'lodash/pickBy'
-import SearchFilter from '@/Components/SearchFilter'
+import SearchFilter from '@/Components/SearchFilter.vue'
 import debounce from 'lodash/debounce'
 import AdminTable from '@/Components/AdminTable.vue'
 

@@ -3,13 +3,13 @@
     <h1 class="mb-8 font-bold text-3xl">Register Histories</h1>
     <div class="mb-6 flex justify-between items-center">
       <search-filter v-model="form.search" class="w-full max-w-md mr-4" @reset="reset">
-        <my-select v-model="form.register_id" label="Register Id" :url="`${host}/registers`" />
-        <my-select v-model="form.reason_id" label="Reason Id" :url="`${host}/reasons`" />
-        <my-select v-model="form.status_id" label="Status Id" :url="`${host}/statuses`" />
-        <my-select v-model="form.aimag_city_id" label="Aimag City Id" :url="`${host}/aimag_cities`" />
-        <my-select v-model="form.soum_district_id" label="Soum District Id" :url="`${host}/soum_districts`" />
-        <my-select v-model="form.bag_horoo_id" label="Bag Horoo Id" :url="`${host}/bag_horoos`" />
-        <my-select v-model="form.user_id" label="User Id" :url="`${host}/users`" />
+        <MySelect v-model="form.register_id" label="Register Id" :url="`/admin/registers`" />
+        <MySelect v-model="form.reason_id" label="Шалтгаан" :url="`/admin/reasons`" />
+        <MySelect v-model="form.status_id" label="Төлөв" :url="`/admin/statuses`" />
+        <MySelect v-model="form.aimag_city_id" label="Аймаг,Нийслэл" :url="`/admin/aimag_cities`" />
+        <MySelect v-model="form.soum_district_id" label="Сум,Дүүрэг" :url="`/admin/soum_districts`" />
+        <MySelect v-model="form.bag_horoo_id" label="Баг,Хороо" :url="`/admin/bag_horoos`" />
+        <MySelect v-model="form.user_id" label="Бүртгэсэн Хүн" :url="`/admin/users`" />
       </search-filter>
       <inertia-link class="btn-indigo" :href="route('admin.register_histories.create')">
         <span>Create</span>
@@ -17,7 +17,7 @@
       </inertia-link>
     </div>
     <div class="bg-white rounded shadow overflow-x-auto">
-      <admin-table :headers="['register.name','register_id','long','lat','description','resolve_desc','reason.name','reason_id','status.name','status_id','aimag_city.name','aimag_city_id','soum_district.name','soum_district_id','bag_horoo.name','bag_horoo_id','address','user.name','user_id']" :datas="datas" url="admin.register_histories.edit"/>
+      <admin-table :headers="{'register.name':'','register_id':'','long':'Уртраг','lat':'Өргөрөг','description':'Тайлбар','resolve_desc':'Тэмдэглэл','reason.name':'Шалтгаан','reason_id':'Шалтгаан','status.name':'Төлөв','status_id':'Төлөв','aimag_city.name':'Аймаг,Нийслэл','aimag_city_id':'Аймаг,Нийслэл','soum_district.name':'Сум,Дүүрэг','soum_district_id':'Сум,Дүүрэг','bag_horoo.name':'Баг,Хороо','bag_horoo_id':'Баг,Хороо','address':'Хаяг','user.name':'Бүртгэсэн хүн','user_id':'Бүртгэсэн хүн'}" :datas="datas" url="admin.register_histories.edit"/>
       
     </div>
     <pagination :links="datas.links" />
@@ -25,14 +25,14 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Admin'
+import Layout from '@/Layouts/Admin.vue'
 import mapValues from 'lodash/mapValues'
-import Pagination from '@/Components/Pagination'
+import Pagination from '@/Components/Pagination.vue'
 import pickBy from 'lodash/pickBy'
-import SearchFilter from '@/Components/SearchFilter'
+import SearchFilter from '@/Components/SearchFilter.vue'
 import debounce from 'lodash/debounce'
 import AdminTable from '@/Components/AdminTable.vue'
-import MySelect from '@/Components/MySelect'
+import MySelect from '@/Components/MySelect.vue'
 export default {
   metaInfo: { title: 'Register Histories' },
   components: {

@@ -18,13 +18,14 @@ class BagHorooController extends Controller
      */
     public function index()
     {
-        $bagHoroos = BagHoroo::filter(Request::all(["search", ...BagHoroo::$searchIn]))->with('soum_district:id,name')->paginate();
+        $bagHoroos = BagHoroo::filter(Request::all(["search", ...BagHoroo::$searchIn]))->with('soum_district:id,name');
         if (Request::has('only')) {
-            return json_encode($bagHoroos->only('id', 'name'));
+            return json_encode($bagHoroos->paginate(Request::input('per_page'),['id', 'name']));
         }
         return Inertia::render('Admin/bag_horoos/Index', [
             'filters' => Request::only(["search", ...BagHoroo::$searchIn]),
             'datas' => $bagHoroos
+                ->paginate(Request::input('per_page'))
                 ->withQueryString()
                 ->through(fn ($row) => $row->only('id','code','name','soum_district','soum_district_id')),
             'host' => config('app.url'),

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('reasons', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->foreignId('place_id')->constrained('places');
+            $table->string('name')->unique()->comment('Шалтгаан');
+            $table->foreignId('place_id')->comment('Харьялагдах газар')->constrained('places');
             $table->timestamps();
         });
     }

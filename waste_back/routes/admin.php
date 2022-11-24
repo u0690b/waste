@@ -26,3 +26,9 @@ Route::resource('registers', App\Http\Controllers\Admin\RegisterController::clas
 
 // RegisterHistories
 Route::resource('register_histories', App\Http\Controllers\Admin\RegisterHistoryController::class);
+
+// AimagCities
+Route::resource('aimag_cities', App\Http\Controllers\Admin\AimagCityController::class);
+
+// SoumDistricts
+Route::resource('soum_districts', App\Http\Controllers\Admin\SoumDistrictController::class);

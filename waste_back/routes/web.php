@@ -35,4 +35,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
+
+
+Route::prefix('/admin')->name('admin.')->group(function () {
+    require __DIR__ . '/admin.php';
+
+    Route::delete('/logout', [App\Http\Controllers\Admin\LoginController::class, 'logout'])->name('logout');
+});

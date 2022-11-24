@@ -7,8 +7,8 @@
     <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
       <form @submit.prevent="submit">
         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-          <text-input v-model="form.path" type="text" :error="errors.path" class="pr-6 pb-8 w-full lg:w-1/2" label="Path" />
-          <text-input v-model="form.type" type="text" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Type" />
+          <MyInput v-model="form.path" type="text" :error="errors.path" class="pr-6 pb-8 w-full lg:w-1/2" label="Файлын Зам" />
+          <MyInput v-model="form.type" type="text" :error="errors.type" class="pr-6 pb-8 w-full lg:w-1/2" label="Төрөл" />
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center">
           <loading-button :loading="form.processing" class="btn-indigo" type="submit">Create Attached Files</loading-button>
@@ -19,17 +19,17 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Admin'
-import LoadingButton from '@/Components/LoadingButton'
-import NumberInput from '@/Components/MyInput'
-import TextInput from '@/Components/MyInput'
+import Layout from '@/Layouts/Admin.vue'
+import LoadingButton from '@/Components/LoadingButton.vue'
+import NumberInput from '@/Components/MyInput.vue'
+import MyInput from '@/Components/MyInput.vue'
 
 export default {
   metaInfo: { title: 'Create Attached Files' },
   components: {
     LoadingButton,
     NumberInput,
-    TextInput,
+    MyInput,
   },
   layout: Layout,
   props: {

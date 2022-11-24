@@ -18,13 +18,14 @@ class ReasonController extends Controller
      */
     public function index()
     {
-        $reasons = Reason::filter(Request::all(["search", ...Reason::$searchIn]))->with('place:id,name')->paginate();
+        $reasons = Reason::filter(Request::all(["search", ...Reason::$searchIn]))->with('place:id,name');
         if (Request::has('only')) {
-            return json_encode($reasons->only('id', 'name'));
+            return json_encode($reasons->paginate(Request::input('per_page'),['id', 'name']));
         }
         return Inertia::render('Admin/reasons/Index', [
             'filters' => Request::only(["search", ...Reason::$searchIn]),
             'datas' => $reasons
+                ->paginate(Request::input('per_page'))
                 ->withQueryString()
                 ->through(fn ($row) => $row->only('id','name','place','place_id')),
             'host' => config('app.url'),

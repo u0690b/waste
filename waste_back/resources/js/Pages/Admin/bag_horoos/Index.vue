@@ -3,7 +3,7 @@
     <h1 class="mb-8 font-bold text-3xl">Bag Horoos</h1>
     <div class="mb-6 flex justify-between items-center">
       <search-filter v-model="form.search" class="w-full max-w-md mr-4" @reset="reset">
-        <my-select v-model="form.soum_district_id" label="Soum District Id" :url="`${host}/soum_districts`" />
+        <MySelect v-model="form.soum_district_id" label="Сум,Дүүрэг" :url="`/admin/soum_districts`" />
       </search-filter>
       <inertia-link class="btn-indigo" :href="route('admin.bag_horoos.create')">
         <span>Create</span>
@@ -11,7 +11,7 @@
       </inertia-link>
     </div>
     <div class="bg-white rounded shadow overflow-x-auto">
-      <admin-table :headers="['code','name','soum_district.name','soum_district_id']" :datas="datas" url="admin.bag_horoos.edit"/>
+      <admin-table :headers="{'code':'Код','name':'Баг,Хороо','soum_district.name':'Сум,Дүүрэг','soum_district_id':'Сум,Дүүрэг'}" :datas="datas" url="admin.bag_horoos.edit"/>
       
     </div>
     <pagination :links="datas.links" />
@@ -19,14 +19,14 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Admin'
+import Layout from '@/Layouts/Admin.vue'
 import mapValues from 'lodash/mapValues'
-import Pagination from '@/Components/Pagination'
+import Pagination from '@/Components/Pagination.vue'
 import pickBy from 'lodash/pickBy'
-import SearchFilter from '@/Components/SearchFilter'
+import SearchFilter from '@/Components/SearchFilter.vue'
 import debounce from 'lodash/debounce'
 import AdminTable from '@/Components/AdminTable.vue'
-import MySelect from '@/Components/MySelect'
+import MySelect from '@/Components/MySelect.vue'
 export default {
   metaInfo: { title: 'Bag Horoos' },
   components: {

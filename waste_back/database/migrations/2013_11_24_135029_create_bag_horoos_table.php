@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('bag_horoos', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
-            $table->string('name');
-            $table->foreignId('soum_district_id')->constrained('soum_districts');
+            $table->string('code')->comment('Код');;
+            $table->string('name')->comment('Баг,Хороо');
+            $table->foreignId('soum_district_id')->comment('Сум,Дүүрэг')->constrained('soum_districts');
             $table->timestamps();
         });
     }

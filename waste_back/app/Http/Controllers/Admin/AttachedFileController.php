@@ -18,13 +18,14 @@ class AttachedFileController extends Controller
      */
     public function index()
     {
-        $attachedFiles = AttachedFile::filter(Request::all(["search", ...AttachedFile::$searchIn]))->paginate();
+        $attachedFiles = AttachedFile::filter(Request::all(["search", ...AttachedFile::$searchIn]));
         if (Request::has('only')) {
-            return json_encode($attachedFiles->only('id', 'name'));
+            return json_encode($attachedFiles->paginate(Request::input('per_page'),['id', 'name']));
         }
         return Inertia::render('Admin/attached_files/Index', [
             'filters' => Request::only(["search", ...AttachedFile::$searchIn]),
             'datas' => $attachedFiles
+                ->paginate(Request::input('per_page'))
                 ->withQueryString()
                 ->through(fn ($row) => $row->only('id','path','type')),
             'host' => config('app.url'),

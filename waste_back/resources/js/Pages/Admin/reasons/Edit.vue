@@ -8,8 +8,8 @@
     <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
       <form @submit.prevent="submit">
         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-          <text-input v-model="form.name" type="text" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="Name" />
-          <my-select :value="data.place" type="text" :error="errors.place_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Place Id" :url="`${host}/commons?t=place_id`" @changeId="id=>form.place_id=id" />
+          <MyInput v-model="form.name" type="text" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2" label="Шалтгаан" />
+          <MySelect :value="data.place" type="text" :error="errors.place_id" class="pr-6 pb-8 w-full lg:w-1/2" label="Харьялагдах Газар" :url="`/admin/places`" @changeId="id=>form.place_id=id" />
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
           <button class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">Delete Reasons</button>
@@ -21,18 +21,18 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Admin'
-import LoadingButton from '@/Components/LoadingButton'
-import NumberInput from '@/Components/MyInput'
-import TextInput from '@/Components/MyInput'
-import MySelect from '@/Components/MySelect'
+import Layout from '@/Layouts/Admin.vue'
+import LoadingButton from '@/Components/LoadingButton.vue'
+import NumberInput from '@/Components/MyInput.vue'
+import MyInput from '@/Components/MyInput.vue'
+import MySelect from '@/Components/MySelect.vue'
 
 export default {
   metaInfo: { title: 'Edit Reasons' },
   components: {
     LoadingButton,
     NumberInput,
-    TextInput,
+    MyInput,
     MySelect,
   },
   layout: Layout,
