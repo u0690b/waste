@@ -41,5 +41,5 @@ require __DIR__ . '/auth.php';
 Route::prefix('/admin')->name('admin.')->group(function () {
     require __DIR__ . '/admin.php';
 
-    Route::delete('/logout', [App\Http\Controllers\Admin\LoginController::class, 'logout'])->name('logout');
+    // Route::delete('/logout', [App\Http\Controllers\Admin\LoginController::class, 'logout'])->name('logout');
 });

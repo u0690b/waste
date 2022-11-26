@@ -9,11 +9,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class AttachedFile
- * @package App\Models
- * @version November 24, 2022, 6:36 pm UTC
  *
+ * @package App\Models
+ * @version November 24, 2022, 7:41 pm UTC
  * @property string $path
  * @property string $type
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Database\Factories\AttachedFileFactory factory(...$parameters)
+ * @method static Builder|AttachedFile filter(array $filters)
+ * @method static Builder|AttachedFile newModelQuery()
+ * @method static Builder|AttachedFile newQuery()
+ * @method static Builder|AttachedFile query()
+ * @method static Builder|AttachedFile whereCreatedAt($value)
+ * @method static Builder|AttachedFile whereId($value)
+ * @method static Builder|AttachedFile wherePath($value)
+ * @method static Builder|AttachedFile whereType($value)
+ * @method static Builder|AttachedFile whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class AttachedFile extends Model
 {

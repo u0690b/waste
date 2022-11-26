@@ -9,14 +9,30 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Reason
- * @package App\Models
- * @version November 24, 2022, 6:36 pm UTC
  *
+ * @package App\Models
+ * @version November 24, 2022, 7:41 pm UTC
  * @property \App\Models\Place $place
  * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
  * @property string $name
  * @property integer $place_id
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read int|null $register_histories_count
+ * @property-read int|null $registers_count
+ * @method static \Database\Factories\ReasonFactory factory(...$parameters)
+ * @method static Builder|Reason filter(array $filters)
+ * @method static Builder|Reason newModelQuery()
+ * @method static Builder|Reason newQuery()
+ * @method static Builder|Reason query()
+ * @method static Builder|Reason whereCreatedAt($value)
+ * @method static Builder|Reason whereId($value)
+ * @method static Builder|Reason whereName($value)
+ * @method static Builder|Reason wherePlaceId($value)
+ * @method static Builder|Reason whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Reason extends Model
 {

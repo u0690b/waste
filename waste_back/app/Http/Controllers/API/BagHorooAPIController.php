@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreateBagHorooAPIRequest;
-use App\Http\Requests\API\UpdateBagHorooAPIRequest;
+
 use App\Models\BagHoroo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -24,7 +23,7 @@ class BagHorooAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = BagHoroo::query();
+        $query = BagHoroo::filter( $request->all(["search", ...BagHoroo::$searchIn]))->with('soum_district:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -35,7 +34,7 @@ class BagHorooAPIController extends AppBaseController
 
         $bagHoroos = $query->get();
 
-        return $this->sendResponse($bagHoroos->toArray(), 'Bag Horoos retrieved successfully');
+        return $bagHoroos->toJson();
     }
 
     /**
@@ -44,14 +43,14 @@ class BagHorooAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateBagHorooAPIRequest $request)
+    public function store(Request $request)
     {
-        $input = $request->all();
+        $input = $request->validate(BagHoroo::$rules);
 
         /** @var BagHoroo $bagHoroo */
         $bagHoroo = BagHoroo::create($input);
 
-        return $this->sendResponse($bagHoroo->toArray(), 'Bag Horoo saved successfully');
+        return $bagHoroo->toJson();
     }
 
     /**
@@ -71,7 +70,7 @@ class BagHorooAPIController extends AppBaseController
             return $this->sendError('Bag Horoo not found');
         }
 
-        return $this->sendResponse($bagHoroo->toArray(), 'Bag Horoo retrieved successfully');
+        return $bagHoroo->toJson();
     }
 
     /**
@@ -82,8 +81,9 @@ class BagHorooAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateBagHorooAPIRequest $request)
+    public function update($id, Request $request)
     {
+        $input = $request->validate(BagHoroo::$rules);
         /** @var BagHoroo $bagHoroo */
         $bagHoroo = BagHoroo::find($id);
 
@@ -91,10 +91,10 @@ class BagHorooAPIController extends AppBaseController
             return $this->sendError('Bag Horoo not found');
         }
 
-        $bagHoroo->fill($request->all());
+        $bagHoroo->fill($input);
         $bagHoroo->save();
 
-        return $this->sendResponse($bagHoroo->toArray(), 'BagHoroo updated successfully');
+        return $bagHoroo->toJson();
     }
 
     /**

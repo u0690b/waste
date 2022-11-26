@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreateAttachedFileAPIRequest;
-use App\Http\Requests\API\UpdateAttachedFileAPIRequest;
+
 use App\Models\AttachedFile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -24,7 +23,7 @@ class AttachedFileAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = AttachedFile::query();
+        $query = AttachedFile::filter( $request->all(["search", ...AttachedFile::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -35,7 +34,7 @@ class AttachedFileAPIController extends AppBaseController
 
         $attachedFiles = $query->get();
 
-        return $this->sendResponse($attachedFiles->toArray(), 'Attached Files retrieved successfully');
+        return $attachedFiles->toJson();
     }
 
     /**
@@ -44,14 +43,14 @@ class AttachedFileAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateAttachedFileAPIRequest $request)
+    public function store(Request $request)
     {
-        $input = $request->all();
+        $input = $request->validate(AttachedFile::$rules);
 
         /** @var AttachedFile $attachedFile */
         $attachedFile = AttachedFile::create($input);
 
-        return $this->sendResponse($attachedFile->toArray(), 'Attached File saved successfully');
+        return $attachedFile->toJson();
     }
 
     /**
@@ -71,7 +70,7 @@ class AttachedFileAPIController extends AppBaseController
             return $this->sendError('Attached File not found');
         }
 
-        return $this->sendResponse($attachedFile->toArray(), 'Attached File retrieved successfully');
+        return $attachedFile->toJson();
     }
 
     /**
@@ -82,8 +81,9 @@ class AttachedFileAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateAttachedFileAPIRequest $request)
+    public function update($id, Request $request)
     {
+        $input = $request->validate(AttachedFile::$rules);
         /** @var AttachedFile $attachedFile */
         $attachedFile = AttachedFile::find($id);
 
@@ -91,10 +91,10 @@ class AttachedFileAPIController extends AppBaseController
             return $this->sendError('Attached File not found');
         }
 
-        $attachedFile->fill($request->all());
+        $attachedFile->fill($input);
         $attachedFile->save();
 
-        return $this->sendResponse($attachedFile->toArray(), 'AttachedFile updated successfully');
+        return $attachedFile->toJson();
     }
 
     /**

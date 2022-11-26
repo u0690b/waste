@@ -62,3 +62,8 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'admin'], function () {
     Route::resource('soum_districts', App\Http\Controllers\API\SoumDistrictAPIController::class);
 });
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('users', App\Http\Controllers\API\UserAPIController::class);
+});

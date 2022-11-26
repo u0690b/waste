@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreateAimagCityAPIRequest;
-use App\Http\Requests\API\UpdateAimagCityAPIRequest;
+
 use App\Models\AimagCity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -24,7 +23,7 @@ class AimagCityAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = AimagCity::query();
+        $query = AimagCity::filter( $request->all(["search", ...AimagCity::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -35,7 +34,7 @@ class AimagCityAPIController extends AppBaseController
 
         $aimagCities = $query->get();
 
-        return $this->sendResponse($aimagCities->toArray(), 'Aimag Cities retrieved successfully');
+        return $aimagCities->toJson();
     }
 
     /**
@@ -44,14 +43,14 @@ class AimagCityAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateAimagCityAPIRequest $request)
+    public function store(Request $request)
     {
-        $input = $request->all();
+        $input = $request->validate(AimagCity::$rules);
 
         /** @var AimagCity $aimagCity */
         $aimagCity = AimagCity::create($input);
 
-        return $this->sendResponse($aimagCity->toArray(), 'Aimag City saved successfully');
+        return $aimagCity->toJson();
     }
 
     /**
@@ -71,7 +70,7 @@ class AimagCityAPIController extends AppBaseController
             return $this->sendError('Aimag City not found');
         }
 
-        return $this->sendResponse($aimagCity->toArray(), 'Aimag City retrieved successfully');
+        return $aimagCity->toJson();
     }
 
     /**
@@ -82,8 +81,9 @@ class AimagCityAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateAimagCityAPIRequest $request)
+    public function update($id, Request $request)
     {
+        $input = $request->validate(AimagCity::$rules);
         /** @var AimagCity $aimagCity */
         $aimagCity = AimagCity::find($id);
 
@@ -91,10 +91,10 @@ class AimagCityAPIController extends AppBaseController
             return $this->sendError('Aimag City not found');
         }
 
-        $aimagCity->fill($request->all());
+        $aimagCity->fill($input);
         $aimagCity->save();
 
-        return $this->sendResponse($aimagCity->toArray(), 'AimagCity updated successfully');
+        return $aimagCity->toJson();
     }
 
     /**

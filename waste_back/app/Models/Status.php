@@ -9,12 +9,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Status
- * @package App\Models
- * @version November 24, 2022, 6:36 pm UTC
  *
+ * @package App\Models
+ * @version November 24, 2022, 7:41 pm UTC
  * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
  * @property string $name
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read int|null $register_histories_count
+ * @property-read int|null $registers_count
+ * @method static \Database\Factories\StatusFactory factory(...$parameters)
+ * @method static Builder|Status filter(array $filters)
+ * @method static Builder|Status newModelQuery()
+ * @method static Builder|Status newQuery()
+ * @method static Builder|Status query()
+ * @method static Builder|Status whereCreatedAt($value)
+ * @method static Builder|Status whereId($value)
+ * @method static Builder|Status whereName($value)
+ * @method static Builder|Status whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Status extends Model
 {

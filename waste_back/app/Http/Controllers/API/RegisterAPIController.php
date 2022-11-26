@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreateRegisterAPIRequest;
-use App\Http\Requests\API\UpdateRegisterAPIRequest;
+
 use App\Models\Register;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -24,7 +23,7 @@ class RegisterAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = Register::query();
+        $query = Register::filter( $request->all(["search", ...Register::$searchIn]))->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('reason:id,name')->with('soum_district:id,name')->with('status:id,name')->with('user:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -35,7 +34,7 @@ class RegisterAPIController extends AppBaseController
 
         $registers = $query->get();
 
-        return $this->sendResponse($registers->toArray(), 'Registers retrieved successfully');
+        return $registers->toJson();
     }
 
     /**
@@ -44,14 +43,14 @@ class RegisterAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateRegisterAPIRequest $request)
+    public function store(Request $request)
     {
-        $input = $request->all();
+        $input = $request->validate(Register::$rules);
 
         /** @var Register $register */
         $register = Register::create($input);
 
-        return $this->sendResponse($register->toArray(), 'Register saved successfully');
+        return $register->toJson();
     }
 
     /**
@@ -71,7 +70,7 @@ class RegisterAPIController extends AppBaseController
             return $this->sendError('Register not found');
         }
 
-        return $this->sendResponse($register->toArray(), 'Register retrieved successfully');
+        return $register->toJson();
     }
 
     /**
@@ -82,8 +81,9 @@ class RegisterAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateRegisterAPIRequest $request)
+    public function update($id, Request $request)
     {
+        $input = $request->validate(Register::$rules);
         /** @var Register $register */
         $register = Register::find($id);
 
@@ -91,10 +91,10 @@ class RegisterAPIController extends AppBaseController
             return $this->sendError('Register not found');
         }
 
-        $register->fill($request->all());
+        $register->fill($input);
         $register->save();
 
-        return $this->sendResponse($register->toArray(), 'Register updated successfully');
+        return $register->toJson();
     }
 
     /**

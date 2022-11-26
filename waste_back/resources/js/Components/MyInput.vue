@@ -1,20 +1,18 @@
 <template>
   <div :class="$attrs.class">
-    <label v-if="label" class="form-label text-capitalize" :for="id">{{ label }}:</label>
-    <input :id="id" ref="input" v-bind="{...$attrs,class:null}" class="form-input" :class="{ error: error }" :type="type" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" />
-    <div v-if="error" class="form-error">{{ error }}</div>
+    <label v-if="label" class="form-label text-capitalize grid">
+      <span>{{ label }}:</span>
+      <input ref="input" v-bind="{ ...$attrs, class: null }" class="form-input" :class="{ error: error }" :type="type"
+        :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" />
+    </label>
+    <div v-if="error" class="text-sm text-red-500">{{ error }}</div>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    id: {
-      type: [String],
-      default() {
-        return `select-input-${Math.random() * 1000}`
-      },
-    },
+
     type: {
       type: String,
       default: 'text',

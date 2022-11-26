@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreateRegisterHistoryAPIRequest;
-use App\Http\Requests\API\UpdateRegisterHistoryAPIRequest;
+
 use App\Models\RegisterHistory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -24,7 +23,7 @@ class RegisterHistoryAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = RegisterHistory::query();
+        $query = RegisterHistory::filter( $request->all(["search", ...RegisterHistory::$searchIn]))->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('reason:id,name')->with('register:id,name')->with('soum_district:id,name')->with('status:id,name')->with('user:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -35,7 +34,7 @@ class RegisterHistoryAPIController extends AppBaseController
 
         $registerHistories = $query->get();
 
-        return $this->sendResponse($registerHistories->toArray(), 'Register Histories retrieved successfully');
+        return $registerHistories->toJson();
     }
 
     /**
@@ -44,14 +43,14 @@ class RegisterHistoryAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateRegisterHistoryAPIRequest $request)
+    public function store(Request $request)
     {
-        $input = $request->all();
+        $input = $request->validate(RegisterHistory::$rules);
 
         /** @var RegisterHistory $registerHistory */
         $registerHistory = RegisterHistory::create($input);
 
-        return $this->sendResponse($registerHistory->toArray(), 'Register History saved successfully');
+        return $registerHistory->toJson();
     }
 
     /**
@@ -71,7 +70,7 @@ class RegisterHistoryAPIController extends AppBaseController
             return $this->sendError('Register History not found');
         }
 
-        return $this->sendResponse($registerHistory->toArray(), 'Register History retrieved successfully');
+        return $registerHistory->toJson();
     }
 
     /**
@@ -82,8 +81,9 @@ class RegisterHistoryAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateRegisterHistoryAPIRequest $request)
+    public function update($id, Request $request)
     {
+        $input = $request->validate(RegisterHistory::$rules);
         /** @var RegisterHistory $registerHistory */
         $registerHistory = RegisterHistory::find($id);
 
@@ -91,10 +91,10 @@ class RegisterHistoryAPIController extends AppBaseController
             return $this->sendError('Register History not found');
         }
 
-        $registerHistory->fill($request->all());
+        $registerHistory->fill($input);
         $registerHistory->save();
 
-        return $this->sendResponse($registerHistory->toArray(), 'RegisterHistory updated successfully');
+        return $registerHistory->toJson();
     }
 
     /**

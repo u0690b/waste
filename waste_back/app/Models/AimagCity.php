@@ -9,15 +9,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class AimagCity
- * @package App\Models
- * @version November 24, 2022, 6:30 pm UTC
  *
+ * @package App\Models
+ * @version November 24, 2022, 7:40 pm UTC
  * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
  * @property \Illuminate\Database\Eloquent\Collection $users
  * @property \Illuminate\Database\Eloquent\Collection $soumDistricts
  * @property string $code
  * @property string $name
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read int|null $register_histories_count
+ * @property-read int|null $registers_count
+ * @property-read int|null $soum_districts_count
+ * @property-read int|null $users_count
+ * @method static \Database\Factories\AimagCityFactory factory(...$parameters)
+ * @method static Builder|AimagCity filter(array $filters)
+ * @method static Builder|AimagCity newModelQuery()
+ * @method static Builder|AimagCity newQuery()
+ * @method static Builder|AimagCity query()
+ * @method static Builder|AimagCity whereCode($value)
+ * @method static Builder|AimagCity whereCreatedAt($value)
+ * @method static Builder|AimagCity whereId($value)
+ * @method static Builder|AimagCity whereName($value)
+ * @method static Builder|AimagCity whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class AimagCity extends Model
 {

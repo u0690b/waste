@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreateSoumDistrictAPIRequest;
-use App\Http\Requests\API\UpdateSoumDistrictAPIRequest;
+
 use App\Models\SoumDistrict;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -24,7 +23,7 @@ class SoumDistrictAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = SoumDistrict::query();
+        $query = SoumDistrict::filter( $request->all(["search", ...SoumDistrict::$searchIn]))->with('aimag_city:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -35,7 +34,7 @@ class SoumDistrictAPIController extends AppBaseController
 
         $soumDistricts = $query->get();
 
-        return $this->sendResponse($soumDistricts->toArray(), 'Soum Districts retrieved successfully');
+        return $soumDistricts->toJson();
     }
 
     /**
@@ -44,14 +43,14 @@ class SoumDistrictAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateSoumDistrictAPIRequest $request)
+    public function store(Request $request)
     {
-        $input = $request->all();
+        $input = $request->validate(SoumDistrict::$rules);
 
         /** @var SoumDistrict $soumDistrict */
         $soumDistrict = SoumDistrict::create($input);
 
-        return $this->sendResponse($soumDistrict->toArray(), 'Soum District saved successfully');
+        return $soumDistrict->toJson();
     }
 
     /**
@@ -71,7 +70,7 @@ class SoumDistrictAPIController extends AppBaseController
             return $this->sendError('Soum District not found');
         }
 
-        return $this->sendResponse($soumDistrict->toArray(), 'Soum District retrieved successfully');
+        return $soumDistrict->toJson();
     }
 
     /**
@@ -82,8 +81,9 @@ class SoumDistrictAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateSoumDistrictAPIRequest $request)
+    public function update($id, Request $request)
     {
+        $input = $request->validate(SoumDistrict::$rules);
         /** @var SoumDistrict $soumDistrict */
         $soumDistrict = SoumDistrict::find($id);
 
@@ -91,10 +91,10 @@ class SoumDistrictAPIController extends AppBaseController
             return $this->sendError('Soum District not found');
         }
 
-        $soumDistrict->fill($request->all());
+        $soumDistrict->fill($input);
         $soumDistrict->save();
 
-        return $this->sendResponse($soumDistrict->toArray(), 'SoumDistrict updated successfully');
+        return $soumDistrict->toJson();
     }
 
     /**

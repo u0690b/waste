@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class BagHoroo
- * @package App\Models
- * @version November 24, 2022, 6:36 pm UTC
  *
+ * @package App\Models
+ * @version November 24, 2022, 7:40 pm UTC
  * @property \App\Models\SoumDistrict $soumDistrict
  * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
@@ -19,6 +19,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $code
  * @property string $name
  * @property integer $soum_district_id
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read int|null $register_histories_count
+ * @property-read int|null $registers_count
+ * @property-read \App\Models\SoumDistrict $soum_district
+ * @property-read int|null $users_count
+ * @method static \Database\Factories\BagHorooFactory factory(...$parameters)
+ * @method static Builder|BagHoroo filter(array $filters)
+ * @method static Builder|BagHoroo newModelQuery()
+ * @method static Builder|BagHoroo newQuery()
+ * @method static Builder|BagHoroo query()
+ * @method static Builder|BagHoroo whereCode($value)
+ * @method static Builder|BagHoroo whereCreatedAt($value)
+ * @method static Builder|BagHoroo whereId($value)
+ * @method static Builder|BagHoroo whereName($value)
+ * @method static Builder|BagHoroo whereSoumDistrictId($value)
+ * @method static Builder|BagHoroo whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class BagHoroo extends Model
 {

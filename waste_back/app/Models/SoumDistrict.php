@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class SoumDistrict
- * @package App\Models
- * @version November 24, 2022, 6:33 pm UTC
  *
+ * @package App\Models
+ * @version November 24, 2022, 7:40 pm UTC
  * @property \App\Models\AimagCity $aimagCity
  * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
@@ -20,6 +20,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $code
  * @property string $name
  * @property integer $aimag_city_id
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\AimagCity $aimag_city
+ * @property-read int|null $bag_horoos_count
+ * @property-read int|null $register_histories_count
+ * @property-read int|null $registers_count
+ * @property-read int|null $users_count
+ * @method static \Database\Factories\SoumDistrictFactory factory(...$parameters)
+ * @method static Builder|SoumDistrict filter(array $filters)
+ * @method static Builder|SoumDistrict newModelQuery()
+ * @method static Builder|SoumDistrict newQuery()
+ * @method static Builder|SoumDistrict query()
+ * @method static Builder|SoumDistrict whereAimagCityId($value)
+ * @method static Builder|SoumDistrict whereCode($value)
+ * @method static Builder|SoumDistrict whereCreatedAt($value)
+ * @method static Builder|SoumDistrict whereId($value)
+ * @method static Builder|SoumDistrict whereName($value)
+ * @method static Builder|SoumDistrict whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class SoumDistrict extends Model
 {

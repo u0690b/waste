@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreateStatusAPIRequest;
-use App\Http\Requests\API\UpdateStatusAPIRequest;
+
 use App\Models\Status;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -24,7 +23,7 @@ class StatusAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = Status::query();
+        $query = Status::filter( $request->all(["search", ...Status::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -35,7 +34,7 @@ class StatusAPIController extends AppBaseController
 
         $statuses = $query->get();
 
-        return $this->sendResponse($statuses->toArray(), 'Statuses retrieved successfully');
+        return $statuses->toJson();
     }
 
     /**
@@ -44,14 +43,14 @@ class StatusAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateStatusAPIRequest $request)
+    public function store(Request $request)
     {
-        $input = $request->all();
+        $input = $request->validate(Status::$rules);
 
         /** @var Status $status */
         $status = Status::create($input);
 
-        return $this->sendResponse($status->toArray(), 'Status saved successfully');
+        return $status->toJson();
     }
 
     /**
@@ -71,7 +70,7 @@ class StatusAPIController extends AppBaseController
             return $this->sendError('Status not found');
         }
 
-        return $this->sendResponse($status->toArray(), 'Status retrieved successfully');
+        return $status->toJson();
     }
 
     /**
@@ -82,8 +81,9 @@ class StatusAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateStatusAPIRequest $request)
+    public function update($id, Request $request)
     {
+        $input = $request->validate(Status::$rules);
         /** @var Status $status */
         $status = Status::find($id);
 
@@ -91,10 +91,10 @@ class StatusAPIController extends AppBaseController
             return $this->sendError('Status not found');
         }
 
-        $status->fill($request->all());
+        $status->fill($input);
         $status->save();
 
-        return $this->sendResponse($status->toArray(), 'Status updated successfully');
+        return $status->toJson();
     }
 
     /**

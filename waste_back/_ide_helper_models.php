@@ -15,7 +15,7 @@ namespace App\Models{
  * Class AimagCity
  *
  * @package App\Models
- * @version November 24, 2022, 5:17 pm UTC
+ * @version November 24, 2022, 7:40 pm UTC
  * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
  * @property \Illuminate\Database\Eloquent\Collection $users
@@ -49,7 +49,7 @@ namespace App\Models{
  * Class AttachedFile
  *
  * @package App\Models
- * @version November 24, 2022, 2:55 pm UTC
+ * @version November 24, 2022, 7:41 pm UTC
  * @property string $path
  * @property string $type
  * @property int $id
@@ -75,7 +75,7 @@ namespace App\Models{
  * Class BagHoroo
  *
  * @package App\Models
- * @version November 24, 2022, 3:34 pm UTC
+ * @version November 24, 2022, 7:40 pm UTC
  * @property \App\Models\SoumDistrict $soumDistrict
  * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
@@ -111,7 +111,7 @@ namespace App\Models{
  * Class Place
  *
  * @package App\Models
- * @version November 24, 2022, 2:55 pm UTC
+ * @version November 24, 2022, 7:41 pm UTC
  * @property \Illuminate\Database\Eloquent\Collection $reasons
  * @property string $name
  * @property int $id
@@ -137,7 +137,7 @@ namespace App\Models{
  * Class Reason
  *
  * @package App\Models
- * @version November 24, 2022, 2:55 pm UTC
+ * @version November 24, 2022, 7:41 pm UTC
  * @property \App\Models\Place $place
  * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
@@ -168,7 +168,7 @@ namespace App\Models{
  * Class Register
  *
  * @package App\Models
- * @version November 24, 2022, 2:55 pm UTC
+ * @version November 24, 2022, 7:41 pm UTC
  * @property \App\Models\AimagCity $aimagCity
  * @property \App\Models\BagHoroo $bagHoroo
  * @property \App\Models\Reason $reason
@@ -190,8 +190,10 @@ namespace App\Models{
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\AimagCity $aimag_city
  * @property-read \App\Models\BagHoroo $bag_horoo
  * @property-read int|null $register_histories_count
+ * @property-read \App\Models\SoumDistrict $soum_district
  * @method static \Database\Factories\RegisterFactory factory(...$parameters)
  * @method static Builder|Register filter(array $filters)
  * @method static Builder|Register newModelQuery()
@@ -212,8 +214,6 @@ namespace App\Models{
  * @method static Builder|Register whereUpdatedAt($value)
  * @method static Builder|Register whereUserId($value)
  * @mixin \Eloquent
- * @property-read \App\Models\AimagCity $aimag_city
- * @property-read \App\Models\SoumDistrict $soum_district
  */
 	class Register extends \Eloquent {}
 }
@@ -223,7 +223,7 @@ namespace App\Models{
  * Class RegisterHistory
  *
  * @package App\Models
- * @version November 24, 2022, 2:55 pm UTC
+ * @version November 24, 2022, 7:42 pm UTC
  * @property \App\Models\AimagCity $aimagCity
  * @property \App\Models\BagHoroo $bagHoroo
  * @property \App\Models\Reason $reason
@@ -246,7 +246,9 @@ namespace App\Models{
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\AimagCity $aimag_city
  * @property-read \App\Models\BagHoroo $bag_horoo
+ * @property-read \App\Models\SoumDistrict $soum_district
  * @method static \Database\Factories\RegisterHistoryFactory factory(...$parameters)
  * @method static Builder|RegisterHistory filter(array $filters)
  * @method static Builder|RegisterHistory newModelQuery()
@@ -268,8 +270,6 @@ namespace App\Models{
  * @method static Builder|RegisterHistory whereUpdatedAt($value)
  * @method static Builder|RegisterHistory whereUserId($value)
  * @mixin \Eloquent
- * @property-read \App\Models\AimagCity $aimag_city
- * @property-read \App\Models\SoumDistrict $soum_district
  */
 	class RegisterHistory extends \Eloquent {}
 }
@@ -279,7 +279,7 @@ namespace App\Models{
  * Class SoumDistrict
  *
  * @package App\Models
- * @version November 24, 2022, 5:17 pm UTC
+ * @version November 24, 2022, 7:40 pm UTC
  * @property \App\Models\AimagCity $aimagCity
  * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
@@ -317,7 +317,7 @@ namespace App\Models{
  * Class Status
  *
  * @package App\Models
- * @version November 24, 2022, 2:55 pm UTC
+ * @version November 24, 2022, 7:41 pm UTC
  * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
  * @property string $name
@@ -375,7 +375,63 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\AimagCity $aimag_city
+ * @property-read \App\Models\BagHoroo $bag_horoo
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RegisterHistory[] $registerHistories
+ * @property-read int|null $register_histories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Register[] $registers
+ * @property-read int|null $registers_count
+ * @property-read \App\Models\SoumDistrict $soum_district
+ * @method static \Illuminate\Database\Eloquent\Builder|User filter(array $filters)
  */
 	class User extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * Class UsersModel
+ *
+ * @package App\Models
+ * @version November 25, 2022, 1:42 pm UTC
+ * @property \App\Models\AimagCity $aimagCity
+ * @property \App\Models\BagHoroo $bagHoroo
+ * @property \App\Models\SoumDistrict $soumDistrict
+ * @property \Illuminate\Database\Eloquent\Collection $registers
+ * @property \Illuminate\Database\Eloquent\Collection $registerHistories
+ * @property string $name
+ * @property string $username
+ * @property string $password
+ * @property integer $aimag_city_id
+ * @property integer $soum_district_id
+ * @property integer $bag_horoo_id
+ * @property string $roles
+ * @property string $remember_token
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\AimagCity $aimag_city
+ * @property-read \App\Models\BagHoroo $bag_horoo
+ * @property-read int|null $register_histories_count
+ * @property-read int|null $registers_count
+ * @property-read \App\Models\SoumDistrict $soum_district
+ * @method static \Database\Factories\UsersModelFactory factory(...$parameters)
+ * @method static Builder|UsersModel filter(array $filters)
+ * @method static Builder|UsersModel newModelQuery()
+ * @method static Builder|UsersModel newQuery()
+ * @method static Builder|UsersModel query()
+ * @method static Builder|UsersModel whereAimagCityId($value)
+ * @method static Builder|UsersModel whereBagHorooId($value)
+ * @method static Builder|UsersModel whereCreatedAt($value)
+ * @method static Builder|UsersModel whereId($value)
+ * @method static Builder|UsersModel whereName($value)
+ * @method static Builder|UsersModel wherePassword($value)
+ * @method static Builder|UsersModel whereRememberToken($value)
+ * @method static Builder|UsersModel whereRoles($value)
+ * @method static Builder|UsersModel whereSoumDistrictId($value)
+ * @method static Builder|UsersModel whereUpdatedAt($value)
+ * @method static Builder|UsersModel whereUsername($value)
+ * @mixin \Eloquent
+ */
+	class UsersModel extends \Eloquent {}
 }
 

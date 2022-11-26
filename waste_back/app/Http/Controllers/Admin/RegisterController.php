@@ -20,14 +20,14 @@ class RegisterController extends Controller
     {
         $registers = Register::filter(Request::all(["search", ...Register::$searchIn]))->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('reason:id,name')->with('soum_district:id,name')->with('status:id,name')->with('user:id,name');
         if (Request::has('only')) {
-            return json_encode($registers->paginate(Request::input('per_page'),['id', 'name']));
+            return json_encode($registers->paginate(Request::input('per_page'), ['id', 'name']));
         }
         return Inertia::render('Admin/registers/Index', [
             'filters' => Request::only(["search", ...Register::$searchIn]),
             'datas' => $registers
                 ->paginate(Request::input('per_page'))
                 ->withQueryString()
-                ->through(fn ($row) => $row->only('id','long','lat','description','resolve_desc','reason','reason_id','status','status_id','aimag_city','aimag_city_id','soum_district','soum_district_id','bag_horoo','bag_horoo_id','address','user','user_id')),
+                ->through(fn ($row) => $row->only('id', 'long', 'lat', 'description', 'resolve_desc', 'reason', 'reason_id', 'status', 'status_id', 'aimag_city', 'aimag_city_id', 'soum_district', 'soum_district_id', 'bag_horoo', 'bag_horoo_id', 'address', 'user', 'user_id')),
             'host' => config('app.url'),
         ]);
     }

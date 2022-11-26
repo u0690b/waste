@@ -32,3 +32,6 @@ Route::resource('aimag_cities', App\Http\Controllers\Admin\AimagCityController::
 
 // SoumDistricts
 Route::resource('soum_districts', App\Http\Controllers\Admin\SoumDistrictController::class);
+
+// UsersModels
+Route::resource('users', App\Http\Controllers\Admin\UsersController::class);

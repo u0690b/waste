@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class RegisterHistory
- * @package App\Models
- * @version November 24, 2022, 6:56 pm UTC
  *
+ * @package App\Models
+ * @version November 24, 2022, 7:42 pm UTC
  * @property \App\Models\AimagCity $aimagCity
  * @property \App\Models\BagHoroo $bagHoroo
  * @property \App\Models\Reason $reason
@@ -31,6 +31,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property integer $bag_horoo_id
  * @property string $address
  * @property integer $user_id
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\AimagCity $aimag_city
+ * @property-read \App\Models\BagHoroo $bag_horoo
+ * @property-read \App\Models\SoumDistrict $soum_district
+ * @method static \Database\Factories\RegisterHistoryFactory factory(...$parameters)
+ * @method static Builder|RegisterHistory filter(array $filters)
+ * @method static Builder|RegisterHistory newModelQuery()
+ * @method static Builder|RegisterHistory newQuery()
+ * @method static Builder|RegisterHistory query()
+ * @method static Builder|RegisterHistory whereAddress($value)
+ * @method static Builder|RegisterHistory whereAimagCityId($value)
+ * @method static Builder|RegisterHistory whereBagHorooId($value)
+ * @method static Builder|RegisterHistory whereCreatedAt($value)
+ * @method static Builder|RegisterHistory whereDescription($value)
+ * @method static Builder|RegisterHistory whereId($value)
+ * @method static Builder|RegisterHistory whereLat($value)
+ * @method static Builder|RegisterHistory whereLong($value)
+ * @method static Builder|RegisterHistory whereReasonId($value)
+ * @method static Builder|RegisterHistory whereRegisterId($value)
+ * @method static Builder|RegisterHistory whereResolveDesc($value)
+ * @method static Builder|RegisterHistory whereSoumDistrictId($value)
+ * @method static Builder|RegisterHistory whereStatusId($value)
+ * @method static Builder|RegisterHistory whereUpdatedAt($value)
+ * @method static Builder|RegisterHistory whereUserId($value)
+ * @mixin \Eloquent
  */
 class RegisterHistory extends Model
 {

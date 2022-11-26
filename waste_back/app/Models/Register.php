@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Register
- * @package App\Models
- * @version November 24, 2022, 6:57 pm UTC
  *
+ * @package App\Models
+ * @version November 24, 2022, 7:41 pm UTC
  * @property \App\Models\AimagCity $aimagCity
  * @property \App\Models\BagHoroo $bagHoroo
  * @property \App\Models\Reason $reason
@@ -30,6 +30,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property integer $bag_horoo_id
  * @property string $address
  * @property integer $user_id
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\AimagCity $aimag_city
+ * @property-read \App\Models\BagHoroo $bag_horoo
+ * @property-read int|null $register_histories_count
+ * @property-read \App\Models\SoumDistrict $soum_district
+ * @method static \Database\Factories\RegisterFactory factory(...$parameters)
+ * @method static Builder|Register filter(array $filters)
+ * @method static Builder|Register newModelQuery()
+ * @method static Builder|Register newQuery()
+ * @method static Builder|Register query()
+ * @method static Builder|Register whereAddress($value)
+ * @method static Builder|Register whereAimagCityId($value)
+ * @method static Builder|Register whereBagHorooId($value)
+ * @method static Builder|Register whereCreatedAt($value)
+ * @method static Builder|Register whereDescription($value)
+ * @method static Builder|Register whereId($value)
+ * @method static Builder|Register whereLat($value)
+ * @method static Builder|Register whereLong($value)
+ * @method static Builder|Register whereReasonId($value)
+ * @method static Builder|Register whereResolveDesc($value)
+ * @method static Builder|Register whereSoumDistrictId($value)
+ * @method static Builder|Register whereStatusId($value)
+ * @method static Builder|Register whereUpdatedAt($value)
+ * @method static Builder|Register whereUserId($value)
+ * @mixin \Eloquent
  */
 class Register extends Model
 {

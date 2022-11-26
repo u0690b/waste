@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreateReasonAPIRequest;
-use App\Http\Requests\API\UpdateReasonAPIRequest;
+
 use App\Models\Reason;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -24,7 +23,7 @@ class ReasonAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = Reason::query();
+        $query = Reason::filter( $request->all(["search", ...Reason::$searchIn]))->with('place:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -35,7 +34,7 @@ class ReasonAPIController extends AppBaseController
 
         $reasons = $query->get();
 
-        return $this->sendResponse($reasons->toArray(), 'Reasons retrieved successfully');
+        return $reasons->toJson();
     }
 
     /**
@@ -44,14 +43,14 @@ class ReasonAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreateReasonAPIRequest $request)
+    public function store(Request $request)
     {
-        $input = $request->all();
+        $input = $request->validate(Reason::$rules);
 
         /** @var Reason $reason */
         $reason = Reason::create($input);
 
-        return $this->sendResponse($reason->toArray(), 'Reason saved successfully');
+        return $reason->toJson();
     }
 
     /**
@@ -71,7 +70,7 @@ class ReasonAPIController extends AppBaseController
             return $this->sendError('Reason not found');
         }
 
-        return $this->sendResponse($reason->toArray(), 'Reason retrieved successfully');
+        return $reason->toJson();
     }
 
     /**
@@ -82,8 +81,9 @@ class ReasonAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdateReasonAPIRequest $request)
+    public function update($id, Request $request)
     {
+        $input = $request->validate(Reason::$rules);
         /** @var Reason $reason */
         $reason = Reason::find($id);
 
@@ -91,10 +91,10 @@ class ReasonAPIController extends AppBaseController
             return $this->sendError('Reason not found');
         }
 
-        $reason->fill($request->all());
+        $reason->fill($input);
         $reason->save();
 
-        return $this->sendResponse($reason->toArray(), 'Reason updated successfully');
+        return $reason->toJson();
     }
 
     /**

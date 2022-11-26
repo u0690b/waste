@@ -1,9 +1,10 @@
 <template>
   <div class="w-full text-sm" :class="{ 'form-group': formControl }">
     <label v-if="label" class="form-label" :for="id">{{ label }}:</label>
-    <v-select 
-      v-model="selected" :loading="load" :multiple="multiple" v-bind="$attrs" req class="border form-input style-chooser" :class="{ 'form-control': formControl, error: error }" 
-      :label="selectLabel" :filterable="filterable" :options="options" :placeholder="placeholder" @open="onOpen" @close="onClose" @search="onSearch">
+    <v-select v-model="selected" :loading="load" :multiple="multiple" v-bind="$attrs" req
+      class="border form-input style-chooser" :class="{ 'form-control': formControl, error: error }"
+      :label="selectLabel" :filterable="filterable" :options="options" :placeholder="placeholder" @open="onOpen"
+      @close="onClose" @search="onSearch">
       <template v-if="required" #search="{ attributes, events }">
         <input class="vs__search" :required="!selected" v-bind="attributes" autocomplete="off" v-on="events" />
       </template>
@@ -46,54 +47,54 @@ export default {
     url: String,
     placeholder: { type: String, default: '' },
     error: String,
-    selectLabel:{
-      type:String,
-      default:'name',
+    selectLabel: {
+      type: String,
+      default: 'name',
     },
-    selectedKey:{
-      type:String,
-      default:'id',
+    selectedKey: {
+      type: String,
+      default: 'id',
     },
-    modelKey:{type:Boolean,default:false},
+    modelKey: { type: Boolean, default: false },
     formControl: { type: Boolean, default: true },
     getAll: { type: Boolean, default: false },
     perPage: { type: Number, default: 50 },
     onOpenAutoCall: { type: Boolean, default: true },
     required: { type: Boolean, default: false },
-    filterable:{ type: Boolean, default: false },
-    multiple:{ type: Boolean, default: false },
+    filterable: { type: Boolean, default: false },
+    multiple: { type: Boolean, default: false },
   },
   emits: ['input', 'changeId', 'onLoaded', 'update:modelValue', 'change'],
   data() {
-    const tmpValue= this.modelValue??this.value
+    const tmpValue = this.modelValue ?? this.value
     return {
       observer: null,
       limit: 10,
       options: this.storedOptions ?? [],
-      selected: (typeof tmpValue=='object')?tmpValue:this.options?.find(v=>tmpValue==v[this.selectedKey])??this.storedOptions?.find(v=>tmpValue==v[this.selectedKey])??tmpValue,
+      selected: (typeof tmpValue == 'object') ? tmpValue : this.options?.find(v => tmpValue == v[this.selectedKey]) ?? this.storedOptions?.find(v => tmpValue == v[this.selectedKey]) ?? tmpValue,
       collection: this.storedOptions ?? [],
       load: false,
     }
   },
   watch: {
-    modelValue(nv,ov){
-      this.selected=(typeof nv=='object')?nv:this.options?.find(v=>nv==v[this.selectedKey])??nv
+    modelValue(nv, ov) {
+      this.selected = (typeof nv == 'object') ? nv : this.options?.find(v => nv == v[this.selectedKey]) ?? nv
     },
     storedOptions() {
       this.collection = this.options = this.storedOptions
     },
-    selected(){
+    selected() {
       this.$emit('change', this.selected)
-      if(this.modelKey&&this.selected){
+      if (this.modelKey && this.selected) {
         this.$emit('update:modelValue', this.selected[this.selectedKey] ?? null)
       }
-      else{
+      else {
         this.$emit('update:modelValue', this.selected)
       }
-      if(this.selected){
+      if (this.selected) {
         this.$emit('changeId', this.selected[this.selectedKey] ?? null)
-      }else{
-        this.$emit('changeId',  null)
+      } else {
+        this.$emit('changeId', null)
       }
     },
   },
@@ -101,7 +102,7 @@ export default {
     this.observer = new IntersectionObserver(this.infiniteScroll)
   },
   methods: {
-   
+
     onLoaded() {
       this.$emit('onLoaded', this.collection)
     },
@@ -139,7 +140,7 @@ export default {
           vm.collection :
           vm.collection.filter(option => option.name.toLowerCase().includes(search.toLowerCase()))
         loading(false)
-      }else  {
+      } else {
         axios(`${vm.url}${vm.url.includes('?') ? '&' : '?'}search=${encodeURIComponent(search)}&only&per_page=${vm.perPage}${vm.getAll ? '&all' : ''}`)
           .then((res) => res.data)
           .then((json) => {
@@ -548,7 +549,7 @@ export default {
 }
 
 .style-chooser .vs__selected {
-  
+
   display: flex;
   color: #555;
   text-overflow: clip;

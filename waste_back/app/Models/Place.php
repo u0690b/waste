@@ -9,11 +9,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Place
- * @package App\Models
- * @version November 24, 2022, 6:36 pm UTC
  *
+ * @package App\Models
+ * @version November 24, 2022, 7:41 pm UTC
  * @property \Illuminate\Database\Eloquent\Collection $reasons
  * @property string $name
+ * @property int $id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read int|null $reasons_count
+ * @method static \Database\Factories\PlaceFactory factory(...$parameters)
+ * @method static Builder|Place filter(array $filters)
+ * @method static Builder|Place newModelQuery()
+ * @method static Builder|Place newQuery()
+ * @method static Builder|Place query()
+ * @method static Builder|Place whereCreatedAt($value)
+ * @method static Builder|Place whereId($value)
+ * @method static Builder|Place whereName($value)
+ * @method static Builder|Place whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Place extends Model
 {

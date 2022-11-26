@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreatePlaceAPIRequest;
-use App\Http\Requests\API\UpdatePlaceAPIRequest;
+
 use App\Models\Place;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
@@ -24,7 +23,7 @@ class PlaceAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = Place::query();
+        $query = Place::filter( $request->all(["search", ...Place::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -35,7 +34,7 @@ class PlaceAPIController extends AppBaseController
 
         $places = $query->get();
 
-        return $this->sendResponse($places->toArray(), 'Places retrieved successfully');
+        return $places->toJson();
     }
 
     /**
@@ -44,14 +43,14 @@ class PlaceAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function store(CreatePlaceAPIRequest $request)
+    public function store(Request $request)
     {
-        $input = $request->all();
+        $input = $request->validate(Place::$rules);
 
         /** @var Place $place */
         $place = Place::create($input);
 
-        return $this->sendResponse($place->toArray(), 'Place saved successfully');
+        return $place->toJson();
     }
 
     /**
@@ -71,7 +70,7 @@ class PlaceAPIController extends AppBaseController
             return $this->sendError('Place not found');
         }
 
-        return $this->sendResponse($place->toArray(), 'Place retrieved successfully');
+        return $place->toJson();
     }
 
     /**
@@ -82,8 +81,9 @@ class PlaceAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function update($id, UpdatePlaceAPIRequest $request)
+    public function update($id, Request $request)
     {
+        $input = $request->validate(Place::$rules);
         /** @var Place $place */
         $place = Place::find($id);
 
@@ -91,10 +91,10 @@ class PlaceAPIController extends AppBaseController
             return $this->sendError('Place not found');
         }
 
-        $place->fill($request->all());
+        $place->fill($input);
         $place->save();
 
-        return $this->sendResponse($place->toArray(), 'Place updated successfully');
+        return $place->toJson();
     }
 
     /**

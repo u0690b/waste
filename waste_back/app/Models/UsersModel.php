@@ -2,68 +2,68 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
+
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 /**
- * App\Models\User
+ * Class UsersModel
  *
- * @property int $id
+ * @package App\Models
+ * @version November 25, 2022, 1:42 pm UTC
+ * @property \App\Models\AimagCity $aimagCity
+ * @property \App\Models\BagHoroo $bagHoroo
+ * @property \App\Models\SoumDistrict $soumDistrict
+ * @property \Illuminate\Database\Eloquent\Collection $registers
+ * @property \Illuminate\Database\Eloquent\Collection $registerHistories
  * @property string $name
  * @property string $username
  * @property string $password
- * @property int $aimag_city_id
- * @property int $soum_district_id
- * @property int $bag_horoo_id
- * @property mixed $roles
- * @property string|null $remember_token
+ * @property integer $aimag_city_id
+ * @property integer $soum_district_id
+ * @property integer $bag_horoo_id
+ * @property string $roles
+ * @property string $remember_token
+ * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
- * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
- * @property-read int|null $tokens_count
- * @method static \Database\Factories\UserFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User query()
- * @method static \Illuminate\Database\Eloquent\Builder|User whereAimagCityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereBagHorooId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereRoles($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSoumDistrictId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
- * @mixin \Eloquent
  * @property-read \App\Models\AimagCity $aimag_city
  * @property-read \App\Models\BagHoroo $bag_horoo
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\RegisterHistory[] $registerHistories
  * @property-read int|null $register_histories_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Register[] $registers
  * @property-read int|null $registers_count
  * @property-read \App\Models\SoumDistrict $soum_district
- * @method static \Illuminate\Database\Eloquent\Builder|User filter(array $filters)
+ * @method static \Database\Factories\UsersModelFactory factory(...$parameters)
+ * @method static Builder|UsersModel filter(array $filters)
+ * @method static Builder|UsersModel newModelQuery()
+ * @method static Builder|UsersModel newQuery()
+ * @method static Builder|UsersModel query()
+ * @method static Builder|UsersModel whereAimagCityId($value)
+ * @method static Builder|UsersModel whereBagHorooId($value)
+ * @method static Builder|UsersModel whereCreatedAt($value)
+ * @method static Builder|UsersModel whereId($value)
+ * @method static Builder|UsersModel whereName($value)
+ * @method static Builder|UsersModel wherePassword($value)
+ * @method static Builder|UsersModel whereRememberToken($value)
+ * @method static Builder|UsersModel whereRoles($value)
+ * @method static Builder|UsersModel whereSoumDistrictId($value)
+ * @method static Builder|UsersModel whereUpdatedAt($value)
+ * @method static Builder|UsersModel whereUsername($value)
+ * @mixin \Eloquent
  */
-class User extends Authenticatable
+class UsersModel extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable, HasFilter;
+
+    use HasFactory;
 
     public $table = 'users';
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+
+
+
+
     public $fillable = [
         'name',
         'username',
@@ -72,19 +72,8 @@ class User extends Authenticatable
         'soum_district_id',
         'bag_horoo_id',
         'roles',
+        'remember_token'
     ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-
 
     /**
      * The attributes that should be casted to native types.
@@ -95,10 +84,12 @@ class User extends Authenticatable
         'id' => 'integer',
         'name' => 'string',
         'username' => 'string',
+        'password' => 'string',
         'aimag_city_id' => 'integer',
         'soum_district_id' => 'integer',
         'bag_horoo_id' => 'integer',
-        'roles' => 'json',
+        'roles' => 'string',
+        'remember_token' => 'string'
     ];
 
     /**
@@ -114,6 +105,7 @@ class User extends Authenticatable
         'soum_district_id' => 'required',
         'bag_horoo_id' => 'required',
         'roles' => 'required|string',
+        'remember_token' => 'nullable|string|max:100',
         'created_at' => 'nullable',
         'updated_at' => 'nullable'
     ];
@@ -164,19 +156,24 @@ class User extends Authenticatable
     public static $searchIn = [
         'name',
         'username',
+        'password',
         'aimag_city_id',
         'soum_district_id',
         'bag_horoo_id',
         'roles',
+        'remember_token'
     ];
 
     /**
      * Filter Model
-     * 
-     * @return array
+     * @param Array $filters
+     * @return App\Models\UsersModel
      */
-    public function getSearchIn()
+    public function scopeFilter(Builder $query, array $filters)
     {
-        return UsersModel::$searchIn;
+        if (count($filters)) {
+            $this->buildFilter($query, $filters, UsersModel::$searchIn);
+        }
+        return $this;
     }
 }
