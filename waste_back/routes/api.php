@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\UserAPIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,53 +18,19 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
-Route::group(['prefix' => 'admin'], function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::resource('attached_files', App\Http\Controllers\API\AttachedFileAPIController::class);
-});
-
-
-Route::group(['prefix' => 'admin'], function () {
     Route::resource('bag_horoos', App\Http\Controllers\API\BagHorooAPIController::class);
-});
-
-
-Route::group(['prefix' => 'admin'], function () {
     Route::resource('places', App\Http\Controllers\API\PlaceAPIController::class);
-});
-
-
-Route::group(['prefix' => 'admin'], function () {
     Route::resource('reasons', App\Http\Controllers\API\ReasonAPIController::class);
-});
-
-
-Route::group(['prefix' => 'admin'], function () {
     Route::resource('statuses', App\Http\Controllers\API\StatusAPIController::class);
-});
-
-
-Route::group(['prefix' => 'admin'], function () {
     Route::resource('registers', App\Http\Controllers\API\RegisterAPIController::class);
-});
-
-
-Route::group(['prefix' => 'admin'], function () {
     Route::resource('register_histories', App\Http\Controllers\API\RegisterHistoryAPIController::class);
-});
-
-
-Route::group(['prefix' => 'admin'], function () {
     Route::resource('aimag_cities', App\Http\Controllers\API\AimagCityAPIController::class);
-});
-
-
-Route::group(['prefix' => 'admin'], function () {
     Route::resource('soum_districts', App\Http\Controllers\API\SoumDistrictAPIController::class);
-});
-
-
-Route::group(['prefix' => 'admin'], function () {
     Route::resource('users', App\Http\Controllers\API\UserAPIController::class);
 });
+
+
+
+Route::post('/login', [UserAPIController::class, 'login'])->name('api.login');

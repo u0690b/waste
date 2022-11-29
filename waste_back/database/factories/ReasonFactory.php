@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Place;
 use App\Models\Reason;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,9 +24,9 @@ class ReasonFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-        'place_id' => $this->faker->word,
-        'created_at' => $this->faker->date('Y-m-d H:i:s'),
-        'updated_at' => $this->faker->date('Y-m-d H:i:s')
+            'place_id' => Place::factory(),
+            'created_at' => $this->faker->date('Y-m-d H:i:s'),
+            'updated_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }
 }

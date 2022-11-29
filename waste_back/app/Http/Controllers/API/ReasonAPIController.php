@@ -23,7 +23,7 @@ class ReasonAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = Reason::filter( $request->all(["search", ...Reason::$searchIn]))->with('place:id,name');
+        $query = Reason::filter($request->all(["search", ...Reason::$searchIn]))->with('place:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));

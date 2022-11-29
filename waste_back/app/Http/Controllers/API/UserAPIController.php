@@ -25,22 +25,23 @@ class UserAPIController extends AppBaseController
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'username' => 'required|string',
             'password' => 'required',
-            'device_name' => 'required',
+
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('username', $request->username)->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name')->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'username' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        return $user->createToken($request->device_name)->plainTextToken;
+        $user->token = $user->createToken('token')->plainTextToken;
+        return $user;
     }
 }
