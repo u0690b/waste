@@ -71,9 +71,7 @@ mixin Api {
           middleText: text,
           textConfirm: 'OK',
           confirmTextColor: Colors.white,
-          onConfirm: () {
-            Get.back();
-          });
+          onConfirm: Get.back);
       return null;
     }
     return null;

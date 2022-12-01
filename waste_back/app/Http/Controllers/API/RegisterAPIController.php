@@ -32,7 +32,7 @@ class RegisterAPIController extends AppBaseController
             $query->limit($request->get('limit'));
         }
 
-        $registers = $query->get();
+        $registers = $query->cursorPaginate();
 
         return $registers;
     }
@@ -50,7 +50,7 @@ class RegisterAPIController extends AppBaseController
         /** @var Register $register */
         $register = Register::create($input);
 
-        return $register->toJson();
+        return $register;
     }
 
     /**
@@ -65,12 +65,12 @@ class RegisterAPIController extends AppBaseController
     {
         /** @var Register $register */
         $register = Register::find($id);
-
+        $register->load('aimag_city:id,name')->load('bag_horoo:id,name')->load('reason:id,name')->load('soum_district:id,name')->load('status:id,name')->load('user:id,name');
         if (empty($register)) {
             return $this->sendError('Register not found');
         }
 
-        return $register->toJson();
+        return $register;
     }
 
     /**
@@ -94,7 +94,7 @@ class RegisterAPIController extends AppBaseController
         $register->fill($input);
         $register->save();
 
-        return $register->toJson();
+        return $register;
     }
 
     /**

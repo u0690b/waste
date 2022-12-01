@@ -49,6 +49,7 @@ class _LoginViewState extends State<LoginView> {
                 ? 'Please Enter Password'
                 : null;
           },
+          obscureText: false,
           controller: passwordCtr,
           decoration: inputDecoration('Password', Icons.lock),
         ),

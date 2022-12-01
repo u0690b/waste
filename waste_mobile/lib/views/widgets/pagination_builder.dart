@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PaginationBuilder<T> extends StatelessWidget {
   final bool refreshAble;
@@ -20,29 +21,18 @@ class PaginationBuilder<T> extends StatelessWidget {
     return Stack(children: [
       InfinityNotificationRefresh(
         notifyCondition: () =>
-            !paginationModel.loading.value && paginationModel.hasMore,
-        moreCallback: () => paginationModel.fetchMore(),
+            !paginationModel.loading.value &&
+            paginationModel.nextCursor != null,
+        moreCallback: paginationModel.fetchMore,
         refreshCallback: refreshAble ? paginationModel.refresh : null,
-        child: AnimatedBuilder(
-          animation: paginationModel,
-          builder: (context, child) {
-            return paginationModel.total == 0
+        child: ObxValue(
+          (snap) {
+            return paginationModel.datas.isEmpty
                 ? noResult ?? const Text('Мэдээлэл байхгүй байна')
-                : itemBuilder(context, paginationModel.datas);
+                : itemBuilder(context, snap);
           },
+          paginationModel.datas,
         ),
-      ),
-      ValueListenableBuilder<bool>(
-        valueListenable: paginationModel.loading,
-        builder: (BuildContext context, value, Widget? child) {
-          return value
-              ? const Positioned(
-                  bottom: 10,
-                  right: 0,
-                  left: 0,
-                  child: Center(child: CircularProgressIndicator()))
-              : const SizedBox();
-        },
       ),
     ]);
   }
@@ -83,12 +73,15 @@ class InfinityNotificationRefresh extends StatelessWidget {
   }
 }
 
-abstract class IPaginationModel<T> extends ChangeNotifier {
-  int? page;
-  bool hasMore = false;
-  int total = 0;
-  List<T>? datas;
+abstract class IPaginationModel<T> {
+  String? nextCursor;
+  final RxList<T> datas = <T>[].obs;
   ValueNotifier<bool> loading = ValueNotifier<bool>(false);
-  Future fetchMore() async {}
-  Future refresh() async {}
+  Future<List<T>?> fetchMore() async {
+    return null;
+  }
+
+  Future<List<T>?> refresh() async {
+    return null;
+  }
 }
