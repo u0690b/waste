@@ -23,7 +23,15 @@ class AimagCityAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = AimagCity::filter( $request->all(["search", ...AimagCity::$searchIn]));
+        $input = $request->validate(['date' => 'nullable|date']);
+        if (isset($input['date'])) {
+            $count =   AimagCity::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
+            if ($count <= 0) {
+                return [];
+            }
+        }
+        $query = AimagCity::filter($request->all(["search", ...AimagCity::$searchIn]));
+
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -34,7 +42,7 @@ class AimagCityAPIController extends AppBaseController
 
         $aimagCities = $query->get();
 
-        return $aimagCities->toJson();
+        return $aimagCities;
     }
 
     /**
@@ -50,7 +58,7 @@ class AimagCityAPIController extends AppBaseController
         /** @var AimagCity $aimagCity */
         $aimagCity = AimagCity::create($input);
 
-        return $aimagCity->toJson();
+        return $aimagCity;
     }
 
     /**
@@ -70,7 +78,7 @@ class AimagCityAPIController extends AppBaseController
             return $this->sendError('Aimag City not found');
         }
 
-        return $aimagCity->toJson();
+        return $aimagCity;
     }
 
     /**
@@ -94,7 +102,7 @@ class AimagCityAPIController extends AppBaseController
         $aimagCity->fill($input);
         $aimagCity->save();
 
-        return $aimagCity->toJson();
+        return $aimagCity;
     }
 
     /**

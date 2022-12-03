@@ -23,7 +23,14 @@ class BagHorooAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = BagHoroo::filter( $request->all(["search", ...BagHoroo::$searchIn]))->with('soum_district:id,name');
+        $input = $request->validate(['date' => 'nullable|date']);
+        if (isset($input['date'])) {
+            $count =   BagHoroo::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
+            if ($count <= 0) {
+                return [];
+            }
+        }
+        $query = BagHoroo::filter($request->all(["search", ...BagHoroo::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -34,7 +41,7 @@ class BagHorooAPIController extends AppBaseController
 
         $bagHoroos = $query->get();
 
-        return $bagHoroos->toJson();
+        return $bagHoroos;
     }
 
     /**
@@ -50,7 +57,7 @@ class BagHorooAPIController extends AppBaseController
         /** @var BagHoroo $bagHoroo */
         $bagHoroo = BagHoroo::create($input);
 
-        return $bagHoroo->toJson();
+        return $bagHoroo;
     }
 
     /**
@@ -70,7 +77,7 @@ class BagHorooAPIController extends AppBaseController
             return $this->sendError('Bag Horoo not found');
         }
 
-        return $bagHoroo->toJson();
+        return $bagHoroo;
     }
 
     /**
@@ -94,7 +101,7 @@ class BagHorooAPIController extends AppBaseController
         $bagHoroo->fill($input);
         $bagHoroo->save();
 
-        return $bagHoroo->toJson();
+        return $bagHoroo;
     }
 
     /**

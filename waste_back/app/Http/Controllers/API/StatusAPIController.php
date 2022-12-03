@@ -23,7 +23,14 @@ class StatusAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = Status::filter( $request->all(["search", ...Status::$searchIn]));
+        $input = $request->validate(['date' => 'nullable|date']);
+        if (isset($input['date'])) {
+            $count =   Status::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
+            if ($count <= 0) {
+                return [];
+            }
+        }
+        $query = Status::filter($request->all(["search", ...Status::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -34,7 +41,7 @@ class StatusAPIController extends AppBaseController
 
         $statuses = $query->get();
 
-        return $statuses->toJson();
+        return $statuses;
     }
 
     /**
@@ -50,7 +57,7 @@ class StatusAPIController extends AppBaseController
         /** @var Status $status */
         $status = Status::create($input);
 
-        return $status->toJson();
+        return $status;
     }
 
     /**
@@ -70,7 +77,7 @@ class StatusAPIController extends AppBaseController
             return $this->sendError('Status not found');
         }
 
-        return $status->toJson();
+        return $status;
     }
 
     /**
@@ -94,7 +101,7 @@ class StatusAPIController extends AppBaseController
         $status->fill($input);
         $status->save();
 
-        return $status->toJson();
+        return $status;
     }
 
     /**

@@ -1,5 +1,8 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:waste_mobile/models/model.dart';
+import 'package:waste_mobile/utils/contants.dart';
+
 class Waste {
   final int id;
   final double long;
@@ -15,6 +18,26 @@ class Waste {
   final int user_id;
   final DateTime? created_at;
   final DateTime? updated_at;
+
+  NameModel get reason =>
+      Constants.reasons.firstWhere((element) => element.id == reason_id,
+          orElse: () => NameModel(name: '', id: -1));
+  NameModel get status =>
+      Constants.status.firstWhere((element) => element.id == status_id,
+          orElse: () => NameModel(name: '', id: -1));
+  NameModel get aimag_city =>
+      Constants.aimagCities.firstWhere((element) => element.id == aimag_city_id,
+          orElse: () => NameModel(name: '', id: -1));
+  NameModel get soum_district => Constants.soumDistricts.firstWhere(
+      (element) => element.id == soum_district_id,
+      orElse: () => NameModel(name: '', id: -1));
+  NameModel get bag_horoo =>
+      Constants.bagHoroos.firstWhere((element) => element.id == bag_horoo_id,
+          orElse: () => NameModel(name: '', id: -1));
+
+  String fullAddress() {
+    return "${aimag_city.name} ${soum_district.name} ${bag_horoo.name}";
+  }
 
   Waste({
     required this.id,

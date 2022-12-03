@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:location/location.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/controllers/waste_controller.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
-import 'package:waste_mobile/views/screens/home.dart';
+import 'package:waste_mobile/views/screens/picker_page.dart';
 import 'package:waste_mobile/views/widgets/back_button.dart';
 import 'package:waste_mobile/views/widgets/my_text_field.dart';
-import 'package:waste_mobile/views/widgets/progress_indicator.dart';
 import 'package:waste_mobile/views/widgets/top_container.dart';
+import 'package:waste_mobile/views/widgets/zoombuttons_plugin_option.dart';
 
 class WasteCreate extends StatefulWidget {
   const WasteCreate({Key? key}) : super(key: key);
@@ -17,28 +21,96 @@ class WasteCreate extends StatefulWidget {
 }
 
 class _WasteCreateState extends State<WasteCreate> {
+  final Location _locationService = Location();
+  LocationData? _currentLocation;
+  bool _liveUpdate = false;
+  bool _permission = false;
+  late final MapController _mapController;
+  String? _serviceError = '';
+  int interActiveFlags = InteractiveFlag.all;
   final AuthController _authManager = Get.find();
   final WasteController _wasteController = Get.put(WasteController());
+  final pointSize = 20.0;
+  final pointY = 100.0;
+  LatLng? latLng;
   @override
   void initState() {
     super.initState();
+    _mapController = MapController();
+    // initLocationService();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      updatePoint(null, context);
+    });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Home'),
-        ),
-        body: FutureBuilder(
-          builder: (context, snapshot) {
-            return const WaitProgressIndicator();
-          },
-        ));
-  }
-}
+  void initLocationService() async {
+    _liveUpdate = true;
+    await _locationService.changeSettings(
+      accuracy: LocationAccuracy.high,
+      interval: 1000,
+    );
+    LocationData? currentLocation;
+    LocationData? location;
+    bool serviceEnabled;
+    bool serviceRequestResult;
 
-class CreateNewTaskPage extends StatelessWidget {
+    try {
+      serviceEnabled = await _locationService.serviceEnabled();
+
+      if (serviceEnabled) {
+        final permission = await _locationService.requestPermission();
+        _permission = permission == PermissionStatus.granted;
+
+        if (_permission) {
+          location = await _locationService.getLocation();
+          currentLocation = location;
+          _locationService.onLocationChanged
+              .listen((LocationData result) async {
+            if (mounted) {
+              setState(() {
+                currentLocation = result;
+
+                // If Live Update is enabled, move map center
+                if (_liveUpdate) {
+                  _mapController.move(
+                      LatLng(currentLocation!.latitude!,
+                          currentLocation!.longitude!),
+                      _mapController.zoom);
+                  _liveUpdate = false;
+                }
+              });
+            }
+          });
+        }
+      } else {
+        serviceRequestResult = await _locationService.requestService();
+        if (serviceRequestResult) {
+          initLocationService();
+          return;
+        }
+      }
+    } on PlatformException catch (e) {
+      debugPrint(e.toString());
+      if (e.code == 'PERMISSION_DENIED') {
+        _serviceError = e.message;
+      } else if (e.code == 'SERVICE_STATUS_ERROR') {
+        _serviceError = e.message;
+      }
+      location = null;
+    }
+  }
+
+  void updatePoint(MapEvent? event, BuildContext context) {
+    final pointX = _getPointX(context);
+    setState(() {
+      latLng = _mapController.pointToLatLng(CustomPoint(pointX, pointY));
+    });
+  }
+
+  double _getPointX(BuildContext context) {
+    return MediaQuery.of(context).size.width / 2;
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -46,156 +118,181 @@ class CreateNewTaskPage extends StatelessWidget {
       Icons.keyboard_arrow_down,
       color: Colors.black54,
     );
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            TopContainer(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
-              width: width,
-              child: Column(
-                children: <Widget>[
-                  MyBackButton(),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: const <Widget>[
-                      Text(
-                        'Create new task',
-                        style: TextStyle(
-                            fontSize: 30.0, fontWeight: FontWeight.w700),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  SizedBox(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const MyTextField(label: 'Title'),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Expanded(
-                            child: MyTextField(
-                              label: 'Date',
-                              icon: downwardIcon,
-                            ),
-                          ),
-                          HomeView.calendarIcon(),
-                        ],
-                      )
-                    ],
-                  ))
-                ],
-              ),
-            ),
-            Expanded(
-                child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                          child: MyTextField(
-                        label: 'Start Time',
-                        icon: downwardIcon,
-                      )),
-                      const SizedBox(width: 40),
-                      Expanded(
-                        child: MyTextField(
-                          label: 'End Time',
-                          icon: downwardIcon,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  const MyTextField(
-                    label: 'Description',
-                    minLines: 3,
-                    maxLines: 3,
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const Text(
-                          'Category',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black54,
-                          ),
-                        ),
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.start,
-                          //direction: Axis.vertical,
-                          alignment: WrapAlignment.start,
-                          verticalDirection: VerticalDirection.down,
-                          runSpacing: 0,
-                          //textDirection: TextDirection.rtl,
-                          spacing: 10.0,
-                          children: const <Widget>[
-                            Chip(
-                              label: Text("SPORT APP"),
-                              backgroundColor: LightColors.kRed,
-                              labelStyle: TextStyle(color: Colors.white),
-                            ),
-                            Chip(
-                              label: Text("MEDICAL APP"),
-                            ),
-                            Chip(
-                              label: Text("RENT APP"),
-                            ),
-                            Chip(
-                              label: Text("NOTES"),
-                            ),
-                            Chip(
-                              label: Text("GAMING PLATFORM APP"),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            )),
-            SizedBox(
-              height: 80,
-              width: width,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-                    width: width - 40,
-                    decoration: BoxDecoration(
-                      color: LightColors.kBlue,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: const Text(
-                      'Create Task',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+    LatLng currentLatLng;
+
+    // Until currentLocation is initially updated, Widget can locate to 0, 0
+    // by default or store previous location value to show.
+    if (_currentLocation != null) {
+      currentLatLng =
+          LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!);
+    } else {
+      currentLatLng = LatLng(47.9173283, 106.9247419);
+    }
+    final markers = <Marker>[
+      Marker(
+        width: 10,
+        height: 10,
+        point: currentLatLng,
+        builder: (ctx) => const Icon(Icons.pin_drop_outlined),
       ),
-    );
+    ];
+    return Scaffold(
+        appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: MyBackButton(),
+          ),
+          backgroundColor: LightColors.kDarkYellow,
+          foregroundColor: LightColors.kDarkBlue,
+          title: const Text(
+            'Бүртгэх',
+            style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w700),
+          ),
+        ),
+        body: FutureBuilder(
+          builder: (context, snapshot) {
+            return SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    TopContainer(
+                      padding: const EdgeInsets.all(0),
+                      height: 200,
+                      width: width,
+                      child: Stack(
+                        children: [
+                          FlutterMap(
+                            mapController: _mapController,
+                            options: MapOptions(
+                              onMapEvent: (event) {
+                                updatePoint(null, context);
+                              },
+                              center: currentLatLng,
+                              zoom: 15,
+                              minZoom: 3,
+                            ),
+                            nonRotatedChildren: const [
+                              FlutterMapZoomButtons(
+                                minZoom: 4,
+                                maxZoom: 19,
+                                mini: true,
+                                padding: 5,
+                                alignment: Alignment.topRight,
+                              ),
+                            ],
+                            children: [
+                              TileLayer(
+                                urlTemplate:
+                                    'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                userAgentPackageName:
+                                    'dev.fleaflet.flutter_map.example',
+                              ),
+                              if (latLng != null)
+                                MarkerLayer(
+                                  markers: [
+                                    Marker(
+                                      width: pointSize,
+                                      height: pointSize,
+                                      point: latLng!,
+                                      builder: (ctx) => Icon(Icons.crop_free,
+                                          size: pointSize),
+                                    )
+                                  ],
+                                )
+                            ],
+                          ),
+                          Positioned(
+                              top: pointY - pointSize / 2,
+                              left: _getPointX(context) - pointSize / 2,
+                              child: Icon(Icons.crop_free, size: pointSize)),
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: FloatingActionButton(
+                              heroTag: 'cancel',
+                              mini: true,
+                              child: const Icon(Icons.my_location),
+                              onPressed: () => initLocationService(),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Expanded(
+                                  child: MyTextField(
+                                label: 'Аймаг,Нийслэл:',
+                                icon: downwardIcon,
+                              )),
+                            ],
+                          ),
+                          MyTextField(
+                            label: 'Сум,Дүүрэг:',
+                            icon: downwardIcon,
+                          ),
+                          MyTextField(
+                            label: 'Баг,Хороо:',
+                            icon: downwardIcon,
+                          ),
+                          const MyTextField(
+                            label: 'Хаяг тоот:',
+                          ),
+                          const SizedBox(height: 20),
+                          const MyTextField(
+                            label: 'Тайлбар',
+                            minLines: 3,
+                            maxLines: 10,
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 80,
+                      width: width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          ElevatedButton(
+                            onPressed: () {
+                              Get.to(const PickerPage());
+                            },
+                            child: const Text(
+                              'Зураг, Видео',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: const Text(
+                              'Хадгалах',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ));
   }
 }

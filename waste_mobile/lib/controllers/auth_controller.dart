@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/controllers/cache_manager.dart';
 import 'package:waste_mobile/models/user.dart';
 
 class AuthController extends GetxController with CacheManager {
   final isLogged = false.obs;
-
+  static User? user;
   void logOut() {
     isLogged.value = false;
     removeToken();
@@ -15,19 +16,25 @@ class AuthController extends GetxController with CacheManager {
   void login(User user) async {
     isLogged.value = true;
     //Token is cached
+    AuthController.user = user;
+    final box = GetStorage();
+    await box.write('UserModel', user.toJson());
     await saveToken(user.token);
   }
 
   void checkLoginStatus() {
     final token = getToken();
-    if (token != null) {
+    final box = GetStorage().read('UserModel');
+    User? user = box != null ? User.fromJson(box) : null;
+    if (token != null && user != null) {
+      AuthController.user = user;
       isLogged.value = true;
     }
   }
 
   Future<void> loginUser(String email, String password) async {
     final res = await GetConnect().post(
-      'http://localhost:8000/api/login',
+      'http://10.0.2.2:8000/api/login',
       {'username': email, 'password': password},
       headers: {"Accept": "application/json"},
     );

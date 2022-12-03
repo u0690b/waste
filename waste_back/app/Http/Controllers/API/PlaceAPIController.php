@@ -23,7 +23,14 @@ class PlaceAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = Place::filter( $request->all(["search", ...Place::$searchIn]));
+        $input = $request->validate(['date' => 'nullable|date']);
+        if (isset($input['date'])) {
+            $count =   Place::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
+            if ($count <= 0) {
+                return [];
+            }
+        }
+        $query = Place::filter($request->all(["search", ...Place::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -34,7 +41,7 @@ class PlaceAPIController extends AppBaseController
 
         $places = $query->get();
 
-        return $places->toJson();
+        return $places;
     }
 
     /**
@@ -50,7 +57,7 @@ class PlaceAPIController extends AppBaseController
         /** @var Place $place */
         $place = Place::create($input);
 
-        return $place->toJson();
+        return $place;
     }
 
     /**
@@ -70,7 +77,7 @@ class PlaceAPIController extends AppBaseController
             return $this->sendError('Place not found');
         }
 
-        return $place->toJson();
+        return $place;
     }
 
     /**
@@ -94,7 +101,7 @@ class PlaceAPIController extends AppBaseController
         $place->fill($input);
         $place->save();
 
-        return $place->toJson();
+        return $place;
     }
 
     /**

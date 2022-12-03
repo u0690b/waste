@@ -23,7 +23,14 @@ class SoumDistrictAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = SoumDistrict::filter( $request->all(["search", ...SoumDistrict::$searchIn]))->with('aimag_city:id,name');
+        $input = $request->validate(['date' => 'nullable|date']);
+        if (isset($input['date'])) {
+            $count =   SoumDistrict::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
+            if ($count <= 0) {
+                return [];
+            }
+        }
+        $query = SoumDistrict::filter($request->all(["search", ...SoumDistrict::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -34,7 +41,7 @@ class SoumDistrictAPIController extends AppBaseController
 
         $soumDistricts = $query->get();
 
-        return $soumDistricts->toJson();
+        return $soumDistricts;
     }
 
     /**
@@ -50,7 +57,7 @@ class SoumDistrictAPIController extends AppBaseController
         /** @var SoumDistrict $soumDistrict */
         $soumDistrict = SoumDistrict::create($input);
 
-        return $soumDistrict->toJson();
+        return $soumDistrict;
     }
 
     /**
@@ -70,7 +77,7 @@ class SoumDistrictAPIController extends AppBaseController
             return $this->sendError('Soum District not found');
         }
 
-        return $soumDistrict->toJson();
+        return $soumDistrict;
     }
 
     /**
@@ -94,7 +101,7 @@ class SoumDistrictAPIController extends AppBaseController
         $soumDistrict->fill($input);
         $soumDistrict->save();
 
-        return $soumDistrict->toJson();
+        return $soumDistrict;
     }
 
     /**

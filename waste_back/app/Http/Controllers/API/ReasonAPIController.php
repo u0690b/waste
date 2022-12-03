@@ -23,6 +23,13 @@ class ReasonAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
+        $input = $request->validate(['date' => 'nullable|date']);
+        if (isset($input['date'])) {
+            $count =   Reason::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
+            if ($count <= 0) {
+                return [];
+            }
+        }
         $query = Reason::filter($request->all(["search", ...Reason::$searchIn]))->with('place:id,name');
 
         if ($request->get('skip')) {
@@ -34,7 +41,7 @@ class ReasonAPIController extends AppBaseController
 
         $reasons = $query->get();
 
-        return $reasons->toJson();
+        return $reasons;
     }
 
     /**
@@ -50,7 +57,7 @@ class ReasonAPIController extends AppBaseController
         /** @var Reason $reason */
         $reason = Reason::create($input);
 
-        return $reason->toJson();
+        return $reason;
     }
 
     /**
@@ -70,7 +77,7 @@ class ReasonAPIController extends AppBaseController
             return $this->sendError('Reason not found');
         }
 
-        return $reason->toJson();
+        return $reason;
     }
 
     /**
@@ -94,7 +101,7 @@ class ReasonAPIController extends AppBaseController
         $reason->fill($input);
         $reason->save();
 
-        return $reason->toJson();
+        return $reason;
     }
 
     /**
