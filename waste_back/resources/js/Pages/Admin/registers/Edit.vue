@@ -5,7 +5,7 @@
       <span class="text-indigo-400 font-medium">/</span> Edit
       {{ title }}
     </h1>
-    <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
+    <div class="bg-white rounded shadow  max-w-3x max-w-3xl">
       <form @submit.prevent="submit">
         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
           <number-input v-model="form.long" type="number" :error="errors.long" class="pr-6 pb-8 w-full lg:w-1/2" label="Уртраг" />

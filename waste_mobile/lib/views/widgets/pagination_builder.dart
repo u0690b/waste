@@ -25,14 +25,30 @@ class PaginationBuilder<T> extends StatelessWidget {
             paginationModel.nextCursor != null,
         moreCallback: paginationModel.fetchMore,
         refreshCallback: refreshAble ? paginationModel.refresh : null,
-        child: ObxValue(
-          (snap) {
+        child: ValueListenableBuilder<bool>(
+          valueListenable: paginationModel.loading,
+          builder: (BuildContext context, value, Widget? child) {
+            if (paginationModel.datas.isEmpty &&
+                paginationModel.loading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
             return paginationModel.datas.isEmpty
                 ? noResult ?? const Text('Мэдээлэл байхгүй байна')
-                : itemBuilder(context, snap);
+                : itemBuilder(context, paginationModel.datas.toList());
           },
-          paginationModel.datas,
         ),
+      ),
+      ValueListenableBuilder<bool>(
+        valueListenable: paginationModel.loading,
+        builder: (BuildContext context, value, Widget? child) {
+          return value && paginationModel.datas.isNotEmpty
+              ? const Positioned(
+                  bottom: 10,
+                  right: 0,
+                  left: 0,
+                  child: Center(child: CircularProgressIndicator()))
+              : const SizedBox();
+        },
       ),
     ]);
   }

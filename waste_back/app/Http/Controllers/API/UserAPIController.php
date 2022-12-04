@@ -30,7 +30,6 @@ class UserAPIController extends AppBaseController
         $request->validate([
             'username' => 'required|string',
             'password' => 'required',
-
         ]);
 
         $user = User::where('username', $request->username)->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name')->first();

@@ -13,7 +13,7 @@ class WasteController with Api implements IPaginationModel<Waste> {
   @override
   final RxList<Waste> datas = <Waste>[].obs;
 
-  Future<Iterable<Waste>?> getQuery() async {
+  Future<Iterable<Waste>?> _getQuery() async {
     final res = await fetch<Iterable<Waste>>(
       '/registers',
       'get',
@@ -37,7 +37,7 @@ class WasteController with Api implements IPaginationModel<Waste> {
   Future<List<Waste>?> fetchMore() async {
     if (loading.value) return null;
     loading.value = true;
-    var q = await getQuery();
+    var q = await _getQuery();
 
     List<Waste> retVal = q?.toList() ?? [];
 
@@ -53,7 +53,7 @@ class WasteController with Api implements IPaginationModel<Waste> {
   Future<List<Waste>?> refresh() async {
     if (loading.value) return null;
     loading.value = true;
-    var q = await getQuery();
+    var q = await _getQuery();
 
     List<Waste> retVal = q?.toList() ?? [];
 

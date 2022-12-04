@@ -35,23 +35,21 @@ class _LoginViewState extends State<LoginView> {
           controller: emailCtr,
           validator: (value) {
             return (value == null || value.isEmpty)
-                ? 'Please Enter Email'
+                ? 'Нэвтрэх нэр хоосон'
                 : null;
           },
-          decoration: inputDecoration('E-mail', Icons.person),
+          decoration: inputDecoration('Нэвтрэх нэр', Icons.person),
         ),
         const SizedBox(
           height: 8,
         ),
         TextFormField(
           validator: (value) {
-            return (value == null || value.isEmpty)
-                ? 'Please Enter Password'
-                : null;
+            return (value == null || value.isEmpty) ? 'Нууц үг хоосон' : null;
           },
-          obscureText: false,
+          obscureText: true,
           controller: passwordCtr,
-          decoration: inputDecoration('Password', Icons.lock),
+          decoration: inputDecoration('Нууц үг', Icons.lock),
         ),
         ElevatedButton(
           onPressed: () async {
@@ -59,7 +57,7 @@ class _LoginViewState extends State<LoginView> {
               await _auth.loginUser(emailCtr.text, passwordCtr.text);
             }
           },
-          child: const Text('Login'),
+          child: const Text('Нэвтрэх'),
         ),
       ]),
     );

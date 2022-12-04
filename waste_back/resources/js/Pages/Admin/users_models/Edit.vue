@@ -6,7 +6,7 @@
       <span class="text-indigo-400 font-medium">/</span> Edit
       {{ title }}
     </h1>
-    <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
+    <div class="bg-white rounded shadow  max-w-3x max-w-3xl">
       <form @submit.prevent="submit">
         <div class="grid grid-cols-2 gap-2 ">
           <MyInput v-model="form.name" :error="errors.name" label="Name" />

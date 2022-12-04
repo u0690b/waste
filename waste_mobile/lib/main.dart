@@ -8,6 +8,7 @@ Future<void> main() async {
   setLocaleMessages('mn', MnMessages());
   setDefaultLocale('mn');
   await GetStorage.init();
+  // await GetStorage().erase();
   runApp(const MyApp());
 }
 

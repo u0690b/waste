@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
-import 'package:waste_mobile/controllers/common_controller.dart';
 import 'package:waste_mobile/controllers/waste_controller.dart';
 import 'package:waste_mobile/views/screens/onboard.dart';
 
 class SplashScreen extends StatelessWidget {
   final AuthController _authmanager = Get.put(AuthController());
   final WasteController _wasteController = Get.put(WasteController());
-  final CommonController _commonController = Get.put(CommonController());
 
   SplashScreen({super.key});
 
   Future<void> initializeSettings() async {
-    await _commonController.loadData();
     _authmanager.checkLoginStatus();
 
     //Simulate other services for 3 seconds
-    await Future.delayed(const Duration(seconds: 3));
+    // await Future.delayed(const Duration(seconds: 3));
   }
 
   @override
@@ -42,7 +39,18 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(body: Center(child: Text('Error: ${snapshot.error}')));
   }
 
-  Scaffold waitingView() {
+  Widget waitingView() {
+    return const WaitingWidget();
+  }
+}
+
+class WaitingWidget extends StatelessWidget {
+  const WaitingWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
       child: Column(

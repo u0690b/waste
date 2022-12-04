@@ -14,7 +14,7 @@ class WasteList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final WasteController wasteController = Get.find();
-    wasteController.fetchMore();
+    wasteController.refresh();
     return Scaffold(
       appBar: AppBar(
         title: Text(title),

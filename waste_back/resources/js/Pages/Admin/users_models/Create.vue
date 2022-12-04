@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <div class="bg-white rounded shadow overflow-hidden max-w-3xl p-6">
+    <div class="bg-white rounded shadow  max-w-3x max-w-3xl p-6">
       <h1 class="mb-8 font-bold text-3xl border-b">
         <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('admin.users.index')">Users Models
         </inertia-link>
