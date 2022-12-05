@@ -25,6 +25,7 @@ class AppDropdownInput<T> extends StatelessWidget {
     return FormField<T>(
       enabled: enabled,
       validator: validator,
+      initialValue: value,
       builder: (FormFieldState<T> state) {
         return InputDecorator(
           decoration: InputDecoration(
@@ -33,15 +34,20 @@ class AppDropdownInput<T> extends StatelessWidget {
             labelText: hintText,
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+            errorText: state.errorText,
           ),
-          isEmpty: value == null || value == '',
+          isEmpty: state.value == null || state.value == '',
           child: !enabled
-              ? Text(value != null ? getLabel(value as T) : '')
+              ? Text(state.value != null ? getLabel(state.value as T) : '')
               : DropdownButtonHideUnderline(
                   child: DropdownButton<T>(
-                    value: value,
+                    value: state.value,
                     isDense: true,
-                    onChanged: onChanged,
+                    onChanged: (v) {
+                      state.setValue(value);
+                      if (onChanged != null) onChanged!(v);
+                      state.setState(() {});
+                    },
                     items: options.map((T value) {
                       return DropdownMenuItem<T>(
                         value: value,

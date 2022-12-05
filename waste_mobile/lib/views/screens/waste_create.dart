@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:location/location.dart';
-import 'package:waste_mobile/controllers/auth_controller.dart';
-import 'package:waste_mobile/controllers/waste_controller.dart';
-import 'package:waste_mobile/models/model.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/utils/contants.dart';
-import 'package:waste_mobile/views/screens/picker_page.dart';
-import 'package:waste_mobile/views/widgets/app_dropdown_input.dart';
 import 'package:waste_mobile/views/widgets/back_button.dart';
-import 'package:waste_mobile/views/widgets/top_container.dart';
-import 'package:waste_mobile/views/widgets/zoombuttons_plugin_option.dart';
+import 'package:waste_mobile/views/widgets/image_pick_list.dart';
+import 'package:waste_mobile/views/widgets/location_map.dart';
 
 class WasteCreate extends StatefulWidget {
   const WasteCreate({Key? key}) : super(key: key);
@@ -23,123 +17,8 @@ class WasteCreate extends StatefulWidget {
 }
 
 class _WasteCreateState extends State<WasteCreate> {
-  final Location _locationService = Location();
-  LocationData? _currentLocation;
-  bool _liveUpdate = false;
-  bool _permission = false;
-  late final MapController _mapController;
-  String? _serviceError = '';
-  int interActiveFlags = InteractiveFlag.all;
-  final AuthController _authManager = Get.find();
-  final WasteController _wasteController = Get.put(WasteController());
-  final pointSize = 20.0;
-  final pointY = 100.0;
-  LatLng? latLng;
-
-  final _formKey = GlobalKey<FormState>();
-  @override
-  void initState() {
-    super.initState();
-    _mapController = MapController();
-    // initLocationService();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      updatePoint(null, context);
-    });
-  }
-
-  void initLocationService() async {
-    _liveUpdate = true;
-    await _locationService.changeSettings(
-      accuracy: LocationAccuracy.high,
-      interval: 1000,
-    );
-    LocationData? currentLocation;
-    LocationData? location;
-    bool serviceEnabled;
-    bool serviceRequestResult;
-
-    try {
-      serviceEnabled = await _locationService.serviceEnabled();
-
-      if (serviceEnabled) {
-        final permission = await _locationService.requestPermission();
-        _permission = permission == PermissionStatus.granted;
-
-        if (_permission) {
-          location = await _locationService.getLocation();
-          currentLocation = location;
-          _locationService.onLocationChanged
-              .listen((LocationData result) async {
-            if (mounted) {
-              setState(() {
-                currentLocation = result;
-
-                // If Live Update is enabled, move map center
-                if (_liveUpdate) {
-                  _mapController.move(
-                      LatLng(currentLocation!.latitude!,
-                          currentLocation!.longitude!),
-                      _mapController.zoom);
-                  _liveUpdate = false;
-                }
-              });
-            }
-          });
-        }
-      } else {
-        serviceRequestResult = await _locationService.requestService();
-        if (serviceRequestResult) {
-          initLocationService();
-          return;
-        }
-      }
-    } on PlatformException catch (e) {
-      debugPrint(e.toString());
-      if (e.code == 'PERMISSION_DENIED') {
-        _serviceError = e.message;
-      } else if (e.code == 'SERVICE_STATUS_ERROR') {
-        _serviceError = e.message;
-      }
-      location = null;
-    }
-  }
-
-  void updatePoint(MapEvent? event, BuildContext context) {
-    final pointX = _getPointX(context);
-    setState(() {
-      latLng = _mapController.pointToLatLng(CustomPoint(pointX, pointY));
-    });
-  }
-
-  double _getPointX(BuildContext context) {
-    return MediaQuery.of(context).size.width / 2;
-  }
-
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    var downwardIcon = const Icon(
-      Icons.keyboard_arrow_down,
-      color: Colors.black54,
-    );
-    LatLng currentLatLng;
-
-    // Until currentLocation is initially updated, Widget can locate to 0, 0
-    // by default or store previous location value to show.
-    if (_currentLocation != null) {
-      currentLatLng =
-          LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!);
-    } else {
-      currentLatLng = LatLng(47.9173283, 106.9247419);
-    }
-    final markers = <Marker>[
-      Marker(
-        width: 10,
-        height: 10,
-        point: currentLatLng,
-        builder: (ctx) => const Icon(Icons.pin_drop_outlined),
-      ),
-    ];
     return Scaffold(
         appBar: AppBar(
           leading: Padding(
@@ -153,116 +32,9 @@ class _WasteCreateState extends State<WasteCreate> {
             style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w700),
           ),
         ),
-        body: SafeArea(
+        body: const SafeArea(
           child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                TopContainer(
-                  padding: const EdgeInsets.all(0),
-                  height: 200,
-                  width: width,
-                  child: Stack(
-                    children: [
-                      FlutterMap(
-                        mapController: _mapController,
-                        options: MapOptions(
-                          onMapEvent: (event) {
-                            updatePoint(null, context);
-                          },
-                          center: currentLatLng,
-                          zoom: 15,
-                          minZoom: 3,
-                        ),
-                        nonRotatedChildren: const [
-                          FlutterMapZoomButtons(
-                            minZoom: 4,
-                            maxZoom: 19,
-                            mini: true,
-                            padding: 5,
-                            alignment: Alignment.topRight,
-                          ),
-                        ],
-                        children: [
-                          TileLayer(
-                            urlTemplate:
-                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            userAgentPackageName:
-                                'dev.fleaflet.flutter_map.example',
-                          ),
-                          if (latLng != null)
-                            MarkerLayer(
-                              markers: [
-                                Marker(
-                                  width: pointSize,
-                                  height: pointSize,
-                                  point: latLng!,
-                                  builder: (ctx) =>
-                                      Icon(Icons.crop_free, size: pointSize),
-                                )
-                              ],
-                            )
-                        ],
-                      ),
-                      Positioned(
-                          top: pointY - pointSize / 2,
-                          left: _getPointX(context) - pointSize / 2,
-                          child: Icon(Icons.crop_free, size: pointSize)),
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: FloatingActionButton(
-                          heroTag: 'cancel',
-                          mini: true,
-                          child: const Icon(Icons.my_location),
-                          onPressed: () => initLocationService(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Form(
-                  key: _formKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: _RegisterForm(downwardIcon: downwardIcon),
-                ),
-                SizedBox(
-                  height: 80,
-                  width: width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: () {
-                          Get.to(const PickerPage());
-                        },
-                        child: const Text(
-                          'Зураг, Видео',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            print('valodate');
-                          }
-                        },
-                        child: const Text(
-                          'Хадгалах',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            child: _RegisterForm(),
           ),
         ));
   }
@@ -271,105 +43,260 @@ class _WasteCreateState extends State<WasteCreate> {
 class _RegisterForm extends StatefulWidget {
   const _RegisterForm({
     Key? key,
-    required this.downwardIcon,
   }) : super(key: key);
-
-  final Icon downwardIcon;
 
   @override
   State<_RegisterForm> createState() => _RegisterFormState();
 }
 
 class _RegisterFormState extends State<_RegisterForm> {
-  NameModel? aimagCity;
-  NameModel? soumDistrict;
-  NameModel? bagHoroo;
+  final _formKey = GlobalKey<FormState>();
+  int? aimagCity;
+  int? soumDistrict;
+  int? bagHoroo;
+  double? latitude;
+  double? longitude;
   TextEditingController addressCtr = TextEditingController();
   TextEditingController descriptionCtr = TextEditingController();
+  final List<Uint8List> _imageFileList = [];
+  Uint8List? _videoFile;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
+    var textButton = TextButton(
+      style: TextButton.styleFrom(
+          foregroundColor: Colors.white,
+          backgroundColor:
+              _videoFile == null ? Colors.orangeAccent : Colors.redAccent),
+      onPressed: () {
+        if (_videoFile != null) {
+          setState(() {
+            _videoFile = null;
+          });
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    color: LightColors.kDarkBlue,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        TextButton(
+                            onPressed: () async {
+                              final video = await ImagePicker().pickVideo(
+                                source: ImageSource.camera,
+                                maxDuration: const Duration(minutes: 3),
+                              );
+                              _videoFile = await video?.readAsBytes();
+                              setState(() {});
+                              Get.back();
+                            },
+                            child: const Text('Замер нээх')),
+                        const Divider(),
+                        TextButton(
+                            onPressed: () async {
+                              final video = await ImagePicker().pickVideo(
+                                source: ImageSource.gallery,
+                                maxDuration: const Duration(minutes: 3),
+                              );
+                              _videoFile = await video?.readAsBytes();
+                              setState(() {});
+                              Get.back();
+                            },
+                            child: const Text('Галерей нээх')),
+                        const Divider(),
+                        TextButton(
+                            onPressed: Get.back, child: const Text('Хаах'))
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      },
+      child: Text(
+          textAlign: TextAlign.center,
+          _videoFile == null
+              ? 'Дүрс бичлэг хавсаргах'
+              : 'Сонгосон дүрс бичлэг устгах'),
+    );
+    return Form(
+      key: _formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          AppDropdownInput<NameModel>(
-            hintText: "Аймаг,Нийслэл:",
-            options: Constants.aimagCities,
-            value: aimagCity,
-            onChanged: (NameModel? value) {
-              setState(() {
-                aimagCity = value;
-              });
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          LocationMap(
+            longitude: longitude,
+            latitude: latitude,
+            onChangeLocation: (LatLng? latlng) {
+              longitude = latlng?.longitude;
+              latitude = latlng?.latitude;
             },
-            getLabel: (NameModel value) => value.name,
           ),
-          const SizedBox(height: 20),
-          AppDropdownInput<NameModel>(
-            hintText: "Сум,Дүүрэг:",
-            enabled: aimagCity != null,
-            options: Constants.soumDistricts
-                .where(
-                    (element) => element.aimag_city_id == (aimagCity?.id ?? -1))
-                .toList(),
-            value: soumDistrict,
-            onChanged: (NameModel? value) {
-              setState(() {
-                soumDistrict = value;
-              });
-            },
-            getLabel: (NameModel value) => value.name,
-          ),
-          const SizedBox(height: 20),
-          AppDropdownInput<NameModel>(
-            hintText: "Баг,Хороо:",
-            enabled: soumDistrict != null,
-            value: bagHoroo,
-            options: Constants.bagHoroos
-                .where((element) =>
-                    element.soum_district_id == (soumDistrict?.id ?? -1))
-                .toList(),
-            onChanged: (NameModel? value) {
-              setState(() {
-                bagHoroo = value;
-              });
-            },
-            getLabel: (NameModel value) => value.name,
-          ),
-          const SizedBox(height: 20),
-          TextFormField(
-            controller: addressCtr,
-            validator: (value) {
-              return (value == null || value.isEmpty)
-                  ? 'Хаяг тоот хоосон байна'
-                  : null;
-            },
-            decoration: InputDecoration(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-              labelText: 'Хаяг тоот:',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5.0),
-              ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                DropdownButtonFormField(
+                    validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
+                    value: aimagCity,
+                    decoration: InputDecoration(
+                      labelText: "Аймаг,Нийслэл:",
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 15.0),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                    ),
+                    items: Constants.aimagCities
+                        .map((e) => DropdownMenuItem(
+                              value: e.id,
+                              child: Text(e.name),
+                            ))
+                        .toList(),
+                    onChanged: (int? value) {
+                      setState(() {
+                        aimagCity = value;
+                        soumDistrict = null;
+                        bagHoroo = null;
+                      });
+                    }),
+                const SizedBox(height: 20),
+                DropdownButtonFormField(
+                  validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
+                  decoration: InputDecoration(
+                    labelText: "Сум,Дүүрэг",
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 15.0),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                  ),
+                  enableFeedback: aimagCity != null,
+                  items: Constants.soumDistricts
+                      .where((element) =>
+                          element.aimag_city_id == (aimagCity ?? -1))
+                      .map((e) => DropdownMenuItem(
+                            value: e.id,
+                            child: Text(e.name),
+                          ))
+                      .toList(),
+                  value: soumDistrict,
+                  onChanged: (int? value) {
+                    setState(() {
+                      soumDistrict = value;
+                      bagHoroo = null;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                DropdownButtonFormField(
+                  validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
+                  decoration: InputDecoration(
+                    labelText: "Баг,Хороо:",
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 15.0),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                  ),
+                  enableFeedback: soumDistrict != null,
+                  items: Constants.bagHoroos
+                      .where((element) =>
+                          element.soum_district_id == (soumDistrict ?? -1))
+                      .map((e) => DropdownMenuItem(
+                            value: e.id,
+                            child: Text(e.name),
+                          ))
+                      .toList(),
+                  value: bagHoroo,
+                  onChanged: (int? value) {
+                    setState(() {
+                      bagHoroo = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  maxLength: 100,
+                  controller: addressCtr,
+                  validator: (value) {
+                    return (value == null || value.isEmpty)
+                        ? 'Хаяг тоот хоосон байна'
+                        : null;
+                  },
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 15.0),
+                    labelText: 'Хаяг тоот:',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  maxLength: 500,
+                  validator: (value) {
+                    return (value == null || value.isEmpty)
+                        ? 'Тайлбар хоосон байна'
+                        : null;
+                  },
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 15.0),
+                    labelText: 'Тайлбар:',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  minLines: 3,
+                  maxLines: 10,
+                ),
+                const SizedBox(height: 20),
+                ImagePickerList(
+                  item: _imageFileList,
+                  onAdd: (Uint8List file) {
+                    setState(() {
+                      _imageFileList.add(file);
+                    });
+                  },
+                  onDrop: (int index) {
+                    setState(() {
+                      _imageFileList.removeAt(index);
+                    });
+                  },
+                  videoButton: textButton,
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
           ),
-          const SizedBox(height: 20),
-          TextFormField(
-            validator: (value) {
-              return (value == null || value.isEmpty)
-                  ? 'Тайлбар хоосон байна'
-                  : null;
-            },
-            decoration: InputDecoration(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-              labelText: 'Тайлбар:',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5.0),
+          SizedBox(
+            height: 80,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    print('valodate');
+                  }
+                },
+                child: const Text(
+                  'Хадгалах',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 18),
+                ),
               ),
             ),
-            minLines: 3,
-            maxLines: 10,
           ),
           const SizedBox(height: 20),
         ],

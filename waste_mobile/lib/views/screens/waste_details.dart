@@ -4,8 +4,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location/location.dart';
-import 'package:waste_mobile/controllers/auth_controller.dart';
-import 'package:waste_mobile/controllers/waste_controller.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/views/widgets/back_button.dart';
 import 'package:waste_mobile/views/widgets/my_text_field.dart';
@@ -28,8 +26,7 @@ class _WasteDetailsState extends State<WasteDetails> {
   late final MapController _mapController;
   String? _serviceError = '';
   int interActiveFlags = InteractiveFlag.all;
-  final AuthController _authManager = Get.find();
-  final WasteController _wasteController = Get.put(WasteController());
+
   final pointSize = 20.0;
   final pointY = 100.0;
   LatLng? latLng;

@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
@@ -110,6 +112,7 @@ mixin Api {
     } else if (res.status.connectionError && connectionError != null) {
       connectionError();
     } else {
+      log(res.statusText ?? text);
       if (res.body is Map<String, dynamic> && res.body.containsKey('message')) {
         text = res.body['message'];
       }

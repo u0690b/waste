@@ -5,8 +5,8 @@ import 'package:waste_mobile/controllers/waste_controller.dart';
 import 'package:waste_mobile/views/screens/onboard.dart';
 
 class SplashScreen extends StatelessWidget {
-  final AuthController _authmanager = Get.put(AuthController());
-  final WasteController _wasteController = Get.put(WasteController());
+  final AuthController _authmanager = Get.find();
+  final WasteController _wasteController = Get.find();
 
   SplashScreen({super.key});
 

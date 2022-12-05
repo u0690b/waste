@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:timeago/timeago.dart';
+import 'package:waste_mobile/controllers/auth_controller.dart';
+import 'package:waste_mobile/controllers/common_controller.dart';
+
+import 'package:waste_mobile/controllers/waste_controller.dart';
 import 'package:waste_mobile/views/screens/splash_screen.dart';
 
 Future<void> main() async {
@@ -18,6 +22,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Get.lazyPut(() => CommonController());
+    Get.lazyPut(() => AuthController());
+    Get.lazyPut(() => WasteController());
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',

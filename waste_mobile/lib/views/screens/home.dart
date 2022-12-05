@@ -11,19 +11,17 @@ import 'package:waste_mobile/views/widgets/active_project_card.dart';
 import 'package:waste_mobile/views/widgets/task_column.dart';
 import 'package:waste_mobile/views/widgets/top_container.dart';
 
-class HomeView extends StatelessWidget {
-  HomeView({super.key});
+class HomeViewWrapper extends StatelessWidget {
+  const HomeViewWrapper({super.key});
 
-  Text subheading(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-          color: LightColors.kDarkBlue,
-          fontSize: 20.0,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 1.2),
-    );
+  @override
+  Widget build(BuildContext context) {
+    return const HomeView();
   }
+}
+
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
   static CircleAvatar plusIcon() {
     return const CircleAvatar(
@@ -37,16 +35,29 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  final CommonController _commonController = Get.put(CommonController());
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  Text subheading(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+          color: LightColors.kDarkBlue,
+          fontSize: 20.0,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.2),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-
+    final CommonController commonController = Get.find();
     return Scaffold(
       backgroundColor: LightColors.kLightYellow,
       body: FutureBuilder(
-          future: _commonController.loadData(),
+          future: commonController.loadData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const WaitingWidget();
@@ -58,7 +69,6 @@ class HomeView extends StatelessWidget {
                   children: <Widget>[
                     TopContainer(
                       height: 200,
-                      width: width,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
@@ -143,7 +153,7 @@ class HomeView extends StatelessWidget {
                                       GestureDetector(
                                         onTap: () =>
                                             Get.to(() => const WasteCreate()),
-                                        child: plusIcon(),
+                                        child: HomeView.plusIcon(),
                                       ),
                                     ],
                                   ),

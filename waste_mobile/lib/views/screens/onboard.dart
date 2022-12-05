@@ -11,8 +11,10 @@ class OnBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthController authManager = Get.find();
 
-    return Obx(() {
-      return authManager.isLogged.value ? HomeView() : const LoginView();
-    });
+    return StreamBuilder(
+        stream: authManager.isLogged.stream,
+        builder: ((context, snapshot) => authManager.isLogged.value
+            ? const HomeViewWrapper()
+            : const LoginView()));
   }
 }
