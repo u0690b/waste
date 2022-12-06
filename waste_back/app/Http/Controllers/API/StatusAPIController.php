@@ -41,7 +41,7 @@ class StatusAPIController extends AppBaseController
 
         $statuses = $query->get();
 
-        return $statuses;
+        return   $statuses->toJson(JSON_UNESCAPED_UNICODE);
     }
 
     /**

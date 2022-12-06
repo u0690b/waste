@@ -4,6 +4,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/controllers/common_controller.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
+import 'package:waste_mobile/views/screens/local_waste_list.dart';
 import 'package:waste_mobile/views/screens/splash_screen.dart';
 import 'package:waste_mobile/views/screens/waste_create.dart';
 import 'package:waste_mobile/views/screens/waste_list.dart';
@@ -160,7 +161,8 @@ class _HomeViewState extends State<HomeView> {
                                   const SizedBox(height: 15.0),
                                   GestureDetector(
                                     onTap: () => Get.to(() =>
-                                        const WasteList(title: 'Илгээгээгүй')),
+                                        const LocalWasteList(
+                                            title: 'Илгээгээгүй')),
                                     child: const TaskColumn(
                                       icon: Icons.alarm,
                                       iconBackgroundColor: LightColors.kRed,

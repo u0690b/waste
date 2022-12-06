@@ -3,7 +3,11 @@ import 'package:waste_mobile/models/model.dart';
 
 class Constants {
   static NameModel Function(NameModel, NameModel) combine = (element, value) =>
-      element.updated_at!.compareTo(value.updated_at!) > 0 ? element : value;
+      element.updated_at != null &&
+              value.updated_at != null &&
+              element.updated_at!.compareTo(value.updated_at!) > 0
+          ? element
+          : value;
 
   static List<NameModel>? _places;
   static List<NameModel> get places {
@@ -19,7 +23,7 @@ class Constants {
       return;
     }
 
-    GetStorage().write('places', value);
+    GetStorage().write('places', value.map((e) => e.toJson()).toList());
 
     GetStorage().write(
       '/places_lastDate',
@@ -41,7 +45,7 @@ class Constants {
       return;
     }
 
-    GetStorage().write('reasons', value);
+    GetStorage().write('reasons', value.map((e) => e.toJson()).toList());
     GetStorage().write(
       '/reasons_lastDate',
       value.reduce(combine).updated_at?.toIso8601String(),
@@ -62,7 +66,7 @@ class Constants {
       return;
     }
 
-    GetStorage().write('status', value);
+    GetStorage().write('status', value.map((e) => e.toJson()).toList());
     GetStorage().write(
       '/statuses_lastDate',
       value.reduce(combine).updated_at?.toIso8601String(),
@@ -83,7 +87,7 @@ class Constants {
       return;
     }
 
-    GetStorage().write('aimagCities', value);
+    GetStorage().write('aimagCities', value.map((e) => e.toJson()).toList());
     GetStorage().write(
       '/aimag_cities_lastDate',
       value.reduce(combine).updated_at?.toIso8601String(),
@@ -104,7 +108,7 @@ class Constants {
       return;
     }
 
-    GetStorage().write('soumDistricts', value);
+    GetStorage().write('soumDistricts', value.map((e) => e.toJson()).toList());
     GetStorage().write(
       '/soum_districts_lastDate',
       value.reduce(combine).updated_at?.toIso8601String(),
@@ -125,7 +129,7 @@ class Constants {
       return;
     }
 
-    GetStorage().write('bagHoroos', value);
+    GetStorage().write('bagHoroos', value.map((e) => e.toJson()).toList());
     GetStorage().write(
       '/bag_horoos_lastDate',
       value.reduce(combine).updated_at?.toIso8601String(),

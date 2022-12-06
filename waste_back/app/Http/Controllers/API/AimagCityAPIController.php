@@ -42,7 +42,7 @@ class AimagCityAPIController extends AppBaseController
 
         $aimagCities = $query->get();
 
-        return $aimagCities;
+        return  $aimagCities->toJson(JSON_UNESCAPED_UNICODE);
     }
 
     /**

@@ -40,8 +40,7 @@ class ReasonAPIController extends AppBaseController
         }
 
         $reasons = $query->get();
-
-        return $reasons;
+        return  $reasons->toJson(JSON_UNESCAPED_UNICODE);
     }
 
     /**

@@ -34,13 +34,16 @@ class CommonController with Api {
   Future<List<NameModel>?> loadData() async {
     if (loading.value) return null;
     loading.value = true;
+    await Future.wait([
+      _getQuery('/places').then((value) => Constants.places = value),
+      _getQuery('/reasons').then((value) => Constants.reasons = value),
+      _getQuery('/statuses').then((value) => Constants.status = value),
+      _getQuery('/aimag_cities').then((value) => Constants.aimagCities = value),
+      _getQuery('/soum_districts')
+          .then((value) => Constants.soumDistricts = value),
+      _getQuery('/bag_horoos').then((value) => Constants.bagHoroos = value),
+    ]);
 
-    Constants.places = await _getQuery('/places');
-    Constants.reasons = await _getQuery('/reasons');
-    Constants.status = await _getQuery('/statuses');
-    Constants.aimagCities = await _getQuery('/aimag_cities');
-    Constants.soumDistricts = await _getQuery('/soum_districts');
-    Constants.bagHoroos = await _getQuery('/bag_horoos');
     loading.value = false;
     return datas;
   }

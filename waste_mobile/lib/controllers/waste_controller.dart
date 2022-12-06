@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/models/model.dart';
 import 'package:waste_mobile/models/waste.dart';
+import 'package:waste_mobile/models/waste_model.dart';
 import 'package:waste_mobile/views/widgets/pagination_builder.dart';
 
 class WasteController with Api implements IPaginationModel<Waste> {
@@ -62,5 +64,38 @@ class WasteController with Api implements IPaginationModel<Waste> {
     }
     loading.value = false;
     return null;
+  }
+
+  Future<void> addLocalModels(WasteModel value) async {
+    loading.value = true;
+    await initWasteModel();
+    final localModels =
+        GetStorage('WasteModel').read<List>('LocalWasteModel') ?? [];
+    localModels.insert(0, value.toJson());
+    await GetStorage('WasteModel').write('LocalWasteModel', localModels);
+    loading.value = false;
+  }
+
+  Future<bool> initWasteModel() {
+    return GetStorage.init('WasteModel');
+  }
+
+  List<WasteModel> getLocalModels() {
+    final ret = GetStorage('WasteModel')
+            .read<List>('LocalWasteModel')
+            ?.map((e) => WasteModel.fromJson(e))
+            .toList() ??
+        [];
+    return ret;
+  }
+
+  Future<void> editLocalModels(WasteModel value) async {
+    loading.value = true;
+    await initWasteModel();
+    final localModels =
+        GetStorage('WasteModel').read<List>('LocalWasteModel') ?? [];
+    localModels[value.index!] = value.toJson();
+    await GetStorage('WasteModel').write('LocalWasteModel', localModels);
+    loading.value = false;
   }
 }

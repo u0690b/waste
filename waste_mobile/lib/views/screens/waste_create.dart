@@ -3,6 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:waste_mobile/controllers/auth_controller.dart';
+import 'package:waste_mobile/controllers/waste_controller.dart';
+import 'package:waste_mobile/models/waste_model.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/utils/contants.dart';
 import 'package:waste_mobile/views/widgets/back_button.dart';
@@ -32,34 +35,57 @@ class _WasteCreateState extends State<WasteCreate> {
             style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w700),
           ),
         ),
-        body: const SafeArea(
+        body: SafeArea(
           child: SingleChildScrollView(
-            child: _RegisterForm(),
+            child: WasteRegisterForm(
+              onSave: (value) =>
+                  Get.find<WasteController>().addLocalModels(value),
+            ),
           ),
         ));
   }
 }
 
-class _RegisterForm extends StatefulWidget {
-  const _RegisterForm({
+class WasteRegisterForm extends StatefulWidget {
+  final WasteModel? model;
+  final Future<void> Function(WasteModel value) onSave;
+  const WasteRegisterForm({
     Key? key,
+    this.model,
+    required this.onSave,
   }) : super(key: key);
 
   @override
-  State<_RegisterForm> createState() => _RegisterFormState();
+  State<WasteRegisterForm> createState() => WasteRegisterFormState();
 }
 
-class _RegisterFormState extends State<_RegisterForm> {
+class WasteRegisterFormState extends State<WasteRegisterForm> {
   final _formKey = GlobalKey<FormState>();
   int? aimagCity;
   int? soumDistrict;
   int? bagHoroo;
   double? latitude;
   double? longitude;
-  TextEditingController addressCtr = TextEditingController();
-  TextEditingController descriptionCtr = TextEditingController();
-  final List<Uint8List> _imageFileList = [];
+  String? address;
+  String? description;
+  List<Uint8List> _imageFileList = [];
   Uint8List? _videoFile;
+  @override
+  void initState() {
+    if (widget.model != null) {
+      aimagCity = widget.model!.aimag_city_id;
+      soumDistrict = widget.model!.soum_district_id;
+      bagHoroo = widget.model!.bag_horoo_id;
+      latitude = widget.model!.lat;
+      longitude = widget.model!.long;
+      address = widget.model!.address;
+      description = widget.model!.description;
+      _imageFileList = widget.model!.imageFileList ?? [];
+      _videoFile = widget.model!.videoFile;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var textButton = TextButton(
@@ -225,12 +251,13 @@ class _RegisterFormState extends State<_RegisterForm> {
                 const SizedBox(height: 20),
                 TextFormField(
                   maxLength: 100,
-                  controller: addressCtr,
+                  initialValue: address,
                   validator: (value) {
                     return (value == null || value.isEmpty)
                         ? 'Хаяг тоот хоосон байна'
                         : null;
                   },
+                  onChanged: (value) => address = value,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 15.0),
@@ -248,6 +275,8 @@ class _RegisterFormState extends State<_RegisterForm> {
                         ? 'Тайлбар хоосон байна'
                         : null;
                   },
+                  initialValue: description,
+                  onChanged: (value) => description = value,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 15.0),
@@ -283,9 +312,22 @@ class _RegisterFormState extends State<_RegisterForm> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
                     print('valodate');
+                    final w = WasteModel(
+                      user_id: AuthController.user!.id,
+                      aimag_city_id: aimagCity,
+                      bag_horoo_id: bagHoroo,
+                      soum_district_id: soumDistrict,
+                      address: address,
+                      description: description,
+                      imageFileList: _imageFileList,
+                      videoFile: _videoFile,
+                    );
+
+                    await widget.onSave(w);
+                    Get.back(result: '');
                   }
                 },
                 child: const Text(

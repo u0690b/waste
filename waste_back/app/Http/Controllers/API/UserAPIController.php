@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -41,6 +42,7 @@ class UserAPIController extends AppBaseController
         }
 
         $user->token = $user->createToken('token')->plainTextToken;
-        return $user;
+
+        return  Response::json($user->toArray(), 200, [], JSON_UNESCAPED_SLASHES);
     }
 }

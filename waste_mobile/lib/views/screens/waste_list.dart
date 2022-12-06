@@ -20,7 +20,7 @@ class WasteList extends StatelessWidget {
         title: Text(title),
         actions: [
           IconButton(
-            onPressed: () => Get.to(const WasteCreate()),
+            onPressed: () => Get.to(() => const WasteCreate()),
             icon: const Icon(Icons.create_new_folder_rounded),
           )
         ],
@@ -45,7 +45,7 @@ class WasteList extends StatelessWidget {
                         bottomLeft: Radius.circular(5))),
                 leading: const Icon(Icons.map),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                onTap: () => Get.to(WasteDetails(id: item.id)),
+                onTap: () => Get.to(() => WasteDetails(id: item.id)),
                 dense: false,
                 title: Text(item.fullAddress()),
                 subtitle: Text(item.description),

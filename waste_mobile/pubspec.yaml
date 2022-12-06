@@ -46,6 +46,8 @@ dependencies:
   video_player: ^2.4.8
   location: ^4.4.0
   latlong2: ^0.8.1
+  flutter_slidable: ^2.0.0
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:

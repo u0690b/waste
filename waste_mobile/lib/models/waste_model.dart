@@ -1,9 +1,11 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:flutter/foundation.dart';
 import 'package:waste_mobile/models/model.dart';
 import 'package:waste_mobile/utils/contants.dart';
 
 class WasteModel {
+  int? index;
   double? long;
   double? lat;
   String? description;
@@ -15,6 +17,9 @@ class WasteModel {
   int? bag_horoo_id;
   String? address;
   int? user_id;
+  List<Uint8List>? imageFileList = [];
+  Uint8List? videoFile;
+
   DateTime? created_at;
   DateTime? updated_at;
 
@@ -52,6 +57,8 @@ class WasteModel {
     required this.user_id,
     this.created_at,
     this.updated_at,
+    this.imageFileList,
+    this.videoFile,
   });
 
   Map<String, dynamic> toJson() => {
@@ -66,6 +73,8 @@ class WasteModel {
         'bag_horoo_id': bag_horoo_id,
         'address': address,
         'user_id': user_id,
+        'images': imageFileList?.map((e) => e.toList()).toList() ?? [],
+        'video': videoFile?.toList() ?? [],
         'created_at': created_at,
         'updated_at': updated_at,
       };
@@ -83,8 +92,18 @@ class WasteModel {
       bag_horoo_id: snap['bag_horoo_id'],
       address: snap['address'],
       user_id: snap['user_id'],
-      created_at: DateTime.tryParse(snap['created_at']),
-      updated_at: DateTime.tryParse(snap['updated_at']),
+      imageFileList: snap['images'] != null
+          ? (snap['images'] as List).map((e) {
+              var hah = (e as List<dynamic>).map((v) => v as int).toList();
+              return Uint8List.fromList(hah);
+            }).toList()
+          : [],
+      videoFile: snap['video'] != null && (snap['video'] as List).isNotEmpty
+          ? Uint8List.fromList(
+              (snap['video'] as List).map((e) => e as int).toList())
+          : null,
+      created_at: DateTime.tryParse(snap['created_at'] ?? ''),
+      updated_at: DateTime.tryParse(snap['updated_at'] ?? ''),
     );
   }
 }

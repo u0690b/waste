@@ -6,6 +6,8 @@ namespace App\Http\Controllers\API;
 use App\Models\BagHoroo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Http\JsonResponse;
+use Log;
 use Response;
 
 /**
@@ -40,8 +42,9 @@ class BagHorooAPIController extends AppBaseController
         }
 
         $bagHoroos = $query->get();
-
-        return $bagHoroos;
+        $json = $bagHoroos->toJson(JSON_UNESCAPED_UNICODE);
+        Log::info($json);
+        return  $json;
     }
 
     /**

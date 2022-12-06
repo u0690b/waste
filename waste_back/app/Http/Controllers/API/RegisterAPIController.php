@@ -34,7 +34,7 @@ class RegisterAPIController extends AppBaseController
 
         $registers = $query->cursorPaginate();
 
-        return $registers;
+        return  $registers->toJson(JSON_UNESCAPED_UNICODE);
     }
 
     /**

@@ -41,7 +41,7 @@ class PlaceAPIController extends AppBaseController
 
         $places = $query->get();
 
-        return $places;
+        return   $places->toJson(JSON_UNESCAPED_UNICODE);
     }
 
     /**

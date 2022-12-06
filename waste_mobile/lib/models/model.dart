@@ -1,10 +1,11 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:developer';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/controllers/cache_manager.dart';
@@ -62,13 +63,6 @@ class NameModel {
 }
 
 mixin Api {
-  final api = GetConnect()
-    ..baseUrl = 'http://10.0.2.2:8000/api'
-    ..httpClient.addRequestModifier(<T>(Request<T?> request) {
-      request.headers['Accept'] = 'application/json';
-      return request;
-    });
-
   Future<T?> fetch<T>(
     String path,
     String method, {
@@ -80,25 +74,34 @@ mixin Api {
     void Function(String msg)? onError,
     void Function()? connectionError,
   }) async {
-    final res = await api.request(
-      path,
-      method,
-      body: body,
-      headers: {...(headers ?? {}), ..._hasToken()},
-      query: query,
-      uploadProgress: uploadProgress,
-    );
+    var headersList = {
+      'User-Agent': 'waste_mobile',
+      'Accept': 'application/json',
+      HttpHeaders.contentTypeHeader: 'application/json',
+      ..._hasToken()
+    };
+    var url = Uri.parse('http://10.0.2.2:8000/api$path');
+
+    var req = http.Request(method, url);
+    req.headers.addAll(headersList);
+
+    req.body = body == null ? '' : jsonEncode(body);
+    var res = await req.send();
+    final resBytes = await res.stream.toBytes();
+    final resBody = utf8.decode(resBytes.toList(), allowMalformed: true);
     String text = 'Сервэртэй холбогдоход алдаа гарлаа!';
-    if (res.isOk) {
-      // final user = User.fromJson(res.body);
+    if (res.statusCode >= 200 && res.statusCode < 300) {
+      final body = jsonDecode(resBody);
+
       if (decoder != null) {
-        return decoder(res.body);
+        return decoder(body);
       }
-      return res.body;
+      return body;
     }
-    if (res.unauthorized) {
-      if (res.body is Map<String, dynamic> && res.body.containsKey('message')) {
-        text = res.body['message'];
+    if (res.statusCode == 401) {
+      final body = jsonDecode(resBody);
+      if (body is Map<String, dynamic> && body.containsKey('message')) {
+        text = body['message'];
       }
 
       Get.defaultDialog(
@@ -109,12 +112,12 @@ mixin Api {
             Get.back();
             Get.find<AuthController>().logOut();
           });
-    } else if (res.status.connectionError && connectionError != null) {
-      connectionError();
     } else {
-      log(res.statusText ?? text);
-      if (res.body is Map<String, dynamic> && res.body.containsKey('message')) {
-        text = res.body['message'];
+      print(res.reasonPhrase);
+      final body = jsonDecode(resBody);
+      text = res.reasonPhrase ?? text;
+      if (body is Map<String, dynamic> && body.containsKey('message')) {
+        text = body['message'];
       }
       if (onError != null) {
         onError(text);
@@ -127,6 +130,9 @@ mixin Api {
       }
       return null;
     }
+
+    // connectionError();
+
     return null;
   }
 

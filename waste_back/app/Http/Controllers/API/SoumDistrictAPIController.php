@@ -6,6 +6,7 @@ namespace App\Http\Controllers\API;
 use App\Models\SoumDistrict;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use Log;
 use Response;
 
 /**
@@ -40,8 +41,9 @@ class SoumDistrictAPIController extends AppBaseController
         }
 
         $soumDistricts = $query->get();
-
-        return $soumDistricts;
+        $json = $soumDistricts->toJson(JSON_UNESCAPED_UNICODE);
+        Log::info($json);
+        return  $json;
     }
 
     /**
