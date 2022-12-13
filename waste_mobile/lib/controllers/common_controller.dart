@@ -13,42 +13,37 @@ class CommonController with Api {
 
   final RxList<NameModel> datas = <NameModel>[].obs;
 
-  Future<List<NameModel>?> _getQuery(String path) async {
-    final res = await fetch<List<NameModel>>(
-      path,
-      'get',
-      decoder: (data) {
-        if (kDebugMode) {
-          print(data);
-        }
-        return (data as List).map((v) => NameModel.fromJson(v)).toList();
-      },
-      query: {'date': getUpdateDate(path)},
-      onError: (msg) {
-        log(msg);
-      },
-    );
-    return res;
-  }
-
   Future<List<NameModel>?> loadData() async {
     if (loading.value) return null;
     loading.value = true;
-    await Future.wait([
-      _getQuery('/places').then((value) => Constants.places = value),
-      _getQuery('/reasons').then((value) => Constants.reasons = value),
-      _getQuery('/statuses').then((value) => Constants.status = value),
-      _getQuery('/aimag_cities').then((value) => Constants.aimagCities = value),
-      _getQuery('/soum_districts')
-          .then((value) => Constants.soumDistricts = value),
-      _getQuery('/bag_horoos').then((value) => Constants.bagHoroos = value),
-    ]);
+
+    final res = await fetch(
+      '/commons',
+      'GET',
+      body: {
+        'places_date': GetStorage().read('places_date'),
+        'reasons_date': GetStorage().read('reasons_date'),
+        'statuses_date': GetStorage().read('statuses_date'),
+        'aimag_cities_date': GetStorage().read('aimag_cities_date'),
+        'soum_districts_date': GetStorage().read('soum_districts_date'),
+        'bag_horoos_date': GetStorage().read('bag_horoos_date'),
+      },
+      onError: (msg) {
+        log(msg, level: 1);
+      },
+    );
+    List<NameModel>? decode(dynamic data) {
+      return (data as List).map((v) => NameModel.fromJson(v)).toList();
+    }
+
+    Constants.places = decode(res['places']);
+    Constants.reasons = decode(res['reasons']);
+    Constants.status = decode(res['statuses']);
+    Constants.aimagCities = decode(res['aimag_cities']);
+    Constants.soumDistricts = decode(res['soum_districts']);
+    Constants.bagHoroos = decode(res['bag_horoos']);
 
     loading.value = false;
     return datas;
-  }
-
-  String? getUpdateDate(String q) {
-    return GetStorage().read('${q}_lastDate');
   }
 }

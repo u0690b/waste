@@ -1,6 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:flutter/foundation.dart';
 import 'package:waste_mobile/models/model.dart';
 import 'package:waste_mobile/utils/contants.dart';
 
@@ -8,6 +7,8 @@ class WasteModel {
   int? index;
   double? long;
   double? lat;
+  String? chiglel;
+  String? zuil_zaalt;
   String? description;
   String? resolve_desc;
   int? reason_id;
@@ -18,9 +19,9 @@ class WasteModel {
   String? address;
   int? user_id;
   String? register;
-  String? ner;
-  List<Uint8List>? imageFileList = [];
-  Uint8List? videoFile;
+  String? name;
+  List<List<int>>? imageFileList = [];
+  List<int>? videoFile;
 
   DateTime? created_at;
   DateTime? updated_at;
@@ -48,6 +49,8 @@ class WasteModel {
   WasteModel({
     this.long,
     this.lat,
+    this.chiglel,
+    this.zuil_zaalt,
     this.description,
     this.resolve_desc,
     this.reason_id,
@@ -62,14 +65,16 @@ class WasteModel {
     this.imageFileList,
     this.videoFile,
     this.register,
-    this.ner,
+    this.name,
   });
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson([isLocal = true]) => {
         'long': long,
         'lat': lat,
         'register': register,
-        'ner': ner,
+        'name': name,
+        'chiglel': chiglel,
+        'zuil_zaalt': zuil_zaalt,
         'description': description,
         'resolve_desc': resolve_desc,
         'reason_id': reason_id,
@@ -79,8 +84,8 @@ class WasteModel {
         'bag_horoo_id': bag_horoo_id,
         'address': address,
         'user_id': user_id,
-        'images': imageFileList?.map((e) => e.toList()).toList() ?? [],
-        'video': videoFile?.toList() ?? [],
+        if (isLocal) 'images': imageFileList ?? [],
+        if (isLocal) 'video': videoFile,
         'created_at': created_at,
         'updated_at': updated_at,
       };
@@ -90,7 +95,9 @@ class WasteModel {
       long: double.tryParse(snap['long'].toString()) ?? 0,
       lat: double.tryParse(snap['lat'].toString()) ?? 0,
       register: snap['register'],
-      ner: snap['ner'],
+      name: snap['name'],
+      chiglel: snap['chiglel'],
+      zuil_zaalt: snap['zuil_zaalt'],
       description: snap['description'],
       resolve_desc: snap['resolve_desc'],
       reason_id: snap['reason_id'],
@@ -101,14 +108,12 @@ class WasteModel {
       address: snap['address'],
       user_id: snap['user_id'],
       imageFileList: snap['images'] != null
-          ? (snap['images'] as List).map((e) {
-              var hah = (e as List<dynamic>).map((v) => v as int).toList();
-              return Uint8List.fromList(hah);
-            }).toList()
+          ? (snap['images'] as List)
+              .map((e) => (e as List).map((v) => v as int).toList())
+              .toList()
           : [],
-      videoFile: snap['video'] != null && (snap['video'] as List).isNotEmpty
-          ? Uint8List.fromList(
-              (snap['video'] as List).map((e) => e as int).toList())
+      videoFile: snap['video'] != null
+          ? (snap['video'] as List).map((e) => e as int).toList()
           : null,
       created_at: DateTime.tryParse(snap['created_at'] ?? ''),
       updated_at: DateTime.tryParse(snap['updated_at'] ?? ''),

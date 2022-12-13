@@ -109,12 +109,18 @@ class WasteController with Api implements IPaginationModel<Waste> {
     loading.value = false;
   }
 
-  Future<void> postWaste(Waste model) async {
+  Future<void> postWaste(WasteModel model) async {
     if (loading.value) return;
     loading.value = true;
-
-    final res = await fetch<Iterable<Waste>>('/registers', 'post', body: model);
-
-    loading.value = false;
+    try {
+      final res = await fetchMutiPart('/registers', 'post',
+          body: model.toJson(false),
+          images: model.imageFileList ?? [],
+          video: model.videoFile);
+    } catch (e) {
+      rethrow;
+    } finally {
+      loading.value = false;
+    }
   }
 }

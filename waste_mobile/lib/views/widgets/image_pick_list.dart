@@ -5,8 +5,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
 
 class ImagePickerList extends StatelessWidget {
-  final List<Uint8List> item;
-  final void Function(Uint8List file) onAdd;
+  final List<List<int>> item;
+  final void Function(List<int> file) onAdd;
   final void Function(int index) onDrop;
   final TextButton videoButton;
   const ImagePickerList({
@@ -42,7 +42,7 @@ class ImagePickerList extends StatelessWidget {
                     },
                     onCancel: () => {});
               },
-              child: Image.memory(item[i]),
+              child: Image.memory(Uint8List.fromList(item[i])),
             ),
           if (item.length % 2 == 1) const SizedBox(),
           TextButton(

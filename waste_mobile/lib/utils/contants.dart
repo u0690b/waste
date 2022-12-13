@@ -26,7 +26,7 @@ class Constants {
     GetStorage().write('places', value.map((e) => e.toJson()).toList());
 
     GetStorage().write(
-      '/places_lastDate',
+      'places_date',
       value.reduce(combine).updated_at?.toIso8601String(),
     );
   }
@@ -47,7 +47,7 @@ class Constants {
 
     GetStorage().write('reasons', value.map((e) => e.toJson()).toList());
     GetStorage().write(
-      '/reasons_lastDate',
+      'reasons_date',
       value.reduce(combine).updated_at?.toIso8601String(),
     );
   }
@@ -68,7 +68,7 @@ class Constants {
 
     GetStorage().write('status', value.map((e) => e.toJson()).toList());
     GetStorage().write(
-      '/statuses_lastDate',
+      'statuses_date',
       value.reduce(combine).updated_at?.toIso8601String(),
     );
   }
@@ -89,7 +89,7 @@ class Constants {
 
     GetStorage().write('aimagCities', value.map((e) => e.toJson()).toList());
     GetStorage().write(
-      '/aimag_cities_lastDate',
+      'aimag_cities_date',
       value.reduce(combine).updated_at?.toIso8601String(),
     );
   }
@@ -110,7 +110,7 @@ class Constants {
 
     GetStorage().write('soumDistricts', value.map((e) => e.toJson()).toList());
     GetStorage().write(
-      '/soum_districts_lastDate',
+      'soum_districts_date',
       value.reduce(combine).updated_at?.toIso8601String(),
     );
   }
@@ -131,7 +131,7 @@ class Constants {
 
     GetStorage().write('bagHoroos', value.map((e) => e.toJson()).toList());
     GetStorage().write(
-      '/bag_horoos_lastDate',
+      'bag_horoos_date',
       value.reduce(combine).updated_at?.toIso8601String(),
     );
   }

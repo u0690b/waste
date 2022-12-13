@@ -136,6 +136,99 @@ mixin Api {
     return null;
   }
 
+  Future<T?> fetchMutiPart<T>(
+    String path,
+    String method, {
+    required dynamic body,
+    Map<String, String>? headers,
+    Map<String, dynamic>? query,
+    Decoder<T>? decoder,
+    required List<List<int>> images,
+    List<int>? video,
+    Progress? uploadProgress,
+    void Function(String msg)? onError,
+    void Function()? connectionError,
+  }) async {
+    var headersList = {
+      'User-Agent': 'waste_mobile',
+      'Accept': 'application/json',
+      HttpHeaders.contentTypeHeader: 'application/json',
+      ..._hasToken()
+    };
+    var url = Uri.parse('http://10.0.2.2:8000/api$path');
+
+    var req = http.MultipartRequest(method, url);
+    req.headers.addAll(headersList);
+    if (body is! Map) {
+      body = jsonDecode(body);
+    }
+    body.forEach((key, val) {
+      if (val != null) {
+        if (val is List) {
+          for (int i = 0; i < val.length; i++) {
+            req.fields['$key[$i]'] = val[i].toString();
+          }
+        } else {
+          req.fields[key] = val.toString();
+        }
+      }
+    });
+    for (var element in images) {
+      req.files.add(http.MultipartFile.fromBytes('images', element));
+    }
+    if (video != null) {
+      req.files.add(http.MultipartFile.fromBytes('images', video));
+    }
+    var res = await req.send();
+    final resBytes = await res.stream.toBytes();
+    final resBody = utf8.decode(resBytes.toList(), allowMalformed: true);
+    String text = 'Сервэртэй холбогдоход алдаа гарлаа!';
+    if (res.statusCode >= 200 && res.statusCode < 300) {
+      final body = jsonDecode(resBody);
+
+      if (decoder != null) {
+        return decoder(body);
+      }
+      return body;
+    }
+    if (res.statusCode == 401) {
+      final body = jsonDecode(resBody);
+      if (body is Map<String, dynamic> && body.containsKey('message')) {
+        text = body['message'];
+      }
+
+      Get.defaultDialog(
+          middleText: text,
+          textConfirm: 'OK',
+          confirmTextColor: Colors.white,
+          onConfirm: () {
+            Get.back();
+            Get.find<AuthController>().logOut();
+          });
+    } else {
+      print(res.reasonPhrase);
+      final body = jsonDecode(resBody);
+      text = res.reasonPhrase ?? text;
+      if (body is Map<String, dynamic> && body.containsKey('message')) {
+        text = body['message'];
+      }
+      if (onError != null) {
+        onError(text);
+      } else {
+        Get.defaultDialog(
+            middleText: text,
+            textConfirm: 'OK',
+            confirmTextColor: Colors.white,
+            onConfirm: Get.back);
+      }
+      return null;
+    }
+
+    // connectionError();
+
+    return null;
+  }
+
   Map<String, String> _hasToken() {
     final token = GetStorage().read<String>(CacheManagerKey.TOKEN.toString());
     if (token == null) {

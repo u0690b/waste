@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
@@ -61,6 +60,8 @@ class WasteRegisterForm extends StatefulWidget {
 
 class WasteRegisterFormState extends State<WasteRegisterForm> {
   final _formKey = GlobalKey<FormState>();
+  String? ner;
+  String? register;
   int? aimagCity;
   int? soumDistrict;
   int? bagHoroo;
@@ -68,10 +69,11 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
   double? longitude;
   String? address;
   String? description;
-  String? register;
-  String? ner;
-  List<Uint8List> _imageFileList = [];
-  Uint8List? _videoFile;
+  String? chiglel;
+  String? zuil_zaalt;
+  int? reason;
+  List<List<int>> _imageFileList = [];
+  List<int>? _videoFile;
   @override
   void initState() {
     if (widget.model != null) {
@@ -84,6 +86,15 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
       description = widget.model!.description;
       _imageFileList = widget.model!.imageFileList ?? [];
       _videoFile = widget.model!.videoFile;
+      ner = widget.model!.name;
+      register = widget.model!.register;
+      chiglel = widget.model!.chiglel;
+      zuil_zaalt = widget.model!.zuil_zaalt;
+      reason = widget.model!.reason_id;
+    } else {
+      aimagCity = AuthController.user?.aimag_city_id;
+      soumDistrict = AuthController.user?.soum_district_id;
+      bagHoroo = AuthController.user?.bag_horoo_id;
     }
     super.initState();
   }
@@ -120,7 +131,8 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                                 source: ImageSource.camera,
                                 maxDuration: const Duration(minutes: 3),
                               );
-                              _videoFile = await video?.readAsBytes();
+                              _videoFile =
+                                  (await video?.readAsBytes())?.toList();
                               setState(() {});
                               Get.back();
                             },
@@ -132,7 +144,8 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                                 source: ImageSource.gallery,
                                 maxDuration: const Duration(minutes: 3),
                               );
-                              _videoFile = await video?.readAsBytes();
+                              _videoFile =
+                                  (await video?.readAsBytes())?.toList();
                               setState(() {});
                               Get.back();
                             },
@@ -174,6 +187,64 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                //Албан байгууллага, Иргэний овог нэр:
+                TextFormField(
+                  maxLength: 100,
+                  initialValue: ner,
+                  validator: (value) {
+                    return (value == null || value.isEmpty)
+                        ? 'Нэр хоосон байна'
+                        : null;
+                  },
+                  onChanged: (value) => ner = value,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 15.0),
+                    labelText: 'Албан байгууллага, Иргэний овог нэр:',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // Албан байгууллага, Иргэний  регистр:
+                TextFormField(
+                  maxLength: 15,
+                  initialValue: register,
+                  onChanged: (value) => register = value,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 15.0),
+                    labelText: 'Байгууллага, ААН, Иргэний Овог регистр:',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // Үйл Ажиллагааны чиглэл
+                TextFormField(
+                  maxLength: 100,
+                  validator: (value) {
+                    return (value == null || value.isEmpty)
+                        ? 'Үйл Ажиллагааны чиглэл хоосон байна'
+                        : null;
+                  },
+                  initialValue: zuil_zaalt,
+                  onChanged: (value) => zuil_zaalt = value,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 15.0),
+                    labelText: 'Үйл Ажиллагааны чиглэл:',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  minLines: 1,
+                  maxLines: 10,
+                ),
+                const SizedBox(height: 20),
+                // Аймаг,Нийслэл:
                 DropdownButtonFormField(
                     validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
                     value: aimagCity,
@@ -198,6 +269,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                       });
                     }),
                 const SizedBox(height: 20),
+                //  Сум,Дүүрэг
                 DropdownButtonFormField(
                   validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
                   decoration: InputDecoration(
@@ -225,6 +297,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                   },
                 ),
                 const SizedBox(height: 20),
+                // Баг,Хороо:
                 DropdownButtonFormField(
                   validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
                   decoration: InputDecoration(
@@ -251,63 +324,32 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                   },
                 ),
                 const SizedBox(height: 20),
+                // Хаяг тоот, утас
                 TextFormField(
                   maxLength: 100,
                   initialValue: address,
                   validator: (value) {
                     return (value == null || value.isEmpty)
-                        ? 'Хаяг тоот хоосон байна'
+                        ? 'Хаяг тоот, утас хоосон байна'
                         : null;
                   },
                   onChanged: (value) => address = value,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 15.0),
-                    labelText: 'Хаяг тоот:',
+                    labelText: 'Хаяг тоот, утас:',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
+                // Гаргасан зөрчилийн байдал:
                 TextFormField(
-                  maxLength: 15,
-                  initialValue: register,
-                  onChanged: (value) => register = value,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    labelText: 'Албан байгууллага, Иргэний регистр:',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  maxLength: 100,
-                  initialValue: address,
+                  maxLength: 1000,
                   validator: (value) {
                     return (value == null || value.isEmpty)
-                        ? 'Нэр хоосон байна'
-                        : null;
-                  },
-                  onChanged: (value) => address = value,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    labelText: 'Албан байгууллага, Иргэний нэр:',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  maxLength: 500,
-                  validator: (value) {
-                    return (value == null || value.isEmpty)
-                        ? 'Тайлбар хоосон байна'
+                        ? 'Гаргасан зөрчилийн байдал'
                         : null;
                   },
                   initialValue: description,
@@ -315,7 +357,52 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 15.0),
-                    labelText: 'Тайлбар:',
+                    labelText: 'Гаргасан зөрчилийн байдал:',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                  minLines: 3,
+                  maxLines: 10,
+                ),
+                const SizedBox(height: 20),
+                // Зөрчилийн Төрөл:
+                DropdownButtonFormField(
+                    validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
+                    value: reason,
+                    decoration: InputDecoration(
+                      labelText: "Зөрчилийн Төрөл:",
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 15.0),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                    ),
+                    items: Constants.reasons
+                        .map((e) => DropdownMenuItem(
+                              value: e.id,
+                              child: Text(e.name),
+                            ))
+                        .toList(),
+                    onChanged: (int? value) {
+                      setState(() {
+                        reason = value;
+                      });
+                    }),
+                const SizedBox(height: 20),
+                // Зөрчсөн хууль тогтоомжийн зүйл, заалт
+                TextFormField(
+                  maxLength: 500,
+                  validator: (value) {
+                    return (value == null || value.isEmpty)
+                        ? 'Зөрчсөн хууль тогтоомжийн зүйл, заалт хоосон байна'
+                        : null;
+                  },
+                  initialValue: chiglel,
+                  onChanged: (value) => chiglel = value,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 15.0),
+                    labelText: 'Зөрчсөн хууль тогтоомжийн зүйл, заалт:',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -326,7 +413,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                 const SizedBox(height: 20),
                 ImagePickerList(
                   item: _imageFileList,
-                  onAdd: (Uint8List file) {
+                  onAdd: (List<int> file) {
                     setState(() {
                       _imageFileList.add(file);
                     });
@@ -360,7 +447,10 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                       imageFileList: _imageFileList,
                       videoFile: _videoFile,
                       register: register,
-                      ner: ner,
+                      name: ner,
+                      chiglel: chiglel,
+                      zuil_zaalt: zuil_zaalt,
+                      reason_id: reason,
                     );
 
                     await widget.onSave(w);

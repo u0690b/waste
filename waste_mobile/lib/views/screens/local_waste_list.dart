@@ -76,6 +76,7 @@ class _LocalWasteListState extends State<LocalWasteList> {
                                   SlidableAction(
                                     onPressed: (BuildContext context) {
                                       print('send $index');
+                                      wasteController.postWaste(item);
                                     },
                                     backgroundColor: const Color(0xFF0392CF),
                                     foregroundColor: Colors.white,

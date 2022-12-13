@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CommonController;
 use App\Http\Controllers\API\UserAPIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('aimag_cities', App\Http\Controllers\API\AimagCityAPIController::class);
     Route::resource('soum_districts', App\Http\Controllers\API\SoumDistrictAPIController::class);
     Route::resource('users', App\Http\Controllers\API\UserAPIController::class);
+    Route::get('/commons', [CommonController::class, 'index'])->name('commons.index');
 });
 
 

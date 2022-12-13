@@ -43,7 +43,7 @@ class Register extends Model
     use HasFactory;
 
     public $table = 'registers';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -113,9 +113,8 @@ class Register extends Model
         'resolve_desc' => 'nullable|string|max:2000',
         'long' => 'required|numeric',
         'lat' => 'required|numeric',
-        'reg_user_id' => 'required',
         'comf_user_id' => 'nullable',
-        'status_id' => 'required',
+
         'created_at' => 'nullable',
         'updated_at' => 'nullable'
     ];
@@ -207,10 +206,10 @@ class Register extends Model
     ];
 
     /**
-    * Filter Model
-    * @param Array $filters
-    * @return App\Models\Register
-    */
+     * Filter Model
+     * @param Array $filters
+     * @return App\Models\Register
+     */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
