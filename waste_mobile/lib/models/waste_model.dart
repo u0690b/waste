@@ -17,6 +17,8 @@ class WasteModel {
   int? bag_horoo_id;
   String? address;
   int? user_id;
+  String? register;
+  String? ner;
   List<Uint8List>? imageFileList = [];
   Uint8List? videoFile;
 
@@ -59,11 +61,15 @@ class WasteModel {
     this.updated_at,
     this.imageFileList,
     this.videoFile,
+    this.register,
+    this.ner,
   });
 
   Map<String, dynamic> toJson() => {
         'long': long,
         'lat': lat,
+        'register': register,
+        'ner': ner,
         'description': description,
         'resolve_desc': resolve_desc,
         'reason_id': reason_id,
@@ -83,6 +89,8 @@ class WasteModel {
     return WasteModel(
       long: double.tryParse(snap['long'].toString()) ?? 0,
       lat: double.tryParse(snap['lat'].toString()) ?? 0,
+      register: snap['register'],
+      ner: snap['ner'],
       description: snap['description'],
       resolve_desc: snap['resolve_desc'],
       reason_id: snap['reason_id'],

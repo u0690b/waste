@@ -68,6 +68,8 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
   double? longitude;
   String? address;
   String? description;
+  String? register;
+  String? ner;
   List<Uint8List> _imageFileList = [];
   Uint8List? _videoFile;
   @override
@@ -269,6 +271,39 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
+                  maxLength: 15,
+                  initialValue: register,
+                  onChanged: (value) => register = value,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 15.0),
+                    labelText: 'Албан байгууллага, Иргэний регистр:',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  maxLength: 100,
+                  initialValue: address,
+                  validator: (value) {
+                    return (value == null || value.isEmpty)
+                        ? 'Нэр хоосон байна'
+                        : null;
+                  },
+                  onChanged: (value) => address = value,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 15.0),
+                    labelText: 'Албан байгууллага, Иргэний нэр:',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
                   maxLength: 500,
                   validator: (value) {
                     return (value == null || value.isEmpty)
@@ -324,6 +359,8 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                       description: description,
                       imageFileList: _imageFileList,
                       videoFile: _videoFile,
+                      register: register,
+                      ner: ner,
                     );
 
                     await widget.onSave(w);

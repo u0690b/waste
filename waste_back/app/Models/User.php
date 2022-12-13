@@ -67,6 +67,7 @@ class User extends Authenticatable
     public $fillable = [
         'name',
         'username',
+        'phone',
         'password',
         'aimag_city_id',
         'soum_district_id',
@@ -94,6 +95,7 @@ class User extends Authenticatable
     protected $casts = [
         'id' => 'integer',
         'name' => 'string',
+        'phone' => 'string',
         'username' => 'string',
         'aimag_city_id' => 'integer',
         'soum_district_id' => 'integer',
@@ -109,6 +111,7 @@ class User extends Authenticatable
     public static $rules = [
         'name' => 'required|string|max:255',
         'username' => 'required|string|max:255',
+        'phone' => 'required|string|max:12',
         'password' => 'required|string|max:255',
         'aimag_city_id' => 'required',
         'soum_district_id' => 'required',
@@ -164,6 +167,7 @@ class User extends Authenticatable
     public static $searchIn = [
         'name',
         'username',
+        'phone',
         'aimag_city_id',
         'soum_district_id',
         'bag_horoo_id',

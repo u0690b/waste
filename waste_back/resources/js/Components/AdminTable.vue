@@ -1,6 +1,6 @@
 <template>
-  <div class="overflow-x-auto max-w-[calc(100vw-250px)] ">
-    <table class="w-full text-sm whitespace-no-wrap">
+  <div class="overflow-x-auto">
+    <table class="w-full text-xs whitespace-no-wrap">
       <tr class="font-bold text-left">
         <th class="pl-2">№</th>
         <th v-for="header, i in Object.values(headers)" :key="i" class="px-2 pt-2 pb-1" @click="$emit('orderBy', i)">{{
@@ -18,7 +18,7 @@
       </tr>
       <tr v-if="datas.length === 0">
         <td class="px-6 py-4 border-t" colspan="4">
-          No Common Types found.
+          Мэдээлэл байхгүй
         </td>
       </tr>
     </table>

@@ -2,6 +2,7 @@
     package="com.example.waste_mobile">
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:label="waste_mobile"
         android:name="${applicationName}"

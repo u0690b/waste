@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:location/location.dart';
 import 'package:waste_mobile/views/widgets/top_container.dart';
 import 'package:waste_mobile/views/widgets/zoombuttons_plugin_option.dart';
 
@@ -22,12 +21,8 @@ class LocationMap extends StatefulWidget {
 }
 
 class _LocationMapState extends State<LocationMap> {
-  final Location _locationService = Location();
-  LocationData? _currentLocation;
-  bool _liveUpdate = false;
-  bool _permission = false;
+  Position? _currentLocation;
   late final MapController _mapController;
-  String? _serviceError;
   int interActiveFlags = InteractiveFlag.all;
 
   final pointSize = 20.0;
@@ -42,66 +37,52 @@ class _LocationMapState extends State<LocationMap> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       updatePoint(null, context);
     });
-    initLocationService();
+    _determinePosition();
   }
 
-  void initLocationService() async {
-    _liveUpdate = true;
-    await _locationService.changeSettings(
-      accuracy: LocationAccuracy.high,
-      interval: 1000,
-    );
-    LocationData? currentLocation;
-    LocationData? location;
+  Future<Position> _determinePosition() async {
     bool serviceEnabled;
-    bool serviceRequestResult;
+    LocationPermission permission;
 
-    try {
-      serviceEnabled = await _locationService.serviceEnabled();
-
-      if (serviceEnabled) {
-        final permission = await _locationService.requestPermission();
-        _permission = permission == PermissionStatus.granted;
-
-        if (_permission) {
-          location = await _locationService.getLocation();
-          currentLocation = location;
-          _locationService.onLocationChanged
-              .listen((LocationData result) async {
-            if (mounted) {
-              setState(() {
-                currentLocation = result;
-
-                // If Live Update is enabled, move map center
-                if (_liveUpdate) {
-                  _mapController.move(
-                      LatLng(currentLocation!.latitude!,
-                          currentLocation!.longitude!),
-                      _mapController.zoom);
-                  _liveUpdate = false;
-                }
-              });
-            }
-          });
-        }
-      } else {
-        serviceRequestResult = await _locationService.requestService();
-        if (serviceRequestResult) {
-          initLocationService();
-          return;
-        }
-      }
-      _serviceError = null;
-    } on PlatformException catch (e) {
-      debugPrint(e.toString());
-      if (e.code == 'PERMISSION_DENIED') {
-        _serviceError = e.message;
-      } else if (e.code == 'SERVICE_STATUS_ERROR') {
-        _serviceError = e.message;
-      }
-      _serviceError = e.message;
-      location = null;
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
     }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    final ss = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      _currentLocation = ss;
+      _mapController.move(
+          LatLng(_currentLocation!.latitude, _currentLocation!.longitude),
+          _mapController.zoom);
+    });
+    return ss;
   }
 
   void updatePoint(MapEvent? event, BuildContext context) {
@@ -124,7 +105,7 @@ class _LocationMapState extends State<LocationMap> {
 
     if (_currentLocation != null) {
       currentLatLng =
-          LatLng(_currentLocation!.latitude!, _currentLocation!.longitude!);
+          LatLng(_currentLocation!.latitude, _currentLocation!.longitude);
     } else {
       currentLatLng = LatLng(
         widget.latitude ?? 47.9173283,
@@ -186,7 +167,7 @@ class _LocationMapState extends State<LocationMap> {
               heroTag: 'cancel',
               mini: true,
               child: const Icon(Icons.my_location),
-              onPressed: () => initLocationService(),
+              onPressed: () => _determinePosition(),
             ),
           ),
         ],

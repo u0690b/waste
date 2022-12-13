@@ -89,6 +89,16 @@ class WasteController with Api implements IPaginationModel<Waste> {
     return ret;
   }
 
+  Future<void> deleteLocalModels(int index) async {
+    loading.value = true;
+    await initWasteModel();
+    final localModels =
+        GetStorage('WasteModel').read<List>('LocalWasteModel') ?? [];
+    localModels.removeAt(index);
+    await GetStorage('WasteModel').write('LocalWasteModel', localModels);
+    loading.value = false;
+  }
+
   Future<void> editLocalModels(WasteModel value) async {
     loading.value = true;
     await initWasteModel();
@@ -96,6 +106,15 @@ class WasteController with Api implements IPaginationModel<Waste> {
         GetStorage('WasteModel').read<List>('LocalWasteModel') ?? [];
     localModels[value.index!] = value.toJson();
     await GetStorage('WasteModel').write('LocalWasteModel', localModels);
+    loading.value = false;
+  }
+
+  Future<void> postWaste(Waste model) async {
+    if (loading.value) return;
+    loading.value = true;
+
+    final res = await fetch<Iterable<Waste>>('/registers', 'post', body: model);
+
     loading.value = false;
   }
 }

@@ -76,7 +76,9 @@ export default {
       }),
       roles: [
         { id: 'admin', name: 'admin' },
-        { id: 'register', name: 'Бүртгэгч' },
+        { id: 'dt', name: 'Дүүргийн төлөөлөгч' },
+        { id: 'onb', name: 'Олон нийтийн байцаагч' },
+        { id: 'mh', name: 'МХЕГ' },
       ]
     }
   },

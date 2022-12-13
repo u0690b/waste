@@ -8,12 +8,12 @@
       <template v-if="required" #search="{ attributes, events }">
         <input class="vs__search" :required="!selected" v-bind="attributes" autocomplete="off" v-on="events" />
       </template>
-      <slot />
+      <slot></slot>
       <template #no-options>
         <div class="p-2 text-red-500 text-bold"><span class="font-bold text-black">Мэдээлэл байхгүй байна</span></div>
       </template>
       <template v-if="$slots.option" #option="op">
-        <slot name="option" v-bind="op" />
+        <slot name="option" v-bind="op"></slot>
       </template>
     </v-select>
     <div v-if="error" class="text-sm text-red-500">

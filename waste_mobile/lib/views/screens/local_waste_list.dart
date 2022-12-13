@@ -61,6 +61,7 @@ class _LocalWasteListState extends State<LocalWasteList> {
                                   SlidableAction(
                                     onPressed: (BuildContext context) {
                                       print('delete $index');
+                                      wasteController.deleteLocalModels(index);
                                     },
                                     backgroundColor: const Color(0xFFFE4A49),
                                     foregroundColor: Colors.white,

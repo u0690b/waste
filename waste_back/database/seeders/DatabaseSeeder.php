@@ -34,8 +34,12 @@ class DatabaseSeeder extends Seeder
         Place::create(['id' => 1, 'name' => 'Захирагчийн ажлын алба']);
         Place::create(['id' => 2, 'name' => 'Мэргэжлийн хяналтын ерөнхий газар']);
 
-        Reason::create(['name' => 'Хог хаягдал', 'place_id' => 1]);
-        Reason::create(['name' => 'Хор хөнөөлт хог хаягдал', 'place_id' => 2]);
+        Reason::create(['name' => 'Аюултай хог хаягдал -> МХЕГ', 'place_id' => 2]);
+        Reason::create(['name' => 'Эмнэлгийн хог хаягдал -> МХЕГ', 'place_id' => 2]);
+        Reason::create(['name' => 'Барилгийн хог хаягдал -> МХЕГ', 'place_id' => 2]);
+        Reason::create(['name' => 'Бусад -> ЗАА', 'place_id' => 1]);
+
+
 
         Status::create(['name' => 'Бүртгэсэн']);
         Status::create(['name' => 'Илгээсэн']);
@@ -47,12 +51,14 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'username' => 'admin',
             'name' => 'Админ',
+            'phone' => '9999-9999',
             'roles' => 'admin'
         ]);
         \App\Models\User::factory()->create([
             'username' => 'test',
             'name' => 'Зочин',
-            'roles' => 'admin'
+            'phone' => '8888-8888',
+            'roles' => 'pi'
         ]);
     }
 }

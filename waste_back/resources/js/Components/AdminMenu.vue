@@ -60,6 +60,9 @@
       class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
       <span class="text-gray-700">Users Models</span>
     </inertia-link>
+    <inertia-link :href="route('admin.registers.index')" :class="{'bg-gray-200':isUrl('admin.registers.index')}" class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
+      <span class="text-gray-700">Registers</span>
+    </inertia-link>
   </div>
 </template>
 

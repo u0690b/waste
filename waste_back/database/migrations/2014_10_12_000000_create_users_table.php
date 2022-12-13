@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('aimag_city_id')->constrained('aimag_cities');
             $table->foreignId('soum_district_id')->constrained('soum_districts');
             $table->foreignId('bag_horoo_id')->constrained('bag_horoos');
+            $table->string('phone');
             $table->json('roles');
             $table->rememberToken();
             $table->timestamps();

@@ -9,54 +9,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Register
- *
  * @package App\Models
- * @version November 24, 2022, 7:41 pm UTC
+ * @version December 13, 2022, 5:49 am UTC
+ *
  * @property \App\Models\AimagCity $aimagCity
  * @property \App\Models\BagHoroo $bagHoroo
+ * @property \App\Models\User $comfUser
  * @property \App\Models\Reason $reason
+ * @property \App\Models\User $regUser
  * @property \App\Models\SoumDistrict $soumDistrict
  * @property \App\Models\Status $status
- * @property \App\Models\User $user
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
- * @property number $long
- * @property number $lat
- * @property string $description
- * @property string $resolve_desc
- * @property integer $reason_id
- * @property integer $status_id
+ * @property string $name
+ * @property string $register
+ * @property string $chiglel
  * @property integer $aimag_city_id
  * @property integer $soum_district_id
  * @property integer $bag_horoo_id
  * @property string $address
- * @property integer $user_id
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\AimagCity $aimag_city
- * @property-read \App\Models\BagHoroo $bag_horoo
- * @property-read int|null $register_histories_count
- * @property-read \App\Models\SoumDistrict $soum_district
- * @method static \Database\Factories\RegisterFactory factory(...$parameters)
- * @method static Builder|Register filter(array $filters)
- * @method static Builder|Register newModelQuery()
- * @method static Builder|Register newQuery()
- * @method static Builder|Register query()
- * @method static Builder|Register whereAddress($value)
- * @method static Builder|Register whereAimagCityId($value)
- * @method static Builder|Register whereBagHorooId($value)
- * @method static Builder|Register whereCreatedAt($value)
- * @method static Builder|Register whereDescription($value)
- * @method static Builder|Register whereId($value)
- * @method static Builder|Register whereLat($value)
- * @method static Builder|Register whereLong($value)
- * @method static Builder|Register whereReasonId($value)
- * @method static Builder|Register whereResolveDesc($value)
- * @method static Builder|Register whereSoumDistrictId($value)
- * @method static Builder|Register whereStatusId($value)
- * @method static Builder|Register whereUpdatedAt($value)
- * @method static Builder|Register whereUserId($value)
- * @mixin \Eloquent
+ * @property string $description
+ * @property integer $reason_id
+ * @property string $zuil_zaalt
+ * @property string $resolve_desc
+ * @property number $long
+ * @property number $lat
+ * @property integer $reg_user_id
+ * @property integer $comf_user_id
+ * @property integer $status_id
  */
 class Register extends Model
 {
@@ -64,7 +43,7 @@ class Register extends Model
     use HasFactory;
 
     public $table = 'registers';
-
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -72,17 +51,22 @@ class Register extends Model
 
 
     public $fillable = [
-        'long',
-        'lat',
-        'description',
-        'resolve_desc',
-        'reason_id',
-        'status_id',
+        'name',
+        'register',
+        'chiglel',
         'aimag_city_id',
         'soum_district_id',
         'bag_horoo_id',
         'address',
-        'user_id'
+        'description',
+        'reason_id',
+        'zuil_zaalt',
+        'resolve_desc',
+        'long',
+        'lat',
+        'reg_user_id',
+        'comf_user_id',
+        'status_id'
     ];
 
     /**
@@ -92,17 +76,22 @@ class Register extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'long' => 'float',
-        'lat' => 'float',
-        'description' => 'string',
-        'resolve_desc' => 'string',
-        'reason_id' => 'integer',
-        'status_id' => 'integer',
+        'name' => 'string',
+        'register' => 'string',
+        'chiglel' => 'string',
         'aimag_city_id' => 'integer',
         'soum_district_id' => 'integer',
         'bag_horoo_id' => 'integer',
         'address' => 'string',
-        'user_id' => 'integer'
+        'description' => 'string',
+        'reason_id' => 'integer',
+        'zuil_zaalt' => 'string',
+        'resolve_desc' => 'string',
+        'long' => 'float',
+        'lat' => 'float',
+        'reg_user_id' => 'integer',
+        'comf_user_id' => 'integer',
+        'status_id' => 'integer'
     ];
 
     /**
@@ -111,17 +100,22 @@ class Register extends Model
      * @var array
      */
     public static $rules = [
-        'long' => 'required|numeric',
-        'lat' => 'required|numeric',
-        'description' => 'required|string|max:255',
-        'resolve_desc' => 'string|max:255',
-        'reason_id' => 'required',
-        'status_id' => 'required',
+        'name' => 'required|string|max:255',
+        'register' => 'nullable|string|max:255',
+        'chiglel' => 'nullable|string|max:255',
         'aimag_city_id' => 'required',
         'soum_district_id' => 'required',
         'bag_horoo_id' => 'required',
-        'address' => 'nullable|string|max:255',
-        'user_id' => 'required',
+        'address' => 'nullable|string|max:500',
+        'description' => 'required|string|max:2000',
+        'reason_id' => 'required',
+        'zuil_zaalt' => 'nullable|string|max:1000',
+        'resolve_desc' => 'nullable|string|max:2000',
+        'long' => 'required|numeric',
+        'lat' => 'required|numeric',
+        'reg_user_id' => 'required',
+        'comf_user_id' => 'nullable',
+        'status_id' => 'required',
         'created_at' => 'nullable',
         'updated_at' => 'nullable'
     ];
@@ -145,9 +139,25 @@ class Register extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
+    public function comf_user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'comf_user_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
     public function reason()
     {
         return $this->belongsTo(\App\Models\Reason::class, 'reason_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function reg_user()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'reg_user_id');
     }
 
     /**
@@ -167,14 +177,6 @@ class Register extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
-    public function user()
-    {
-        return $this->belongsTo(\App\Models\User::class, 'user_id');
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
     public function registerHistories()
@@ -186,24 +188,29 @@ class Register extends Model
      * @var array
      */
     public static $searchIn = [
-        'long',
-        'lat',
-        'description',
-        'resolve_desc',
-        'reason_id',
-        'status_id',
+        'name',
+        'register',
+        'chiglel',
         'aimag_city_id',
         'soum_district_id',
         'bag_horoo_id',
         'address',
-        'user_id'
+        'description',
+        'reason_id',
+        'zuil_zaalt',
+        'resolve_desc',
+        'long',
+        'lat',
+        'reg_user_id',
+        'comf_user_id',
+        'status_id'
     ];
 
     /**
-     * Filter Model
-     * @param Array $filters
-     * @return App\Models\Register
-     */
+    * Filter Model
+    * @param Array $filters
+    * @return App\Models\Register
+    */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {

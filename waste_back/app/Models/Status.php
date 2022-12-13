@@ -31,13 +31,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|Status whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+
+
 class Status extends Model
 {
 
     use HasFactory;
 
     public $table = 'statuses';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -93,10 +95,10 @@ class Status extends Model
     ];
 
     /**
-    * Filter Model
-    * @param Array $filters
-    * @return App\Models\Status
-    */
+     * Filter Model
+     * @param Array $filters
+     * @return App\Models\Status
+     */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {

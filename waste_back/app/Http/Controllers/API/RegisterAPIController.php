@@ -23,7 +23,7 @@ class RegisterAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = Register::filter($request->all(["search", ...Register::$searchIn]))->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('reason:id,name')->with('soum_district:id,name')->with('status:id,name')->with('user:id,name');
+        $query = Register::filter( $request->all(["search", ...Register::$searchIn]))->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('comf_user:id,name')->with('reason:id,name')->with('reg_user:id,name')->with('soum_district:id,name')->with('status:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -32,9 +32,9 @@ class RegisterAPIController extends AppBaseController
             $query->limit($request->get('limit'));
         }
 
-        $registers = $query->cursorPaginate();
+        $registers = $query->get();
 
-        return  $registers->toJson(JSON_UNESCAPED_UNICODE);
+        return $registers->toJson();
     }
 
     /**
@@ -50,7 +50,7 @@ class RegisterAPIController extends AppBaseController
         /** @var Register $register */
         $register = Register::create($input);
 
-        return $register;
+        return $register->toJson();
     }
 
     /**
@@ -65,12 +65,12 @@ class RegisterAPIController extends AppBaseController
     {
         /** @var Register $register */
         $register = Register::find($id);
-        $register->load('aimag_city:id,name')->load('bag_horoo:id,name')->load('reason:id,name')->load('soum_district:id,name')->load('status:id,name')->load('user:id,name');
+
         if (empty($register)) {
             return $this->sendError('Register not found');
         }
 
-        return $register;
+        return $register->toJson();
     }
 
     /**
@@ -94,7 +94,7 @@ class RegisterAPIController extends AppBaseController
         $register->fill($input);
         $register->save();
 
-        return $register;
+        return $register->toJson();
     }
 
     /**

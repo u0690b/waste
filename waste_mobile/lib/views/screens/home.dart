@@ -105,29 +105,37 @@ class _HomeViewState extends State<HomeView> {
                                           Icon(Icons.account_circle, size: 70),
                                     ),
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        AuthController.user?.name ?? '',
-                                        textAlign: TextAlign.start,
-                                        style: const TextStyle(
-                                          fontSize: 22.0,
-                                          color: LightColors.kDarkBlue,
-                                          fontWeight: FontWeight.w800,
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          softWrap: true,
+                                          maxLines: 2,
+                                          AuthController.user?.name ?? '',
+                                          textAlign: TextAlign.start,
+                                          style: const TextStyle(
+                                            fontSize: 22.0,
+                                            color: LightColors.kDarkBlue,
+                                            fontWeight: FontWeight.w800,
+                                          ),
                                         ),
-                                      ),
-                                      Text(
-                                        AuthController.user?.address ?? '',
-                                        textAlign: TextAlign.start,
-                                        style: const TextStyle(
-                                          fontSize: 16.0,
-                                          color: Colors.black45,
-                                          fontWeight: FontWeight.w400,
+                                        Text(
+                                          AuthController.user?.address ?? '',
+                                          softWrap: true,
+                                          maxLines: 2,
+                                          textAlign: TextAlign.end,
+                                          style: const TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.black45,
+                                            fontWeight: FontWeight.w400,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),
