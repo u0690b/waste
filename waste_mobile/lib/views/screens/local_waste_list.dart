@@ -74,9 +74,11 @@ class _LocalWasteListState extends State<LocalWasteList> {
                                 motion: const ScrollMotion(),
                                 children: [
                                   SlidableAction(
-                                    onPressed: (BuildContext context) {
+                                    onPressed: (BuildContext context) async {
                                       print('send $index');
-                                      wasteController.postWaste(item);
+                                      await wasteController.postWaste(item);
+                                      // await wasteController
+                                      //     .deleteLocalModels(index);
                                     },
                                     backgroundColor: const Color(0xFF0392CF),
                                     foregroundColor: Colors.white,

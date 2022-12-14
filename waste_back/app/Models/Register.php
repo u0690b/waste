@@ -114,9 +114,11 @@ class Register extends Model
         'long' => 'required|numeric',
         'lat' => 'required|numeric',
         'comf_user_id' => 'nullable',
-
         'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+        'updated_at' => 'nullable',
+        'images' => 'sometimes|array',
+        'images.*' => 'sometimes|file',
+        'video' => 'sometimes|file|mimetypes:video/avi,video/mpeg,video/quicktime',
     ];
 
     /**
@@ -182,7 +184,20 @@ class Register extends Model
     {
         return $this->hasMany(\App\Models\RegisterHistory::class, 'register_id');
     }
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function attached_images()
+    {
+        return $this->hasMany(\App\Models\AttachedFile::class, 'register_id')->where('type', 'img');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     **/
+    public function attached_video()
+    {
+        return $this->HasOne(\App\Models\AttachedFile::class, 'register_id')->where('type', 'video');
+    }
     /**
      * @var array
      */

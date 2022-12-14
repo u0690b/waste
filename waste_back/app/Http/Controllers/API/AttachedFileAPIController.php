@@ -23,7 +23,7 @@ class AttachedFileAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = AttachedFile::filter($request->all(["search", ...AttachedFile::$searchIn]));
+        $query = AttachedFile::filter( $request->all(["search", ...AttachedFile::$searchIn]))->with('register:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -34,7 +34,7 @@ class AttachedFileAPIController extends AppBaseController
 
         $attachedFiles = $query->get();
 
-        return $attachedFiles;
+        return $attachedFiles->toJson();
     }
 
     /**
@@ -50,7 +50,7 @@ class AttachedFileAPIController extends AppBaseController
         /** @var AttachedFile $attachedFile */
         $attachedFile = AttachedFile::create($input);
 
-        return $attachedFile;
+        return $attachedFile->toJson();
     }
 
     /**
@@ -70,7 +70,7 @@ class AttachedFileAPIController extends AppBaseController
             return $this->sendError('Attached File not found');
         }
 
-        return $attachedFile;
+        return $attachedFile->toJson();
     }
 
     /**
@@ -94,7 +94,7 @@ class AttachedFileAPIController extends AppBaseController
         $attachedFile->fill($input);
         $attachedFile->save();
 
-        return $attachedFile;
+        return $attachedFile->toJson();
     }
 
     /**

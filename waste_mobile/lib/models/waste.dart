@@ -1,94 +1,124 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:waste_mobile/models/attached_file.dart';
 import 'package:waste_mobile/models/model.dart';
 import 'package:waste_mobile/utils/contants.dart';
 
 class Waste {
-  final int id;
-  final double long;
-  final double lat;
-  final String description;
-  final String? resolve_desc;
-  final int reason_id;
-  final int status_id;
-  final int aimag_city_id;
-  final int soum_district_id;
-  final int bag_horoo_id;
-  final String? address;
-  final int user_id;
-  final DateTime? created_at;
-  final DateTime? updated_at;
-
+  late int id;
+  late String name;
+  String? register;
+  late String chiglel;
+  late int aimagCityId;
+  late int soumDistrictId;
+  late int bagHorooId;
+  late String address;
+  late String description;
+  late int reasonId;
+  String? zuilZaalt;
+  String? resolveDesc;
+  late num long;
+  late num lat;
+  late int regUserId;
+  int? comfUserId;
+  late int statusId;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  late List<AttachedFile> imgs;
+  late AttachedFile? video;
   NameModel get reason =>
-      Constants.reasons.firstWhere((element) => element.id == reason_id,
+      Constants.reasons.firstWhere((element) => element.id == reasonId,
           orElse: () => NameModel(name: '', id: -1));
   NameModel get status =>
-      Constants.status.firstWhere((element) => element.id == status_id,
+      Constants.status.firstWhere((element) => element.id == statusId,
           orElse: () => NameModel(name: '', id: -1));
   NameModel get aimag_city =>
-      Constants.aimagCities.firstWhere((element) => element.id == aimag_city_id,
+      Constants.aimagCities.firstWhere((element) => element.id == aimagCityId,
           orElse: () => NameModel(name: '', id: -1));
   NameModel get soum_district => Constants.soumDistricts.firstWhere(
-      (element) => element.id == soum_district_id,
+      (element) => element.id == soumDistrictId,
       orElse: () => NameModel(name: '', id: -1));
   NameModel get bag_horoo =>
-      Constants.bagHoroos.firstWhere((element) => element.id == bag_horoo_id,
+      Constants.bagHoroos.firstWhere((element) => element.id == bagHorooId,
           orElse: () => NameModel(name: '', id: -1));
 
   String fullAddress() {
-    return "${aimag_city.name} ${soum_district.name} ${bag_horoo.name}";
+    return "${aimag_city.name} ${soum_district.name} ${bag_horoo.name} $address";
   }
 
   Waste({
     required this.id,
+    required this.name,
+    this.register,
+    required this.chiglel,
+    required this.aimagCityId,
+    required this.soumDistrictId,
+    required this.bagHorooId,
+    required this.address,
+    required this.description,
+    required this.reasonId,
+    this.zuilZaalt,
+    this.resolveDesc,
     required this.long,
     required this.lat,
-    required this.description,
-    required this.resolve_desc,
-    required this.reason_id,
-    required this.status_id,
-    required this.aimag_city_id,
-    required this.soum_district_id,
-    required this.bag_horoo_id,
-    this.address,
-    required this.user_id,
-    this.created_at,
-    this.updated_at,
+    required this.regUserId,
+    this.comfUserId,
+    required this.statusId,
+    this.createdAt,
+    this.updatedAt,
+    required this.imgs,
+    this.video,
   });
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'name': name,
+        'register': register,
+        'chiglel': chiglel,
+        'aimag_city_id': aimagCityId,
+        'soum_district_id': soumDistrictId,
+        'bag_horoo_id': bagHorooId,
+        'address': address,
+        'description': description,
+        'reason_id': reasonId,
+        'zuil_zaalt': zuilZaalt,
+        'resolve_desc': resolveDesc,
         'long': long,
         'lat': lat,
-        'description': description,
-        'resolve_desc': resolve_desc,
-        'reason_id': reason_id,
-        'status_id': status_id,
-        'aimag_city_id': aimag_city_id,
-        'soum_district_id': soum_district_id,
-        'bag_horoo_id': bag_horoo_id,
-        'address': address,
-        'user_id': user_id,
-        'created_at': created_at,
-        'updated_at': updated_at,
+        'reg_user_id': regUserId,
+        'comf_user_id': comfUserId,
+        'status_id': statusId,
+        'created_at': createdAt,
+        'updated_at': updatedAt,
       };
 
-  static Waste fromJson(Map<String, dynamic> snap) {
-    return Waste(
-      id: snap['id'],
-      long: double.tryParse(snap['long'].toString()) ?? 0,
-      lat: double.tryParse(snap['lat'].toString()) ?? 0,
-      description: snap['description'],
-      resolve_desc: snap['resolve_desc'],
-      reason_id: snap['reason_id'],
-      status_id: snap['status_id'],
-      aimag_city_id: snap['aimag_city_id'],
-      soum_district_id: snap['soum_district_id'],
-      bag_horoo_id: snap['bag_horoo_id'],
-      address: snap['address'],
-      user_id: snap['user_id'],
-      created_at: DateTime.tryParse(snap['created_at']),
-      updated_at: DateTime.tryParse(snap['updated_at']),
-    );
+  Waste.fromJson(Map<String, dynamic> snap) {
+    id = snap['id'];
+    name = snap['name'];
+    register = snap['register'];
+    chiglel = snap['chiglel'];
+    aimagCityId = snap['aimag_city_id'];
+    soumDistrictId = snap['soum_district_id'];
+    bagHorooId = snap['bag_horoo_id'];
+    address = snap['address'];
+    description = snap['description'];
+    reasonId = snap['reason_id'];
+    zuilZaalt = snap['zuil_zaalt'];
+    resolveDesc = snap['resolve_desc'];
+    long = snap['long'] as num;
+    lat = snap['lat'] as num;
+    regUserId = snap['reg_user_id'];
+    comfUserId = snap['comf_user_id'];
+    statusId = snap['status_id'];
+    createdAt = DateTime.tryParse(snap['created_at']);
+    updatedAt = DateTime.tryParse(snap['updated_at']);
+    imgs = snap['attached_video'] != null
+        ? (snap['attached_images'] as List)
+            .map((e) => AttachedFile.fromJson(e))
+            .toList()
+        : [];
+    video = snap['attached_video'] != null
+        ? AttachedFile.fromJson(snap['attached_video'])
+        : null;
   }
 }

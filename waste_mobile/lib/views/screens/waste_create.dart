@@ -392,11 +392,6 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                 // Зөрчсөн хууль тогтоомжийн зүйл, заалт
                 TextFormField(
                   maxLength: 500,
-                  validator: (value) {
-                    return (value == null || value.isEmpty)
-                        ? 'Зөрчсөн хууль тогтоомжийн зүйл, заалт хоосон байна'
-                        : null;
-                  },
                   initialValue: chiglel,
                   onChanged: (value) => chiglel = value,
                   decoration: InputDecoration(
@@ -436,7 +431,10 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
               child: ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
-                    print('valodate');
+                    if (latitude == null || longitude == null) {
+                      await Get.defaultDialog();
+                      return;
+                    }
                     final w = WasteModel(
                       user_id: AuthController.user!.id,
                       aimag_city_id: aimagCity,
@@ -451,6 +449,8 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                       chiglel: chiglel,
                       zuil_zaalt: zuil_zaalt,
                       reason_id: reason,
+                      lat: latitude,
+                      long: longitude,
                     );
 
                     await widget.onSave(w);

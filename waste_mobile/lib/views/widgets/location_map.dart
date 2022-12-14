@@ -12,8 +12,8 @@ class LocationMap extends StatefulWidget {
   const LocationMap({
     Key? key,
     required this.onChangeLocation,
-    this.latitude = 47.9173283,
-    this.longitude = 106.9247419,
+    this.latitude,
+    this.longitude,
   }) : super(key: key);
 
   @override
@@ -34,10 +34,12 @@ class _LocationMapState extends State<LocationMap> {
     super.initState();
     _mapController = MapController();
     // initLocationService();
+    if (widget.latitude == null && widget.latitude == null) {
+      _determinePosition();
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       updatePoint(null, context);
     });
-    _determinePosition();
   }
 
   Future<Position> _determinePosition() async {
@@ -75,12 +77,13 @@ class _LocationMapState extends State<LocationMap> {
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     final ss = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+        desiredAccuracy: LocationAccuracy.medium);
     setState(() {
       _currentLocation = ss;
-      _mapController.move(
-          LatLng(_currentLocation!.latitude, _currentLocation!.longitude),
-          _mapController.zoom);
+      final latlong =
+          LatLng(_currentLocation!.latitude, _currentLocation!.longitude);
+      widget.onChangeLocation(latlong);
+      _mapController.move(latlong, _mapController.zoom);
     });
     return ss;
   }
@@ -89,7 +92,7 @@ class _LocationMapState extends State<LocationMap> {
     final pointX = _getPointX(context);
     setState(() {
       latLng = _mapController.pointToLatLng(CustomPoint(pointX, pointY));
-      widget.onChangeLocation(latLng);
+      if (latLng != null) widget.onChangeLocation(latLng);
     });
   }
 

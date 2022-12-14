@@ -18,7 +18,7 @@ class AttachedFileController extends Controller
      */
     public function index()
     {
-        $attachedFiles = AttachedFile::filter(Request::all(["search", ...AttachedFile::$searchIn]));
+        $attachedFiles = AttachedFile::filter(Request::all(["search", ...AttachedFile::$searchIn]))->with('register:id,name');
         if (Request::has('only')) {
             return json_encode($attachedFiles->paginate(Request::input('per_page'),['id', 'name']));
         }
@@ -27,7 +27,7 @@ class AttachedFileController extends Controller
             'datas' => $attachedFiles
                 ->paginate(Request::input('per_page'))
                 ->withQueryString()
-                ->through(fn ($row) => $row->only('id','path','type')),
+                ->through(fn ($row) => $row->only('id','register','register_id','path','type')),
             'host' => config('app.url'),
         ]);
     }

@@ -45,7 +45,7 @@ class WasteList extends StatelessWidget {
                         bottomLeft: Radius.circular(5))),
                 leading: const Icon(Icons.map),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                onTap: () => Get.to(() => WasteDetails(id: item.id)),
+                onTap: () => Get.to(() => WasteDetails(waste: item)),
                 dense: false,
                 title: Text(item.fullAddress()),
                 subtitle: Text(item.description),

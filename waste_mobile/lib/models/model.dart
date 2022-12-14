@@ -173,11 +173,13 @@ mixin Api {
         }
       }
     });
-    for (var element in images) {
-      req.files.add(http.MultipartFile.fromBytes('images', element));
+    for (int i = 0; i < images.length; i++) {
+      req.files.add(http.MultipartFile.fromBytes('images[$i]', images[i],
+          filename: "images$i.jpg"));
     }
     if (video != null) {
-      req.files.add(http.MultipartFile.fromBytes('images', video));
+      req.files.add(
+          http.MultipartFile.fromBytes('video', video, filename: 'video.mpeg'));
     }
     var res = await req.send();
     final resBytes = await res.stream.toBytes();

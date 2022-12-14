@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/models/model.dart';
@@ -113,10 +113,21 @@ class WasteController with Api implements IPaginationModel<Waste> {
     if (loading.value) return;
     loading.value = true;
     try {
-      final res = await fetchMutiPart('/registers', 'post',
-          body: model.toJson(false),
-          images: model.imageFileList ?? [],
-          video: model.videoFile);
+      final res = await fetchMutiPart(
+        '/registers',
+        'POST',
+        body: model.toJson(false),
+        images: model.imageFileList ?? [],
+        video: model.videoFile,
+        onError: (msg) async {
+          await Get.defaultDialog(
+              middleText: msg,
+              textConfirm: 'OK',
+              confirmTextColor: Colors.white,
+              onConfirm: () => Get.back());
+          throw Exception(msg);
+        },
+      );
     } catch (e) {
       rethrow;
     } finally {

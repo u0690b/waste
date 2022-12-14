@@ -63,6 +63,9 @@
     <inertia-link :href="route('admin.registers.index')" :class="{'bg-gray-200':isUrl('admin.registers.index')}" class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
       <span class="text-gray-700">Registers</span>
     </inertia-link>
+    <inertia-link :href="route('admin.attached_files.index')" :class="{'bg-gray-200':isUrl('admin.attached_files.index')}" class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
+      <span class="text-gray-700">Attached Files</span>
+    </inertia-link>
   </div>
 </template>
 

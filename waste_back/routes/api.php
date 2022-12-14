@@ -41,3 +41,8 @@ Route::post('/login', [UserAPIController::class, 'login'])->name('api.login');
 Route::group(['prefix' => 'admin'], function () {
     Route::resource('registers', App\Http\Controllers\API\RegisterAPIController::class);
 });
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('attached_files', App\Http\Controllers\API\AttachedFileAPIController::class);
+});

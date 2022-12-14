@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('attached_files', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('register_id')->comment('Зөрчлийн бүртгэл')->constrained('registers');
             $table->string('path')->comment('файлын зам');;
             $table->string('type')->comment('Төрөл');;
             $table->timestamps();

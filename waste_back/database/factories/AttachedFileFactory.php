@@ -22,10 +22,11 @@ class AttachedFileFactory extends Factory
     public function definition()
     {
         return [
-            'path' => $this->faker->imageUrl(),
-            'type' => $this->faker->word,
-            'created_at' => $this->faker->date('Y-m-d H:i:s'),
-            'updated_at' => $this->faker->date('Y-m-d H:i:s')
+            'register_id' => $this->faker->word,
+        'path' => $this->faker->word,
+        'type' => $this->faker->word,
+        'created_at' => $this->faker->date('Y-m-d H:i:s'),
+        'updated_at' => $this->faker->date('Y-m-d H:i:s')
         ];
     }
 }

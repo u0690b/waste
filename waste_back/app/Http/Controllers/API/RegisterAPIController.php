@@ -6,7 +6,10 @@ namespace App\Http\Controllers\API;
 use App\Models\Register;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use App\Models\AttachedFile;
+use Illuminate\Http\UploadedFile;
 use Response;
+use Storage;
 
 /**
  * Class RegisterController
@@ -23,7 +26,17 @@ class RegisterAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = Register::filter($request->all(["search", ...Register::$searchIn]))->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('comf_user:id,name')->with('reason:id,name')->with('reg_user:id,name')->with('soum_district:id,name')->with('status:id,name');
+        $query = Register::filter($request->all(["search", ...Register::$searchIn]))
+            ->with('aimag_city:id,name')
+            ->with('bag_horoo:id,name')
+            ->with('comf_user:id,name')
+            ->with('reason:id,name')
+            ->with('reg_user:id,name')
+            ->with('soum_district:id,name')
+            ->with('status:id,name')
+            ->with('attached_images:id,register_id,path')
+            ->with('attached_video:id,register_id,path');
+
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -32,9 +45,27 @@ class RegisterAPIController extends AppBaseController
             $query->limit($request->get('limit'));
         }
 
-        $registers = $query->get();
 
-        return $registers->toJson();
+
+        return $query->orderByDesc('id')->simplePaginate();
+    }
+
+    private function saveFiles(Register $model, $files, $type)
+    {
+
+        foreach ($files as $key => $value) {
+            if ($value instanceof UploadedFile) {
+                $hashName = $value->hashName();
+                if ($file =  $value->storeAs('/public/uploads/hyanalt', $hashName, [])) {
+                    $url =  Storage::url($file);
+                    AttachedFile::create([
+                        'register_id' => $model->id,
+                        'path' =>  $url,
+                        'type' => $type,
+                    ]);
+                }
+            }
+        }
     }
 
     /**
@@ -51,7 +82,10 @@ class RegisterAPIController extends AppBaseController
 
         /** @var Register $register */
         $register = Register::create($input);
-
+        $this->saveFiles($register, $input['images'], 'img');
+        if (isset($input['video'])) {
+            $this->saveFiles($register, [$input['video']], 'video');
+        }
         return $register->toJson();
     }
 

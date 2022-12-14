@@ -9,25 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class AttachedFile
- *
  * @package App\Models
- * @version November 24, 2022, 7:41 pm UTC
+ * @version December 13, 2022, 9:42 pm UTC
+ *
+ * @property \App\Models\Register $register
+ * @property integer $register_id
  * @property string $path
  * @property string $type
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Database\Factories\AttachedFileFactory factory(...$parameters)
- * @method static Builder|AttachedFile filter(array $filters)
- * @method static Builder|AttachedFile newModelQuery()
- * @method static Builder|AttachedFile newQuery()
- * @method static Builder|AttachedFile query()
- * @method static Builder|AttachedFile whereCreatedAt($value)
- * @method static Builder|AttachedFile whereId($value)
- * @method static Builder|AttachedFile wherePath($value)
- * @method static Builder|AttachedFile whereType($value)
- * @method static Builder|AttachedFile whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 class AttachedFile extends Model
 {
@@ -43,6 +31,7 @@ class AttachedFile extends Model
 
 
     public $fillable = [
+        'register_id',
         'path',
         'type'
     ];
@@ -54,6 +43,7 @@ class AttachedFile extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'register_id' => 'integer',
         'path' => 'string',
         'type' => 'string'
     ];
@@ -64,18 +54,26 @@ class AttachedFile extends Model
      * @var array
      */
     public static $rules = [
+        'register_id' => 'required',
         'path' => 'required|string|max:255',
         'type' => 'required|string|max:255',
         'created_at' => 'nullable',
         'updated_at' => 'nullable'
     ];
 
-    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function register()
+    {
+        return $this->belongsTo(\App\Models\Register::class, 'register_id');
+    }
 
     /**
      * @var array
      */
     public static $searchIn = [
+        'register_id',
         'path',
         'type'
     ];

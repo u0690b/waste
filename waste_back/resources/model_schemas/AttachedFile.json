@@ -12,6 +12,18 @@
         "inView": false
     },
     {
+        "name": "register_id",
+        "dbType": "bigInteger,false,true",
+        "htmlType": null,
+        "validations": "required",
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
+    },
+    {
         "name": "path",
         "dbType": "string,255",
         "htmlType": "text",
@@ -58,5 +70,9 @@
         "inForm": false,
         "inIndex": false,
         "inView": false
+    },
+    {
+        "type": "relation",
+        "relation": "mt1,Register,register_id"
     }
 ]
