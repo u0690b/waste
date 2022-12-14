@@ -2,6 +2,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/models/model.dart';
 
 class Constants {
+  static String host = 'http://192.168.10.36:8000';
   static NameModel Function(NameModel, NameModel) combine = (element, value) =>
       element.updated_at != null &&
               value.updated_at != null &&
@@ -134,5 +135,57 @@ class Constants {
       'bag_horoos_date',
       value.reduce(combine).updated_at?.toIso8601String(),
     );
+  }
+
+  static double? _mh;
+  static double get mh {
+    return _mh ??= GetStorage().read<double>('mh') ?? 0;
+  }
+
+  static set mh(double? value) {
+    if (value == null) {
+      return;
+    }
+
+    GetStorage().write('mh', value);
+  }
+
+  static int? _totalMh;
+  static int get totalMh {
+    return _totalMh ??= GetStorage().read<int>('totalMh') ?? 0;
+  }
+
+  static set totalMh(int? value) {
+    if (value == null) {
+      return;
+    }
+
+    GetStorage().write('totalMh', value);
+  }
+
+  static int? _totalAa;
+  static int get totalAa {
+    return _totalAa ??= GetStorage().read<int>('totalAa') ?? 0;
+  }
+
+  static set totalAa(int? value) {
+    if (value == null) {
+      return;
+    }
+
+    GetStorage().write('totalAa', value);
+  }
+
+  static double? _za;
+  static double get za {
+    return _za ??= GetStorage().read<double>('za') ?? 0;
+  }
+
+  static set za(double? value) {
+    if (value == null) {
+      return;
+    }
+
+    GetStorage().write('za', value);
   }
 }

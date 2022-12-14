@@ -77,8 +77,8 @@ class _LocalWasteListState extends State<LocalWasteList> {
                                     onPressed: (BuildContext context) async {
                                       print('send $index');
                                       await wasteController.postWaste(item);
-                                      // await wasteController
-                                      //     .deleteLocalModels(index);
+                                      await wasteController
+                                          .deleteLocalModels(index);
                                     },
                                     backgroundColor: const Color(0xFF0392CF),
                                     foregroundColor: Colors.white,

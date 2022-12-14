@@ -80,7 +80,7 @@ mixin Api {
       HttpHeaders.contentTypeHeader: 'application/json',
       ..._hasToken()
     };
-    var url = Uri.parse('http://10.0.2.2:8000/api$path');
+    var url = Uri.parse('${Constants.host}/api$path');
 
     var req = http.Request(method, url);
     req.headers.addAll(headersList);
@@ -155,7 +155,7 @@ mixin Api {
       HttpHeaders.contentTypeHeader: 'application/json',
       ..._hasToken()
     };
-    var url = Uri.parse('http://10.0.2.2:8000/api$path');
+    var url = Uri.parse('${Constants.host}/api$path');
 
     var req = http.MultipartRequest(method, url);
     req.headers.addAll(headersList);

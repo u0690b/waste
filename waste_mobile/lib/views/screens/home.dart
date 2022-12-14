@@ -1,9 +1,13 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/controllers/common_controller.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
+import 'package:waste_mobile/utils/contants.dart';
 import 'package:waste_mobile/views/screens/local_waste_list.dart';
 import 'package:waste_mobile/views/screens/splash_screen.dart';
 import 'package:waste_mobile/views/screens/waste_create.dart';
@@ -41,6 +45,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  late StreamSubscription<ConnectivityResult> subscription;
+
   Text subheading(String title) {
     return Text(
       title,
@@ -52,6 +58,33 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  bool isOnline = false;
+  @override
+  void initState() {
+    super.initState();
+    subscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      setState(() {
+        if (result == ConnectivityResult.none) {
+          isOnline = false;
+        } else {
+          isOnline = true;
+        }
+      });
+    });
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+
+    subscription.cancel();
+  }
+
+  noConnection() =>
+      Get.defaultDialog(title: 'Анхаар', middleText: "Интернэр байхгүй байна");
+
   @override
   Widget build(BuildContext context) {
     final CommonController commonController = Get.find();
@@ -62,187 +95,193 @@ class _HomeViewState extends State<HomeView> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const WaitingWidget();
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
             } else {
               return SafeArea(
-                child: Column(
-                  children: <Widget>[
-                    TopContainer(
-                      height: 200,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const <Widget>[
-                                Icon(Icons.menu,
-                                    color: LightColors.kDarkBlue, size: 30.0),
-                                Icon(Icons.search,
-                                    color: LightColors.kDarkBlue, size: 25.0),
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 0.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: <Widget>[
-                                  CircularPercentIndicator(
-                                    radius: 50.0,
-                                    lineWidth: 5.0,
-                                    animation: true,
-                                    percent: 0.75,
-                                    circularStrokeCap: CircularStrokeCap.round,
-                                    progressColor: LightColors.kRed,
-                                    backgroundColor: LightColors.kDarkYellow,
-                                    center: const CircleAvatar(
-                                      backgroundColor: LightColors.kBlue,
-                                      radius: 40.0,
-                                      child:
-                                          Icon(Icons.account_circle, size: 70),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: <Widget>[
-                                        Text(
-                                          softWrap: true,
-                                          maxLines: 2,
-                                          AuthController.user?.name ?? '',
-                                          textAlign: TextAlign.start,
-                                          style: const TextStyle(
-                                            fontSize: 22.0,
-                                            color: LightColors.kDarkBlue,
-                                            fontWeight: FontWeight.w800,
-                                          ),
-                                        ),
-                                        Text(
-                                          AuthController.user?.address ?? '',
-                                          softWrap: true,
-                                          maxLines: 2,
-                                          textAlign: TextAlign.end,
-                                          style: const TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.black45,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ]),
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              color: Colors.transparent,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 10.0),
-                              child: Column(
-                                children: <Widget>[
-                                  Row(
+                child: Stack(
+                  children: [
+                    Column(
+                      children: <Widget>[
+                        TopContainer(
+                          height: 200,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 0, vertical: 0.0),
+                                  child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
-                                      subheading('Миний Бүртгэл'),
-                                      GestureDetector(
-                                        onTap: () =>
-                                            Get.to(() => const WasteCreate()),
-                                        child: HomeView.plusIcon(),
+                                      CircularPercentIndicator(
+                                        radius: 50.0,
+                                        lineWidth: 5.0,
+                                        animation: true,
+                                        percent: 0.75,
+                                        circularStrokeCap:
+                                            CircularStrokeCap.round,
+                                        progressColor: LightColors.kRed,
+                                        backgroundColor:
+                                            LightColors.kDarkYellow,
+                                        center: const CircleAvatar(
+                                          backgroundColor: LightColors.kBlue,
+                                          radius: 40.0,
+                                          child: Icon(Icons.account_circle,
+                                              size: 70),
+                                        ),
                                       ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: <Widget>[
+                                            Text(
+                                              softWrap: true,
+                                              maxLines: 2,
+                                              AuthController.user?.name ?? '',
+                                              textAlign: TextAlign.start,
+                                              style: const TextStyle(
+                                                fontSize: 22.0,
+                                                color: LightColors.kDarkBlue,
+                                                fontWeight: FontWeight.w800,
+                                              ),
+                                            ),
+                                            Text(
+                                              AuthController.user?.address ??
+                                                  '',
+                                              softWrap: true,
+                                              maxLines: 2,
+                                              textAlign: TextAlign.end,
+                                              style: const TextStyle(
+                                                fontSize: 16.0,
+                                                color: Colors.black45,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
-                                  const SizedBox(height: 15.0),
-                                  GestureDetector(
-                                    onTap: () => Get.to(() =>
-                                        const LocalWasteList(
-                                            title: 'Илгээгээгүй')),
-                                    child: const TaskColumn(
-                                      icon: Icons.alarm,
-                                      iconBackgroundColor: LightColors.kRed,
-                                      title: 'Илгээгээгүй',
-                                      subtitle: 'Бүртгэл',
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 15.0,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () => Get.to(() =>
-                                        const WasteList(title: 'Илгээсэн')),
-                                    child: const TaskColumn(
-                                      icon: Icons.blur_circular,
-                                      iconBackgroundColor:
-                                          LightColors.kDarkYellow,
-                                      title: 'Илгээсэн',
-                                      subtitle: 'Бүртгэл',
-                                    ),
-                                  ),
-                                  const SizedBox(height: 15.0),
-                                  GestureDetector(
-                                    onTap: () => Get.to(() => const WasteList(
-                                        title: 'Шийдвэрлэгдсэн')),
-                                    child: const TaskColumn(
-                                      icon: Icons.check_circle_outline,
-                                      iconBackgroundColor: LightColors.kBlue,
-                                      title: 'Шийдвэрлэгдсэн',
-                                      subtitle: 'Бүртгэл',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              color: Colors.transparent,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  subheading('Хог хаягдлын бүртгэл'),
-                                  const SizedBox(height: 5.0),
-                                  Row(
-                                    children: <Widget>[
-                                      ActiveProjectsCard(
-                                        onTap: () => Get.to(() =>
-                                            const WasteList(
-                                                title: 'Захирагчийн алба')),
-                                        cardColor: LightColors.kGreen,
-                                        loadingPercent: 0.4,
-                                        title: 'Захирагчийн алба',
-                                        subtitle: 'Нийт бүртгэгдсэн 11',
-                                      ),
-                                      const SizedBox(width: 20.0),
-                                      ActiveProjectsCard(
-                                        onTap: () => Get.to(() =>
-                                            const WasteList(
-                                                title: 'Мэргэжлийн хаяналт')),
-                                        cardColor: LightColors.kRed,
-                                        loadingPercent: 0.6,
-                                        title: 'Мэргэжлийн хаяналт',
-                                        subtitle: '20 hours progress',
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                                )
+                              ]),
                         ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  color: Colors.transparent,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          subheading('Миний Бүртгэл'),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 15.0),
+                                      GestureDetector(
+                                        onTap: () => Get.to(() =>
+                                            const LocalWasteList(
+                                                title: 'Илгээгээгүй')),
+                                        child: const TaskColumn(
+                                          icon: Icons.alarm,
+                                          iconBackgroundColor: LightColors.kRed,
+                                          title: 'Илгээгээгүй',
+                                          subtitle: 'Бүртгэл',
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 15.0,
+                                      ),
+                                      GestureDetector(
+                                        onTap: isOnline
+                                            ? () => Get.to(() =>
+                                                const WasteList(
+                                                    title: 'Илгээсэн'))
+                                            : noConnection,
+                                        child: const TaskColumn(
+                                          icon: Icons.blur_circular,
+                                          iconBackgroundColor:
+                                              LightColors.kDarkYellow,
+                                          title: 'Илгээсэн',
+                                          subtitle: 'Бүртгэл',
+                                        ),
+                                      ),
+                                      const SizedBox(height: 15.0),
+                                      GestureDetector(
+                                        onTap: isOnline
+                                            ? () => Get.to(() =>
+                                                const WasteList(
+                                                    title: 'Шийдвэрлэгдсэн'))
+                                            : noConnection,
+                                        child: const TaskColumn(
+                                          icon: Icons.check_circle_outline,
+                                          iconBackgroundColor:
+                                              LightColors.kBlue,
+                                          title: 'Шийдвэрлэгдсэн',
+                                          subtitle: 'Бүртгэл',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  color: Colors.transparent,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      subheading('Зөрчил шийвэрлсэн байдал'),
+                                      const SizedBox(height: 5.0),
+                                      Row(
+                                        children: <Widget>[
+                                          ActiveProjectsCard(
+                                            cardColor: LightColors.kGreen,
+                                            loadingPercent: Constants.za,
+                                            title: 'Захирагчийн алба',
+                                            subtitle:
+                                                'Нийт бүртгэгдсэн ${Constants.totalAa}',
+                                          ),
+                                          const SizedBox(width: 20.0),
+                                          ActiveProjectsCard(
+                                            cardColor: LightColors.kRed,
+                                            loadingPercent: Constants.mh,
+                                            title: 'Мэргэжлийн хаяналт',
+                                            subtitle:
+                                                'Нийт бүртгэгдсэн ${Constants.totalMh}',
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      top: 160,
+                      right: 20,
+                      child: IconButton(
+                        iconSize: 60,
+                        onPressed: () => Get.to(() => const WasteCreate()),
+                        icon: HomeView.plusIcon(),
                       ),
                     ),
                   ],
