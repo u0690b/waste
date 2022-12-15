@@ -1,21 +1,28 @@
 <script setup>
-import SidebarLink from './SidebarLink.vue'
-import { ref } from 'vue'
-import { ChevronRightIcon } from '@heroicons/vue/24/outline'
+import SidebarLink from "./SidebarLink.vue";
+import { ref } from "vue";
+import { ChevronRightIcon } from "@heroicons/vue/24/outline";
 const props = defineProps({
   menu: Object,
-})
+});
 
-const isOpen = ref(false)
-
+const isOpen = ref(false);
 </script>
 
 <template>
   <li>
-    <SidebarLink v-if="menu.href != '#'" v-bind="menu" :parent="!!menu['children']" @click="isOpen = !isOpen" />
-    <a v-else :parent="!!menu['children']"
+    <SidebarLink
+      v-if="menu.href != '#'"
+      v-bind="menu"
+      :parent="!!menu['children']"
+      @click="isOpen = !isOpen"
+    />
+    <a
+      v-else
+      :parent="!!menu['children']"
       class="flex items-center w-full gap-2 px-4 py-2 transition duration-300 rounded hover:bg-indigo-500 hover:text-white"
-      @click="isOpen = !isOpen">
+      @click="isOpen = !isOpen"
+    >
       <component :is="menu.icon" class="w-5 h-5" />
       <span class="flex-grow">
         <slot>{{ menu.text }}</slot>
@@ -30,6 +37,4 @@ const isOpen = ref(false)
   </li>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

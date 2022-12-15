@@ -1,28 +1,29 @@
 <template>
-  <main class="">
-    <Sidebar v-model="sidebar" />
+  <main class="flex min-h-screen">
+    <!-- <Sidebar v-model="sidebar" /> -->
+    <AdminMenu></AdminMenu>
     <!-- <NavDrawer /> -->
-    <AdminMenu class="float-left"></AdminMenu>
-    <div class="sm:ml-[300px]">
-      <!-- <Header @menu:click="sidebar = true" /> -->
+    <div class="flex flex-col flex-grow bg-gray-200">
+      <TheHeader />
 
       <!-- main content -->
       <!-- <FlashMessages :errors="errors" /> -->
-      <div class="px-6 py-6">
+      <div class="mb-auto">
         <slot />
       </div>
+      <TheFooter />
     </div>
   </main>
 </template>
 <script setup>
-import AdminMenu from '@/Components/AdminMenu.vue';
-import FlashMessages from '@/Components/FlashMessages.vue'
-import Sidebar from '@/Components/Sidebar.vue'
+import AdminMenu from "@/Components/AdminMenu.vue";
+import FlashMessages from "@/Components/FlashMessages.vue";
+import Sidebar from "@/Components/Sidebar.vue";
+import TheFooter from "@/Components/TheFooter.vue";
+import TheHeader from "@/Components/TheHeader.vue";
 // import Header from '@/Components/Dashboard/Header.vue'
-import { ref } from 'vue'
+import { ref } from "vue";
 
-const props = defineProps({ errors: { type: Object, default: () => ({}) } })
-const sidebar = ref(false)
-
-
+const props = defineProps({ errors: { type: Object, default: () => ({}) } });
+const sidebar = ref(false);
 </script>

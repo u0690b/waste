@@ -1,6 +1,6 @@
-<script  setup>
-import { ChevronRightIcon } from '@heroicons/vue/24/outline'
-import { ref } from '@vue/reactivity'
+<script setup>
+import { ChevronRightIcon } from "@heroicons/vue/24/outline";
+import { ref } from "@vue/reactivity";
 
 const props = defineProps({
   icon: Function,
@@ -10,18 +10,16 @@ const props = defineProps({
   child: Boolean,
   parent: Boolean,
   children: [Object, Array],
-})
-
-
-
-
+});
 </script>
 
 <template>
-  <inertia-link :href="href"
-    class="flex items-center w-full gap-2 px-4 py-2 transition duration-300 rounded hover:bg-indigo-500 hover:text-white">
-    <div v-if="child" class="w-5" />
-    <component :is="icon" v-else-if="icon" class="w-5 h-5" />
+  <inertia-link
+    :href="href"
+    :class="{ 'ml-4': child }"
+    class="flex items-center w-full gap-2 px-4 py-2 transition duration-300 rounded hover:bg-indigo-500 hover:text-white"
+  >
+    <component :is="icon" v-if="icon" class="w-5 h-5" />
     <span class="flex-grow">
       <slot>{{ text }}</slot>
     </span>
@@ -30,6 +28,4 @@ const props = defineProps({
   </inertia-link>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

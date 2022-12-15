@@ -1,89 +1,123 @@
+<script setup>
+import {
+  ArrowDownLeftIcon,
+  EyeIcon,
+  HomeIcon,
+  KeyIcon,
+  MinusSmallIcon,
+  PaperClipIcon,
+  TrashIcon,
+} from "@heroicons/vue/24/outline";
+import Backdrop from "./Backdrop.vue";
+import SidebarItem from "./SidebarItem.vue";
+import { toRefs, ref, watch, markRaw, h } from "vue";
+import { usePage } from "@inertiajs/inertia-vue3";
+import { computed } from "@vue/reactivity";
+const props = defineProps({
+  modelValue: { type: Boolean, default: false },
+});
+
+const { modelValue } = toRefs(props);
+
+const emit = defineEmits(["update:modelValue"]);
+
+const isOpen = ref(props.modelValue);
+
+watch(
+  modelValue,
+  (val) => {
+    isOpen.value = val;
+  },
+  { immediate: true }
+);
+
+watch(isOpen, (val) => {
+  emit("update:modelValue", val);
+});
+
+const menus = ref([
+  {
+    icon: markRaw(HomeIcon),
+    text: "Нүүр хуудас",
+    href: "/",
+  },
+  {
+    text: "Тохиргоо",
+    icon: markRaw(PaperClipIcon),
+    href: "#",
+    children: [
+      {
+        text: "Байгууллага",
+        icon: markRaw(MinusSmallIcon),
+        href: route("admin.places.index"),
+      },
+      {
+        text: "Шалтгаан",
+        icon: markRaw(MinusSmallIcon),
+        href: route("admin.reasons.index"),
+      },
+      {
+        text: "Төлөв",
+        icon: markRaw(MinusSmallIcon),
+        href: route("admin.statuses.index"),
+      },
+
+      {
+        text: "Аймаг/нийслэл",
+        icon: markRaw(MinusSmallIcon),
+        href: route("admin.aimag_cities.index"),
+      },
+      {
+        text: "Сум/дүүрэг",
+        icon: markRaw(MinusSmallIcon),
+        href: route("admin.soum_districts.index"),
+      },
+      {
+        text: "Баг/хороо",
+        icon: markRaw(MinusSmallIcon),
+        href: route("admin.bag_horoos.index"),
+      },
+      {
+        text: "Хэрэглэгч",
+        icon: markRaw(MinusSmallIcon),
+        href: route("admin.users.index"),
+      },
+    ],
+  },
+
+  {
+    text: "Бүртгэл",
+    icon: markRaw(PaperClipIcon),
+    href: route("admin.registers.index"),
+  },
+]);
+
+const user = computed(() => usePage().props.value.auth.user);
+// const InsItTul = computed(() => user.value.rolecodelist.includes('InsItTul'))	// baitsaagch
+</script>
+
 <template>
-  <div>
+  <Backdrop v-if="isOpen" @click="isOpen = false" />
 
-    <inertia-link :href="route('admin.attached_files.index')"
-      :class="{ 'bg-gray-200': isUrl('admin.attached_files.index') }"
-      class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
-      <span class="text-gray-700">Attached Files</span>
-    </inertia-link>
-    <inertia-link :href="route('admin.bag_horoos.index')" :class="{ 'bg-gray-200': isUrl('admin.bag_horoos.index') }"
-      class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
-      <span class="text-gray-700">Bag Horoos</span>
-    </inertia-link>
-    <inertia-link :href="route('admin.places.index')" :class="{ 'bg-gray-200': isUrl('admin.places.index') }"
-      class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
-      <span class="text-gray-700">Places</span>
-    </inertia-link>
-    <inertia-link :href="route('admin.reasons.index')" :class="{ 'bg-gray-200': isUrl('admin.reasons.index') }"
-      class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
-      <span class="text-gray-700">Reasons</span>
-    </inertia-link>
-    <inertia-link :href="route('admin.statuses.index')" :class="{ 'bg-gray-200': isUrl('admin.statuses.index') }"
-      class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
-      <span class="text-gray-700">Statuses</span>
-    </inertia-link>
-    <inertia-link :href="route('admin.registers.index')" :class="{ 'bg-gray-200': isUrl('admin.registers.index') }"
-      class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
-      <span class="text-gray-700">Registers</span>
-    </inertia-link>
-    <inertia-link :href="route('admin.register_histories.index')"
-      :class="{ 'bg-gray-200': isUrl('admin.register_histories.index') }"
-      class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
-      <span class="text-gray-700">Register Histories</span>
-    </inertia-link>
-    <inertia-link :href="route('admin.aimag_cities.index')"
-      :class="{ 'bg-gray-200': isUrl('admin.aimag_cities.index') }"
-      class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
-      <span class="text-gray-700">Aimag Cities</span>
-    </inertia-link>
-    <inertia-link :href="route('admin.soum_districts.index')"
-      :class="{ 'bg-gray-200': isUrl('admin.soum_districts.index') }"
-      class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
-      <span class="text-gray-700">Soum Districts</span>
-    </inertia-link>
+  <aside class="hidden w-64 bg-gray-800 sm:block">
+    <div
+      class="py-3 text-1xl uppercase text-center tracking-widest bg-gray-900 border-b-2 border-gray-800 mb-8"
+    >
+      <inertia-link href="/" class="text-white">WASTE MONITORING</inertia-link>
+    </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <inertia-link :href="route('admin.users.index')" :class="{ 'bg-gray-200': isUrl('admin.users.index') }"
-      class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
-      <span class="text-gray-700">Users Models</span>
-    </inertia-link>
-    <inertia-link :href="route('admin.registers.index')" :class="{'bg-gray-200':isUrl('admin.registers.index')}" class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
-      <span class="text-gray-700">Registers</span>
-    </inertia-link>
-    <inertia-link :href="route('admin.attached_files.index')" :class="{'bg-gray-200':isUrl('admin.attached_files.index')}" class="flex items-center w-full h-10 pl-4 text-blue-400 rounded-lg cursor-pointer hover:bg-gray-200">
-      <span class="text-gray-700">Attached Files</span>
-    </inertia-link>
-  </div>
+    <!-- menu -->
+    <nav class="text-sm text-gray-300">
+      <ul class="flex flex-col">
+        <SidebarItem
+          v-for="menu in menus"
+          :key="menu.text"
+          :menu="menu"
+          class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold"
+        />
+      </ul>
+    </nav>
+  </aside>
 </template>
 
-<script>
-
-export default {
-  components: {
-
-  },
-  methods: {
-    isUrl(...urls) {
-
-      let currentUrl = this.$page.url.substr(1)
-      if (urls[0] === '') {
-        return currentUrl === ''
-      }
-      return urls.filter(url => currentUrl.startsWith(url)).length
-    },
-  },
-}
-</script>
+<style scoped></style>

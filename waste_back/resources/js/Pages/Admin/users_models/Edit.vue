@@ -1,31 +1,70 @@
 <template>
   <div>
     <h1 class="mb-8 font-bold text-3xl">
-      <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('admin.users.index')">Users Models
+      <inertia-link
+        class="text-indigo-400 hover:text-indigo-600"
+        :href="route('admin.users.index')"
+        >Хэрэглэгч
       </inertia-link>
-      <span class="text-indigo-400 font-medium">/</span> Edit
+      <span class="text-indigo-400 font-medium">/</span> засах
       {{ title }}
     </h1>
-    <div class="bg-white rounded shadow  max-w-3x max-w-3xl">
+    <div class="bg-white rounded shadow max-w-3x max-w-3xl">
       <form @submit.prevent="submit">
-        <div class="grid grid-cols-2 gap-2 ">
-          <MyInput v-model="form.name" :error="errors.name" label="Name" />
-          <MyInput v-model="form.username" :error="errors.username" label="Username" />
-          <MyInput v-model="form.password" type="password" autocomplete="new-password" :error="errors.password"
-            label="Password" />
-          <MySelect :value="data.aimag_city" :error="errors.aimag_city_id" label="Aimag City Id"
-            :url="`/admin/aimag_cities`" @changeId="id => form.aimag_city_id = id" />
-          <MySelect :value="data.soum_district" :error="errors.soum_district_id" label="Soum District Id"
-            :url="`/admin/soum_districts`" @changeId="id => form.soum_district_id = id" />
-          <MySelect :value="data.bag_horoo" :error="errors.bag_horoo_id" label="Bag Horoo Id" :url="`/admin/bag_horoos`"
-            @changeId="id => form.bag_horoo_id = id" />
-          <MySelect v-model="form.roles" :modelKey="true" :storedOptions="roles" :error="errors.roles" label="Roles"
-            :filterable="true" />
+        <div class="grid grid-cols-2 gap-2">
+          <MyInput v-model="form.name" :error="errors.name" label="Хэрэглэгчийн нэр" />
+          <MyInput v-model="form.username" :error="errors.username" label="Нэвтрэх нэр" />
+          <MyInput
+            v-model="form.password"
+            type="password"
+            autocomplete="new-password"
+            :error="errors.password"
+            label="Нууц үг"
+          />
+          <MySelect
+            :value="data.aimag_city"
+            :error="errors.aimag_city_id"
+            label="Аймаг/нийслэл"
+            :url="`/admin/aimag_cities`"
+            @changeId="(id) => (form.aimag_city_id = id)"
+          />
+          <MySelect
+            :value="data.soum_district"
+            :error="errors.soum_district_id"
+            label="Сум/дүүрэг"
+            :url="`/admin/soum_districts`"
+            @changeId="(id) => (form.soum_district_id = id)"
+          />
+          <MySelect
+            :value="data.bag_horoo"
+            :error="errors.bag_horoo_id"
+            label="Баг/хороо"
+            :url="`/admin/bag_horoos`"
+            @changeId="(id) => (form.bag_horoo_id = id)"
+          />
+          <MySelect
+            v-model="form.roles"
+            :modelKey="true"
+            :storedOptions="roles"
+            :error="errors.roles"
+            label="Эрх"
+            :filterable="true"
+          />
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
-          <button class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">Delete Users
-            Models</button>
-          <loading-button :loading="form.processing" class="btn-indigo ml-auto" type="submit">Edit Users Models
+          <button
+            class="text-red-600 hover:underline"
+            tabindex="-1"
+            type="button"
+            @click="destroy"
+          >
+            Устгах
+          </button>
+          <loading-button
+            :loading="form.processing"
+            class="btn-indigo ml-auto"
+            type="submit"
+            >Засах
           </loading-button>
         </div>
       </form>
@@ -34,15 +73,15 @@
 </template>
 
 <script>
-import Layout from '@/Layouts/Admin.vue'
-import LoadingButton from '@/Components/LoadingButton.vue'
-import NumberInput from '@/Components/MyInput.vue'
-import MyInput from '@/Components/MyInput.vue'
-import MySelect from '@/Components/MySelect.vue'
-import TextareaInput from '@/Components/TextareaInput.vue'
+import Layout from "@/Layouts/Admin.vue";
+import LoadingButton from "@/Components/LoadingButton.vue";
+import NumberInput from "@/Components/MyInput.vue";
+import MyInput from "@/Components/MyInput.vue";
+import MySelect from "@/Components/MySelect.vue";
+import TextareaInput from "@/Components/TextareaInput.vue";
 
 export default {
-  metaInfo: { title: 'Edit Users Models' },
+  metaInfo: { title: "Edit Users Models" },
   components: {
     LoadingButton,
     NumberInput,
@@ -56,7 +95,7 @@ export default {
     data: Object,
     host: String,
   },
-  remember: 'form',
+  remember: "form",
   data() {
     return {
       form: this.$inertia.form({
@@ -73,26 +112,28 @@ export default {
         updated_at: this.data.updated_at,
       }),
       roles: [
-        { id: 'admin', name: 'admin' },
-        { id: 'register', name: 'Бүртгэгч' },
-      ]
-    }
-
+        { id: "admin", name: "Админ" },
+        { id: "register", name: "Бүртгэгч" },
+        { id: "dt", name: "Дүүргийн төлөөлөгч" },
+        { id: "onb", name: "Олон нийтийн байцаагч" },
+        { id: "mh", name: "МХЕГ" },
+      ],
+    };
   },
   computed: {
     title() {
-      return this.form.name ?? this.form.id
+      return this.form.name ?? this.form.id;
     },
   },
   methods: {
     submit() {
-      this.form.put(this.route('admin.users.update', this.data.id))
+      this.form.put(this.route("admin.users.update", this.data.id));
     },
     destroy() {
-      if (confirm('Are you sure you want to delete this users_models?')) {
-        this.$inertia.delete(this.route('admin.users.destroy', this.data.id))
+      if (confirm("Та устгахдаа итгэлтэй байна уу?")) {
+        this.$inertia.delete(this.route("admin.users.destroy", this.data.id));
       }
     },
   },
-}
+};
 </script>
