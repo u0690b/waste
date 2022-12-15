@@ -23,6 +23,7 @@
     "dependencies": {
         "@headlessui/vue": "^1.7.5",
         "vue-select": "^4.0.0-beta.6",
-        "vue-toast-notification": "^3.0.4"
+        "vue-toast-notification": "^3.0.4",
+        "vue3-openlayers": "^0.1.71"
     }
 }
