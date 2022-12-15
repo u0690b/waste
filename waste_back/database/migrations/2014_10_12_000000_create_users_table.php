@@ -25,6 +25,7 @@ return new class extends Migration
             $table->json('roles');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

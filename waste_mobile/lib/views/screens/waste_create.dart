@@ -428,7 +428,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                       : () {
                           var file =
                               File.fromRawPath(Uint8List.fromList(_videoFile!));
-                          MyVideoPlayerFile(file: file);
+                          Get.dialog(MyVideoPlayerFile(file: file));
                         },
                 ),
                 const SizedBox(height: 20),
