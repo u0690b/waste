@@ -4,6 +4,7 @@ import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/controllers/cache_manager.dart';
 import 'package:waste_mobile/models/user.dart';
+import 'package:waste_mobile/utils/contants.dart';
 
 class AuthController extends GetxController with CacheManager {
   final isLogged = false.obs;
@@ -34,7 +35,7 @@ class AuthController extends GetxController with CacheManager {
 
   Future<void> loginUser(String email, String password) async {
     final res = await GetConnect().post(
-      'http://10.0.2.2:8000/api/login',
+      '${Constants.host}/api/login',
       {'username': email, 'password': password},
       headers: {"Accept": "application/json"},
     );

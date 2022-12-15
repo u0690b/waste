@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:waste_mobile/models/waste.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
+import 'package:waste_mobile/views/screens/Image_screen.dart';
+import 'package:waste_mobile/views/screens/video_payer.dart';
 import 'package:waste_mobile/views/widgets/back_button.dart';
-import 'package:waste_mobile/views/widgets/my_text_field.dart';
 import 'package:waste_mobile/views/widgets/top_container.dart';
 import 'package:waste_mobile/views/widgets/zoombuttons_plugin_option.dart';
 
@@ -23,11 +24,12 @@ class _WasteDetailsState extends State<WasteDetails> {
   final pointSize = 20.0;
   final pointY = 100.0;
   LatLng? latLng;
+  late Waste waste;
   @override
   void initState() {
     super.initState();
     _mapController = MapController();
-
+    waste = widget.waste;
     // initLocationService();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       updatePoint(null, context);
@@ -119,67 +121,91 @@ class _WasteDetailsState extends State<WasteDetails> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                              child: MyTextField(
-                            controller:
-                                TextEditingController(text: "Улаанбаатар"),
-                            label: 'Аймаг,Нийслэл:',
-                            icon: downwardIcon,
-                          )),
-                        ],
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ListTile(
+                      dense: true,
+                      style: ListTileStyle.drawer,
+                      title: const Text("Албан байгууллага, Иргэний овог нэр:"),
+                      subtitle: Text(waste.name),
+                    ),
+                    ListTile(
+                      dense: true,
+                      style: ListTileStyle.drawer,
+                      title:
+                          const Text("Байгууллага, ААН, Иргэний Овог регистр:"),
+                      subtitle: Text(waste.register ?? ''),
+                    ),
+                    ListTile(
+                      dense: true,
+                      style: ListTileStyle.drawer,
+                      title: const Text("Үйл Ажиллагааны чиглэл:"),
+                      subtitle: Text(waste.chiglel),
+                    ),
+                    ListTile(
+                      dense: true,
+                      style: ListTileStyle.drawer,
+                      title: const Text("Хаяг тоот, утас:"),
+                      subtitle: Text(waste.fullAddress()),
+                    ),
+                    ListTile(
+                      dense: true,
+                      style: ListTileStyle.drawer,
+                      title: const Text("Гаргасан зөрчилийн байдал"),
+                      subtitle: Text(waste.description),
+                    ),
+                    ListTile(
+                      dense: true,
+                      style: ListTileStyle.drawer,
+                      title: const Text("Зөрчилийн Төрөл:"),
+                      subtitle: Text(waste.reason.name),
+                    ),
+                    ListTile(
+                      dense: true,
+                      style: ListTileStyle.drawer,
+                      title:
+                          const Text("Зөрчсөн хууль тогтоомжийн зүйл, заалт:"),
+                      subtitle: Text(waste.zuilZaalt ?? ''),
+                    ),
+                    ListTile(
+                      dense: true,
+                      style: ListTileStyle.drawer,
+                      title:
+                          const Text("Зөрчсөн хууль тогтоомжийн зүйл, заалт:"),
+                      subtitle: Text(waste.zuilZaalt ?? ''),
+                    ),
+                    ListTile(
+                      dense: true,
+                      style: ListTileStyle.drawer,
+                      title: const Text("Зөрчлийн тэмэдэглэл бичсэн:"),
+                      subtitle: Text(waste.regUser.name),
+                    ),
+                    if (waste.resolveDesc != null)
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text("Шийдвэрлэсэн тэмэдэглэл:"),
+                        subtitle: Text(waste.resolveDesc ?? ''),
                       ),
-                      MyTextField(
-                        controller: TextEditingController(text: "СХД"),
-                        label: 'Сум,Дүүрэг:',
-                        icon: downwardIcon,
+                    const SizedBox(height: 20),
+                    const ListTile(
+                      dense: true,
+                      style: ListTileStyle.drawer,
+                      title: Text('Хавсаргасан файл'),
+                    ),
+                    if (waste.video != null)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              Get.dialog(MyVideoPlayer(url: waste.video!.path));
+                            },
+                            child: const Text('Бичлэг харах')),
                       ),
-                      MyTextField(
-                        controller: TextEditingController(text: "6-хороо"),
-                        label: 'Баг,Хороо:',
-                        icon: downwardIcon,
-                      ),
-                      MyTextField(
-                        controller:
-                            TextEditingController(text: "Номингийн урд"),
-                        label: 'Хаяг тоот:',
-                      ),
-                      const SizedBox(height: 20),
-                      MyTextField(
-                        controller: TextEditingController(
-                            text:
-                                "Номингийн үүдэнд их хэмжээний гутал шатаасан"),
-                        label: 'Тайлбар',
-                        minLines: 3,
-                        maxLines: 10,
-                      ),
-                      const SizedBox(height: 20),
-                      const Text('Хавсаргасан Файл'),
-                      SizedBox(
-                        height: 200,
-                        width: Get.width,
-                        child: Row(
-                          children: [
-                            Image.network(
-                                width: Get.width / 2.4,
-                                fit: BoxFit.cover,
-                                'https://u4d2z7k9.rocketcdn.me/wp-content/uploads/2020/07/WasteManagement9.png'),
-                            Image.network(
-                                width: Get.width / 2.4,
-                                fit: BoxFit.cover,
-                                'https://u4d2z7k9.rocketcdn.me/wp-content/uploads/2020/07/WasteManagement9.png')
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                    ImageScreen(galleryItems: waste.imgs),
+                  ],
                 ),
               ],
             ),

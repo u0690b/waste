@@ -13,7 +13,9 @@ class WasteList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final WasteController wasteController = Get.find();
+    final IPaginationModel<Waste> wasteController = title == 'Шийдвэрлэгдсэн'
+        ? Get.put(CompleteWasteController())
+        : Get.put(WasteController());
     wasteController.refresh();
     return Scaffold(
       appBar: AppBar(

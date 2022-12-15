@@ -32,13 +32,14 @@ abstract class Model extends Eloquent
                 continue;
             }
             if ($key === 'search') {
-                $this->buildSearch($query, $filters['search'] ?? '', $searchIn);
+                $query =  $this->buildSearch($query, $filters['search'] ?? '', $searchIn);
             } elseif (is_array($value)) {
                 $query = $query->whereIn($key, $value);
             } else {
-                $query->where($key, $value);
+                $query =  $query->where($key, $value);
             }
         }
+        return $query;
     }
     /**
      * Build search query.

@@ -24,6 +24,7 @@ class Waste {
   late int statusId;
   DateTime? createdAt;
   DateTime? updatedAt;
+  late NameModel regUser;
   late List<AttachedFile> imgs;
   late AttachedFile? video;
   NameModel get reason =>
@@ -68,6 +69,7 @@ class Waste {
     this.updatedAt,
     required this.imgs,
     this.video,
+    required this.regUser,
   });
 
   Map<String, dynamic> toJson() => {
@@ -108,11 +110,12 @@ class Waste {
     long = snap['long'] as num;
     lat = snap['lat'] as num;
     regUserId = snap['reg_user_id'];
+    regUser = NameModel.fromJson(snap['reg_user']);
     comfUserId = snap['comf_user_id'];
     statusId = snap['status_id'];
     createdAt = DateTime.tryParse(snap['created_at']);
     updatedAt = DateTime.tryParse(snap['updated_at']);
-    imgs = snap['attached_video'] != null
+    imgs = snap['attached_images'] != null
         ? (snap['attached_images'] as List)
             .map((e) => AttachedFile.fromJson(e))
             .toList()

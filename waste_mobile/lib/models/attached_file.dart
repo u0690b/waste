@@ -21,9 +21,9 @@ class AttachedFile {
       };
 
   AttachedFile.fromJson(Map<String, dynamic> snap) {
-    id = snap[id];
-    register_id = snap[register_id];
-    path = snap[path];
-    type = snap[type];
+    id = snap['id'];
+    register_id = snap['register_id'];
+    path = snap['path'];
+    type = snap['type'];
   }
 }

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +10,7 @@ import 'package:waste_mobile/controllers/waste_controller.dart';
 import 'package:waste_mobile/models/waste_model.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/utils/contants.dart';
+import 'package:waste_mobile/views/screens/video_payer_file.dart';
 import 'package:waste_mobile/views/widgets/back_button.dart';
 import 'package:waste_mobile/views/widgets/image_pick_list.dart';
 import 'package:waste_mobile/views/widgets/location_map.dart';
@@ -129,8 +133,8 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                             onPressed: () async {
                               final video = await ImagePicker().pickVideo(
                                 source: ImageSource.camera,
-                                maxDuration: const Duration(minutes: 3),
                               );
+
                               _videoFile =
                                   (await video?.readAsBytes())?.toList();
                               setState(() {});
@@ -230,8 +234,8 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                         ? 'Үйл Ажиллагааны чиглэл хоосон байна'
                         : null;
                   },
-                  initialValue: zuil_zaalt,
-                  onChanged: (value) => zuil_zaalt = value,
+                  initialValue: chiglel,
+                  onChanged: (value) => chiglel = value,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 15.0),
@@ -392,8 +396,8 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                 // Зөрчсөн хууль тогтоомжийн зүйл, заалт
                 TextFormField(
                   maxLength: 500,
-                  initialValue: chiglel,
-                  onChanged: (value) => chiglel = value,
+                  initialValue: zuil_zaalt,
+                  onChanged: (value) => zuil_zaalt = value,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 15.0),
@@ -419,6 +423,13 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                     });
                   },
                   videoButton: textButton,
+                  onPlay: _videoFile == null
+                      ? null
+                      : () {
+                          var file =
+                              File.fromRawPath(Uint8List.fromList(_videoFile!));
+                          Get.dialog(MyVideoPlayerFile(file: file));
+                        },
                 ),
                 const SizedBox(height: 20),
               ],

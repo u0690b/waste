@@ -118,7 +118,7 @@ class Register extends Model
         'updated_at' => 'nullable',
         'images' => 'sometimes|array',
         'images.*' => 'sometimes|file',
-        'video' => 'sometimes|file|mimetypes:video/avi,video/mpeg,video/quicktime',
+        'video' => 'sometimes|file',
     ];
 
     /**
@@ -228,8 +228,8 @@ class Register extends Model
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
-            $this->buildFilter($query, $filters, Register::$searchIn);
+            $query = $this->buildFilter($query, $filters, Register::$searchIn);
         }
-        return $this;
+        return $query;
     }
 }

@@ -9,12 +9,14 @@ class ImagePickerList extends StatelessWidget {
   final void Function(List<int> file) onAdd;
   final void Function(int index) onDrop;
   final TextButton videoButton;
+  final Function()? onPlay;
   const ImagePickerList({
     super.key,
     required this.item,
     required this.onAdd,
     required this.onDrop,
     required this.videoButton,
+    this.onPlay,
   });
 
   @override
@@ -28,6 +30,11 @@ class ImagePickerList extends StatelessWidget {
         mainAxisSpacing: 10,
         crossAxisCount: 2,
         children: [
+          if (onPlay != null)
+            GestureDetector(
+              onTap: onPlay,
+              child: const Text('Бичлэг үзэх'),
+            ),
           for (var i = 0; i < item.length; i++)
             GestureDetector(
               onLongPress: () {

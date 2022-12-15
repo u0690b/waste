@@ -6,19 +6,14 @@ import 'package:waste_mobile/models/waste.dart';
 import 'package:waste_mobile/models/waste_model.dart';
 import 'package:waste_mobile/views/widgets/pagination_builder.dart';
 
-class WasteController with Api implements IPaginationModel<Waste> {
+class CompleteWasteController extends WasteController
+    implements IPaginationModel<Waste> {
   @override
-  ValueNotifier<bool> loading = ValueNotifier<bool>(false);
-  @override
-  String? nextCursor;
-
-  @override
-  final RxList<Waste> datas = <Waste>[].obs;
-
   Future<Iterable<Waste>?> _getQuery() async {
     final res = await fetch<Iterable<Waste>>(
       '/registers',
       'get',
+      body: {'status_id': 3, 'next_cursor': nextCursor},
       decoder: (data) {
         if (data is Map) {
           nextCursor = data['next_cursor'];
@@ -39,15 +34,19 @@ class WasteController with Api implements IPaginationModel<Waste> {
   Future<List<Waste>?> fetchMore() async {
     if (loading.value) return null;
     loading.value = true;
-    var q = await _getQuery();
+    try {
+      var q = await _getQuery();
 
-    List<Waste> retVal = q?.toList() ?? [];
+      List<Waste> retVal = q?.toList() ?? [];
 
-    if (retVal.isNotEmpty) {
-      datas.addAll(retVal);
+      if (retVal.isNotEmpty) {
+        datas.addAll(retVal);
+      }
+    } catch (_) {
+      rethrow;
+    } finally {
+      loading.value = false;
     }
-
-    loading.value = false;
     return datas;
   }
 
@@ -55,6 +54,73 @@ class WasteController with Api implements IPaginationModel<Waste> {
   Future<List<Waste>?> refresh() async {
     if (loading.value) return null;
     loading.value = true;
+    var q = await _getQuery();
+
+    List<Waste> retVal = q?.toList() ?? [];
+
+    if (retVal.isNotEmpty) {
+      datas.value = retVal;
+    }
+    loading.value = false;
+    return null;
+  }
+}
+
+class WasteController with Api implements IPaginationModel<Waste> {
+  @override
+  ValueNotifier<bool> loading = ValueNotifier<bool>(false);
+  @override
+  String? nextCursor;
+
+  @override
+  final RxList<Waste> datas = <Waste>[].obs;
+
+  Future<Iterable<Waste>?> _getQuery() async {
+    final res = await fetch<Iterable<Waste>>(
+      '/registers',
+      'get',
+      body: {'status_id': 2, 'next_cursor': nextCursor},
+      decoder: (data) {
+        if (data is Map) {
+          nextCursor = data['next_cursor'];
+          return (data['data'] as List<dynamic>).map(
+            (e) => Waste.fromJson(e),
+          );
+        }
+        // return [];
+        return (data as List<dynamic>).map(
+          (e) => Waste.fromJson(e),
+        );
+      },
+    );
+    return res;
+  }
+
+  @override
+  Future<List<Waste>?> fetchMore() async {
+    if (loading.value) return null;
+    loading.value = true;
+    try {
+      var q = await _getQuery();
+
+      List<Waste> retVal = q?.toList() ?? [];
+
+      if (retVal.isNotEmpty) {
+        datas.addAll(retVal);
+      }
+    } catch (_) {
+      rethrow;
+    } finally {
+      loading.value = false;
+    }
+    return datas;
+  }
+
+  @override
+  Future<List<Waste>?> refresh() async {
+    if (loading.value) return null;
+    loading.value = true;
+    nextCursor = null;
     var q = await _getQuery();
 
     List<Waste> retVal = q?.toList() ?? [];

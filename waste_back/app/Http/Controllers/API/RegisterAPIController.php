@@ -27,13 +27,8 @@ class RegisterAPIController extends AppBaseController
     public function index(Request $request)
     {
         $query = Register::filter($request->all(["search", ...Register::$searchIn]))
-            ->with('aimag_city:id,name')
-            ->with('bag_horoo:id,name')
-            ->with('comf_user:id,name')
-            ->with('reason:id,name')
+
             ->with('reg_user:id,name')
-            ->with('soum_district:id,name')
-            ->with('status:id,name')
             ->with('attached_images:id,register_id,path')
             ->with('attached_video:id,register_id,path');
 
@@ -47,7 +42,7 @@ class RegisterAPIController extends AppBaseController
 
 
 
-        return $query->orderByDesc('id')->simplePaginate();
+        return $query->orderByDesc('id')->cursorPaginate(null, ['*'], 'cursor', $request->input('next_cursor'));
     }
 
     private function saveFiles(Register $model, $files, $type)

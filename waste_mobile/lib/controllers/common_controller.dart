@@ -42,7 +42,10 @@ class CommonController with Api {
     Constants.aimagCities = decode(res['aimag_cities']);
     Constants.soumDistricts = decode(res['soum_districts']);
     Constants.bagHoroos = decode(res['bag_horoos']);
-
+    Constants.za = double.tryParse(res['statistic'][0]['za']) ?? 0;
+    Constants.mh = double.tryParse(res['statistic'][0]['mh']) ?? 0;
+    Constants.totalAa = res['statistic'][0]['total_za'] ?? 0;
+    Constants.totalMh = res['statistic'][0]['total_mh'] ?? 0;
     loading.value = false;
     return datas;
   }
