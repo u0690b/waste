@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-between px-4 mt-4 sm:px-8">
-    <h2 class="text-2xl text-gray-600">Аймаг/нийслэл жагсаалт</h2>
+    <h2 class="text-2xl text-gray-600 underline font-bold">Аймаг/нийслэл жагсаалт</h2>
     <div class="flex items-center space-x-1 text-xs">
       <router-link to="/" class="font-bold text-indigo-700">Нүүр хуудас</router-link>
       <svg
@@ -18,6 +18,120 @@
         />
       </svg>
       <span class="text-gray-600">Аймаг/нийслэл</span>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 gap-2 px-6 mt-8 sm:grid-cols-5 sm:px-8">
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+      <div class="p-4 bg-green-400">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-12 w-12 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+          />
+        </svg>
+      </div>
+      <div class="px-4 text-gray-700">
+        <h3 class="text-sm tracking-wider">Аймаг Нийслэл</h3>
+        <p class="text-3xl">12,768</p>
+      </div>
+    </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+      <div class="p-4 bg-gray-500">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-12 w-12 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+          />
+        </svg>
+      </div>
+      <div class="px-4 text-gray-700">
+        <h3 class="text-sm tracking-wider">Cум Дүүрэг</h3>
+        <p class="text-3xl">12,768</p>
+      </div>
+    </div>
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+      <div class="p-4 bg-blue-400">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-12 w-12 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+          />
+        </svg>
+      </div>
+      <div class="px-4 text-gray-700">
+        <h3 class="text-sm tracking-wider">Баг Хороо</h3>
+        <p class="text-3xl">39,265</p>
+      </div>
+    </div>
+
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+      <div class="p-4 bg-indigo-400">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-12 w-12 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+          />
+        </svg>
+      </div>
+      <div class="px-4 text-gray-700">
+        <h3 class="text-sm tracking-wider">Төлөв</h3>
+        <p class="text-3xl">142,334</p>
+      </div>
+    </div>
+
+    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
+      <div class="p-4 bg-red-400">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-12 w-12 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+          />
+        </svg>
+      </div>
+      <div class="px-4 text-gray-700">
+        <h3 class="text-sm tracking-wider">Шалтгаан</h3>
+        <p class="text-3xl">34.12%</p>
+      </div>
     </div>
   </div>
   <div class="p-4 mt-8 sm:px-8 sm:py-4">
@@ -46,11 +160,11 @@
             type="search"
             v-model="form.search"
             class="w-full py-2 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-gray-500 focus:ring-gray-500 focus:z-10"
-            placeholder="Search user"
+            placeholder="Аймаг,нийслэл хайх"
           />
         </div>
         <inertia-link
-          class="flex items-center bg-green-500 p-2 text-white rounded text-sm hover:bg-green-600"
+          class="flex items-center bg-blue-500 p-2 text-white rounded text-sm hover:bg-blue-600"
           :href="route('admin.aimag_cities.create')"
         >
           <svg
@@ -72,7 +186,10 @@
       </div>
 
       <admin-table
-        :headers="{ code: 'Аймаг/нийслэл код', name: 'Аймаг/нийслэл нэр' }"
+        :headers="{
+          code: 'Аймаг/нийслэл код',
+          name: 'Аймаг/нийслэл нэр',
+        }"
         :datas="datas"
         url="admin.aimag_cities.edit"
       />

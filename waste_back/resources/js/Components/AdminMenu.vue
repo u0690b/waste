@@ -6,6 +6,13 @@ import {
   KeyIcon,
   MinusSmallIcon,
   PaperClipIcon,
+  BuildingLibraryIcon,
+  WrenchScrewdriverIcon,
+  UserGroupIcon,
+  PhotoIcon,
+  ListBulletIcon,
+  ClipboardDocumentCheckIcon,
+  ChevronRightIcon,
   TrashIcon,
 } from "@heroicons/vue/24/outline";
 import Backdrop from "./Backdrop.vue";
@@ -42,52 +49,57 @@ const menus = ref([
     href: "/",
   },
   {
+    text: "Байгууллага",
+    icon: markRaw(BuildingLibraryIcon),
+    href: route("admin.places.index"),
+  },
+  {
+    text: "Хэрэглэгч",
+    icon: markRaw(UserGroupIcon),
+    href: route("admin.users.index"),
+  },
+  {
     text: "Тохиргоо",
-    icon: markRaw(PaperClipIcon),
+    icon: markRaw(WrenchScrewdriverIcon),
     href: "#",
     children: [
       {
-        text: "Байгууллага",
-        icon: markRaw(MinusSmallIcon),
-        href: route("admin.places.index"),
-      },
-      {
         text: "Шалтгаан",
-        icon: markRaw(MinusSmallIcon),
+        icon: markRaw(ChevronRightIcon),
         href: route("admin.reasons.index"),
       },
       {
         text: "Төлөв",
-        icon: markRaw(MinusSmallIcon),
+        icon: markRaw(ChevronRightIcon),
         href: route("admin.statuses.index"),
       },
 
       {
         text: "Аймаг/нийслэл",
-        icon: markRaw(MinusSmallIcon),
+        icon: markRaw(ChevronRightIcon),
         href: route("admin.aimag_cities.index"),
       },
       {
         text: "Сум/дүүрэг",
-        icon: markRaw(MinusSmallIcon),
+        icon: markRaw(ChevronRightIcon),
         href: route("admin.soum_districts.index"),
       },
       {
         text: "Баг/хороо",
-        icon: markRaw(MinusSmallIcon),
+        icon: markRaw(ChevronRightIcon),
         href: route("admin.bag_horoos.index"),
-      },
-      {
-        text: "Хэрэглэгч",
-        icon: markRaw(MinusSmallIcon),
-        href: route("admin.users.index"),
       },
     ],
   },
 
   {
-    text: "Бүртгэл",
-    icon: markRaw(PaperClipIcon),
+    text: "Зөрчил бүртгэл",
+    icon: markRaw(ClipboardDocumentCheckIcon),
+    href: route("admin.registers.index"),
+  },
+  {
+    text: "Файлын сан",
+    icon: markRaw(PhotoIcon),
     href: route("admin.registers.index"),
   },
 ]);
