@@ -77,6 +77,32 @@ class RegisterController extends Controller
     }
 
     /**
+     * Show the form for editing the specified Register.
+     *
+     * @param Register $register
+     *
+     * @return Response
+     */
+    public function show(Register $register)
+    {
+        $register
+            ->load('aimag_city:id,name')
+            ->load('bag_horoo:id,name')
+            ->load('comf_user:id,name')
+            ->load('reason:id,name')
+            ->load('reg_user:id,name')
+            ->load('soum_district:id,name')
+            ->load('status:id,name')
+            ->load('attached_images:id,register_id,path')
+            ->load('attached_video:id,register_id,path');
+        return Inertia::render('Admin/registers/Show', [
+            'data' =>  $register,
+            'host' => config('app.url'),
+        ]);
+    }
+
+
+    /**
      * Update the specified Register in storage.
      *
      * @param Register $register

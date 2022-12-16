@@ -2,6 +2,7 @@
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import { ref } from 'vue'
+import Modal from './Modal.vue';
 
 
 
@@ -23,7 +24,7 @@ function setIsOpen(value) {
         <Carousel>
             <Slide v-for="slide in item.attached_images" :key="slide">
                 <div class="carousel__item">
-                    <img :src="slide.path" alt="">
+                    <img :src="slide.path" alt="" @click="emit('select', slide.path)">
                 </div>
             </Slide>
 
@@ -52,7 +53,7 @@ function setIsOpen(value) {
             <slot></slot>
             <div v-if="!hideMoreButton" class="flex justify-between items-center">
                 <div>
-                    <button @click="emit('select', item)"
+                    <inertia-link :href="route('admin.registers.show', item.id)"
                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Дэлгэрэнгүй
                         <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
@@ -61,7 +62,7 @@ function setIsOpen(value) {
                                 d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                    </button>
+                    </inertia-link>
                 </div>
             </div>
 

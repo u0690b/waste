@@ -2,20 +2,7 @@
   <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-6xl mx-auto">
     <RegisterCard v-for="item in datas.data" :item="item" @select="select"></RegisterCard>
     <Modal :show="!!selected" @close="() => selected = null">
-      <RegisterCard :item="selected" @select="select" hideMoreButton>
-        <h5 class=" text-xs text-black ">Бүртгэсэн хүн:</h5>
-        <p>- {{ selected.reg_user.name }}</p>
-        <h5 v-if="selected.resolve_desc" class=" text-xs text-black ">Шийдвэрлэсэн хүн:</h5>
-        <p v-if="selected.resolve_desc" class="mb-3  font-normal text-gray-700 dark:text-gray-400">- {{
-            selected.resolve_desc
-        }}</p>
-        <video v-if="selected.attached_video?.path" width="320" height="240" controls>
-          <source :src="selected.attached_video.path">
-
-          <a :href="selected.attached_video.path"> Download the video.</a>
-
-        </video>
-      </RegisterCard>
+      <img :src="selected" alt="">
     </Modal>
   </div>
 </template>
@@ -25,8 +12,9 @@ import { ref } from "vue";
 import Icon from "./Icon.vue";
 import Modal from "./Modal.vue";
 import RegisterCard from "./RegisterCard.vue";
+import ShowMapPoint from "./ShowMapPoint.vue";
 export default {
-  components: { Icon, RegisterCard, Modal },
+  components: { Icon, RegisterCard, Modal, ShowMapPoint },
   props: {
     headers: { type: Object, required: true },
     datas: { type: Object, required: true },
