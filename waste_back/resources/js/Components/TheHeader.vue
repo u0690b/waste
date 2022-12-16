@@ -8,14 +8,14 @@
     </button>
     <Menu as="div" class="relative">
       <MenuButton class="flex items-center space-x-2 px-2 py-3 text-sm hover:bg-gray-200 focus:outline-none">
-        <img class="h-8 w-8 rounded-full"
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+        <img class="h-8 w-8 rounded-full" :src="`https://ui-avatars.com/api/?name=${$page.props.auth.user.name}`"
           alt="" />
-        <span>John Doe</span>
+        <span> {{ $page.props.auth.user.name }}</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24"
           stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
+
       </MenuButton>
       <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95"
         enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75"
@@ -41,8 +41,9 @@
             </MenuItem>
           </div>
           <MenuItem v-slot="{ active }">
-          <inertia-link :to="{ name: 'login' }"
-            :class="[active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-gray-700']">Sign out</inertia-link>
+          <inertia-link :href="route('logout')" method="post" as="button"
+            :class="[active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-gray-700']">Log
+            Out</inertia-link>
           </MenuItem>
         </MenuItems>
       </transition>
