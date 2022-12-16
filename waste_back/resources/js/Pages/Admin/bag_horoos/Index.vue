@@ -9,75 +9,7 @@
       <span class="text-gray-600">Баг/хороо</span>
     </div>
   </div>
-  <div class="grid grid-cols-1 gap-2 px-6 mt-8 sm:grid-cols-5 sm:px-8">
-    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
-      <div class="p-4 bg-green-400">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-        </svg>
-      </div>
-      <div class="px-4 text-gray-700">
-        <h3 class="text-sm tracking-wider">Аймаг Нийслэл</h3>
-        <p class="text-3xl">12,768</p>
-      </div>
-    </div>
-    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
-      <div class="p-4 bg-gray-500">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-        </svg>
-      </div>
-      <div class="px-4 text-gray-700">
-        <h3 class="text-sm tracking-wider">Cум Дүүрэг</h3>
-        <p class="text-3xl">12,768</p>
-      </div>
-    </div>
-    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
-      <div class="p-4 bg-blue-400">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-        </svg>
-      </div>
-      <div class="px-4 text-gray-700">
-        <h3 class="text-sm tracking-wider">Баг Хороо</h3>
-        <p class="text-3xl">39,265</p>
-      </div>
-    </div>
-
-    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
-      <div class="p-4 bg-indigo-400">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-        </svg>
-      </div>
-      <div class="px-4 text-gray-700">
-        <h3 class="text-sm tracking-wider">Төлөв</h3>
-        <p class="text-3xl">142,334</p>
-      </div>
-    </div>
-
-    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
-      <div class="p-4 bg-red-400">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
-        </svg>
-      </div>
-      <div class="px-4 text-gray-700">
-        <h3 class="text-sm tracking-wider">Шалтгаан</h3>
-        <p class="text-3xl">34.12%</p>
-      </div>
-    </div>
-  </div>
+  <SharedState></SharedState>
   <div class="p-4 mt-8 sm:px-8 sm:py-4">
     <div class="p-4 bg-white rounded">
       <div class="mb-6 flex justify-between items-center">
@@ -122,6 +54,7 @@ import SearchFilter from "@/Components/SearchFilter.vue";
 import debounce from "lodash/debounce";
 import AdminTable from "@/Components/AdminTable.vue";
 import MySelect from "@/Components/MySelect.vue";
+import SharedState from "@/Components/SharedState.vue";
 export default {
   metaInfo: { title: "Баг/хороо" },
   components: {
@@ -129,6 +62,7 @@ export default {
     SearchFilter,
     AdminTable,
     MySelect,
+    SharedState
   },
   layout: Layout,
   props: {

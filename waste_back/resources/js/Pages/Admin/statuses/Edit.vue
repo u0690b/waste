@@ -1,40 +1,20 @@
 <template>
   <div>
     <h1 class="mb-8 font-bold text-3xl">
-      <inertia-link
-        class="text-indigo-400 hover:text-indigo-600"
-        :href="route('admin.statuses.index')"
-        >Төлөв</inertia-link
-      >
+      <inertia-link class="text-indigo-400 hover:text-indigo-600"
+        :href="route('admin.statuses.index')">Төлөв</inertia-link>
       <span class="text-indigo-400 font-medium">/</span> засах
       {{ title }}
     </h1>
     <div class="bg-white rounded shadow max-w-3x max-w-3xl">
       <form @submit.prevent="submit">
         <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-          <MyInput
-            v-model="form.name"
-            type="text"
-            :error="errors.name"
-            class="pr-6 pb-8 w-full lg:w-1/2"
-            label="Төлөв"
-          />
+          <MyInput v-model="form.name" type="text" :error="errors.name" class="pr-6 pb-8 w-full lg:w-1/2"
+            label="Төлөв" />
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
-          <button
-            class="text-red-600 hover:underline"
-            tabindex="-1"
-            type="button"
-            @click="destroy"
-          >
-            Устгах
-          </button>
-          <loading-button
-            :loading="form.processing"
-            class="btn-indigo ml-auto"
-            type="submit"
-            >Засах</loading-button
-          >
+
+          <loading-button :loading="form.processing" class="btn-indigo ml-auto" type="submit">Засах</loading-button>
         </div>
       </form>
     </div>
