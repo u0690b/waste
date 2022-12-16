@@ -2,7 +2,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/models/model.dart';
 
 class Constants {
-  static String host = 'http://192.168.10.36:8000';
+  static String host = 'http://103.17.108.190';
   static NameModel Function(NameModel, NameModel) combine = (element, value) =>
       element.updated_at != null &&
               value.updated_at != null &&
@@ -23,7 +23,7 @@ class Constants {
     if (value == null || value.isEmpty) {
       return;
     }
-
+    _places = value;
     GetStorage().write('places', value.map((e) => e.toJson()).toList());
 
     GetStorage().write(
@@ -45,7 +45,7 @@ class Constants {
     if (value == null || value.isEmpty) {
       return;
     }
-
+    _reasons = value;
     GetStorage().write('reasons', value.map((e) => e.toJson()).toList());
     GetStorage().write(
       'reasons_date',
@@ -66,7 +66,7 @@ class Constants {
     if (value == null || value.isEmpty) {
       return;
     }
-
+    _status = value;
     GetStorage().write('status', value.map((e) => e.toJson()).toList());
     GetStorage().write(
       'statuses_date',
@@ -87,7 +87,7 @@ class Constants {
     if (value == null || value.isEmpty) {
       return;
     }
-
+    _aimagCities = value;
     GetStorage().write('aimagCities', value.map((e) => e.toJson()).toList());
     GetStorage().write(
       'aimag_cities_date',
@@ -108,7 +108,7 @@ class Constants {
     if (value == null || value.isEmpty) {
       return;
     }
-
+    _soumDistricts = value;
     GetStorage().write('soumDistricts', value.map((e) => e.toJson()).toList());
     GetStorage().write(
       'soum_districts_date',
@@ -129,7 +129,7 @@ class Constants {
     if (value == null || value.isEmpty) {
       return;
     }
-
+    _bagHoroos = value;
     GetStorage().write('bagHoroos', value.map((e) => e.toJson()).toList());
     GetStorage().write(
       'bag_horoos_date',
@@ -146,7 +146,7 @@ class Constants {
     if (value == null) {
       return;
     }
-
+    _mh = value;
     GetStorage().write('mh', value);
   }
 
@@ -159,7 +159,7 @@ class Constants {
     if (value == null) {
       return;
     }
-
+    _totalMh = value;
     GetStorage().write('totalMh', value);
   }
 
@@ -172,7 +172,7 @@ class Constants {
     if (value == null) {
       return;
     }
-
+    _totalAa = value;
     GetStorage().write('totalAa', value);
   }
 
@@ -185,7 +185,7 @@ class Constants {
     if (value == null) {
       return;
     }
-
+    _za = value;
     GetStorage().write('za', value);
   }
 }

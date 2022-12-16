@@ -229,11 +229,6 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                 // Үйл Ажиллагааны чиглэл
                 TextFormField(
                   maxLength: 100,
-                  validator: (value) {
-                    return (value == null || value.isEmpty)
-                        ? 'Үйл Ажиллагааны чиглэл хоосон байна'
-                        : null;
-                  },
                   initialValue: chiglel,
                   onChanged: (value) => chiglel = value,
                   decoration: InputDecoration(

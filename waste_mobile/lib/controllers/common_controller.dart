@@ -1,22 +1,16 @@
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/models/model.dart';
 import 'package:waste_mobile/utils/contants.dart';
 
 class CommonController with Api {
-  ValueNotifier<bool> loading = ValueNotifier<bool>(false);
-
   String? nextCursor;
 
   final RxList<NameModel> datas = <NameModel>[].obs;
 
   Future<List<NameModel>?> loadData() async {
-    if (loading.value) return null;
-    loading.value = true;
-
     final res = await fetch(
       '/commons',
       'GET',
@@ -42,11 +36,10 @@ class CommonController with Api {
     Constants.aimagCities = decode(res['aimag_cities']);
     Constants.soumDistricts = decode(res['soum_districts']);
     Constants.bagHoroos = decode(res['bag_horoos']);
-    Constants.za = double.tryParse(res['statistic'][0]['za']) ?? 0;
-    Constants.mh = double.tryParse(res['statistic'][0]['mh']) ?? 0;
+    Constants.za = double.tryParse(res['statistic'][0]['za'] ?? '0') ?? 0;
+    Constants.mh = double.tryParse(res['statistic'][0]['mh'] ?? '0') ?? 0;
     Constants.totalAa = res['statistic'][0]['total_za'] ?? 0;
     Constants.totalMh = res['statistic'][0]['total_mh'] ?? 0;
-    loading.value = false;
     return datas;
   }
 }

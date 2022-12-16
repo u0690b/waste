@@ -8,7 +8,7 @@ class Waste {
   late int id;
   late String name;
   String? register;
-  late String chiglel;
+  String? chiglel;
   late int aimagCityId;
   late int soumDistrictId;
   late int bagHorooId;

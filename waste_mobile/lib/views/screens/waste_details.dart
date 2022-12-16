@@ -142,7 +142,7 @@ class _WasteDetailsState extends State<WasteDetails> {
                       dense: true,
                       style: ListTileStyle.drawer,
                       title: const Text("Үйл Ажиллагааны чиглэл:"),
-                      subtitle: Text(waste.chiglel),
+                      subtitle: Text(waste.chiglel ?? ''),
                     ),
                     ListTile(
                       dense: true,
@@ -172,14 +172,13 @@ class _WasteDetailsState extends State<WasteDetails> {
                     ListTile(
                       dense: true,
                       style: ListTileStyle.drawer,
-                      title:
-                          const Text("Зөрчсөн хууль тогтоомжийн зүйл, заалт:"),
-                      subtitle: Text(waste.zuilZaalt ?? ''),
+                      title: const Text("Гаргасан зөрчилийн байдал:"),
+                      subtitle: Text(waste.description),
                     ),
                     ListTile(
                       dense: true,
                       style: ListTileStyle.drawer,
-                      title: const Text("Зөрчлийн тэмэдэглэл бичсэн:"),
+                      title: const Text("Бүртгэсэн хүн:"),
                       subtitle: Text(waste.regUser.name),
                     ),
                     if (waste.resolveDesc != null)

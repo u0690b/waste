@@ -95,6 +95,8 @@ class _HomeViewState extends State<HomeView> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const WaitingWidget();
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
             } else {
               return SafeArea(
                 child: Stack(
@@ -191,8 +193,8 @@ class _HomeViewState extends State<HomeView> {
                                         ],
                                       ),
                                       const SizedBox(height: 15.0),
-                                      GestureDetector(
-                                        onTap: () => Get.to(() =>
+                                      TextButton(
+                                        onPressed: () => Get.to(() =>
                                             const LocalWasteList(
                                                 title: 'Илгээгээгүй')),
                                         child: const TaskColumn(
@@ -205,8 +207,8 @@ class _HomeViewState extends State<HomeView> {
                                       const SizedBox(
                                         height: 15.0,
                                       ),
-                                      GestureDetector(
-                                        onTap: isOnline
+                                      TextButton(
+                                        onPressed: isOnline
                                             ? () => Get.to(() =>
                                                 const WasteList(
                                                     title: 'Илгээсэн'))
@@ -220,8 +222,8 @@ class _HomeViewState extends State<HomeView> {
                                         ),
                                       ),
                                       const SizedBox(height: 15.0),
-                                      GestureDetector(
-                                        onTap: isOnline
+                                      TextButton(
+                                        onPressed: isOnline
                                             ? () => Get.to(() =>
                                                 const WasteList(
                                                     title: 'Шийдвэрлэгдсэн'))

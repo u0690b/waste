@@ -104,7 +104,7 @@ mixin Api {
         text = body['message'];
       }
 
-      Get.defaultDialog(
+      await Get.defaultDialog(
           middleText: text,
           textConfirm: 'OK',
           confirmTextColor: Colors.white,
@@ -122,7 +122,7 @@ mixin Api {
       if (onError != null) {
         onError(text);
       } else {
-        Get.defaultDialog(
+        await Get.defaultDialog(
             middleText: text,
             textConfirm: 'OK',
             confirmTextColor: Colors.white,
