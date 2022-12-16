@@ -19,7 +19,7 @@ use Inertia\Inertia;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [IndexController::class, 'index']);
-    Route::get('/map', [IndexController::class, 'map']);
+    Route::get('/map', [IndexController::class, 'map'])->name('register.map');
 
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');

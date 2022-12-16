@@ -31,12 +31,12 @@ class IndexController extends Controller
         if (Request::has('only')) {
             return json_encode($registers->paginate(Request::input('per_page'), ['id', 'name']));
         }
+
         return Inertia::render('Admin/registers/Index', [
             'filters' => Request::only(["search", ...Register::$searchIn]),
             'datas' => $registers
                 ->paginate(Request::input('per_page'))
-                ->withQueryString()
-                ->through(fn ($row) => $row->only('id', 'name', 'register', 'chiglel', 'aimag_city', 'aimag_city_id', 'soum_district', 'soum_district_id', 'bag_horoo', 'bag_horoo_id', 'address', 'description', 'reason', 'reason_id', 'zuil_zaalt', 'resolve_desc', 'long', 'lat', 'reg_user', 'reg_user_id', 'comf_user', 'comf_user_id', 'status', 'status_id')),
+                ->withQueryString(),
             'host' => config('app.url'),
         ]);
     }

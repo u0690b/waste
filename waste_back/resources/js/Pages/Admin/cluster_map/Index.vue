@@ -22,9 +22,9 @@
                     <ol-source-vector>
 
 
-                        <ol-feature v-for="index in 100" :key="index" :properties="{ id: index, name: 'haha' + index }">
-                            <ol-geom-point
-                                :coordinates="[getRandomInRange(105.924741, 107.924741, 3), getRandomInRange(46.9173283, 48.9173283, 3)]"></ol-geom-point>
+                        <ol-feature v-for="index in myFeatures" :key="index"
+                            :properties="{ id: index, name: 'haha' + index }">
+                            <ol-geom-point :coordinates="index"></ol-geom-point>
                         </ol-feature>
                     </ol-source-vector>
 
@@ -75,7 +75,7 @@ export default {
         const zoom = ref(13.8)
         const rotation = ref(0)
         const selectedCityName = ref()
-
+        const clusterRef = ref(null)
         const overrideStyleFunction = (feature, style) => {
 
             let clusteredFeatures = feature.get('features');
@@ -91,7 +91,7 @@ export default {
         }
 
         const featureSelected = (event) => {
-            debugger
+
             if (event.selected.length == 1) {
 
                 console.log(event.selected[0].get('id'));
@@ -110,6 +110,7 @@ export default {
             center,
             projection,
             zoom,
+            clusterRef,
             rotation,
             featureSelected,
             overrideStyleFunction,
@@ -132,7 +133,7 @@ export default {
     },
     computed: {
         myFeatures() {
-            return this.datas.data.map(v => [v.lat, v.lng])
+            return this.datas.data.map(v => [v.long, v.lat])
         }
     },
     watch: {
