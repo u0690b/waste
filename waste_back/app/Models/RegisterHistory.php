@@ -65,7 +65,7 @@ class RegisterHistory extends Model
     use HasFactory;
 
     public $table = 'register_histories';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -205,15 +205,15 @@ class RegisterHistory extends Model
     ];
 
     /**
-    * Filter Model
-    * @param Array $filters
-    * @return App\Models\RegisterHistory
-    */
+     * Filter Model
+     * @param Array $filters
+     * @return App\Models\RegisterHistory
+     */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
             $this->buildFilter($query, $filters, RegisterHistory::$searchIn);
         }
-        return $this;
+        return $query;
     }
 }

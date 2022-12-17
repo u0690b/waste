@@ -25,14 +25,7 @@
             class="w-full py-2 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-gray-500 focus:ring-gray-500 focus:z-10"
             placeholder="Аймаг,нийслэл хайх" />
         </div>
-        <inertia-link class="flex items-center bg-blue-500 p-2 text-white rounded text-sm hover:bg-blue-600"
-          :href="route('admin.aimag_cities.create')">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-          <span class="hidden md:inline">Бүртгэх</span>
-        </inertia-link>
+
       </div>
 
       <admin-table :headers="{

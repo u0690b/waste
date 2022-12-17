@@ -20,16 +20,24 @@
       <div class="bg-white rounded w-2/5">
         <form @submit.prevent="submit">
           <div class="p-8 -mr-6 -mb-8 flex-wrap">
+            <MyInput v-model="form.username" disabled :error="errors.username" label="Нэвтрэх нэр" />
             <MyInput v-model="form.name" :error="errors.name" label="Хэрэглэгчийн нэр" />
-            <MyInput v-model="form.username" :error="errors.username" label="Нэвтрэх нэр" />
+            <MyInput v-model="form.phone" :error="errors.phone" label="Утас" />
             <MyInput v-model="form.password" type="password" autocomplete="new-password" :error="errors.password"
               label="Нууц үг" />
+
             <MySelect :value="data.aimag_city" :error="errors.aimag_city_id" label="Аймаг/нийслэл"
-              :url="`/admin/aimag_cities`" @changeId="(id) => (form.aimag_city_id = id)" />
-            <MySelect :value="data.soum_district" :error="errors.soum_district_id" label="Сум/дүүрэг"
-              :url="`/admin/soum_districts`" @changeId="(id) => (form.soum_district_id = id)" />
-            <MySelect :value="data.bag_horoo" :error="errors.bag_horoo_id" label="Баг/хороо" :url="`/admin/bag_horoos`"
+              :url="`/admin/aimag_cities`"
+              @changeId="(id) => { form.aimag_city_id = id; form.soum_district_id = null; form.bag_horoo_id = null }" />
+
+            <MySelect v-if="form.aimag_city_id" :value="data.soum_district" :error="errors.soum_district_id"
+              label="Сум/дүүрэг" :url="`/admin/soum_districts?aimag_city_id=${form.aimag_city_id}`"
+              @changeId="(id) => (form.soum_district_id = id, form.bag_horoo_id = null)" />
+
+            <MySelect v-if="form.soum_district_id" :value="data.bag_horoo" :error="errors.bag_horoo_id"
+              label="Баг/хороо" :url="`/admin/bag_horoos?soum_district_id=${form.soum_district_id}`"
               @changeId="(id) => (form.bag_horoo_id = id)" />
+
             <MySelect v-model="form.roles" :modelKey="true" :storedOptions="roles" :error="errors.roles" label="Эрх"
               :filterable="true" />
           </div>
@@ -79,6 +87,7 @@ export default {
       form: this.$inertia.form({
         id: this.data.id,
         name: this.data.name,
+        phone: this.data.phone,
         username: this.data.username,
         password: this.data.password,
         aimag_city_id: this.data.aimag_city_id,

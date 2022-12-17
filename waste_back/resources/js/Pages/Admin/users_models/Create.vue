@@ -25,11 +25,14 @@
               :error="errors.password_confirmation" label="Нууц үг баталгаажуулалт" />
 
             <MySelect :value="null" :error="errors.aimag_city_id" label="Аймаг/нийслэл" :url="`/admin/aimag_cities`"
-              @changeId="(id) => (form.aimag_city_id = id)" />
-            <MySelect :value="null" :error="errors.soum_district_id" label="Сум/дүүрэг" :url="`/admin/soum_districts`"
-              @changeId="(id) => (form.soum_district_id = id)" />
+              @changeId="(id) => { form.aimag_city_id = id; form.soum_district_id = null; form.bag_horoo_id = null }" />
 
-            <MySelect :value="null" :error="errors.bag_horoo_id" label="Баг/хороо" :url="`/admin/bag_horoos`"
+            <MySelect v-if="form.aimag_city_id" :value="null" :error="errors.soum_district_id" label="Сум/дүүрэг"
+              :url="`/admin/soum_districts?aimag_city_id=${form.aimag_city_id}`"
+              @changeId="(id) => (form.soum_district_id = id, form.bag_horoo_id = null)" />
+
+            <MySelect v-if="form.soum_district_id" :value="null" :error="errors.bag_horoo_id" label="Баг/хороо"
+              :url="`/admin/bag_horoos?soum_district_id=${form.soum_district_id}`"
               @changeId="(id) => (form.bag_horoo_id = id)" />
             <MySelect v-model="form.roles" :modelKey="true" :storedOptions="roles" :error="errors.roles" label="Эрх"
               :filterable="true" />
@@ -99,6 +102,7 @@ export default {
       ],
     };
   },
+
   methods: {
     submit() {
       this.form.post(this.route("admin.users.store"));

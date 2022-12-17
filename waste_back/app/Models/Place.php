@@ -35,7 +35,7 @@ class Place extends Model
     use HasFactory;
 
     public $table = 'places';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -83,15 +83,15 @@ class Place extends Model
     ];
 
     /**
-    * Filter Model
-    * @param Array $filters
-    * @return App\Models\Place
-    */
+     * Filter Model
+     * @param Array $filters
+     * @return App\Models\Place
+     */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
             $this->buildFilter($query, $filters, Place::$searchIn);
         }
-        return $this;
+        return $query;
     }
 }

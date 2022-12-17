@@ -47,7 +47,7 @@ class SoumDistrict extends Model
     use HasFactory;
 
     public $table = 'soum_districts';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -135,15 +135,15 @@ class SoumDistrict extends Model
     ];
 
     /**
-    * Filter Model
-    * @param Array $filters
-    * @return App\Models\SoumDistrict
-    */
+     * Filter Model
+     * @param Array $filters
+     * @return App\Models\SoumDistrict
+     */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
             $this->buildFilter($query, $filters, SoumDistrict::$searchIn);
         }
-        return $this;
+        return $query;
     }
 }

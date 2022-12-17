@@ -1,22 +1,23 @@
 <script setup>
-import AdminTable from "@/Components/AdminTable.vue";
-import MySelect from "@/Components/MySelect.vue";
-import Pagination from "@/Components/Pagination.vue";
-import SearchFilter from "@/Components/SearchFilter.vue";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import MyInput from "@/Components/MyInput.vue";
+import Admin from "@/Layouts/Admin.vue";
 import { Inertia } from "@inertiajs/inertia";
 import { Head } from "@inertiajs/inertia-vue3";
 import debounce from "lodash/debounce";
 import mapValues from "lodash/mapValues";
 import pickBy from "lodash/pickBy";
-import { reactive, watch } from "vue";
+import { reactive, watch, computed } from "vue";
+import VueApexCharts from "vue3-apexcharts";
 
 const props = defineProps({
   datas: Object,
+  chart: [Array],
   filters: [Object, Array],
   host: String,
 });
-let form = reactive({});
+let form = reactive({
+  ...props.filters
+});
 const reset = () => (form = mapValues(form, () => null));
 
 watch(
@@ -26,89 +27,202 @@ watch(
   }, 150),
   { deep: true }
 );
-const tableHeader = {
-  long: "Уртраг",
-  lat: "Өргөрөг",
-  description: "Тайлбар",
-  resolve_desc: "Тэмдэглэл",
-  "reason.name": "Шалтгаан",
-  reason_id: "Шалтгаан",
-  "status.name": "Төлөв",
-  status_id: "Төлөв",
-  "aimag_city.name": "Аймаг,Нийслэл",
-  aimag_city_id: "Аймаг,Нийслэл",
-  "soum_district.name": "Сум,Дүүрэг",
-  soum_district_id: "Сум,Дүүрэг",
-  "bag_horoo.name": "Баг,Хороо",
-  bag_horoo_id: "Баг,Хороо",
-  address: "Хаяг",
-  "user.name": "Бүртгэсэн хүн",
-  user_id: "Бүртгэсэн хүн",
-};
+
+
+
+
+
+
+
+
+
+
+const dateOptions = computed(() => {
+  const ognooLabels = props.chart.reduce((r, a) => {
+    if (!r.includes(a.ognoo))
+      r.push(a.ognoo)
+    return r
+  }, [])
+
+  return {
+    series: props.chart.reduce(function (r, a) {
+      let index = r.findIndex(v => v.name == a.reason);
+
+      if (index < 0) {
+        let c = {
+          name: a.reason,
+          data: ognooLabels.map(x => ({ x, y: 0 }))
+        }
+        index = r.length
+        r.push(c);
+      }
+      let yIndex = r[index].data.findIndex(v => v.x == a.ognoo);
+
+
+      if (yIndex < 0) {
+        r[index].data.push({ x: a.ognoo, y: a.niit })
+      } else {
+        r[index].data[yIndex].y = r[index].data[yIndex].y + a.niit
+      }
+
+      return r;
+    }, []),
+    chartOptions: {
+      chart: {
+        type: 'bar',
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '55%',
+          endingShape: 'rounded'
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent']
+      },
+      xaxis: {
+
+      },
+      yaxis: {
+        title: {
+          text: 'Нийт'
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return "Нийт: " + val
+          }
+        }
+      }
+    }
+  }
+})
+
+
+
+const regionOptions = computed(() => {
+  const regionChart = props.chart.reduce(function (r, a) {
+    r[a.region] = r[a.region] || 0
+    r[a.region] = r[a.region] + a.niit;
+    return r;
+  }, {});
+  return {
+    chartOptions: {
+      xaxis: {
+        categories: Object.keys(regionChart),
+      },
+    },
+    series: [
+      {
+        name: "series-1",
+        data: Object.values(regionChart),
+      },
+    ],
+  };
+})
+
+const donut = computed(() => {
+  const orgChart = props.chart.reduce(function (r, a) {
+    r[a.org] = r[a.org] || 0
+    r[a.org] = r[a.org] + a.niit;
+    return r;
+  }, {});
+  return {
+    series: Object.values(orgChart),
+    chartOptions: {
+      chart: {
+        type: 'donut',
+      },
+
+      labels: Object.keys(orgChart),
+      legend: {
+        position: 'top',
+
+      }
+    },
+  }
+})
+
+const statDonut = computed(() => {
+  const statChart = props.chart.reduce(function (r, a) {
+    r[a.stat] = r[a.stat] || 0
+    r[a.stat] = r[a.stat] + a.niit;
+    return r;
+  }, {});
+  return {
+    series: Object.values(statChart),
+    chartOptions: {
+      chart: {
+        type: 'donut',
+      },
+
+      labels: Object.keys(statChart),
+      plotOptions: {
+        legend: {
+          position: 'top'
+        }
+      },
+      responsive: [{
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 300
+          },
+          legend: {
+            position: 'left'
+          }
+        }
+      }],
+      legend: {
+        position: 'top',
+
+      }
+    },
+  }
+})
 </script>
 
 <template>
+
   <Head title="Үндсэн хуудас" />
+  <Admin>
+    <div>
+      <div class="ml-12 flex gap-2">
+        <MyInput v-model="form.start" type="date" label="Эхлэх"></MyInput>
+        <MyInput v-model="form.end" type="date" label="Дуусах"></MyInput>
 
-  <AuthenticatedLayout>
-    <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Үндсэн хуудас</h2>
-    </template>
+      </div>
 
-    <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white max-w-3x shadow-sm sm:rounded-lg">
-          <div class="p-6 text-gray-900">
-            <h1 class="mb-8 font-bold text-3xl">Хог хаягдлын бүртгэл</h1>
-            <div class="mb-6 flex justify-between items-center">
-              <SearchFilter
-                v-model="form.search"
-                class="w-full max-w-md mr-4"
-                @reset="reset"
-              >
-                <MySelect
-                  v-model="form.reason_id"
-                  label="Шалтгаан"
-                  :url="`/admin/reasons`"
-                />
-                <MySelect
-                  v-model="form.status_id"
-                  label="Төлөв"
-                  :url="`/admin/statuses`"
-                />
-                <MySelect
-                  v-model="form.aimag_city_id"
-                  label="Аймаг,Нийслэл"
-                  :url="`/admin/aimag_cities`"
-                />
-                <MySelect
-                  v-model="form.soum_district_id"
-                  label="Сум,Дүүрэг"
-                  :url="`/admin/soum_districts`"
-                />
-                <MySelect
-                  v-model="form.bag_horoo_id"
-                  label="Баг,Хороо"
-                  :url="`/admin/bag_horoos`"
-                />
-                <MySelect
-                  v-model="form.user_id"
-                  label="Бүртгэсэн Хүн"
-                  :url="`/admin/users`"
-                />
-              </SearchFilter>
-            </div>
-            <div class="bg-white rounded shadow">
-              <AdminTable
-                :headers="tableHeader"
-                :datas="datas"
-                url="admin.registers.edit"
-              />
-            </div>
-            <Pagination :links="datas.links" />
+      <div class="max-w-6xl p-12">
+        <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="dateOptions.chartOptions"
+          :series="dateOptions.series">
+        </VueApexCharts>
+        <div class=" mb-8 gap-8  grid grid-cols-2">
+          <div>
+            <VueApexCharts class="bg-white p-4" type="pie" :options="donut.chartOptions" :series="donut.series">
+            </VueApexCharts>
+          </div>
+          <div>
+            <VueApexCharts class="bg-white p-4" type="pie" :options="statDonut.chartOptions" :series="statDonut.series">
+            </VueApexCharts>
           </div>
         </div>
+        <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="regionOptions.chartOptions"
+          :series="regionOptions.series">
+        </VueApexCharts>
+
       </div>
     </div>
-  </AuthenticatedLayout>
+  </Admin>
 </template>

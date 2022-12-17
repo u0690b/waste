@@ -174,6 +174,6 @@ class UsersModel extends Model
         if (count($filters)) {
             $this->buildFilter($query, $filters, UsersModel::$searchIn);
         }
-        return $this;
+        return $query;
     }
 }

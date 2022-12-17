@@ -45,7 +45,7 @@ class BagHoroo extends Model
     use HasFactory;
 
     public $table = 'bag_horoos';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -125,15 +125,15 @@ class BagHoroo extends Model
     ];
 
     /**
-    * Filter Model
-    * @param Array $filters
-    * @return App\Models\BagHoroo
-    */
+     * Filter Model
+     * @param Array $filters
+     * @return App\Models\BagHoroo
+     */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
             $this->buildFilter($query, $filters, BagHoroo::$searchIn);
         }
-        return $this;
+        return $query;
     }
 }

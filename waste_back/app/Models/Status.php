@@ -104,6 +104,6 @@ class Status extends Model
         if (count($filters)) {
             $this->buildFilter($query, $filters, Status::$searchIn);
         }
-        return $this;
+        return $query;
     }
 }

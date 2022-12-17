@@ -23,7 +23,7 @@ class AttachedFile extends Model
     use HasFactory;
 
     public $table = 'attached_files';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -79,15 +79,15 @@ class AttachedFile extends Model
     ];
 
     /**
-    * Filter Model
-    * @param Array $filters
-    * @return App\Models\AttachedFile
-    */
+     * Filter Model
+     * @param Array $filters
+     * @return App\Models\AttachedFile
+     */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
             $this->buildFilter($query, $filters, AttachedFile::$searchIn);
         }
-        return $this;
+        return $query;
     }
 }

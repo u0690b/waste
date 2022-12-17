@@ -1,11 +1,16 @@
 <template>
-  <header class="flex justify-between bg-white border-b-2 px-4 sm:justify-end sm:px-6">
+  <header class="flex justify-between items-center gap-5 bg-white border-b-2 px-4 sm:justify-end sm:px-6">
+    <div>
+      <a href="/app-release.apk" target="_blank" class="rounded bg-blue-500 px-3 py-1 text-white">Андройд програм
+        татах</a>
+    </div>
     <button class="sm:hidden">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24"
         stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>
+
     <Menu as="div" class="relative">
       <MenuButton class="flex items-center space-x-2 px-2 py-3 text-sm hover:bg-gray-200 focus:outline-none">
         <img class="h-8 w-8 rounded-full" :src="`https://ui-avatars.com/api/?name=${$page.props.auth.user.name}`"
@@ -32,16 +37,16 @@
             divide-y divide-gray-200
             focus:outline-none
           ">
-          <div>
+          <!-- <div>
             <MenuItem v-slot="{ active }">
             <a href="#" :class="[active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-gray-700']">Your Profile</a>
             </MenuItem>
             <MenuItem v-slot="{ active }">
             <a href="#" :class="[active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</a>
             </MenuItem>
-          </div>
+          </div> -->
           <MenuItem v-slot="{ active }">
-          <inertia-link :href="route('logout')" method="post" as="button"
+          <inertia-link :href="route('logout')" method="post"
             :class="[active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-gray-700']">Log
             Out</inertia-link>
           </MenuItem>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Register;
+use Date;
+use DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
@@ -18,25 +20,45 @@ class IndexController extends Controller
      */
     public function index()
     {
-        $registers = Register::filter(Request::all(["search", ...Register::$searchIn]))
-            ->with('aimag_city:id,name')
-            ->with('bag_horoo:id,name')
-            ->with('comf_user:id,name')
-            ->with('reason:id,name')
-            ->with('reg_user:id,name')
-            ->with('soum_district:id,name')
-            ->with('status:id,name')
-            ->with('attached_images:id,register_id,path')
-            ->with('attached_video:id,register_id,path');
-        if (Request::has('only')) {
-            return json_encode($registers->paginate(Request::input('per_page'), ['id', 'name']));
+        Request::validate([
+            'start' => 'sometimes|date',
+            'end' => 'sometimes|date',
+        ]);
+        if (Request::has('start')) {
+            $start = Request::input('start');
+        } else {
+            $start = Date::now()->startOfMonth()->toDateString();
+        }
+        if (Request::has('end')) {
+            $end = Request::input('end');
+        } else {
+
+            $end = Date::now()->toDateString();
         }
 
-        return Inertia::render('Admin/registers/Index', [
-            'filters' => Request::only(["search", ...Register::$searchIn]),
-            'datas' => $registers
-                ->paginate(Request::input('per_page'))
-                ->withQueryString(),
+        $chartData = DB::select(
+            "select r.name reason,p.name org,DATE(re.created_at) ognoo,st.name stat,CASE WHEN ac.name='Улаанбаатар' then sd.name else ac.name end region,count(*) niit "
+                . " from registers re"
+                .   " inner join reasons r on r.id = re.reason_id "
+                .   " inner join  places p on p.id = r.place_id"
+                .   " inner join aimag_cities ac on ac.id = re.aimag_city_id"
+                .   " inner join soum_districts sd on sd.id = re.soum_district_id"
+                .   " INNER JOIN statuses st ON st.id = re.status_id"
+                .   " where DATE(re.created_at) between ? and ? "
+                . " group by r.id,DATE(re.created_at),re.status_id, CASE WHEN ac.name='Улаанбаатар' then sd.name else ac.name end",
+            [$start, $end]
+
+        );
+
+
+
+        return Inertia::render('Dashboard', [
+            'filters' => [
+                'start' => $start,
+                'end' => $end,
+            ],
+
+            'chart' =>  $chartData,
             'host' => config('app.url'),
         ]);
     }

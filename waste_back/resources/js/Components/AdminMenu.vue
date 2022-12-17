@@ -98,16 +98,13 @@ const menus = ref([
     icon: markRaw(ClipboardDocumentCheckIcon),
     href: route("admin.registers.index"),
   },
-  // {
-  //   text: "Файлын сан",
-  //   icon: markRaw(PhotoIcon),
-  //   href: route("admin.registers.index"),
-  // },
+
   {
     text: "Газрын зураг",
     icon: markRaw(MapIcon),
     href: route("register.map"),
   },
+
 ]);
 
 const user = computed(() => usePage().props.value.auth.user);
@@ -118,24 +115,20 @@ const user = computed(() => usePage().props.value.auth.user);
   <Backdrop v-if="isOpen" @click="isOpen = false" />
 
   <aside class="hidden w-64 bg-gray-800 sm:block">
-    <div
-      class="py-3 text-1xl uppercase text-center tracking-widest bg-gray-900 border-b-2 border-gray-800 mb-8"
-    >
+    <div class="py-3 text-1xl uppercase text-center tracking-widest bg-gray-900 border-b-2 border-gray-800 mb-8">
       <inertia-link href="/" class="text-white">WASTE MONITORING</inertia-link>
     </div>
 
     <!-- menu -->
     <nav class="text-sm text-gray-300">
       <ul class="flex flex-col">
-        <SidebarItem
-          v-for="menu in menus"
-          :key="menu.text"
-          :menu="menu"
-          class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold"
-        />
+        <SidebarItem v-for="menu in menus" :key="menu.text" :menu="menu"
+          class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold" />
       </ul>
     </nav>
   </aside>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>

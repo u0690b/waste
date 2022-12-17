@@ -43,7 +43,7 @@ class AimagCity extends Model
     use HasFactory;
 
     public $table = 'aimag_cities';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -119,15 +119,15 @@ class AimagCity extends Model
     ];
 
     /**
-    * Filter Model
-    * @param Array $filters
-    * @return App\Models\AimagCity
-    */
+     * Filter Model
+     * @param Array $filters
+     * @return App\Models\AimagCity
+     */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
             $this->buildFilter($query, $filters, AimagCity::$searchIn);
         }
-        return $this;
+        return $query;
     }
 }

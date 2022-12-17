@@ -40,7 +40,7 @@ class Reason extends Model
     use HasFactory;
 
     public $table = 'reasons';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -108,15 +108,15 @@ class Reason extends Model
     ];
 
     /**
-    * Filter Model
-    * @param Array $filters
-    * @return App\Models\Reason
-    */
+     * Filter Model
+     * @param Array $filters
+     * @return App\Models\Reason
+     */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
             $this->buildFilter($query, $filters, Reason::$searchIn);
         }
-        return $this;
+        return $query;
     }
 }
