@@ -25,7 +25,7 @@ const reset = () => (form = mapValues(form, () => null));
 watch(
   () => form,
   debounce(function () {
-    Inertia.get("/", pickBy(form), { preserveState: true });
+    Inertia.get("/dashboard", pickBy(form), { preserveState: true });
   }, 150),
   { deep: true }
 );
@@ -178,75 +178,59 @@ const statDonut = computed(() => {
     },
   };
 });
+
+
+
+const rangeDay = computed(() => {
+
+  let difference = Date.parse(form.end) - Date.parse(form.start);
+  return (isNaN(difference) ? '~' : Math.ceil(difference / (1000 * 3600 * 24))) + ' өдрийн мэдээ';
+});
 </script>
 
 <template>
+
   <Head title="Үндсэн хуудас" />
 
   <Admin>
     <div>
       <div class="flex justify-between px-4 mt-4 sm:px-8">
         <h2 class="text-2xl text-gray-600">
-          <inertia-link
-            class="text-black hover:text-gray-800 font-bold"
-            :href="route('dashboard')"
-          >
-            Нүүр хуудас</inertia-link
-          >
+          <inertia-link class="text-black hover:text-gray-800 font-bold" :href="route('dashboard')">
+            Нүүр хуудас</inertia-link>
         </h2>
       </div>
       <SharedState></SharedState>
-      <div class="ml-12 flex gap-2 py-6">
+      <div class="ml-12 flex gap-2 py-6 items-center">
         <MyInput v-model="form.start" type="date" label="Эхлэх"></MyInput>
         <MyInput v-model="form.end" type="date" label="Дуусах"></MyInput>
+        <span class="pt-6">
+          {{ rangeDay }}
+        </span>
       </div>
       <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-3 sm:px-8">
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
           <h3 class="text-xl text-gray-600 mb-4">Нийт зөрчил</h3>
-          <VueApexCharts
-            class="bg-white p-4"
-            type="pie"
-            :options="statDonut.chartOptions"
-            :series="statDonut.series"
-          >
+          <VueApexCharts class="bg-white p-4" type="pie" :options="statDonut.chartOptions" :series="statDonut.series">
           </VueApexCharts>
         </div>
-        <div
-          class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow col-span-2"
-        >
+        <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow col-span-2">
           <h3 class="text-xl text-gray-600 mb-4">Хог хаягдлын төрлөөр</h3>
-          <VueApexCharts
-            class="bg-white mb-8 p-4"
-            type="bar"
-            height="350"
-            :options="dateOptions.chartOptions"
-            :series="dateOptions.series"
-          >
+          <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="dateOptions.chartOptions"
+            :series="dateOptions.series">
           </VueApexCharts>
         </div>
       </div>
       <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-3 sm:px-8">
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
           <h3 class="text-xl text-gray-600 mb-4">Байгууллагаар</h3>
-          <VueApexCharts
-            class="bg-white p-4"
-            type="pie"
-            :options="donut.chartOptions"
-            :series="donut.series"
-          >
+          <VueApexCharts class="bg-white p-4" type="pie" :options="donut.chartOptions" :series="donut.series">
           </VueApexCharts>
         </div>
-        <div
-          class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow col-span-2"
-        >
+        <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow col-span-2">
           <h3 class="text-xl text-gray-600 mb-4">Орон нутгаар</h3>
-          <VueApexCharts
-            class="bg-white mb-8 p-4"
-            type="bar"
-            height="350"
-            :options="regionOptions.chartOptions"
-            :series="regionOptions.series"
-          >
+          <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="regionOptions.chartOptions"
+            :series="regionOptions.series">
           </VueApexCharts>
         </div>
       </div>
