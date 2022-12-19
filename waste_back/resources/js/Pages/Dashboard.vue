@@ -14,6 +14,7 @@ import { TabList } from "@headlessui/vue";
 const props = defineProps({
   datas: Object,
   chart: [Array],
+  etgeed: [Array],
   filters: [Object, Array],
   host: String,
 });
@@ -178,7 +179,31 @@ const statDonut = computed(() => {
     },
   };
 });
-
+const etgeedOptions = computed(() => {
+  const regionChart = props.etgeed.reduce(function (r, a) {
+    r[a.name] = r[a.name] || 0;
+    r[a.name] = r[a.name] + a.niit;
+    return r;
+  }, {});
+  return {
+    chartOptions: {
+      xaxis: {
+        categories: Object.keys(regionChart),
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          horizontal: true,
+        }
+      },
+    },
+    series: [
+      {
+        data: Object.values(regionChart),
+      },
+    ],
+  };
+});
 
 
 const rangeDay = computed(() => {
@@ -241,45 +266,13 @@ const rangeDay = computed(() => {
           </VueApexCharts>
         </div>
       </div>
-      <!-- <div class="max-w-6xl p-8">
-        <VueApexCharts
-          class="bg-white mb-8 p-4"
-          type="bar"
-          height="350"
-          :options="dateOptions.chartOptions"
-          :series="dateOptions.series"
-        >
+      <div class=" px-4 mx-4 mt-8 sm:mx-8  py-2 bg-white border rounded-md overflow-hidden shadow col-span-2">
+        <h3 class="text-xl text-gray-600 mb-4">Иргэн, аж ахуйн нэгж</h3>
+        <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="etgeedOptions.chartOptions"
+          :series="etgeedOptions.series">
         </VueApexCharts>
+      </div>
 
-        <VueApexCharts
-          class="bg-white mb-8 p-4"
-          type="bar"
-          height="350"
-          :options="regionOptions.chartOptions"
-          :series="regionOptions.series"
-        >
-        </VueApexCharts>
-        <div class="mb-8 gap-8 grid grid-cols-2">
-          <div>
-            <VueApexCharts
-              class="bg-white p-4"
-              type="pie"
-              :options="donut.chartOptions"
-              :series="donut.series"
-            >
-            </VueApexCharts>
-          </div>
-          <div>
-            <VueApexCharts
-              class="bg-white p-4"
-              type="pie"
-              :options="statDonut.chartOptions"
-              :series="statDonut.series"
-            >
-            </VueApexCharts>
-          </div>
-        </div>
-      </div> -->
     </div>
   </Admin>
 </template>

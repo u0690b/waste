@@ -49,6 +49,13 @@ class IndexController extends Controller
             [$start, $end]
 
         );
+        $etgeed = DB::select(
+            " select  concat(trim(register),' ',trim(name)) name,count(*) niit from registers"
+                .   " where DATE(created_at) between ? and ? "
+                . " group by concat(trim(register),' ',trim(name)) "
+                . " limit 10 ",
+            [$start, $end]
+        );
 
 
 
@@ -59,6 +66,7 @@ class IndexController extends Controller
             ],
 
             'chart' =>  $chartData,
+            'etgeed' => $etgeed,
             'host' => config('app.url'),
         ]);
     }
