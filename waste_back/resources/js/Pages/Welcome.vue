@@ -33,12 +33,17 @@ defineProps({
       <div class="w-full xl:w-3/5 py-6 overflow-y-hidden">
         <img class="w-5/6 mx-auto lg:mr-0 slide-in-bottom" src="@/assets/devices.svg">
       </div>
-
+      <a href="http://inspection.gov.mn/new/" target="_blank"><img src="../../../public/img/mergejil.jpg"
+          class="object-contain w-48 ..." /></a>
+      <a href="https://www.eda.admin.ch/countries/mongolia/mn/home/chegzhlijn.html" target="_blank"><img
+          src="../../../public/img/sha.png" class="object-contain w-48 ... px-4" /></a>
+      <a href="http://www.ubservice.mn/?fbclid=IwAR0DRdfuer1AfiIURNjUTtXk4-XIjHP3H2dRBMwLw-dcMwQ1WA11mxS0fMc"
+        target="_blank"><img src="../../../public/img/zaa.png" class="object-contain w-20 ... px-4" /></a>
       <!--Footer-->
-      <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
+      <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in"> Хуулбарлахыг хориглоно
         <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; {{ (new
             Date()).getFullYear()
-        }}</a>
+        }} он</a>
       </div>
     </div>
   </GuestLayout>

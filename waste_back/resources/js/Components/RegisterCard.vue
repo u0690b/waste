@@ -19,8 +19,7 @@ function setIsOpen(value) {
 
 <template>
     <div class="relative bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-
-        <Carousel>
+        <!-- <Carousel>
             <Slide v-for="slide in item.attached_images" :key="slide">
                 <div class="carousel__item">
                     <img :src="slide.path" alt="" @click="emit('select', slide.path)">
@@ -30,52 +29,55 @@ function setIsOpen(value) {
             <template #addons>
                 <Pagination />
             </template>
-        </Carousel>
+        </Carousel> -->
         <div :class="item.status_id == 2 ? 'bg-green-500' : 'bg-yellow-500'"
-            class=" inline-flex items-center px-3 rounded-full text-[10px] font-light text-center  text-white absolute top-2 left-2">
+            class=" inline-flex items-center px-3 rounded-full text-[10px] font-light text-center  text-white absolute top-1 left-1">
             {{ item.status.name }}</div>
-
-
-
         <div class="p-5">
-            <p class="mb-3 text-xs text-gray-700 dark:text-gray-400">
-                <span class="px-2 py-1 rounded text-xs text-white bg-slate-500">Агуулга:</span>
+            <p class="mb-3 text-sm py-2">
+                <span class="font-bold text-black">#Товч агуулга:</span>
             </p>
-            <h6 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                {{ item.register }} {{ item.name }} {{ item.chiglel }}
-            </h6>
-            <p class="mb-3 text-xs text-gray-700 dark:text-gray-400">
-                <span class="px-2 py-1 rounded text-xs text-white bg-slate-500">Зөрчилийн төрөл:</span>
+            <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 italic">
+                {{ item.register }}/ {{ item.name }}/ {{ item.chiglel }}
             </p>
-            <p class="mb-3 text-xs text-gray-700 dark:text-gray-400">
-                - {{ item.reason.name }}
+            <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">
+                <span class="font-bold text-black">#Бүртгэсэн огноо:</span>
             </p>
-            <p class="mb-3 text-xs text-gray-700 dark:text-gray-400">
-                <span class="px-2 py-1 rounded text-xs text-white bg-slate-600">Хаяг:</span>
+            <p class="mb-3 text-xs text-gray-900 dark:text-gray-400 italic">
+                {{ item.created_at }}
+            </p>
+            <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">
+                <span class="font-bold text-black">#Зөрчилийн төрөл:</span>
+            </p>
+            <p class="mb-3 text-xs text-gray-900 dark:text-gray-400 italic">
+                {{ item.reason.name }}
+            </p>
+            <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">
+                <span class="font-bold text-black">#Хаяг:</span>
             </p>
 
-            <p class="mb-3 text-xs text-gray-700 dark:text-gray-400">
-                - {{ item.aimag_city.name }}, {{ item.soum_district.name }},
+            <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 italic">
+                {{ item.aimag_city.name }}, {{ item.soum_district.name }},
                 {{ item.bag_horoo.name }} {{ hideMoreButton ? item.bag_horoo.name : "" }}
             </p>
-            <p class="mb-3 text-xs text-gray-700 dark:text-gray-400">
-                <span class="px-2 py-1 rounded text-xs text-white bg-slate-600">Гаргасан зөрчилийн байдал:</span>
+            <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">
+                <span class="font-bold text-black">
+                    #Гаргасан зөрчилийн байдал:</span>
             </p>
-            <p class="mb-3 text-xs text-gray-700 dark:text-gray-400">-{{ item.description }}</p>
+            <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 italic">{{ item.description }}</p>
             <slot></slot>
             <div v-if="!hideMoreButton" class="flex justify-between items-center">
-                <div>
-                    <inertia-link :href="route(showRoute, item.id)"
-                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        Дэлгэрэнгүй
-                        <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </inertia-link>
-                </div>
+
+                <inertia-link :href="route(showRoute, item.id)"
+                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-900 dark:focus:ring-blue-800">
+                    Дэлгэрэнгүй
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                    </svg>
+                </inertia-link>
+
             </div>
         </div>
     </div>
