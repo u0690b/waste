@@ -2,14 +2,20 @@
   <header
     class="flex justify-between items-center gap-5 bg-white border-b-2 px-4 sm:justify-end sm:px-6"
   >
-    <div>
-      <a
-        href="/app-release.apk"
-        target="_blank"
-        class="rounded bg-blue-500 px-3 py-1 text-white"
-        >Андройд програм татах</a
-      >
-    </div>
+    <a href="http://inspection.gov.mn/new/" target="_blank"
+      ><img src="../../../public/img/mergejil.jpg" class="object-contain w-48 ..."
+    /></a>
+    <a
+      href="https://www.eda.admin.ch/countries/mongolia/mn/home/chegzhlijn.html"
+      target="_blank"
+      ><img src="../../../public/img/sha.png" class="object-contain w-48 ..."
+    /></a>
+    <a
+      href="http://www.ubservice.mn/?fbclid=IwAR0DRdfuer1AfiIURNjUTtXk4-XIjHP3H2dRBMwLw-dcMwQ1WA11mxS0fMc"
+      target="_blank"
+      ><img src="../../../public/img/zaa.png" class="object-contain w-20 ..."
+    /></a>
+
     <button class="sm:hidden">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -63,14 +69,28 @@
         <MenuItems
           class="origin-top-right absolute right-0 w-48 shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-200 focus:outline-none"
         >
-          <!-- <div>
+          <div>
             <MenuItem v-slot="{ active }">
-            <a href="#" :class="[active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-gray-700']">Your Profile</a>
+              <a
+                href="#"
+                :class="[
+                  active ? 'bg-gray-200' : '',
+                  'block px-4 py-2 text-sm text-gray-700',
+                ]"
+                >Гарын авлага</a
+              >
             </MenuItem>
             <MenuItem v-slot="{ active }">
-            <a href="#" :class="[active ? 'bg-gray-200' : '', 'block px-4 py-2 text-sm text-gray-700']">Settings</a>
+              <a
+                href="/app-release.apk"
+                :class="[
+                  active ? 'bg-gray-200' : '',
+                  'block px-4 py-2 text-sm text-gray-700',
+                ]"
+                >Андройд татах</a
+              >
             </MenuItem>
-          </div> -->
+          </div>
           <MenuItem v-slot="{ active }">
             <inertia-link
               :href="route('logout')"
