@@ -1,14 +1,10 @@
 <template>
 
-  <Head title="ХОГ ХАЯГДЛЫН ОЛОН НИЙТИЙН БАЙЦААГЧИЙН ХЯНАЛТ, УДИРДЛАГА, МЭДЭЭЛЛИЙН НЭГДСЭН СИСТЕМ" />
-  <div class="flex justify-between px-4 mt-4 sm:px-8">
-    <h2 class="text-2xl text-gray-600">Зөрчлийн бүртгэл</h2>
-
-  </div>
+  <Head title="Зөрчлийн бүртгэл" />
 
   <SharedState></SharedState>
   <div class="p-4 mt-8 sm:px-8 sm:py-4">
-    <div class="p-4 bg-white rounded">
+    <div class="p-4  rounded">
       <div class=" mb-6 flex justify-center items-center">
         <div class="relative text-gray-400">
           <span class="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -25,7 +21,7 @@
 
       </div>
       <div>
-        <AdminCard :headers="headers" :datas="datas"></AdminCard>
+        <AdminCard :headers="headers" :datas="datas" showRoute="reg.show"></AdminCard>
       </div>
       <!-- <admin-table :headers="headers" :datas="datas" url="admin.registers.edit" /> -->
     </div>
@@ -104,7 +100,7 @@ export default {
   watch: {
     form: {
       handler: debounce(function () {
-        this.$inertia.get(this.route("admin.registers.index"), pickBy(this.form), {
+        this.$inertia.get('/reg', pickBy(this.form), {
           preserveState: true,
         });
       }, 150),

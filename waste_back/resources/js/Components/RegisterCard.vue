@@ -8,7 +8,8 @@ import Modal from './Modal.vue';
 
 const props = defineProps({
     item: { type: Object },
-    hideMoreButton: { type: Boolean, default: false }
+    hideMoreButton: { type: Boolean, default: false },
+    showRoute: { type: String, default: 'admin.registers.show' }
 });
 const emit = defineEmits(['select'])
 const isOpen = ref(false)
@@ -53,7 +54,7 @@ function setIsOpen(value) {
             <slot></slot>
             <div v-if="!hideMoreButton" class="flex justify-between items-center">
                 <div>
-                    <inertia-link :href="route('admin.registers.show', item.id)"
+                    <inertia-link :href="route(showRoute, item.id)"
                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Дэлгэрэнгүй
                         <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"

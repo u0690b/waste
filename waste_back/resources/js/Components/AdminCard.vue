@@ -1,6 +1,6 @@
 <template>
   <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-8 max-w-6xl mx-auto">
-    <RegisterCard v-for="item in datas.data" :item="item" @select="select"></RegisterCard>
+    <RegisterCard v-for="item in datas.data" :item="item" @select="select" :showRoute="showRoute"></RegisterCard>
     <Modal :show="!!selected" @close="() => selected = null">
       <img :src="selected" alt="">
     </Modal>
@@ -19,6 +19,7 @@ export default {
     headers: { type: Object, required: true },
     datas: { type: Object, required: true },
     url: String,
+    showRoute: [String]
   },
   emits: ["orderBy"],
   setup(props) {

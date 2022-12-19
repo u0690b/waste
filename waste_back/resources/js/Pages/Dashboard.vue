@@ -207,6 +207,13 @@ const rangeDay = computed(() => {
         <span class="pt-6">
           {{ rangeDay }}
         </span>
+
+        <div class="flex-1 flex w-full justify-end mr-8 fade-in">
+          <img src="@/assets/App Store.svg" class="h-12 pr-4 bounce-top-icons">
+          <a href="/app-release.apk">
+            <img src="@/assets/Play Store.svg" class="h-12 bounce-top-icons">
+          </a>
+        </div>
       </div>
       <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-3 sm:px-8">
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
