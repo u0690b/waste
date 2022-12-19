@@ -39,7 +39,8 @@
         name: 'Баг/хороо нэр',
         'soum_district.name': 'Сум/дүүрэг нэр',
         soum_district_id: 'Сум/дүүрэг дугаар',
-      }" :datas="datas" url="admin.bag_horoos.edit" />
+      }" :datas="datas" url="admin.bag_horoos.edit" :insertUrl="route('admin.bag_horoos.create')"
+        deleteUrl="admin.bag_horoos.destroy" />
     </div>
     <pagination :links="datas.links" />
   </div>

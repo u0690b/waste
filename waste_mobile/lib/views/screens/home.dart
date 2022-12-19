@@ -247,14 +247,15 @@ class _HomeViewState extends State<HomeView> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      subheading('Зөрчил шийвэрлсэн байдал'),
+                                      subheading('Зөрчил шийдвэрлэсэн байдал'),
                                       const SizedBox(height: 5.0),
                                       Row(
                                         children: <Widget>[
                                           ActiveProjectsCard(
                                             cardColor: LightColors.kGreen,
                                             loadingPercent: Constants.za,
-                                            title: 'Захирагчийн алба',
+                                            title:
+                                                'Улаанбаатар хотын Захирагчийн ажлын алба',
                                             subtitle:
                                                 'Нийт бүртгэгдсэн ${Constants.totalAa}',
                                           ),
@@ -262,7 +263,7 @@ class _HomeViewState extends State<HomeView> {
                                           ActiveProjectsCard(
                                             cardColor: LightColors.kRed,
                                             loadingPercent: Constants.mh,
-                                            title: 'Мэргэжлийн хаяналт',
+                                            title: 'Мэргэжлийн хяналт',
                                             subtitle:
                                                 'Нийт бүртгэгдсэн ${Constants.totalMh}',
                                           ),

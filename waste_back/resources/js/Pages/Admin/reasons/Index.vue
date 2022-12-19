@@ -39,7 +39,8 @@
         name: 'Шалтгаан',
         'place.name': 'Байгууллага нэр',
         place_id: 'Байгууллага код',
-      }" :datas="datas" url="admin.reasons.edit" />
+      }" :datas="datas" url="admin.reasons.edit" :insertUrl="route('admin.reasons.create')"
+        deleteUrl="admin.reasons.destroy" />
     </div>
     <pagination :links="datas.links" />
   </div>

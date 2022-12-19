@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
 
         Reason::create(['name' => 'Аюултай хог хаягдал -> МХЕГ', 'place_id' => 2]);
         Reason::create(['name' => 'Эмнэлгийн хог хаягдал -> МХЕГ', 'place_id' => 2]);
-        Reason::create(['name' => 'Барилгийн хог хаягдал -> МХЕГ', 'place_id' => 2]);
+        Reason::create(['name' => 'Барилгын хог хаягдал -> МХЕГ', 'place_id' => 2]);
         Reason::create(['name' => 'Бусад -> ЗАА', 'place_id' => 1]);
 
 

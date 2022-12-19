@@ -172,7 +172,7 @@ class _WasteDetailsState extends State<WasteDetails> {
                     ListTile(
                       dense: true,
                       style: ListTileStyle.drawer,
-                      title: const Text("Гаргасан зөрчилийн байдал:"),
+                      title: const Text("Гаргасан зөрчлийн байдал:"),
                       subtitle: Text(waste.description),
                     ),
                     ListTile(

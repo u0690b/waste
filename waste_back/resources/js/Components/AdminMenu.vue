@@ -1,19 +1,13 @@
 <script setup>
 import {
-  ArrowDownLeftIcon,
-  EyeIcon,
   HomeIcon,
-  KeyIcon,
-  MinusSmallIcon,
-  PaperClipIcon,
   BuildingLibraryIcon,
   WrenchScrewdriverIcon,
   UserGroupIcon,
-  PhotoIcon,
-  ListBulletIcon,
+
   ClipboardDocumentCheckIcon,
   ChevronRightIcon,
-  TrashIcon,
+
   MapIcon,
 } from "@heroicons/vue/24/outline";
 import Backdrop from "./Backdrop.vue";
@@ -47,7 +41,7 @@ const menus = ref([
   {
     icon: markRaw(HomeIcon),
     text: "Нүүр хуудас",
-    href: "/",
+    href: "/dashboard",
   },
   {
     text: "Байгууллага",

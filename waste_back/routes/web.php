@@ -17,13 +17,18 @@ use Inertia\Inertia;
 |
 */
 
+Route::get('/', function () {
+    return Inertia::render('Welcome');
+})->name('home');
+// Registers
+Route::get('/reg', [IndexController::class, 'register']);
+
+Route::get('/dashboard', [IndexController::class, 'index']);
 Route::middleware('auth')->group(function () {
-    Route::get('/', [IndexController::class, 'index']);
+    Route::get('/dashboard', [IndexController::class, 'index']);
     Route::get('/map', [IndexController::class, 'map'])->name('register.map');
 
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+
 
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

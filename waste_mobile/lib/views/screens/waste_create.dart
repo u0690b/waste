@@ -140,7 +140,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                               setState(() {});
                               Get.back();
                             },
-                            child: const Text('Замер нээх')),
+                            child: const Text('Камер нээх')),
                         const Divider(),
                         TextButton(
                             onPressed: () async {
@@ -153,7 +153,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                               setState(() {});
                               Get.back();
                             },
-                            child: const Text('Галерей нээх')),
+                            child: const Text('Зургийн сан нээх')),
                         const Divider(),
                         TextButton(
                             onPressed: Get.back, child: const Text('Хаах'))

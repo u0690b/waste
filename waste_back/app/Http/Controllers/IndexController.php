@@ -92,4 +92,34 @@ class IndexController extends Controller
             'host' => config('app.url'),
         ]);
     }
+
+
+    /**
+     * Display a listing of the Register.
+     *
+     * @return Response
+     */
+    public function register()
+    {
+        $registers = Register::filter(Request::all(["search", ...Register::$searchIn]))
+            ->with('aimag_city:id,name')
+            ->with('bag_horoo:id,name')
+            ->with('comf_user:id,name')
+            ->with('reason:id,name')
+            ->with('reg_user:id,name')
+            ->with('soum_district:id,name')
+            ->with('status:id,name')
+            ->with('attached_images:id,register_id,path')
+            ->with('attached_video:id,register_id,path');
+        if (Request::has('only')) {
+            return json_encode($registers->paginate(Request::input('per_page'), ['id', 'name']));
+        }
+        return Inertia::render('Register', [
+            'filters' => Request::only(["search", ...Register::$searchIn]),
+            'datas' => $registers
+                ->paginate(Request::input('per_page'))
+                ->withQueryString(),
+            'host' => config('app.url'),
+        ]);
+    }
 }

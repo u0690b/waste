@@ -23,7 +23,7 @@
             </div>
             <div class="px-4 text-gray-700">
                 <h3 class="text-sm tracking-wider">Хэрэглэгч</h3>
-                <p class="text-3xl">12,768</p>
+                <p class="text-3xl">{{ totalStat.user }}</p>
             </div>
         </div>
         <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
@@ -36,7 +36,7 @@
             </div>
             <div class="px-4 text-gray-700">
                 <h3 class="text-sm tracking-wider">Зөрчил бүртгэл</h3>
-                <p class="text-3xl">39,265</p>
+                <p class="text-3xl">{{ totalStat.register }}</p>
             </div>
         </div>
 
@@ -50,14 +50,17 @@
             </div>
             <div class="px-4 text-gray-700">
                 <h3 class="text-sm tracking-wider">Файлын сан</h3>
-                <p class="text-3xl">142,334</p>
+                <p class="text-3xl">{{ totalStat.file }}</p>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import { usePage } from '@inertiajs/inertia-vue3';
+import { computed } from 'vue';
 
+const totalStat = computed(() => usePage().props.value.totalStat)
 </script>
 
 <style lang="scss" scoped>

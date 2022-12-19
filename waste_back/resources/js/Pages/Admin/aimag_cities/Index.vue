@@ -31,7 +31,7 @@
       <admin-table :headers="{
         code: 'Аймаг/нийслэл код',
         name: 'Аймаг/нийслэл нэр',
-      }" :datas="datas" url="admin.aimag_cities.edit" />
+      }" :datas="datas" url="admin.aimag_cities.edit" :showAction="false" />
     </div>
 
     <pagination :links="datas.links" />
