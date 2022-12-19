@@ -91,7 +91,9 @@ class Register extends Model
         'lat' => 'float',
         'reg_user_id' => 'integer',
         'comf_user_id' => 'integer',
-        'status_id' => 'integer'
+        'status_id' => 'integer',
+        'created_at' =>'date:Y-m-d H:i:s'
+
     ];
 
     /**
