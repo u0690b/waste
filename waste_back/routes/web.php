@@ -23,9 +23,10 @@ Route::get('/', function () {
 // Registers
 Route::get('/reg', [IndexController::class, 'register']);
 
-Route::get('/dashboard', [IndexController::class, 'index']);
+// Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard');
+
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [IndexController::class, 'index']);
+    Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard');
     Route::get('/map', [IndexController::class, 'map'])->name('register.map');
 
 
