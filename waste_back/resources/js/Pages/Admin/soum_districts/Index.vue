@@ -3,8 +3,19 @@
     <h2 class="text-2xl text-gray-600 underline font-bold">Сум/дүүрэг жагсаалт</h2>
     <div class="flex items-center space-x-1 text-xs">
       <inertia-link href="/" class="font-bold text-indigo-700">Нүүр хуудас</inertia-link>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-2 w-2"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5l7 7-7 7"
+        />
       </svg>
       <span class="text-gray-600">Сум/дүүрэг</span>
     </div>
@@ -15,25 +26,42 @@
       <div class="mb-6 flex justify-between items-center">
         <div class="relative text-gray-400">
           <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
           </span>
-          <input id="search" name="search" type="search" v-model="form.search"
+          <input
+            id="search"
+            name="search"
+            type="search"
+            v-model="form.search"
             class="w-full py-2 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-gray-500 focus:ring-gray-500 focus:z-10"
-            placeholder="Сум, дүүрэг хайх" />
+            placeholder="Сум, дүүрэг хайх"
+          />
         </div>
-
       </div>
 
-      <admin-table :headers="{
-        code: 'Сум/дүүрэг код',
-        name: 'Сум/дүүрэг нэр',
-        'aimag_city.name': 'Аймаг/нийслэл нэр',
-        aimag_city_id: 'Аймаг/нийслэл дугаар',
-      }" :datas="datas" url="admin.soum_districts.edit" />
+      <admin-table
+        :headers="{
+          code: 'Сум/дүүрэг код',
+          name: 'Сум/дүүрэг нэр',
+          'aimag_city.name': 'Аймаг/нийслэл нэр',
+          aimag_city_id: 'Аймаг/нийслэл дугаар',
+        }"
+        :datas="datas"
+        url="admin.soum_districts"
+      />
     </div>
     <pagination :links="datas.links" />
   </div>
@@ -56,7 +84,7 @@ export default {
     SearchFilter,
     AdminTable,
     MySelect,
-    SharedState
+    SharedState,
   },
   layout: Layout,
   props: {

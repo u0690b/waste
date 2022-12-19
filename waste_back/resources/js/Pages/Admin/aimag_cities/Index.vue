@@ -25,7 +25,6 @@
             class="w-full py-2 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-gray-500 focus:ring-gray-500 focus:z-10"
             placeholder="Аймаг,нийслэл хайх" />
         </div>
-
       </div>
 
       <admin-table :headers="{
@@ -33,8 +32,11 @@
         name: 'Аймаг/нийслэл нэр',
       }" :datas="datas" url="admin.aimag_cities.edit" :showAction="false" />
     </div>
-
+    <!-- <div class="py-2 flex items-center justify-between border-t border-gray-200">
+      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"> -->
     <pagination :links="datas.links" />
+    <!-- </div>
+    </div> -->
   </div>
 </template>
 
@@ -54,7 +56,7 @@ export default {
     Pagination,
     SearchFilter,
     AdminTable,
-    SharedState
+    SharedState,
   },
   layout: Layout,
   props: {

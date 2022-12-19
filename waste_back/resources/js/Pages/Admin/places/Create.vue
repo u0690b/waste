@@ -29,7 +29,7 @@
   </div>
   <div class="p-4 mt-8 sm:px-8 sm:py-4">
     <div class="p-4 bg-white flex flex-col items-center justify-center rounded">
-      <div class="bg-white rounded w-2/5">
+      <div class="bg-white rounded shadow w-2/5">
         <form @submit.prevent="submit">
           <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
             <MyInput

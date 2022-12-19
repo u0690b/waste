@@ -3,7 +3,7 @@
     <h2 class="text-2xl text-gray-600">
       <inertia-link
         class="text-black hover:text-gray-800 underline font-bold"
-        :href="route('admin.aimag_cities.index')"
+        :href="route('admin.statuses.index')"
       >
         Төлөв засах</inertia-link
       >
@@ -33,7 +33,7 @@
       <div class="mb-6 flex justify-between items-center">
         <div class="relative text-gray-400"></div>
       </div>
-      <div class="bg-white rounded w-2/5">
+      <div class="bg-white rounded shadow w-2/5">
         <form @submit.prevent="submit">
           <div class="p-8 -mr-6 -mb-8 flex-wrap">
             <MyInput v-model="form.name" type="text" :error="errors.name" label="Төлөв" />

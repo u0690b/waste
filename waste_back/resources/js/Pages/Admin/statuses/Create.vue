@@ -1,36 +1,68 @@
 <template>
-  <div>
-    <h1 class="mb-8 font-bold text-3xl">
+  <div class="flex justify-between px-4 mt-4 sm:px-8">
+    <h2 class="text-2xl text-gray-600">
       <inertia-link
-        class="text-indigo-400 hover:text-indigo-600"
+        class="text-black hover:text-gray-800 underline font-bold"
         :href="route('admin.statuses.index')"
-        >Төлөв</inertia-link
       >
-      <span class="text-indigo-400 font-medium">/</span> бүртгэх
-    </h1>
-    <div class="bg-white rounded shadow max-w-3x max-w-3xl">
-      <form @submit.prevent="submit">
-        <div class="p-8 -mr-6 -mb-8 flex flex-wrap">
-          <MyInput
-            v-model="form.name"
-            type="text"
-            :error="errors.name"
-            class="pr-6 pb-8 w-full lg:w-1/2"
-            label="Төлөв"
-          />
-        </div>
-        <div
-          class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex justify-end items-center"
-        >
-          <loading-button :loading="form.processing" class="btn-indigo" type="submit"
-            >Хадгалах</loading-button
-          >
-        </div>
-      </form>
+        Төлөв бүртгэл</inertia-link
+      >
+    </h2>
+    <div class="flex items-center space-x-1 text-xs">
+      <inertia-link href="/" class="font-bold text-indigo-700">Нүүр хуудас</inertia-link>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-2 w-2"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5l7 7-7 7"
+        />
+      </svg>
+      <span class="text-gray-600">Төлөв бүртгэл</span>
+    </div>
+  </div>
+  <SharedState></SharedState>
+  <div class="p-4 mt-8 sm:px-8 sm:py-4">
+    <div class="p-4 bg-white flex flex-col items-center justify-center rounded">
+      <div class="bg-white rounded shadow w-2/5">
+        <form @submit.prevent="submit">
+          <div class="p-8 -mr-6 -mb-8 flex-wrap">
+            <MyInput v-model="form.name" type="text" :error="errors.name" label="Төлөв" />
+          </div>
+          <div class="flex justify-center">
+            <button
+              :loading="form.processing"
+              class="flex bg-gray-600 p-3 my-3 text-white rounded text-base hover:bg-gray-500"
+              type="submit"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-5 h-5"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
+                />
+              </svg>
+              Хадгалах
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
-
 <script>
 import Layout from "@/Layouts/Admin.vue";
 import LoadingButton from "@/Components/LoadingButton.vue";
