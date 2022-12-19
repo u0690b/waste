@@ -1,0 +1,63 @@
+{
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    },
+    "editor.formatOnSave": true,
+    "[html]": {
+      "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "liveServer.settings.donotShowInfoMsg": true,
+    "[javascript]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "eslint.format.enable": true,
+    "vue3snippets.vueIndentScriptAndStyle": true,
+    "[vue]": {
+      "editor.defaultFormatter": "Vue.volar"
+    },
+    "editor.fontSize": 16,
+    "security.workspace.trust.untrustedFiles": "open",
+    "hexeditor.columnWidth": 16,
+    "hexeditor.showDecodedText": true,
+    "hexeditor.defaultEndianness": "little",
+    "hexeditor.inspectorType": "aside",
+    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m -javaagent:\"c:\\Users\\User\\.vscode\\extensions\\vscjava.vscode-lombok-1.0.1\\server\\lombok.jar\"",
+    "php.validate.executablePath": "C:\\xampp\\php\\php.exe",
+    "[java]": {
+      "editor.defaultFormatter": "redhat.java"
+    },
+    "git.autofetch": true,
+    "[php]": {
+      "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "diffEditor.ignoreTrimWhitespace": false,
+    "[sql]": {
+      "editor.defaultFormatter": "cweijan.vscode-mysql-client2"
+    },
+    "files.maxMemoryForLargeFilesMB": 10096,
+    "[dart]": {
+      "editor.formatOnSave": true,
+      "editor.formatOnType": true,
+      "editor.rulers": [80],
+      "editor.selectionHighlight": false,
+      "editor.suggest.snippetsPreventQuickSuggestions": false,
+      "editor.suggestSelection": "first",
+      "editor.tabCompletion": "onlySnippets",
+      "editor.wordBasedSuggestions": false
+    },
+    "dart.debugExternalPackageLibraries": true,
+    "dart.debugSdkLibraries": true,
+    "vsicons.dontShowNewVersionMessage": true,
+    "window.zoomLevel": -1,
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "redhat.telemetry.enabled": true,
+    "dart.showInspectorNotificationsForWidgetErrors": false,
+    "editor.unicodeHighlight.ambiguousCharacters": false
+  }
+  

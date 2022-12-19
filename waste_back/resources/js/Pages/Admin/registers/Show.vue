@@ -1,17 +1,4 @@
-<script setup>
-import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { ref } from "vue";
 
-
-
-const emit = defineEmits(["select"]);
-const isOpen = ref(false);
-
-function setIsOpen(value) {
-    isOpen.value = value;
-}
-</script>
 <template>
     <div class="flex justify-between px-4 mt-4 sm:px-8">
         <h2 class="text-2xl text-gray-600 underline font-bold">Зөрчлийн бүртгэл</h2>
@@ -51,7 +38,7 @@ function setIsOpen(value) {
             <Carousel>
                 <Slide v-for="slide in data.attached_images" :key="slide">
                     <div class="carousel__item">
-                        <img :src="slide.path" alt="" @click="emit('select', slide.path)">
+                        <img :src="slide.path" alt="" @click="() => selected = slide.path">
                     </div>
                 </Slide>
                 <template #addons>
@@ -110,6 +97,13 @@ import ShowMapPoint from "@/Components/ShowMapPoint.vue";
 import RegisterCard from "@/Components/RegisterCard.vue";
 import Modal from "@/Components/Modal.vue";
 
+import "vue3-carousel/dist/carousel.css";
+import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+import { ref } from "vue";
+
+
+
+
 export default {
     metaInfo: { title: "Edit Registers" },
     components: {
@@ -120,6 +114,7 @@ export default {
         ShowMapPoint,
         RegisterCard,
         Modal,
+        Carousel, Slide, Pagination,
     },
     layout: Layout,
     props: {
@@ -127,6 +122,20 @@ export default {
         data: Object,
         host: String,
     },
+    setup(props) {
+
+
+        const isOpen = ref(false);
+
+        function setIsOpen(value) {
+            isOpen.value = value;
+        }
+        return {
+            isOpen,
+            setIsOpen
+        }
+    },
+    emit: ["select"],
     remember: "form",
     data() {
         return {
