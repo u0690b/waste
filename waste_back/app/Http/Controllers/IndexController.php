@@ -45,7 +45,7 @@ class IndexController extends Controller
                 .   " inner join soum_districts sd on sd.id = re.soum_district_id"
                 .   " INNER JOIN statuses st ON st.id = re.status_id"
                 .   " where DATE(re.created_at) between ? and ? "
-                . " group by r.id,DATE(re.created_at),re.status_id, CASE WHEN ac.name='Улаанбаатар' then sd.name else ac.name end",
+                . " group by DATE(re.created_at),r.name, p.name,st.name,CASE WHEN ac.name='Улаанбаатар' then sd.name else ac.name end",
             [$start, $end]
 
         );
