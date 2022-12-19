@@ -21,7 +21,8 @@ Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
 // Registers
-Route::get('/reg', [IndexController::class, 'register']);
+Route::get('/reg', [IndexController::class, 'register'])->name('reg.index');
+Route::get('/reg/{register}', [IndexController::class, 'show'])->name('reg.show');
 
 // Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard');
 
