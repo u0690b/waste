@@ -561,7 +561,7 @@ export default {
 .style-chooser {
   display: flex;
   padding: 0;
-  min-height: 1.5rem;
+  min-height: 2.5rem; /*1.5*/
 }
 
 .style-chooser .vs--single .vs--searchable {
@@ -600,7 +600,7 @@ export default {
 }
 
 .vs__selected-options {
-  font-size: 12px;
+  font-size: 16px;
   align-items: center;
 }
 

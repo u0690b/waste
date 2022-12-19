@@ -29,7 +29,7 @@
           >
             <inertia-link
               v-if="url"
-              :href="route(url, row.id)"
+              :href="route(url + '.index', row.id)"
               class="items-center focus:text-indigo-500"
             >
               {{ parseVal(row, key) }}
@@ -39,9 +39,10 @@
           <td class="pl-2 py-2 border-t">
             <div class="row flex">
               <div class="col-sm-2">
+                <!-- edit -->
                 <inertia-link
                   v-if="url"
-                  :href="route(url, row.id)"
+                  :href="route(url + '.edit', row.id)"
                   class="flex px-2 mr-4 bg-green-500 p-2 text-white rounded-md hover:bg-green-600"
                 >
                   <svg
@@ -61,9 +62,10 @@
                 </inertia-link>
               </div>
               <div class="col-sm-2">
+                <!-- delete -->
                 <inertia-link
                   v-if="url"
-                  :href="route(url, row.id)"
+                  @click="destroy(url, row.id)"
                   class="flex px-2 mr-4 bg-red-500 p-2 text-white rounded-md hover:bg-red-600"
                 >
                   <svg
@@ -83,9 +85,10 @@
                 </inertia-link>
               </div>
               <div class="col-sm-2">
+                <!-- add -->
                 <inertia-link
                   v-if="url"
-                  :href="route(url, row.id)"
+                  :href="route(url + '.create')"
                   class="flex px-2 mr-4 bg-blue-500 p-2 text-white rounded-md hover:bg-blue-600"
                 >
                   <svg
@@ -99,15 +102,16 @@
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+                      d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
                 </inertia-link>
               </div>
-              <div class="col-sm-2">
+              <!-- <div class="col-sm-2">
+             
                 <inertia-link
                   v-if="url"
-                  :href="route(url, row.id)"
+                  :href="route(url + '.destroy', row.id)"
                   class="flex px-2 mr-4 bg-orange-500 p-2 text-white rounded-md hover:bg-orange-600"
                 >
                   <svg
@@ -125,7 +129,7 @@
                     />
                   </svg>
                 </inertia-link>
-              </div>
+              </div> -->
             </div>
           </td>
         </tr>
@@ -164,6 +168,13 @@ export default {
     return {
       parseVal,
     };
+  },
+  methods: {
+    destroy(url, id) {
+      if (confirm("Та устгахдаа итгэлтэй байна уу?")) {
+        this.$inertia.delete(this.route(url + ".destroy", id));
+      }
+    },
   },
 };
 </script>

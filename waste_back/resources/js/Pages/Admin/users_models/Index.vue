@@ -3,8 +3,19 @@
     <h2 class="text-2xl text-gray-600 underline font-bold">Хэрэглэгч жагсаалт</h2>
     <div class="flex items-center space-x-1 text-xs">
       <inertia-link href="/" class="font-bold text-indigo-700">Нүүр хуудас</inertia-link>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-2 w-2"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5l7 7-7 7"
+        />
       </svg>
       <span class="text-gray-600">Хэрэглэгч</span>
     </div>
@@ -15,38 +26,47 @@
       <div class="mb-6 flex justify-between items-center">
         <div class="relative text-gray-400">
           <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
           </span>
-          <input id="search" name="search" type="search" v-model="form.search"
+          <input
+            id="search"
+            name="search"
+            type="search"
+            v-model="form.search"
             class="w-full py-2 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-gray-500 focus:ring-gray-500 focus:z-10"
-            placeholder="Хэрэглэгч хайх" />
+            placeholder="Хэрэглэгч хайх"
+          />
         </div>
-        <inertia-link class="flex items-center bg-green-500 p-2 text-white rounded text-sm hover:bg-green-600"
-          :href="route('admin.users.create')">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-          <span class="hidden md:inline">Бүртгэх</span>
-        </inertia-link>
       </div>
-      <admin-table :headers="{
-        name: 'Хэрэглэгчийн нэр',
-        username: 'Нэвтрэх нэр',
-        password: 'Нууц үг',
-        'aimag_city.name': 'Аймаг/нийслэл',
-        aimag_city_id: '',
-        'soum_district.name': 'Сум/дүүрэг',
-        soum_district_id: '',
-        'bag_horoo.name': 'Баг/хороо',
-        bag_horoo_id: '',
-        roles: 'Эрх',
-        remember_token: 'Токен',
-      }" :datas="datas" url="admin.users.edit" />
+      <admin-table
+        :headers="{
+          name: 'Хэрэглэгчийн нэр',
+          username: 'Нэвтрэх нэр',
+
+          'aimag_city.name': 'Аймаг/нийслэл',
+
+          'soum_district.name': 'Сум/дүүрэг',
+
+          'bag_horoo.name': 'Баг/хороо',
+
+          roles: 'Эрх',
+        }"
+        :datas="datas"
+        url="admin.users"
+      />
     </div>
     <pagination :links="datas.links" />
   </div>
@@ -69,7 +89,7 @@ export default {
     SearchFilter,
     AdminTable,
     MySelect,
-    SharedState
+    SharedState,
   },
   layout: Layout,
   props: {

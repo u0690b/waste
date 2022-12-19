@@ -33,7 +33,7 @@
       <div class="mb-6 flex justify-between items-center">
         <div class="relative text-gray-400"></div>
       </div>
-      <div class="bg-white rounded w-2/5">
+      <div class="bg-white rounded shadow w-2/5">
         <form @submit.prevent="submit">
           <div class="p-8 -mr-6 -mb-8 flex-wrap">
             <MyInput
