@@ -41,50 +41,57 @@ const menus = ref([
     text: "Нүүр хуудас",
     href: "/dashboard",
   },
-  {
-    text: "Байгууллага",
-    icon: markRaw(BuildingLibraryIcon),
-    href: route("admin.places.index"),
-  },
-  {
-    text: "Хэрэглэгч",
-    icon: markRaw(UserGroupIcon),
-    href: route("admin.users.index"),
-  },
-  {
-    text: "Тохиргоо",
-    icon: markRaw(WrenchScrewdriverIcon),
-    href: "#",
-    children: [
-      {
-        text: "Шалтгаан",
-        icon: markRaw(ChevronRightIcon),
-        href: route("admin.reasons.index"),
-      },
-      {
-        text: "Төлөв",
-        icon: markRaw(ChevronRightIcon),
-        href: route("admin.statuses.index"),
-      },
 
-      {
-        text: "Аймаг/нийслэл",
-        icon: markRaw(ChevronRightIcon),
-        href: route("admin.aimag_cities.index"),
-      },
-      {
-        text: "Сум/дүүрэг",
-        icon: markRaw(ChevronRightIcon),
-        href: route("admin.soum_districts.index"),
-      },
-      {
-        text: "Баг/хороо",
-        icon: markRaw(ChevronRightIcon),
-        href: route("admin.bag_horoos.index"),
-      },
-    ],
-  },
 
+]);
+const user = computed(() => usePage().props.value.auth.user);
+if (user.value.roles == 'admin')
+  menus.value.push(
+    {
+      text: "Байгууллага",
+      icon: markRaw(BuildingLibraryIcon),
+      href: route("admin.places.index"),
+    },
+    {
+      text: "Хэрэглэгч",
+      icon: markRaw(UserGroupIcon),
+      href: route("admin.users.index"),
+    },
+    {
+      text: "Тохиргоо",
+      icon: markRaw(WrenchScrewdriverIcon),
+      href: "#",
+      children: [
+        {
+          text: "Шалтгаан",
+          icon: markRaw(ChevronRightIcon),
+          href: route("admin.reasons.index"),
+        },
+        {
+          text: "Төлөв",
+          icon: markRaw(ChevronRightIcon),
+          href: route("admin.statuses.index"),
+        },
+
+        {
+          text: "Аймаг/нийслэл",
+          icon: markRaw(ChevronRightIcon),
+          href: route("admin.aimag_cities.index"),
+        },
+        {
+          text: "Сум/дүүрэг",
+          icon: markRaw(ChevronRightIcon),
+          href: route("admin.soum_districts.index"),
+        },
+        {
+          text: "Баг/хороо",
+          icon: markRaw(ChevronRightIcon),
+          href: route("admin.bag_horoos.index"),
+        },
+      ],
+    },
+  )
+menus.value.push(
   {
     text: "Зөрчил бүртгэл",
     icon: markRaw(ClipboardDocumentCheckIcon),
@@ -96,9 +103,8 @@ const menus = ref([
     icon: markRaw(MapIcon),
     href: route("register.map"),
   },
-]);
+)
 
-const user = computed(() => usePage().props.value.auth.user);
 // const InsItTul = computed(() => user.value.rolecodelist.includes('InsItTul'))	// baitsaagch
 </script>
 

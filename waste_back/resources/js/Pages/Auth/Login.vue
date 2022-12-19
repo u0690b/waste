@@ -29,39 +29,40 @@ const submit = () => {
     <GuestLayout>
 
         <Head title="Нэвтрэх" />
+        <div class="max-w-xs m-auto mt-60">
+            <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+                {{ status }}
+            </div>
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
+            <form @submit.prevent="submit">
+                <div>
+                    <InputLabel for="username" value="Нэвтрэх нэр" />
+                    <TextInput id="username" type="text" class="mt-1 block w-full" v-model="form.username" required
+                        autofocus autocomplete="username" />
+                    <InputError class="mt-2" :message="form.errors.username" />
+                </div>
+
+                <div class="mt-4">
+                    <InputLabel for="password" value="Нууц үг" />
+                    <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required
+                        autocomplete="current-password" />
+                    <InputError class="mt-2" :message="form.errors.password" />
+                </div>
+
+                <div class="block mt-4">
+                    <label class="flex items-center">
+                        <Checkbox name="remember" v-model:checked="form.remember" />
+                        <span class="ml-2 text-sm text-gray-600">Сануулах</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center justify-end mt-4">
+
+                    <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                        Нэвтрэх
+                    </PrimaryButton>
+                </div>
+            </form>
         </div>
-
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="username" value="Нэвтрэх нэр" />
-                <TextInput id="username" type="text" class="mt-1 block w-full" v-model="form.username" required
-                    autofocus autocomplete="username" />
-                <InputError class="mt-2" :message="form.errors.username" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Нууц үг" />
-                <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required
-                    autocomplete="current-password" />
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Сануулах</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-             
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Нэвтрэх
-                </PrimaryButton>
-            </div>
-        </form>
     </GuestLayout>
 </template>
