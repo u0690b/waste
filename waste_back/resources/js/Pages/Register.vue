@@ -2,7 +2,7 @@
 
   <Head title="Зөрчлийн бүртгэл" />
 
-  <SharedState></SharedState>
+  <!-- <SharedState></SharedState> -->
   <div class="p-4 mt-8 sm:px-8 sm:py-4">
     <div class="p-4  rounded">
       <div class=" mb-6 flex justify-center items-center">

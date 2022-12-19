@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Register;
+use Auth;
 use Date;
 use DB;
 use Illuminate\Support\Facades\Redirect;
@@ -57,9 +58,11 @@ class IndexController extends Controller
             [$start, $end]
         );
 
-
-
-        return Inertia::render('Dashboard', [
+        $view = 'DashboardGuest';
+        if (Auth::user()) {
+            $view = 'Dashboard';
+        }
+        return Inertia::render($view, [
             'filters' => [
                 'start' => $start,
                 'end' => $end,

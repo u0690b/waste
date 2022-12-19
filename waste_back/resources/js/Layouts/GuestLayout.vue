@@ -23,7 +23,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                         </Inertia-Link>
                         <Inertia-Link
                             class="inline-block text-indigo-600 no-underline hover:text-indigo-800 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4 uppercase "
-                            :class="{ 'font-bold': route().current('reg.*') }" :href="route('reg.index')">
+                            :class="{ 'font-bold': route().current('dashboard') }" :href="route('dashboard')">
                             Статистик
                         </Inertia-Link>
                         <Inertia-Link
