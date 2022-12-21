@@ -54,7 +54,8 @@ class IndexController extends Controller
             " select  concat(trim(register),' ',trim(name)) name,count(*) niit from registers"
                 .   " where DATE(created_at) between ? and ? "
                 . " group by concat(trim(register),' ',trim(name)) "
-                . " limit 10 ",
+                . " order by niit desc "
+                . " limit 10  ",
             [$start, $end]
         );
 

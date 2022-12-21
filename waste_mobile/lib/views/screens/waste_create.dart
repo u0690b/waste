@@ -343,7 +343,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                // Гаргасан зөрчилийн байдал:
+                // Гаргасан зөрчлийн байдал:
                 TextFormField(
                   maxLength: 1000,
                   validator: (value) {
@@ -365,12 +365,12 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                   maxLines: 10,
                 ),
                 const SizedBox(height: 20),
-                // Зөрчилийн Төрөл:
+                // Зөрчлийн Төрөл:
                 DropdownButtonFormField(
                     validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
                     value: reason,
                     decoration: InputDecoration(
-                      labelText: "Зөрчилийн Төрөл:",
+                      labelText: "Зөрчлийн Төрөл:",
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 15.0),
                       border: OutlineInputBorder(

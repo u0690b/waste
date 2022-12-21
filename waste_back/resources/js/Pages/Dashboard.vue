@@ -278,9 +278,9 @@ const rangeDay = computed(() => {
         </span>
 
         <div class="flex-1 flex w-full justify-end mr-8 fade-in">
-          <img src="@/assets/App Store.svg" class="h-12 pr-4 bounce-top-icons">
+          <img src="@/assets/App_Store.svg" class="h-12 pr-4 bounce-top-icons">
           <a href="/app-release.apk">
-            <img src="@/assets/Play Store.svg" class="h-12 bounce-top-icons">
+            <img src="@/assets/Play_Store.svg" class="h-12 bounce-top-icons">
           </a>
         </div>
       </div>
