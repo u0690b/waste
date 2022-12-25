@@ -39,7 +39,16 @@ class DatabaseSeeder extends Seeder
         Reason::create(['name' => 'Аюултай хог хаягдал -> МХЕГ', 'place_id' => 2]);
         Reason::create(['name' => 'Эмнэлгийн хог хаягдал -> МХЕГ', 'place_id' => 2]);
         Reason::create(['name' => 'Барилгын хог хаягдал -> МХЕГ', 'place_id' => 2]);
-        Reason::create(['name' => 'Бусад -> ЗАА', 'place_id' => 1]);
+        Reason::create(['name' => 'Ил задгай шатаах', 'place_id' => 1]);
+        Reason::create(['name' => 'Хогийн сав, цэгээс бусад газарт хаях', 'place_id' => 1]);
+        Reason::create(['name' => 'Ногоон бүс, үерийн далан, шугам, хоолой руу хаях', 'place_id' => 1]);
+        Reason::create(['name' => 'Нийлэг материал зууханд шатаах', 'place_id' => 1]);
+        Reason::create(['name' => 'Нийтийн эзэмшлийн газарт зар, шашны зан үйлийн зүйлс тавьж хог үүсгэх', 'place_id' => 1]);
+        Reason::create(['name' => 'Хогны төлбөр төлөөгүй', 'place_id' => 1]);
+        Reason::create(['name' => 'Нийтийн эзэмшлийн газрын хог, цас, мөсийг цэвэрлээгүй', 'place_id' => 1]);
+        Reason::create(['name' => 'Барилгын хог хаягдал, үйлчилгээний хөлс төлөөгүй', 'place_id' => 1]);
+        Reason::create(['name' => 'Бохир ус, угаадас асгах', 'place_id' => 1]);
+       
 
 
 
