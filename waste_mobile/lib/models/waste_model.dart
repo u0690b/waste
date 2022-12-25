@@ -25,6 +25,7 @@ class WasteModel {
 
   DateTime? created_at;
   DateTime? updated_at;
+  DateTime? reg_at;
 
   NameModel get reason =>
       Constants.reasons.firstWhere((element) => element.id == reason_id,
@@ -66,7 +67,10 @@ class WasteModel {
     this.videoFile,
     this.register,
     this.name,
-  });
+    this.reg_at,
+  }) {
+    this.reg_at ??= DateTime.now();
+  }
 
   Map<String, dynamic> toJson([isLocal = true]) => {
         'long': long,
@@ -86,8 +90,9 @@ class WasteModel {
         'user_id': user_id,
         if (isLocal) 'images': imageFileList ?? [],
         if (isLocal) 'video': videoFile,
-        'created_at': created_at,
-        'updated_at': updated_at,
+        'created_at': created_at?.toIso8601String(),
+        'updated_at': updated_at?.toIso8601String(),
+        'reg_at': (reg_at ?? DateTime.now()).toIso8601String(),
       };
 
   static WasteModel fromJson(Map<String, dynamic> snap) {
@@ -117,6 +122,7 @@ class WasteModel {
           : null,
       created_at: DateTime.tryParse(snap['created_at'] ?? ''),
       updated_at: DateTime.tryParse(snap['updated_at'] ?? ''),
+      reg_at: DateTime.tryParse(snap['reg_at']) ?? DateTime.now(),
     );
   }
 }

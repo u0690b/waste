@@ -85,7 +85,7 @@ class ImagePickerList extends StatelessWidget {
                                   }
                                   Get.back();
                                 },
-                                child: const Text('Замер нээх')),
+                                child: const Text('Камер нээх')),
                             const Divider(),
                             TextButton(
                                 onPressed: () async {

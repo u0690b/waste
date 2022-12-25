@@ -25,14 +25,17 @@ return new class extends Migration
             $table->string('description', 2000)->comment('Гаргасан зөрчилийн байдал');
             $table->foreignId('reason_id')->comment('Зөрчилийн төрөл')->constrained('reasons');
             $table->string('zuil_zaalt', 1000)->nullable()->comment('Зөрчсөн хууль тогтоомжийн зүйл, заалт');
-
-            $table->string('resolve_desc', 2000)->nullable()->comment('Зөрчлийг шийдвэрлэсэн байдал');
-
             $table->double('long')->comment('Уртраг');
             $table->double('lat')->comment('Өргөрөг');
+
             $table->foreignId('reg_user_id')->comment('Бүртгэсэн хүн')->constrained('users');
+
+            $table->foreignId('resolve_id')->nullable()->comment('Шийдвэрийн төрөл')->constrained('resolves');
+            $table->string('resolve_desc', 2000)->nullable()->comment('Шийдвэрлэсэн байдал');
             $table->foreignId('comf_user_id')->nullable()->comment('Шийдвэрлэсэн хүн')->constrained('users');
+
             $table->foreignId('status_id')->comment('Төлөв')->constrained('statuses');
+            $table->timestamp('reg_at')->nullable()->comment('Үүсгэсэн');
             $table->timestamps();
         });
     }

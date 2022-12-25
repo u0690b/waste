@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Register;
+use App\Services\FCMService;
 use Auth;
 use Date;
 use DB;
@@ -157,5 +158,23 @@ class IndexController extends Controller
             'data' =>  $register,
             'host' => config('app.url'),
         ]);
+    }
+
+    public function sendNotificationrToUser()
+    {
+        // get a user to get the fcm_token that already sent.               from mobile apps 
+        // $user = User::findOrFail($id);
+
+        return FCMService::send(
+            // 'cQ2U5OIzTMqnvzXvFGdKXH:APA91bEQDPO-wKgTjDfme8kn8rHg4sbZNYqtF644aZQbl4--8sFHnpopp5p0KzFOgdIkuNePxL6vEfdsg3tWVEcgRsLQup60x9aBMn1y2f_X9xiXG898CXLjBDdCA74wmUzzl-Eq7xx8',
+            'eqbd6FFjTlSqD4VsmkMOYV:APA91bG6ucMv6aLraf5EWdd8L2Kq6YCGkUnDsweK9AER_Xb55BJ9hD9cZfTveWe3ZyzXPxntLSTsAKLSBN8WGdqypX5AW4IBTM4iIPabpA8p4dI_rohp8HhvN-HPh36z7ToLJdePd1wx',
+            [
+                'title' => 'your title',
+                'body' => 'your body',
+            ],
+            [
+                'chat' => 'your body',
+            ]
+        );
     }
 }

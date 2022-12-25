@@ -7,6 +7,7 @@ use App\Models\Register;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Models\AttachedFile;
+use DB;
 use Illuminate\Http\UploadedFile;
 use Response;
 use Storage;
@@ -74,13 +75,21 @@ class RegisterAPIController extends AppBaseController
         $input = $request->validate(Register::$rules);
         $input['reg_user_id'] = $request->user()->id;
         $input['status_id'] = 2;
+        try {
+            DB::beginTransaction();
 
-        /** @var Register $register */
-        $register = Register::create($input);
-        $this->saveFiles($register, $input['images'], 'img');
-        if (isset($input['video'])) {
-            $this->saveFiles($register, [$input['video']], 'video');
+            /** @var Register $register */
+            $register = Register::create($input);
+            $this->saveFiles($register, $input['images'], 'img');
+            if (isset($input['video'])) {
+                $this->saveFiles($register, [$input['video']], 'video');
+            }
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
+
         return $register->toJson();
     }
 

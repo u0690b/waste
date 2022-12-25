@@ -27,6 +27,8 @@ class Waste {
   late NameModel regUser;
   late List<AttachedFile> imgs;
   late AttachedFile? video;
+  DateTime? reg_at;
+
   NameModel get reason =>
       Constants.reasons.firstWhere((element) => element.id == reasonId,
           orElse: () => NameModel(name: '', id: -1));
@@ -70,6 +72,7 @@ class Waste {
     required this.imgs,
     this.video,
     required this.regUser,
+    this.reg_at,
   });
 
   Map<String, dynamic> toJson() => {
@@ -90,8 +93,9 @@ class Waste {
         'reg_user_id': regUserId,
         'comf_user_id': comfUserId,
         'status_id': statusId,
-        'created_at': createdAt,
-        'updated_at': updatedAt,
+        'created_at': createdAt?.toIso8601String(),
+        'updated_at': updatedAt?.toIso8601String(),
+        'reg_at': reg_at?.toIso8601String(),
       };
 
   Waste.fromJson(Map<String, dynamic> snap) {
@@ -115,6 +119,8 @@ class Waste {
     statusId = snap['status_id'];
     createdAt = DateTime.tryParse(snap['created_at']);
     updatedAt = DateTime.tryParse(snap['updated_at']);
+    reg_at = DateTime.tryParse(snap['reg_at']);
+
     imgs = snap['attached_images'] != null
         ? (snap['attached_images'] as List)
             .map((e) => AttachedFile.fromJson(e))

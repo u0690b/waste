@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('aimag_cities', App\Http\Controllers\API\AimagCityAPIController::class);
     Route::resource('soum_districts', App\Http\Controllers\API\SoumDistrictAPIController::class);
     Route::resource('users', App\Http\Controllers\API\UserAPIController::class);
+    Route::put('save_token', [UserAPIController::class, 'save_token'])->name('api.save_token');
     Route::get('/commons', [CommonController::class, 'index'])->name('commons.index');
 });
 

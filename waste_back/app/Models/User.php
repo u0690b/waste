@@ -74,6 +74,7 @@ class User extends Authenticatable
         'soum_district_id',
         'bag_horoo_id',
         'roles',
+        'push_token'
     ];
 
     /**
@@ -84,6 +85,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'push_token',
     ];
 
 
@@ -102,6 +104,7 @@ class User extends Authenticatable
         'soum_district_id' => 'integer',
         'bag_horoo_id' => 'integer',
         'roles' => 'json',
+        'push_token' => 'string',
     ];
 
     /**
@@ -119,7 +122,8 @@ class User extends Authenticatable
         'bag_horoo_id' => 'required',
         'roles' => 'required|string',
         'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+        'updated_at' => 'nullable',
+        'push_token' => 'nullable',
     ];
 
     /**

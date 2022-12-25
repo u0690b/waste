@@ -1,12 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/controllers/cache_manager.dart';
+import 'package:waste_mobile/models/model.dart';
 import 'package:waste_mobile/models/user.dart';
 import 'package:waste_mobile/utils/contants.dart';
 
-class AuthController extends GetxController with CacheManager {
+class AuthController extends GetxController with CacheManager, Api {
   final isLogged = false.obs;
   static User? user;
   void logOut() {
@@ -55,6 +58,31 @@ class AuthController extends GetxController with CacheManager {
           onConfirm: () {
             Get.back();
           });
+    }
+  }
+
+  Map<String, String> _hasToken() {
+    final token = GetStorage().read<String>(CacheManagerKey.TOKEN.toString());
+    if (token == null) {
+      return {};
+    }
+    return {'Authorization': "Bearer $token"};
+  }
+
+  Future<void> savePushToken(String pushToken) async {
+    final res = await GetConnect().put(
+      '${Constants.host}/api/save_token',
+      {'push_token': pushToken},
+      headers: {
+        "Accept": "application/json",
+        'content-type': 'application/json',
+        ..._hasToken(),
+      },
+    );
+
+    if (res.statusCode == HttpStatus.ok) {
+    } else {
+      log(res.bodyString ?? 'Яамар нэгэн алдаа');
     }
   }
 }

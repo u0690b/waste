@@ -175,10 +175,12 @@ class WasteController with Api implements IPaginationModel<Waste> {
     loading.value = false;
   }
 
-  Future<void> postWaste(WasteModel model) async {
-    if (loading.value) return;
+  Future<bool> postWaste(WasteModel model) async {
+    bool ret = false;
+    if (loading.value) return ret;
     loading.value = true;
     try {
+      String? _hasError;
       final res = await fetchMutiPart(
         '/registers',
         'POST',
@@ -186,6 +188,7 @@ class WasteController with Api implements IPaginationModel<Waste> {
         images: model.imageFileList ?? [],
         video: model.videoFile,
         onError: (msg) async {
+          _hasError = msg;
           await Get.defaultDialog(
               middleText: msg,
               textConfirm: 'OK',
@@ -194,10 +197,13 @@ class WasteController with Api implements IPaginationModel<Waste> {
           throw Exception(msg);
         },
       );
+      if (_hasError != null) throw Exception(_hasError);
+      ret = true;
     } catch (e) {
       rethrow;
     } finally {
       loading.value = false;
     }
+    return ret;
   }
 }

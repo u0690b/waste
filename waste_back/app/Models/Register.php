@@ -61,12 +61,14 @@ class Register extends Model
         'description',
         'reason_id',
         'zuil_zaalt',
+        'resolve_id',
         'resolve_desc',
         'long',
         'lat',
         'reg_user_id',
         'comf_user_id',
-        'status_id'
+        'status_id',
+        'reg_at',
     ];
 
     /**
@@ -92,7 +94,9 @@ class Register extends Model
         'reg_user_id' => 'integer',
         'comf_user_id' => 'integer',
         'status_id' => 'integer',
-        'created_at' =>'date:Y-m-d H:i:s'
+        'created_at' => 'date:Y-m-d H:i:s',
+        'reg_at' => 'date:Y-m-d H:i:s',
+
 
     ];
 
@@ -121,6 +125,7 @@ class Register extends Model
         'images' => 'sometimes|array',
         'images.*' => 'sometimes|file',
         'video' => 'sometimes|file',
+        'reg_at' => 'nullable',
     ];
 
     /**

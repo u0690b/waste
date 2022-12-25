@@ -8,6 +8,7 @@ import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/controllers/common_controller.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/utils/contants.dart';
+import 'package:waste_mobile/utils/messaging_service.dart';
 import 'package:waste_mobile/views/screens/local_waste_list.dart';
 import 'package:waste_mobile/views/screens/splash_screen.dart';
 import 'package:waste_mobile/views/screens/waste_create.dart';
@@ -46,7 +47,8 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late StreamSubscription<ConnectivityResult> subscription;
-
+  final CommonController commonController = Get.find();
+  final AuthController authController = Get.find();
   Text subheading(String title) {
     return Text(
       title,
@@ -59,20 +61,28 @@ class _HomeViewState extends State<HomeView> {
   }
 
   bool isOnline = false;
+
+  StreamSubscription<ConnectivityResult> listenToConnectivitySubscription() =>
+      Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+        setState(() {
+          if (result == ConnectivityResult.none) {
+            isOnline = false;
+          } else {
+            isOnline = true;
+          }
+        });
+      });
+
   @override
   void initState() {
-    super.initState();
-    subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((ConnectivityResult result) {
-      setState(() {
-        if (result == ConnectivityResult.none) {
-          isOnline = false;
-        } else {
-          isOnline = true;
-        }
-      });
+    subscription = listenToConnectivitySubscription();
+
+    final service = MessagingService();
+    service.setupInteractedMessage((token) {
+      print('FCM Token: $token');
+      if (token != null) authController.savePushToken(token);
     });
+    super.initState();
   }
 
   @override
@@ -87,7 +97,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final CommonController commonController = Get.find();
     return Scaffold(
       backgroundColor: LightColors.kLightYellow,
       body: FutureBuilder(
@@ -261,6 +270,7 @@ class _HomeViewState extends State<HomeView> {
                                           ),
                                           const SizedBox(width: 20.0),
                                           ActiveProjectsCard(
+                                            onTap: () {},
                                             cardColor: LightColors.kRed,
                                             loadingPercent: Constants.mh,
                                             title: 'Мэргэжлийн хяналт',

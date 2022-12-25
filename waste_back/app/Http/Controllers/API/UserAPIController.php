@@ -6,10 +6,12 @@ namespace App\Http\Controllers\API;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use Auth;
 use Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class UserController
@@ -44,5 +46,24 @@ class UserAPIController extends AppBaseController
         $user->token = $user->createToken('token')->plainTextToken;
 
         return  Response::json($user->toArray(), 200, [], JSON_UNESCAPED_SLASHES);
+    }
+
+
+    /**
+     * Store a newly created User in storage.
+     * POST /usersModels
+     *
+     * @return Response
+     */
+    public function save_token(Request $request)
+    {
+        $request->validate([
+            'push_token' => 'required|string',
+        ]);
+
+        Auth::user()->push_token = $request->push_token;
+        Auth::user()->save();
+
+        return new JsonResponse('success');
     }
 }

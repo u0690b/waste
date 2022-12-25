@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('phone');
             $table->json('roles');
             $table->rememberToken();
+            $table->string('push_token')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
