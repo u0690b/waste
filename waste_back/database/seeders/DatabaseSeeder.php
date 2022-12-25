@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Place;
 use App\Models\Reason;
 use App\Models\SoumDistrict;
+use App\Models\LegalEntity;
 use App\Models\Status;
 use Illuminate\Database\Seeder;
 
@@ -29,6 +30,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AimagSoumDistictSeeder::class,
             BagHorooSeeder::class,
+            LegalEntitySeeder::class,
         ]);
 
         Place::create(['id' => 1, 'name' => 'Захирагчийн ажлын алба']);
@@ -43,6 +45,7 @@ class DatabaseSeeder extends Seeder
 
         Status::create(['name' => 'Бүртгэсэн']);
         Status::create(['name' => 'Илгээсэн']);
+        Status::create(['name' => 'Хуваарилсан']);
         Status::create(['name' => 'Шийдвэрлэсэн']);
 
 
