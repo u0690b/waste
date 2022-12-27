@@ -7,6 +7,8 @@ use App\Models\Register;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Models\AttachedFile;
+use App\Models\User;
+use App\Services\FCMService;
 use DB;
 use Illuminate\Http\UploadedFile;
 use Response;
@@ -86,6 +88,19 @@ class RegisterAPIController extends AppBaseController
                 $this->saveFiles($register, [$input['video']], 'video');
             }
             DB::commit();
+            $tokens = User::whereSoumDistrictId($register->soum_district_id)->whereNotNull('push_token')->get('push_token')->pluck('push_token')->toArray();
+            if (count($tokens)) {
+                FCMService::send(
+                    $tokens,
+                    [
+                        'title' => 'Шинэ зөрчил ирлээ',
+                        'body' => $register->name,
+                    ],
+                    [
+                        'id' => $register->id,
+                    ]
+                );
+            }
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
@@ -177,6 +192,18 @@ class RegisterAPIController extends AppBaseController
             $register->save();
 
 
+            if ($register->reg_user->push_token) {
+                FCMService::send(
+                    [$register->reg_user->push_token],
+                    [
+                        'title' => 'Бүргүүлсэн зөрчил шийдвэрлэгдлээ',
+                        'body' => $register->name,
+                    ],
+                    [
+                        'id' => $register->id,
+                    ]
+                );
+            }
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();

@@ -89,7 +89,8 @@ mixin Api {
     req.body = body == null ? '' : jsonEncode(body);
     var res = await req.send();
     final resBytes = await res.stream.toBytes();
-    final resBody = utf8.decode(resBytes.toList(), allowMalformed: true);
+
+    final resBody = String.fromCharCodes(resBytes);
     String text = 'Сервэртэй холбогдоход алдаа гарлаа!';
     if (res.statusCode >= 200 && res.statusCode < 300) {
       final body = jsonDecode(resBody);
