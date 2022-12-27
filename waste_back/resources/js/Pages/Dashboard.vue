@@ -180,15 +180,14 @@ const statDonut = computed(() => {
   };
 });
 const etgeedOptions = computed(() => {
-  const regionChart = props.etgeed.reduce(function (r, a) {
-    r[a.name] = r[a.name] || 0;
-    r[a.name] = r[a.name] + a.niit;
-    return r;
-  }, {});
+
   return {
     chartOptions: {
+      chart: {
+        type: 'bar'
+      },
       xaxis: {
-        categories: Object.keys(regionChart),
+        categories: props.etgeed.map(v => v.name),
       },
       yaxis: {
         labels: {
@@ -198,7 +197,6 @@ const etgeedOptions = computed(() => {
       plotOptions: {
         bar: {
           borderRadius: 4,
-          barHeight: '100%',
           distributed: true,
           horizontal: true,
 
@@ -218,32 +216,14 @@ const etgeedOptions = computed(() => {
           enabled: true
         }
       },
-      tooltip: {
-        theme: 'dark',
-        x: {
-          show: false
-        },
-        y: {
-          title: {
-            formatter: function () {
-              return ''
-            }
-          }
-        }
-      },
-      stroke: {
-        width: 1,
-        colors: ['#fff']
-      },
+
       colors: ['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#2b908f', '#f9a3a4', '#90ee7e',
         '#f48024', '#69d2e7'
       ],
     },
-
     series: [
       {
-
-        data: Object.values(regionChart),
+        data: props.etgeed.map(v => v.niit),
       },
     ],
   };
@@ -304,7 +284,7 @@ const rangeDay = computed(() => {
           </VueApexCharts>
         </div>
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow col-span-2">
-          <h3 class="text-xl text-gray-600 mb-4">Орон нутгаар</h3>
+          <h3 class="text-xl text-gray-600 mb-4">Харъяалагдах нутаг дэвсгэрээр</h3>
           <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="regionOptions.chartOptions"
             :series="regionOptions.series">
           </VueApexCharts>

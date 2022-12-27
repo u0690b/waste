@@ -1,15 +1,15 @@
 <template>
   <div class="flex justify-between px-4 mt-4 sm:px-8">
-    <h2 class="text-2xl text-gray-600 underline font-bold">Аймаг/нийслэл жагсаалт</h2>
+    <h2 class="text-xl text-gray-600 font-bold">Аймаг/нийслэл жагсаалт</h2>
     <div class="flex items-center space-x-1 text-xs">
-      <inertia-link href="/" class="font-bold text-indigo-700">Нүүр хуудас</inertia-link>
+      <inertia-link href="/" class="font-bold text-indigo-700 text-sm">Нүүр хуудас</inertia-link>
       <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
       </svg>
-      <span class="text-gray-600">Аймаг/нийслэл</span>
+      <span class="text-gray-600 text-sm">Аймаг/нийслэл</span>
     </div>
   </div>
-  <SharedState></SharedState>
+
   <div class="p-4 mt-8 sm:px-8 sm:py-4">
     <div class="p-4 bg-white rounded">
       <div class="mb-6 flex justify-between items-center">
@@ -31,12 +31,14 @@
         code: 'Аймаг/нийслэл код',
         name: 'Аймаг/нийслэл нэр',
       }" :datas="datas" url="admin.aimag_cities.edit" :showAction="false" />
+      <div class="py-2 flex items-center justify-between border-t border-gray-200 border">
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
+        <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
+          <pagination :links="datas.links" />
+        </div>
+      </div>
     </div>
-    <!-- <div class="py-2 flex items-center justify-between border-t border-gray-200">
-      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"> -->
-    <pagination :links="datas.links" />
-    <!-- </div>
-    </div> -->
+
   </div>
 </template>
 

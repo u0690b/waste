@@ -1,15 +1,14 @@
 <template>
   <div class="flex justify-between px-4 mt-4 sm:px-8">
-    <h2 class="text-2xl text-gray-600 underline font-bold">Сум/дүүрэг жагсаалт</h2>
+    <h2 class="text-xl text-gray-600 font-bold">Сум/дүүрэг жагсаалт</h2>
     <div class="flex items-center space-x-1 text-xs">
-      <inertia-link href="/" class="font-bold text-indigo-700">Нүүр хуудас</inertia-link>
+      <inertia-link href="/" class="font-bold text-indigo-700 text-sm">Нүүр хуудас</inertia-link>
       <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
       </svg>
-      <span class="text-gray-600">Сум/дүүрэг</span>
+      <span class="text-gray-600 text-sm">Сум/дүүрэг</span>
     </div>
   </div>
-  <SharedState></SharedState>
   <div class="p-4 mt-8 sm:px-8 sm:py-4">
     <div class="p-4 bg-white rounded">
       <div class="mb-6 flex justify-between items-center">
@@ -32,9 +31,14 @@
         name: 'Сум/дүүрэг нэр',
         'aimag_city.name': 'Аймаг/нийслэл нэр',
         aimag_city_id: 'Аймаг/нийслэл дугаар',
-      }" :datas="datas" url="admin.soum_districts.edit" />
+      }" :datas="datas" url="admin.soum_districts.edit" :insertUrl="route('admin.soum_districts.create')" />
+      <div class="py-2 flex items-center justify-between border-t border-gray-200 border">
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
+        <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
+          <pagination :links="datas.links" />
+        </div>
+      </div>
     </div>
-    <pagination :links="datas.links" />
   </div>
 </template>
 

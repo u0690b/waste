@@ -17,10 +17,17 @@
       </inertia-link>
     </div>
     <div class="bg-white rounded shadow overflow-x-auto">
-      <admin-table :headers="{'register.name':'','register_id':'','long':'Уртраг','lat':'Өргөрөг','description':'Тайлбар','resolve_desc':'Тэмдэглэл','reason.name':'Шалтгаан','reason_id':'Шалтгаан','status.name':'Төлөв','status_id':'Төлөв','aimag_city.name':'Аймаг,Нийслэл','aimag_city_id':'Аймаг,Нийслэл','soum_district.name':'Сум,Дүүрэг','soum_district_id':'Сум,Дүүрэг','bag_horoo.name':'Баг,Хороо','bag_horoo_id':'Баг,Хороо','address':'Хаяг','user.name':'Бүртгэсэн хүн','user_id':'Бүртгэсэн хүн'}" :datas="datas" url="admin.register_histories.edit"/>
-      
+      <admin-table
+        :headers="{ 'register.name': '', 'register_id': '', 'long': 'Уртраг', 'lat': 'Өргөрөг', 'description': 'Тайлбар', 'resolve_desc': 'Тэмдэглэл', 'reason.name': 'Шалтгаан', 'reason_id': 'Шалтгаан', 'status.name': 'Төлөв', 'status_id': 'Төлөв', 'aimag_city.name': 'Аймаг,Нийслэл', 'aimag_city_id': 'Аймаг,Нийслэл', 'soum_district.name': 'Сум,Дүүрэг', 'soum_district_id': 'Сум,Дүүрэг', 'bag_horoo.name': 'Баг,Хороо', 'bag_horoo_id': 'Баг,Хороо', 'address': 'Хаяг', 'user.name': 'Бүртгэсэн хүн', 'user_id': 'Бүртгэсэн хүн' }"
+        :datas="datas" url="admin.register_histories.edit" />
+      <div class="py-2 flex items-center justify-between border-t border-gray-200 border">
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
+        <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
+          <pagination :links="datas.links" />
+        </div>
+      </div>
     </div>
-    <pagination :links="datas.links" />
+
   </div>
 </template>
 
@@ -44,7 +51,7 @@ export default {
   layout: Layout,
   props: {
     datas: Object,
-    filters: [Object,Array],
+    filters: [Object, Array],
     host: String,
   },
   data() {
@@ -57,13 +64,13 @@ export default {
         soum_district_id: null,
         bag_horoo_id: null,
         user_id: null,
-        ...this.filters?this.filters:{},
+        ...this.filters ? this.filters : {},
       },
     }
   },
   watch: {
     form: {
-      handler: debounce(function() {
+      handler: debounce(function () {
         this.$inertia.get(this.route('admin.register_histories.index'), pickBy(this.form), { preserveState: true })
       }, 150),
       deep: true,
