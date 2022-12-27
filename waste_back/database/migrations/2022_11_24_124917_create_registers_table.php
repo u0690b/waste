@@ -32,6 +32,7 @@ return new class extends Migration
 
             $table->foreignId('resolve_id')->nullable()->comment('Шийдвэрийн төрөл')->constrained('resolves');
             $table->string('resolve_desc', 2000)->nullable()->comment('Шийдвэрлэсэн байдал');
+            $table->string('resolve_image', 500)->nullable()->comment('Шийдвэрлэсэн зураг');
             $table->foreignId('comf_user_id')->nullable()->comment('Шийдвэрлэсэн хүн')->constrained('users');
 
             $table->foreignId('status_id')->comment('Төлөв')->constrained('statuses');

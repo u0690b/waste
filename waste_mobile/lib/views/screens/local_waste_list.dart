@@ -6,6 +6,7 @@ import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/views/screens/splash_screen.dart';
 import 'package:waste_mobile/views/screens/waste_create.dart';
 import 'package:waste_mobile/views/screens/waste_edit.dart';
+import 'package:waste_mobile/views/widgets/future_alert_dialog.dart';
 
 class LocalWasteList extends StatefulWidget {
   final String title;
@@ -76,13 +77,13 @@ class _LocalWasteListState extends State<LocalWasteList> {
                                   SlidableAction(
                                     onPressed: (BuildContext context) {
                                       print('send $index');
-                                      wasteController.postWaste(item).then(
-                                          (value) async {
-                                        await wasteController
-                                            .deleteLocalModels(index);
-                                      }, onError: (err) {
-                                        print(err);
-                                      });
+                                      futureAlertDialog(
+                                          context: context,
+                                          futureStream: wasteController
+                                              .postWaste(item)
+                                              .then((value) => wasteController
+                                                  .deleteLocalModels(index)),
+                                          autoCloseSec: 1);
                                     },
                                     backgroundColor: const Color(0xFF0392CF),
                                     foregroundColor: Colors.white,
@@ -92,24 +93,34 @@ class _LocalWasteListState extends State<LocalWasteList> {
                                 ],
                               ),
                               child: ListTile(
-                                tileColor: LightColors.kPalePink,
-                                textColor: Colors.black,
-                                iconColor: Colors.blue,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(5),
-                                        topRight: Radius.circular(5),
-                                        bottomRight: Radius.circular(5),
-                                        bottomLeft: Radius.circular(5))),
-                                leading: const Icon(Icons.map),
-                                contentPadding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                onTap: () =>
-                                    Get.to(() => WasteEdit(model: item)),
-                                dense: false,
-                                title: Text(item.fullAddress()),
-                                subtitle: Text(item.description ?? ''),
-                              ),
+                                  tileColor: LightColors.kPalePink,
+                                  textColor: Colors.black,
+                                  iconColor: Colors.blue,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(5),
+                                          topRight: Radius.circular(5),
+                                          bottomRight: Radius.circular(5),
+                                          bottomLeft: Radius.circular(5))),
+                                  leading: const Icon(Icons.map),
+                                  contentPadding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  onTap: () =>
+                                      Get.to(() => WasteEdit(model: item)),
+                                  dense: false,
+                                  title: Text(item.name ?? ''),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(item.fullAddress()),
+                                      Text(
+                                        item.description ?? '',
+                                        maxLines: 4,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  )),
                             );
                           },
                           separatorBuilder: (BuildContext context, int index) {

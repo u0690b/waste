@@ -8,6 +8,7 @@ use App\Models\BagHoroo;
 use App\Models\Place;
 use App\Models\Reason;
 use App\Models\Register;
+use App\Models\Resolve;
 use App\Models\SoumDistrict;
 use App\Models\Status;
 use Auth;
@@ -32,6 +33,7 @@ class CommonController extends Controller
             'aimag_cities_date' => 'nullable|date',
             'soum_districts_date' => 'nullable|date',
             'bag_horoos_date' => 'nullable|date',
+            'resolves_date' => 'nullable|date',
         ]);
 
         $initDate = Carbon::createFromFormat('Y-m-d H:i:s', '2000-01-23 11:53:20');
@@ -42,6 +44,7 @@ class CommonController extends Controller
         $aimag_cities_date = $input['aimag_cities_date'] ?? $initDate;
         $soum_districts_date = $input['soum_districts_date'] ?? $initDate;
         $bag_horoos_date = $input['bag_horoos_date'] ?? $initDate;
+        $resolves_date = $input['resolves_date'] ?? $initDate;
         $haha = DB::select(
             'SELECT 
                 (select COUNT(*) FROM registers INNER JOIN reasons ON reasons.id = reason_id WHERE reasons.place_id = 2) total_mh,
@@ -57,6 +60,7 @@ class CommonController extends Controller
             'soum_districts' => SoumDistrict::where('updated_at', '>', $soum_districts_date)->orWhere('created_at', '>', $soum_districts_date)->count() ? SoumDistrict::all() : [],
             'bag_horoos' => BagHoroo::where('updated_at', '>', $bag_horoos_date)->orWhere('created_at', '>', $bag_horoos_date)->count() ? BagHoroo::all() : [],
             "statistic" => $haha,
+            "resolves" => Resolve::where('updated_at', '>', $resolves_date)->orWhere('created_at', '>', $resolves_date)->count() ? Resolve::all() : [],
         ];
     }
 }

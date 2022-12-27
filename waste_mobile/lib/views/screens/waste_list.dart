@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:waste_mobile/controllers/waste_controller.dart';
 import 'package:waste_mobile/models/waste.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
-import 'package:waste_mobile/views/screens/waste_create.dart';
 import 'package:waste_mobile/views/screens/waste_details.dart';
 import 'package:waste_mobile/views/widgets/pagination_builder.dart';
 
@@ -20,12 +19,6 @@ class WasteList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        actions: [
-          IconButton(
-            onPressed: () => Get.to(() => const WasteCreate()),
-            icon: const Icon(Icons.create_new_folder_rounded),
-          )
-        ],
       ),
       body: PaginationBuilder<Waste>(
         paginationModel: wasteController,
@@ -36,22 +29,37 @@ class WasteList extends StatelessWidget {
             itemBuilder: (context, index) {
               var item = datas[index];
               return ListTile(
-                tileColor: LightColors.kPalePink,
-                textColor: Colors.black,
-                iconColor: Colors.blue,
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(5),
-                        topRight: Radius.circular(5),
-                        bottomRight: Radius.circular(5),
-                        bottomLeft: Radius.circular(5))),
-                leading: const Icon(Icons.map),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                onTap: () => Get.to(() => WasteDetails(waste: item)),
-                dense: false,
-                title: Text(item.fullAddress()),
-                subtitle: Text(item.description),
-              );
+                  tileColor: LightColors.kPalePink,
+                  textColor: Colors.black,
+                  iconColor: Colors.blue,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(5),
+                          topRight: Radius.circular(5),
+                          bottomRight: Radius.circular(5),
+                          bottomLeft: Radius.circular(5))),
+                  leading: const Icon(Icons.map),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                  onTap: () => Get.to(() => WasteDetails(
+                        waste: item,
+                        wasteController: title == 'Илгээсэн'
+                            ? wasteController as WasteController
+                            : null,
+                      )),
+                  dense: false,
+                  title: Text(item.name),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(item.fullAddress()),
+                      Text(
+                        item.description,
+                        textAlign: TextAlign.left,
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ));
             },
             separatorBuilder: (BuildContext context, int index) {
               return const SizedBox(height: 10);

@@ -8,6 +8,7 @@ use App\Models\Place;
 use App\Models\Reason;
 use App\Models\SoumDistrict;
 use App\Models\LegalEntity;
+use App\Models\Resolve;
 use App\Models\Status;
 use Illuminate\Database\Seeder;
 
@@ -48,7 +49,7 @@ class DatabaseSeeder extends Seeder
         Reason::create(['name' => 'Нийтийн эзэмшлийн газрын хог, цас, мөсийг цэвэрлээгүй', 'place_id' => 1]);
         Reason::create(['name' => 'Барилгын хог хаягдал, үйлчилгээний хөлс төлөөгүй', 'place_id' => 1]);
         Reason::create(['name' => 'Бохир ус, угаадас асгах', 'place_id' => 1]);
-       
+
 
 
 
@@ -57,7 +58,10 @@ class DatabaseSeeder extends Seeder
         Status::create(['name' => 'Хуваарилсан']);
         Status::create(['name' => 'Шийдвэрлэсэн']);
 
-
+        Resolve::create(['name' => 'Зөрчлийг арилгуулсан']);
+        Resolve::create(['name' => 'Торгосон']);
+        Resolve::create(['name' => 'Татгалзсан']);
+        Resolve::create(['name' => 'Бусад']);
 
 
         \App\Models\User::factory()->create([

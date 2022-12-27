@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/controllers/cache_manager.dart';
 import 'package:waste_mobile/utils/contants.dart';
@@ -109,7 +110,7 @@ mixin Api {
           textConfirm: 'OK',
           confirmTextColor: Colors.white,
           onConfirm: () {
-            Get.back();
+            Get.back(closeOverlays: true);
             Get.find<AuthController>().logOut();
           });
     } else {
@@ -144,6 +145,7 @@ mixin Api {
     Map<String, dynamic>? query,
     Decoder<T>? decoder,
     required List<List<int>> images,
+    XFile? image,
     List<int>? video,
     Progress? uploadProgress,
     void Function(String msg)? onError,
@@ -180,6 +182,9 @@ mixin Api {
     if (video != null) {
       req.files.add(
           http.MultipartFile.fromBytes('video', video, filename: 'video.mpeg'));
+    }
+    if (image != null) {
+      req.files.add(await http.MultipartFile.fromPath('image', image.path));
     }
     var res = await req.send();
     final resBytes = await res.stream.toBytes();

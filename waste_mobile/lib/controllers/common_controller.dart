@@ -21,6 +21,7 @@ class CommonController with Api {
         'aimag_cities_date': GetStorage().read('aimag_cities_date'),
         'soum_districts_date': GetStorage().read('soum_districts_date'),
         'bag_horoos_date': GetStorage().read('bag_horoos_date'),
+        'resolves_date': GetStorage().read('resolves_date'),
       },
       onError: (msg) {
         log(msg, level: 1);
@@ -36,6 +37,7 @@ class CommonController with Api {
     Constants.aimagCities = decode(res['aimag_cities']);
     Constants.soumDistricts = decode(res['soum_districts']);
     Constants.bagHoroos = decode(res['bag_horoos']);
+    Constants.resolves = decode(res['resolves']);
     Constants.za = double.tryParse(res['statistic'][0]['za'] ?? '0') ?? 0;
     Constants.mh = double.tryParse(res['statistic'][0]['mh'] ?? '0') ?? 0;
     Constants.totalAa = res['statistic'][0]['total_za'] ?? 0;

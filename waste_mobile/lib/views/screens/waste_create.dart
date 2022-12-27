@@ -12,6 +12,7 @@ import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/utils/contants.dart';
 import 'package:waste_mobile/views/screens/video_payer_file.dart';
 import 'package:waste_mobile/views/widgets/back_button.dart';
+import 'package:waste_mobile/views/widgets/future_alert_dialog.dart';
 import 'package:waste_mobile/views/widgets/image_pick_list.dart';
 import 'package:waste_mobile/views/widgets/location_map.dart';
 
@@ -41,8 +42,11 @@ class _WasteCreateState extends State<WasteCreate> {
         body: SafeArea(
           child: SingleChildScrollView(
             child: WasteRegisterForm(
-              onSave: (value) =>
-                  Get.find<WasteController>().addLocalModels(value),
+              onSave: (value) => futureAlertDialog(
+                  context: context,
+                  futureStream:
+                      Get.find<WasteController>().addLocalModels(value),
+                  autoCloseSec: 1),
             ),
           ),
         ));
@@ -376,6 +380,19 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0)),
                     ),
+                    selectedItemBuilder: (context) {
+                      return Constants.reasons
+                          .map(
+                            (e) => Container(
+                              width: Get.width - 105,
+                              child: Text(
+                                e.name,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          )
+                          .toList();
+                    },
                     items: Constants.reasons
                         .map((e) => DropdownMenuItem(
                               value: e.id,

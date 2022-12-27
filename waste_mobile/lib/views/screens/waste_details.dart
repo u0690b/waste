@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:waste_mobile/controllers/auth_controller.dart';
+import 'package:waste_mobile/controllers/waste_controller.dart';
+import 'package:waste_mobile/models/attached_file.dart';
 import 'package:waste_mobile/models/waste.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/views/screens/Image_screen.dart';
 import 'package:waste_mobile/views/screens/video_payer.dart';
+import 'package:waste_mobile/views/screens/waste_resolve.dart';
 import 'package:waste_mobile/views/widgets/back_button.dart';
 import 'package:waste_mobile/views/widgets/top_container.dart';
 import 'package:waste_mobile/views/widgets/zoombuttons_plugin_option.dart';
 
 class WasteDetails extends StatefulWidget {
   final Waste waste;
-  const WasteDetails({Key? key, required this.waste}) : super(key: key);
+  final WasteController? wasteController;
+  const WasteDetails({Key? key, required this.waste, this.wasteController})
+      : super(key: key);
 
   @override
   State<WasteDetails> createState() => _WasteDetailsState();
@@ -125,6 +131,29 @@ class _WasteDetailsState extends State<WasteDetails> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    if (widget.wasteController != null &&
+                        AuthController.user!.roles != 'onb')
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () async {
+                                final ret = await Get.to<bool?>(() =>
+                                    WasteResolve(
+                                        waste: widget.waste,
+                                        wasteController:
+                                            widget.wasteController));
+                                if (ret == true) {
+                                  Get.back();
+                                }
+                              },
+                              child: Text('Шийдвэрлэх'),
+                            ),
+                          ],
+                        ),
+                      ),
                     ListTile(
                       dense: true,
                       style: ListTileStyle.drawer,
@@ -181,12 +210,19 @@ class _WasteDetailsState extends State<WasteDetails> {
                       title: const Text("Бүртгэсэн хүн:"),
                       subtitle: Text(waste.regUser.name),
                     ),
-                    if (waste.resolveDesc != null)
+                    if (waste.reg_at != null)
                       ListTile(
                         dense: true,
                         style: ListTileStyle.drawer,
-                        title: const Text("Шийдвэрлэсэн тэмэдэглэл:"),
-                        subtitle: Text(waste.resolveDesc ?? ''),
+                        title: const Text("Үүсгэсэн онгоо:"),
+                        subtitle: Text(waste.reg_at!.toString()),
+                      ),
+                    if (waste.createdAt != null)
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text("Илгээсэн онгоо:"),
+                        subtitle: Text(waste.createdAt!.toString()),
                       ),
                     const SizedBox(height: 20),
                     const ListTile(
@@ -204,6 +240,37 @@ class _WasteDetailsState extends State<WasteDetails> {
                             child: const Text('Бичлэг харах')),
                       ),
                     ImageScreen(galleryItems: waste.imgs),
+                    if (waste.comfUser != null)
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text("Шийдвэрлэсэн хүн:"),
+                        subtitle: Text(waste.comfUser!.name),
+                      ),
+                    if (waste.resolve != null)
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text("Шийдвэрийн төрөл:"),
+                        subtitle: Text(waste.resolve!.name),
+                      ),
+                    if (waste.resolveDesc != null)
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text("Шийдвэрлэсэн тэмэдэглэл:"),
+                        subtitle: Text(waste.resolveDesc ?? ''),
+                      ),
+                    if (waste.resolveImage != null)
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text("Шийдвэрлэсэн зураг:"),
+                        subtitle: ImageScreen(galleryItems: [
+                          AttachedFile(
+                              id: 0, register_id: 0, path: waste.resolveImage!)
+                        ]),
+                      ),
                   ],
                 ),
               ],

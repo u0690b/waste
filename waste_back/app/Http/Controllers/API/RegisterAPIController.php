@@ -30,6 +30,7 @@ class RegisterAPIController extends AppBaseController
         $query = Register::filter($request->all(["search", ...Register::$searchIn]))
 
             ->with('reg_user:id,name')
+            ->with('comf_user:id,name')
             ->with('attached_images:id,register_id,path')
             ->with('attached_video:id,register_id,path');
 
@@ -133,6 +134,57 @@ class RegisterAPIController extends AppBaseController
 
         $register->fill($input);
         $register->save();
+
+        return $register->toJson();
+    }
+
+    /**
+     * Resolve the specified Register in storage.
+     * PUT/PATCH /registers/{id}
+     *
+     * @param Register $registers
+     *
+     * @return Response
+     */
+    public function resolve($id, Request $request)
+    {
+        $input = $request->validate([
+            'resolve_desc' => 'nullable|string|max:2000',
+            'resolve_id' => 'nullable|integer',
+            'image' => 'nullable|file',
+        ]);
+        /** @var Register $register */
+        $register = Register::find($id);
+
+        if (empty($register)) {
+            return $this->sendError('Register not found');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            /** @var Register $register */
+            $input['comf_user_id'] = $request->user()->id;
+            $input['status_id'] = 3;
+            $register->fill($input);
+            if ($request->image instanceof UploadedFile) {
+
+                if ($file =  $input['image']->store('/public/uploads/hyanalt')) {
+                    $register->resolve_image =  Storage::url($file);
+                }
+            }
+
+            $register->save();
+
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+
+
 
         return $register->toJson();
     }

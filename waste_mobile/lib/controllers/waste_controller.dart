@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:waste_mobile/models/model.dart';
 import 'package:waste_mobile/models/waste.dart';
 import 'package:waste_mobile/models/waste_model.dart';
@@ -125,9 +126,8 @@ class WasteController with Api implements IPaginationModel<Waste> {
 
     List<Waste> retVal = q?.toList() ?? [];
 
-    if (retVal.isNotEmpty) {
-      datas.value = retVal;
-    }
+    datas.value = retVal;
+
     loading.value = false;
     return null;
   }
@@ -199,6 +199,49 @@ class WasteController with Api implements IPaginationModel<Waste> {
       );
       if (_hasError != null) throw Exception(_hasError);
       ret = true;
+    } catch (e) {
+      rethrow;
+    } finally {
+      loading.value = false;
+    }
+    return ret;
+  }
+
+  Future<bool> solveWaste({
+    required int id,
+    required String resolve_desc,
+    required int resolve_id,
+    XFile? pickedFile,
+  }) async {
+    bool ret = false;
+    if (loading.value) return ret;
+    loading.value = true;
+    try {
+      String? _hasError;
+      final res = await fetchMutiPart(
+        '/registers/$id/resolve',
+        'POST',
+        body: {
+          'id': id,
+          'resolve_id': resolve_id,
+          'resolve_desc': resolve_desc,
+        },
+        images: [],
+        image: pickedFile,
+        onError: (msg) async {
+          _hasError = msg;
+          await Get.defaultDialog(
+              middleText: msg,
+              textConfirm: 'OK',
+              confirmTextColor: Colors.white,
+              onConfirm: () => Get.back());
+          throw Exception(msg);
+        },
+      );
+      if (_hasError != null) throw Exception(_hasError);
+      ret = true;
+      loading.value = false;
+      await refresh();
     } catch (e) {
       rethrow;
     } finally {

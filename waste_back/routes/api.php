@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('users', App\Http\Controllers\API\UserAPIController::class);
     Route::put('save_token', [UserAPIController::class, 'save_token'])->name('api.save_token');
     Route::get('/commons', [CommonController::class, 'index'])->name('commons.index');
+    Route::post('/registers/{register}/resolve', [App\Http\Controllers\API\RegisterAPIController::class, 'resolve'])->name('commons.index');
 });
 
 

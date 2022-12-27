@@ -188,4 +188,25 @@ class Constants {
     _za = value;
     GetStorage().write('za', value);
   }
+
+  static List<NameModel>? _resolves;
+  static List<NameModel> get resolves {
+    return _resolves ??= GetStorage()
+            .read<List<dynamic>>('resolves')
+            ?.map((e) => NameModel.fromJson(e))
+            .toList() ??
+        [];
+  }
+
+  static set resolves(List<NameModel>? value) {
+    if (value == null || value.isEmpty) {
+      return;
+    }
+    _resolves = value;
+    GetStorage().write('resolves', value.map((e) => e.toJson()).toList());
+    GetStorage().write(
+      'resolves_date',
+      value.reduce(combine).updated_at?.toIso8601String(),
+    );
+  }
 }

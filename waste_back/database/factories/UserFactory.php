@@ -19,7 +19,7 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $bagHoroo = BagHoroo::inRandomOrder()->first();
+        $bagHoroo = BagHoroo::whereIn('soum_district_id', [148, 149, 150, 151, 152, 153, 154, 155, 156])->inRandomOrder()->first();
         return [
             'name' => $this->faker->word,
             'username' => $this->faker->word,
