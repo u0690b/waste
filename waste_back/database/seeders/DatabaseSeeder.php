@@ -71,10 +71,41 @@ class DatabaseSeeder extends Seeder
             'roles' => 'admin'
         ]);
         \App\Models\User::factory()->create([
-            'username' => 'test',
-            'name' => 'Зочин',
+            'username' => 'zaa',
+            'name' => 'Захирагчийн ажлын алба',
             'phone' => '8888-8888',
-            'roles' => 'pi'
+            'roles' => 'zaa'
+        ]);
+        \App\Models\User::factory()->create([
+            'username' => 'mha',
+            'name' => 'МХ админ',
+            'phone' => '8888-8888',
+            'roles' => 'mha'
+        ]);
+
+        \App\Models\User::factory()->create([
+            'username' => 'mhb',
+            'name' => 'МХ байцаагч',
+            'phone' => '8888-8888',
+            'roles' => 'mhb'
+        ]);
+        \App\Models\User::factory()->create([
+            'username' => 'da',
+            'name' => 'Дүүргийн админ',
+            'phone' => '8888-8888',
+            'roles' => 'da'
+        ]);
+        \App\Models\User::factory()->create([
+            'username' => 'hd',
+            'name' => 'Хороон дарга',
+            'phone' => '8888-8888',
+            'roles' => 'hd'
+        ]);
+        \App\Models\User::factory()->create([
+            'username' => 'onb',
+            'name' => 'Олон нийтийн байцаагч',
+            'phone' => '8888-8888',
+            'roles' => 'onb'
         ]);
     }
 }

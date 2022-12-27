@@ -248,57 +248,63 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                 ),
                 const SizedBox(height: 20),
                 // Аймаг,Нийслэл:
-                DropdownButtonFormField(
-                    validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
-                    value: aimagCity,
-                    decoration: InputDecoration(
-                      labelText: "Аймаг,Нийслэл:",
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 15.0),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                    ),
-                    items: Constants.aimagCities
-                        .map((e) => DropdownMenuItem(
-                              value: e.id,
-                              child: Text(e.name),
-                            ))
-                        .toList(),
-                    onChanged: (int? value) {
-                      setState(() {
-                        aimagCity = value;
-                        soumDistrict = null;
-                        bagHoroo = null;
-                      });
-                    }),
-                const SizedBox(height: 20),
-                //  Сум,Дүүрэг
-                DropdownButtonFormField(
+                TextFormField(
                   validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
+                  initialValue: Constants.aimagCities
+                      .firstWhere((element) => element.id == aimagCity)
+                      .name,
+                  enabled: false,
                   decoration: InputDecoration(
-                    labelText: "Сум,Дүүрэг",
+                    labelText: "Аймаг,Нийслэл:",
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 15.0),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5.0)),
                   ),
-                  enableFeedback: aimagCity != null,
-                  items: Constants.soumDistricts
-                      .where((element) =>
-                          element.aimag_city_id == (aimagCity ?? -1))
-                      .map((e) => DropdownMenuItem(
-                            value: e.id,
-                            child: Text(e.name),
-                          ))
-                      .toList(),
-                  value: soumDistrict,
-                  onChanged: (int? value) {
-                    setState(() {
-                      soumDistrict = value;
-                      bagHoroo = null;
-                    });
-                  },
                 ),
+                const SizedBox(height: 20),
+                //  Сум,Дүүрэг
+                if (!['admin', 'zaa'].contains(AuthController.user!.roles))
+                  TextFormField(
+                    validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
+                    initialValue: Constants.soumDistricts
+                        .firstWhere((element) => element.id == soumDistrict)
+                        .name,
+                    enabled: false,
+                    decoration: InputDecoration(
+                      labelText: "Сум,Дүүрэг:",
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 15.0),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                    ),
+                  )
+                else
+                  DropdownButtonFormField(
+                    validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
+                    decoration: InputDecoration(
+                      labelText: "Сум,Дүүрэг",
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 15.0),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0)),
+                    ),
+                    enableFeedback: aimagCity == null,
+                    items: Constants.soumDistricts
+                        .where((el) => el.aimag_city_id == (aimagCity ?? -1))
+                        .map((e) => DropdownMenuItem(
+                              value: e.id,
+                              child: Text(e.name),
+                            ))
+                        .toList(),
+                    value: soumDistrict,
+                    onChanged: (int? value) {
+                      setState(() {
+                        soumDistrict = value;
+                        bagHoroo = null;
+                      });
+                    },
+                  ),
                 const SizedBox(height: 20),
                 // Баг,Хороо:
                 DropdownButtonFormField(

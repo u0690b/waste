@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/models/model.dart';
 import 'package:waste_mobile/models/waste.dart';
 import 'package:waste_mobile/models/waste_model.dart';
@@ -14,7 +15,11 @@ class CompleteWasteController extends WasteController
     final res = await fetch<Iterable<Waste>>(
       '/registers',
       'get',
-      body: {'status_id': 3, 'next_cursor': nextCursor},
+      body: {
+        ..._getAimagCityFilter(),
+        'status_id': 3,
+        'next_cursor': nextCursor,
+      },
       decoder: (data) {
         if (data is Map) {
           nextCursor = data['next_cursor'];
@@ -80,13 +85,15 @@ class WasteController with Api implements IPaginationModel<Waste> {
     final res = await fetch<Iterable<Waste>>(
       '/registers',
       'get',
-      body: {'status_id': 2, 'next_cursor': nextCursor},
+      body: {
+        ..._getAimagCityFilter(),
+        'status_id': 2,
+        'next_cursor': nextCursor,
+      },
       decoder: (data) {
         if (data is Map) {
           nextCursor = data['next_cursor'];
-          return (data['data'] as List<dynamic>).map(
-            (e) => Waste.fromJson(e),
-          );
+          return (data['data'] as List<dynamic>).map((e) => Waste.fromJson(e));
         }
         // return [];
         return (data as List<dynamic>).map(
@@ -246,6 +253,19 @@ class WasteController with Api implements IPaginationModel<Waste> {
       rethrow;
     } finally {
       loading.value = false;
+    }
+    return ret;
+  }
+
+  Map<String, dynamic> _getAimagCityFilter() {
+    Map<String, dynamic> ret = {};
+    final user = AuthController.user!;
+    if (['mha', 'mhb', 'da'].contains(user.roles)) {
+      ret['aimag_city_id'] = user.aimag_city_id;
+      ret['soum_district_id'] = user.soum_district_id;
+    }
+    if (['hd', 'onb'].contains(user.roles)) {
+      ret['bag_horoo_id'] = user.bag_horoo_id;
     }
     return ret;
   }
