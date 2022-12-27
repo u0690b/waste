@@ -40,11 +40,6 @@ class LegalEntity extends Model
     public $timestamps = false;
     public $table = 'legal_entity';
 
-
-
-
-
-
     public $fillable = [
         'register',
         'name'
@@ -69,7 +64,6 @@ class LegalEntity extends Model
     public static $rules = [
         'register' => 'required|string|max:10',
         'name' => 'required|string|max:1000',
-      
     ];
 
     

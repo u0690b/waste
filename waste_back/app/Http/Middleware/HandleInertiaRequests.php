@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\AttachedFile;
 use App\Models\Register;
+use App\Models\Reason;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -45,6 +46,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => User::count(),
                 'register' => Register::count(),
                 'file' => AttachedFile::count(),
+                'reason'=>Reason::count(),
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

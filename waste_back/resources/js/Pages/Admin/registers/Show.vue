@@ -3,12 +3,12 @@
     <div class="flex justify-between px-4 mt-4 sm:px-8">
         <h2 class="text-2xl text-gray-600 underline font-bold">Зөрчлийн бүртгэл</h2>
         <div class="flex items-center space-x-1 text-xs">
-            <inertia-link href="/" class="font-bold text-indigo-700">Нүүр хуудас</inertia-link>
+            <inertia-link href="/" class="font-bold text-indigo-700 text-sm">Нүүр хуудас</inertia-link>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
-            <span class="text-gray-600">Зөрчлийн бүртгэл</span>
+            <span class="text-gray-600 text-sm">Зөрчлийн бүртгэл</span>
         </div>
     </div>
     <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-2 sm:px-8">

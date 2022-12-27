@@ -58,7 +58,7 @@ if (user.value.roles == 'admin')
       href: route("admin.users.index"),
     },
     {
-      text: "Тохиргоо",
+      text: "Өгөгдлийн сан",
       icon: markRaw(WrenchScrewdriverIcon),
       href: "#",
       children: [
@@ -88,14 +88,21 @@ if (user.value.roles == 'admin')
           icon: markRaw(ChevronRightIcon),
           href: route("admin.bag_horoos.index"),
         },
+        {
+          text: "Хуулийн этгээд",
+          icon: markRaw(ChevronRightIcon),
+          href: route("admin.bag_horoos.index"),
+        },
       ],
     },
   )
+const totalStat = computed(() => usePage().props.value.totalStat)
 menus.value.push(
   {
-    text: "Зөрчил бүртгэл",
+    text: "Зөрчлийн жагсаалт",
     icon: markRaw(ClipboardDocumentCheckIcon),
     href: route("admin.registers.index"),
+    counter: totalStat.value.register
   },
 
   {
@@ -104,7 +111,6 @@ menus.value.push(
     href: route("register.map"),
   },
 )
-
 // const InsItTul = computed(() => user.value.rolecodelist.includes('InsItTul'))	// baitsaagch
 </script>
 
@@ -121,7 +127,14 @@ menus.value.push(
     <!-- menu -->
     <nav class="text-sm text-gray-300">
       <ul class="flex flex-col">
-        <SidebarItem v-for="menu in menus" :key="menu.text" :menu="menu"
+        <li class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold">Үндсэн цэс</li>
+        <SidebarItem v-for="menu in menus.slice(0, 3)" :key="menu.text" :menu="menu"
+          class="px-4 py-2 text-xs uppercase tracking-wider text-white font-bold" />
+        <li class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold">Тохиргоо</li>
+        <SidebarItem v-for="menu in menus.slice(3, 4)" :key="menu.text" :menu="menu"
+          class="px-4 py-2 text-xs uppercase tracking-wider text-white font-bold" />
+        <li class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold">Зөрчлийн мэдээлэл</li>
+        <SidebarItem v-for="menu in menus.slice(4, 6)" :key="menu.text" :menu="menu"
           class="px-4 py-2 text-xs uppercase tracking-wider text-white font-bold" />
       </ul>
     </nav>

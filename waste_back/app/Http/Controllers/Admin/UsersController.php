@@ -59,7 +59,7 @@ class UsersController extends Controller
 
         $input['password'] = Hash::make($input['password']);
         User::create($input);
-        return Redirect::route('admin.users.index')->with('success', 'User created.');
+        return Redirect::route('admin.users.index')->with('success', 'Хэрэглэгчийг амжилттай бүртгэлээ.');
     }
 
     /**
@@ -94,7 +94,7 @@ class UsersController extends Controller
         if (isset($input['password']))
             $input['password'] = Hash::make($input['password']);
         $user->update($input);
-        return Redirect::route('admin.users.index')->with('success', 'User updated.');
+        return Redirect::route('admin.users.index')->with('success', 'Хэрэглэгчийг амжилттай заслаа.');
     }
 
     /**
@@ -109,6 +109,6 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return Redirect::route('admin.users.index')->with('success', 'User deleted.');
+        return Redirect::route('admin.users.index')->with('success', 'Хэрэглэгчийг идэвхигүй болголоо.');
     }
 }
