@@ -23,6 +23,8 @@ Route::resource('statuses', App\Http\Controllers\Admin\StatusController::class);
 
 // Registers
 Route::resource('registers', App\Http\Controllers\Admin\RegisterController::class);
+Route::get('/registers/{register}/allocation', [App\Http\Controllers\Admin\RegisterController::class, 'allocation'])->name('register.allocation');
+Route::put('/registers/{register}/allocation', [App\Http\Controllers\Admin\RegisterController::class, 'allocation_store'])->name('register.allocation_store');
 
 // RegisterHistories
 Route::resource('register_histories', App\Http\Controllers\Admin\RegisterHistoryController::class);
