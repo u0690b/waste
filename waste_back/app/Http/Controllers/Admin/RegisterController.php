@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Register;
+use App\Models\User;
+use App\Services\FCMService;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
@@ -74,6 +76,57 @@ class RegisterController extends Controller
             'data' =>  $register,
             'host' => config('app.url'),
         ]);
+    }
+
+    /**
+     * Show the form for editing the specified Register.
+     *
+     * @param Register $register
+     *
+     * @return Response
+     */
+    public function allocation(Register $register)
+    {
+        $register
+            ->load('aimag_city:id,name')
+            ->load('bag_horoo:id,name')
+            ->load('comf_user:id,name')
+            ->load('reason:id,name')
+            ->load('reg_user:id,name')
+            ->load('soum_district:id,name')
+            ->load('status:id,name')
+            ->load('attached_images:id,register_id,path')
+            ->load('attached_video:id,register_id,path');
+        return Inertia::render('Admin/registers/Allocation', [
+            'data' =>  $register,
+            'host' => config('app.url'),
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified Register.
+     *
+     * @param Register $register
+     *
+     * @return Response
+     */
+    public function allocation_store(Register $register)
+    {
+        $register->update(Request::validate(['comf_user_id' => 'required']));
+        $token = $register->comf_user->push_token;
+        if ($token) {
+            FCMService::send(
+                [$token],
+                [
+                    'title' => 'Шинэ зөрчил танд хуваарьлагдан ирсэн байна',
+                    'body' => $register->name,
+                ],
+                [
+                    'id' => $register->id,
+                ]
+            );
+        }
+        return Redirect::route('admin.registers.index')->with('success', 'Register updated.');
     }
 
     /**

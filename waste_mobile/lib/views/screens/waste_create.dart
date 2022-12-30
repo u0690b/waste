@@ -263,23 +263,23 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                 ),
                 const SizedBox(height: 20),
                 // Үйл Ажиллагааны чиглэл
-                if (whois == 'Хуулийн этгээд')
-                  TextFormField(
-                    maxLength: 100,
-                    initialValue: chiglel,
-                    onChanged: (value) => chiglel = value,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 15.0),
-                      labelText: 'Үйл Ажиллагааны чиглэл:',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
+
+                TextFormField(
+                  maxLength: 100,
+                  initialValue: chiglel,
+                  onChanged: (value) => chiglel = value,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 15.0),
+                    labelText: 'Үйл Ажиллагааны чиглэл:',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
                     ),
-                    minLines: 1,
-                    maxLines: 10,
                   ),
-                if (whois == 'Хуулийн этгээд') const SizedBox(height: 20),
+                  minLines: 1,
+                  maxLines: 10,
+                ),
+                const SizedBox(height: 20),
                 // Аймаг,Нийслэл:
                 TextFormField(
                   validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,

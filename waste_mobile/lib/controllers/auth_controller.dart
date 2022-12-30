@@ -33,6 +33,7 @@ class AuthController extends GetxController with CacheManager, Api {
     if (token != null && user != null) {
       AuthController.user = user;
       isLogged.value = true;
+      getUser(token);
     }
   }
 
@@ -51,6 +52,36 @@ class AuthController extends GetxController with CacheManager, Api {
       if (res.body is Map<String, dynamic> && res.body.containsKey('message')) {
         text = res.body['message'];
       }
+      Get.defaultDialog(
+          middleText: text,
+          textConfirm: 'OK',
+          confirmTextColor: Colors.white,
+          onConfirm: () {
+            Get.back();
+          });
+    }
+  }
+
+  Future<void> getUser(token) async {
+    final res = await GetConnect().get(
+      '${Constants.host}/api/user',
+      headers: {
+        "Accept": "application/json",
+        'content-type': 'application/json',
+        ..._hasToken(),
+      },
+    );
+
+    if (res.statusCode == HttpStatus.ok) {
+      res.body['token'] = token;
+      final user = User.fromJson(res.body);
+      login(user);
+    } else {
+      String text = 'User not found!';
+      if (res.body is Map<String, dynamic> && res.body.containsKey('message')) {
+        text = res.body['message'];
+      }
+      if (res.statusCode == HttpStatus.unauthorized) removeToken();
       Get.defaultDialog(
           middleText: text,
           textConfirm: 'OK',

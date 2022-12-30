@@ -5,9 +5,16 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Foundation\Auth\Access\Authorizable;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 /**
  * App\Models\User
@@ -52,10 +59,13 @@ use Laravel\Sanctum\HasApiTokens;
  * @property-read \App\Models\SoumDistrict $soum_district
  * @method static \Illuminate\Database\Eloquent\Builder|User filter(array $filters)
  */
-class User extends Authenticatable
+class User extends Model  implements
+    AuthenticatableContract,
+    AuthorizableContract,
+    CanResetPasswordContract
 {
     use HasApiTokens, HasFactory, Notifiable, HasFilter, SoftDeletes;
-
+    use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
     public $table = 'users';
 
     const CREATED_AT = 'created_at';
@@ -187,5 +197,17 @@ class User extends Authenticatable
     public function getSearchIn()
     {
         return UsersModel::$searchIn;
+    }
+    /**
+     * Filter Model
+     * @param Array $filters
+     * @return App\Models\Register
+     */
+    public function scopeFilter(Builder $query, array $filters)
+    {
+        if (count($filters)) {
+            $query = $this->buildFilter($query, $filters, UsersModel::$searchIn);
+        }
+        return $query;
     }
 }

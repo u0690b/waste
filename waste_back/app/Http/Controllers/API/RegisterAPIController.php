@@ -180,7 +180,7 @@ class RegisterAPIController extends AppBaseController
 
             /** @var Register $register */
             $input['comf_user_id'] = $request->user()->id;
-            $input['status_id'] = 3;
+            $input['status_id'] = 4;
             $register->fill($input);
             if ($request->image instanceof UploadedFile) {
 

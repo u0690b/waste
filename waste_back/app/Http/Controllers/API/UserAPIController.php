@@ -47,7 +47,16 @@ class UserAPIController extends AppBaseController
 
         return  Response::json($user->toArray(), 200, [], JSON_UNESCAPED_SLASHES);
     }
-
+    /**
+     * Store a newly created User in storage.
+     * POST /usersModels
+     *
+     * @return Response
+     */
+    public function user(Request $request)
+    {
+        return  Auth::user()->load('aimag_city:id,name')->load('bag_horoo:id,name')->load('soum_district:id,name');
+    }
 
     /**
      * Store a newly created User in storage.

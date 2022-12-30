@@ -17,7 +17,7 @@ class CompleteWasteController extends WasteController
       'get',
       body: {
         ..._getAimagCityFilter(),
-        'status_id': 3,
+        'status_id': 4,
         'next_cursor': nextCursor,
       },
       decoder: (data) {
@@ -87,7 +87,8 @@ class WasteController with Api implements IPaginationModel<Waste> {
       'get',
       body: {
         ..._getAimagCityFilter(),
-        'status_id': 2,
+        'status_id[0]': 2,
+        'status_id[1]': 3,
         'next_cursor': nextCursor,
       },
       decoder: (data) {
