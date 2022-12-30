@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\AdminController;
@@ -20,6 +19,10 @@ Route::resource('reasons', App\Http\Controllers\Admin\ReasonController::class);
 
 // Statuses
 Route::resource('statuses', App\Http\Controllers\Admin\StatusController::class);
+
+// LegalEntity
+Route::resource('entities', App\Http\Controllers\Admin\LegalEntityController::class);
+
 
 // Registers
 Route::resource('registers', App\Http\Controllers\Admin\RegisterController::class);

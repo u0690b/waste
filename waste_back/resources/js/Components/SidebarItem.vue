@@ -28,7 +28,6 @@ const isOpen = ref(false);
       <li v-for="child in menu['children']" :key="child.text">
         <SidebarLink v-bind="child" child />
       </li>
-
     </ul>
   </li>
 </template>

@@ -29,7 +29,7 @@ const submit = () => {
     <GuestLayout>
 
         <Head title="Нэвтрэх" />
-        <div class="max-w-xs m-auto mt-60">
+        <div class="max-w-xs m-auto mt-60 border rounded-xl border-indigo-300 p-5">
             <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
                 {{ status }}
             </div>

@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('places', App\Http\Controllers\API\PlaceAPIController::class);
     Route::resource('reasons', App\Http\Controllers\API\ReasonAPIController::class);
     Route::resource('statuses', App\Http\Controllers\API\StatusAPIController::class);
+    Route::resource('entities', App\Http\Controllers\API\LegalEntityAPIController::class);
     Route::resource('registers', App\Http\Controllers\API\RegisterAPIController::class);
     Route::resource('register_histories', App\Http\Controllers\API\RegisterHistoryAPIController::class);
     Route::resource('aimag_cities', App\Http\Controllers\API\AimagCityAPIController::class);
