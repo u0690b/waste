@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return $request->user()->load('aimag_city:id,name')->load('bag_horoo:id,name')->load('soum_district:id,name');
 });
 Route::middleware('auth:sanctum')->group(function () {
     Route::resource('attached_files', App\Http\Controllers\API\AttachedFileAPIController::class);
