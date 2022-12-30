@@ -18,6 +18,7 @@ class WasteModel {
   int? bag_horoo_id;
   String? address;
   int? user_id;
+  String? whois;
   String? register;
   String? name;
   List<List<int>>? imageFileList = [];
@@ -66,6 +67,7 @@ class WasteModel {
     this.imageFileList,
     this.videoFile,
     this.register,
+    this.whois,
     this.name,
     this.reg_at,
   }) {
@@ -76,6 +78,7 @@ class WasteModel {
         'long': long,
         'lat': lat,
         'register': register,
+        'whois': whois,
         'name': name,
         'chiglel': chiglel,
         'zuil_zaalt': zuil_zaalt,
@@ -101,6 +104,7 @@ class WasteModel {
       lat: double.tryParse(snap['lat'].toString()) ?? 0,
       register: snap['register'],
       name: snap['name'],
+      whois: snap['whois'],
       chiglel: snap['chiglel'],
       zuil_zaalt: snap['zuil_zaalt'],
       description: snap['description'],

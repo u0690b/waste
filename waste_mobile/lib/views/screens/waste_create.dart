@@ -68,6 +68,7 @@ class WasteRegisterForm extends StatefulWidget {
 
 class WasteRegisterFormState extends State<WasteRegisterForm> {
   final _formKey = GlobalKey<FormState>();
+  late String whois;
   String? ner;
   String? register;
   int? aimagCity;
@@ -85,6 +86,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
   @override
   void initState() {
     if (widget.model != null) {
+      whois = widget.model!.whois ?? 'Иргэн';
       aimagCity = widget.model!.aimag_city_id;
       soumDistrict = widget.model!.soum_district_id;
       bagHoroo = widget.model!.bag_horoo_id;
@@ -100,6 +102,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
       zuil_zaalt = widget.model!.zuil_zaalt;
       reason = widget.model!.reason_id;
     } else {
+      whois = 'Иргэн';
       aimagCity = AuthController.user?.aimag_city_id;
       soumDistrict = AuthController.user?.soum_district_id;
       bagHoroo = AuthController.user?.bag_horoo_id;
@@ -195,6 +198,31 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                Row(
+                  children: [
+                    Text(
+                      'Иргэн',
+                      style: TextStyle(
+                          fontWeight: whois == 'Иргэн'
+                              ? FontWeight.bold
+                              : FontWeight.normal),
+                    ),
+                    Switch(
+                        value: whois != 'Иргэн',
+                        onChanged: (val) {
+                          setState(() {
+                            whois = val ? 'Хуулийн этгээд' : 'Иргэн';
+                          });
+                        }),
+                    Text(
+                      'Хуулийн этгээд',
+                      style: TextStyle(
+                          fontWeight: whois == 'Хуулийн этгээд'
+                              ? FontWeight.bold
+                              : FontWeight.normal),
+                    ),
+                  ],
+                ),
                 //Албан байгууллага, Иргэний овог нэр:
                 TextFormField(
                   maxLength: 100,
@@ -208,7 +236,9 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 15.0),
-                    labelText: 'Албан байгууллага, Иргэний овог нэр:',
+                    labelText: whois == 'Хуулийн этгээд'
+                        ? 'Албан байгууллага нэр'
+                        : 'Иргэний овог нэр:',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -223,7 +253,9 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.symmetric(
                         horizontal: 20.0, vertical: 15.0),
-                    labelText: 'Байгууллага, ААН, Иргэний Овог регистр:',
+                    labelText: whois == 'Хуулийн этгээд'
+                        ? 'Албан байгууллага регистр'
+                        : 'Иргэний овог регистр:',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
@@ -231,22 +263,23 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                 ),
                 const SizedBox(height: 20),
                 // Үйл Ажиллагааны чиглэл
-                TextFormField(
-                  maxLength: 100,
-                  initialValue: chiglel,
-                  onChanged: (value) => chiglel = value,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    labelText: 'Үйл Ажиллагааны чиглэл:',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                if (whois == 'Хуулийн этгээд')
+                  TextFormField(
+                    maxLength: 100,
+                    initialValue: chiglel,
+                    onChanged: (value) => chiglel = value,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 15.0),
+                      labelText: 'Үйл Ажиллагааны чиглэл:',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
                     ),
+                    minLines: 1,
+                    maxLines: 10,
                   ),
-                  minLines: 1,
-                  maxLines: 10,
-                ),
-                const SizedBox(height: 20),
+                if (whois == 'Хуулийн этгээд') const SizedBox(height: 20),
                 // Аймаг,Нийслэл:
                 TextFormField(
                   validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
@@ -474,6 +507,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                       imageFileList: _imageFileList,
                       videoFile: _videoFile,
                       register: register,
+                      whois: whois,
                       name: ner,
                       chiglel: chiglel,
                       zuil_zaalt: zuil_zaalt,

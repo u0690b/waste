@@ -51,6 +51,7 @@ class Register extends Model
 
 
     public $fillable = [
+        'whois',
         'name',
         'register',
         'chiglel',
@@ -79,6 +80,7 @@ class Register extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'whois' => 'string',
         'name' => 'string',
         'register' => 'string',
         'chiglel' => 'string',
@@ -108,6 +110,7 @@ class Register extends Model
      * @var array
      */
     public static $rules = [
+        'whois' => 'required|string',
         'name' => 'required|string|max:255',
         'register' => 'nullable|string|max:255',
         'chiglel' => 'nullable|string|max:255',

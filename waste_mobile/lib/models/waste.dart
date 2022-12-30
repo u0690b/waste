@@ -6,6 +6,7 @@ import 'package:waste_mobile/utils/contants.dart';
 
 class Waste {
   late int id;
+  late String whois;
   late String name;
   String? register;
   String? chiglel;
@@ -60,6 +61,7 @@ class Waste {
 
   Waste({
     required this.id,
+    required this.whois,
     required this.name,
     this.register,
     required this.chiglel,
@@ -89,6 +91,7 @@ class Waste {
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'whois': whois,
         'name': name,
         'register': register,
         'chiglel': chiglel,
@@ -115,6 +118,7 @@ class Waste {
 
   Waste.fromJson(Map<String, dynamic> snap) {
     id = snap['id'];
+    whois = snap['whois'];
     name = snap['name'];
     register = snap['register'];
     chiglel = snap['chiglel'];

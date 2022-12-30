@@ -104,9 +104,13 @@ class _HomeViewState extends State<HomeView> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const WaitingWidget();
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
             } else {
+              if (snapshot.hasError) {
+                Timer(Duration(seconds: 0), () {
+                  Get.defaultDialog(
+                      title: 'Алдаа', middleText: 'Error: ${snapshot.error}');
+                });
+              }
               return SafeArea(
                 child: Stack(
                   children: [

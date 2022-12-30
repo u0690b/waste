@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('registers', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->comment('Байгууллага, аж ахуйн нэгжийн нэр, иргэний овог нэр', 200);
+            $table->enum('whois', ['Иргэн', 'Хуулийн этгээд'])->comment('Иргэн/ААН');
+            $table->string('name')->comment('Байгууллага, аж ахуйн нэгжийн нэр, иргэний овог нэр');
             $table->string('register')->nullable()->comment('Регистрийн дугаар');
             $table->string('chiglel')->nullable()->comment('Үйл ажиллагааны чиглэл');
             $table->foreignId('aimag_city_id')->comment('Аймаг,Нийслэл')->constrained('aimag_cities');
