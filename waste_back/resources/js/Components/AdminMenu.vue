@@ -91,7 +91,7 @@ if (user.value.roles == 'admin')
         {
           text: "Хуулийн этгээд",
           icon: markRaw(ChevronRightIcon),
-          href: route("admin.bag_horoos.index"),
+          href: route("admin.entities.index"),
         },
       ],
     },

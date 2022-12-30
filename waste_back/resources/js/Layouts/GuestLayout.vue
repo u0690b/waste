@@ -6,7 +6,7 @@ import { Link } from '@inertiajs/inertia-vue3';
 
 <template>
     <div class="leading-normal tracking-normal text-gray-900">
-        <div class="h-screen pb-14 bg-right bg-cover">
+        <div class="h-screen pb-14 bg-right bg-cover" style="background-image:url('/bg.svg');">
             <!--Nav-->
             <div class="w-full container mx-auto p-1 bg-gray-100">
 

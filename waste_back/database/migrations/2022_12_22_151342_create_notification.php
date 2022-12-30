@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('notification', function (Blueprint $table) {
             $table->id();
-            $table->string('token')->unique()->comment('token');
-            $table->string('title', 2000)->comment('title');
-            $table->text('body', 2000)->comment('body');
-            $table->text('payload')->comment('Хуулийн этгээдийн нэр');
+            $table->foreignId('from')->nullable()->comment('Хэнээс')->constrained('users');
+            $table->foreignId('to')->comment('хэнд')->constrained('users');
+            $table->string('title', 2000)->comment('Гарчиг');
+            $table->text('body', 2000)->nullable()->comment('дэд гарчиг');
+            $table->text('payload')->nullable()->comment('Агуулга');
         });
     }
 

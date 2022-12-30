@@ -22,7 +22,7 @@
             <inertia-link v-if="url" :href="route(url, row.id)" class="items-center focus:text-indigo-500">
               {{ parseVal(row, key) }}
             </inertia-link>
-            <!--span v-else class="items-center">{{ parseVal(row, key) }}</span-->
+            <span v-else class="items-center">{{ parseVal(row, key) }}</span>
           </td>
           <td class="pl-2 py-2 border-t">
             <div v-if="url" class="row flex">
