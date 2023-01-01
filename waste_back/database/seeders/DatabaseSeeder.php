@@ -37,9 +37,9 @@ class DatabaseSeeder extends Seeder
         Place::create(['id' => 1, 'name' => 'Захирагчийн ажлын алба']);
         Place::create(['id' => 2, 'name' => 'Мэргэжлийн хяналтын ерөнхий газар']);
 
-        Reason::create(['name' => 'Аюултай хог хаягдал -> МХЕГ', 'place_id' => 2]);
-        Reason::create(['name' => 'Эмнэлгийн хог хаягдал -> МХЕГ', 'place_id' => 2]);
-        Reason::create(['name' => 'Барилгын хог хаягдал -> МХЕГ', 'place_id' => 2]);
+        Reason::create(['name' => 'Аюултай хог хаягдал', 'place_id' => 2]);
+        Reason::create(['name' => 'Эмнэлгийн хог хаягдал', 'place_id' => 2]);
+        Reason::create(['name' => 'Барилгын хог хаягдал', 'place_id' => 2]);
         Reason::create(['name' => 'Ил задгай шатаах', 'place_id' => 1]);
         Reason::create(['name' => 'Хогийн сав, цэгээс бусад газарт хаях', 'place_id' => 1]);
         Reason::create(['name' => 'Ногоон бүс, үерийн далан, шугам, хоолой руу хаях', 'place_id' => 1]);
@@ -59,8 +59,11 @@ class DatabaseSeeder extends Seeder
         Status::create(['name' => 'Шийдвэрлэсэн']);
 
         Resolve::create(['name' => 'Зөрчлийг арилгуулсан']);
-        Resolve::create(['name' => 'Торгосон']);
+        Resolve::create(['name' => 'Торгууль']);
         Resolve::create(['name' => 'Татгалзсан']);
+        Resolve::create(['name' => 'Сануулга']);
+        Resolve::create(['name' => 'Мэдэгдэх хуудас']);
+        Resolve::create(['name' => 'Албан даалгавар']);
         Resolve::create(['name' => 'Бусад']);
 
 

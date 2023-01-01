@@ -301,7 +301,13 @@ const rangeDay = computed(() => {
         </div>
       </div>
       <div class=" px-4 mx-4 mt-8 sm:mx-8  py-2 bg-white border rounded-md overflow-hidden shadow col-span-2">
-        <h3 class="text-xl text-gray-600 mb-4">Иргэн, аж ахуйн нэгж</h3>
+        <h3 class="text-xl text-gray-600 mb-4">Зөрчил гаргасан иргэдийн жагсаалт</h3>
+        <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="etgeedOptions.chartOptions"
+          :series="etgeedOptions.series">
+        </VueApexCharts>
+      </div>
+      <div class=" px-4 mx-4 mt-8 sm:mx-8  py-2 bg-white border rounded-md overflow-hidden shadow col-span-2">
+        <h3 class="text-xl text-gray-600 mb-4">Зөрчил гаргасан аж ахуй нэгжийн жагсаалт</h3>
         <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="etgeedOptions.chartOptions"
           :series="etgeedOptions.series">
         </VueApexCharts>

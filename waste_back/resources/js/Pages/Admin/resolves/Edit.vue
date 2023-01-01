@@ -1,21 +1,39 @@
 <template>
-  <div>
-   
-    <div class="bg-white rounded shadow overflow-hidden max-w-3xl p-6">
-     <h1 class="mb-8 font-bold text-3xl">
-        <inertia-link class="text-indigo-400 hover:text-indigo-600" :href="route('admin.resolves.index')">Resolves</inertia-link>
-        <span class="text-indigo-400 font-medium">/</span> Edit
-        {{ title }}
-      </h1>
-      <form @submit.prevent="submit">
-        <div class="grid grid-cols-2 gap-2 ">
-          <MyInput v-model="form.name" type="text" :error="errors.name" class="" label="Шийдвэрийн Төрөл" />
-        </div>
-        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
-          <button class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">Delete Resolves</button>
-          <loading-button :loading="form.processing" class="btn-indigo ml-auto" type="submit">Edit Resolves</loading-button>
-        </div>
-      </form>
+  <div class="flex justify-between px-4 mt-4 sm:px-8">
+    <h2 class="text-xl text-gray-600">
+      <inertia-link class="text-gray-600 hover:text-gray-800 font-bold" :href="route('admin.resolves.index')">
+        Шийдвэрийн төрөл засах</inertia-link>
+    </h2>
+    <div class="flex items-center space-x-1 text-xs">
+      <inertia-link href="/" class="font-bold text-indigo-700 text-sm">Нүүр хуудас</inertia-link>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+      <span class="text-gray-600 text-sm">Шийдвэрийн төрөл засах</span>
+    </div>
+  </div>
+  <div class="p-4 mt-8 sm:px-8 sm:py-4">
+    <div class="p-4 bg-white flex flex-col items-center justify-center rounded">
+      <div class="mb-6 flex justify-between items-center">
+        <div class="relative text-gray-400"></div>
+      </div>
+      <div class="bg-white rounded shadow w-2/5">
+        <form @submit.prevent="submit">
+          <div class="p-8 -mr-6 -mb-8 flex-wrap">
+            <MyInput v-model="form.name" type="text" :error="errors.name" class="" label="Шийдвэрийн төрөл" />
+          </div>
+          <div class="flex justify-center py-4">
+            <button :loading="form.processing"
+              class="flex bg-gray-600 p-3 mx-4 text-white rounded text-base hover:bg-gray-500" type="submit">
+              Засах
+            </button>
+            <button :loading="form.processing"
+              class="flex bg-gray-600 p-3 mx-4 text-white rounded text-base hover:bg-gray-500" @click="goBack">
+              Буцах
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -36,7 +54,7 @@ export default {
   layout: Layout,
   props: {
     errors: Object,
-    data:Object,
+    data: Object,
     host: String,
   },
   remember: 'form',
@@ -57,10 +75,10 @@ export default {
   },
   methods: {
     submit() {
-      this.form.put(this.route('admin.resolves.update',this.data.id))
+      this.form.put(this.route('admin.resolves.update', this.data.id))
     },
     destroy() {
-      if (confirm('Are you sure you want to delete this resolves?')) {
+      if (confirm('Та устгахдаа итгэлтэй байна уу?')) {
         this.$inertia.delete(this.route('admin.resolves.destroy', this.data.id))
       }
     },

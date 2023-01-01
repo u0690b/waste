@@ -107,18 +107,20 @@ defineProps({
         </div>
 
       </div>
-      <a href="http://inspection.gov.mn/new/" target="_blank"><img src="../../../public/img/mergejil.jpg"
-          class="object-contain w-48 ..." /></a>
-      <a href="https://www.eda.admin.ch/countries/mongolia/mn/home/chegzhlijn.html" target="_blank"><img
-          src="../../../public/img/sha.png" class="object-contain w-48 ... px-4" /></a>
       <a href="http://www.ubservice.mn/?fbclid=IwAR0DRdfuer1AfiIURNjUTtXk4-XIjHP3H2dRBMwLw-dcMwQ1WA11mxS0fMc"
-        target="_blank"><img src="../../../public/img/zaa.png" class="object-contain w-20 ... px-4" /></a>
+        target="_blank"><img src="../../../public/img/zaa1.jpg"
+          class="object-contain w-48 ... px-4 slide-in-bottom" /></a>
+      <a href="http://inspection.gov.mn/new/" target="_blank"><img src="../../../public/img/mergejil.jpg"
+          class="object-contain w-48 ... slide-in-bottom" /></a>
+      <a href="https://www.eda.admin.ch/countries/mongolia/mn/home/chegzhlijn.html" target="_blank"><img
+          src="../../../public/img/sha.png" class="object-contain w-48 ... px-4 slide-in-bottom" /></a>
+
       <!--Footer-->
       <div class="w-full pt-5 pb-5 my-20 text-sm text-center md:text-left fade-in bg-gray-100">
         Developed by Лансерс ХХК /Хуулбарлахыг хориглоно
         <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; {{ (new
-            Date()).getFullYear()
-        }} он</a>
+    Date()).getFullYear()
+          }} он</a>
       </div>
     </div>
   </GuestLayout>
