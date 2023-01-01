@@ -49,3 +49,7 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'admin'], function () {
     Route::resource('attached_files', App\Http\Controllers\API\AttachedFileAPIController::class);
 });
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('resolves', App\Http\Controllers\API\ResolveAPIController::class);
+});

@@ -9,6 +9,7 @@ use App\Services\FCMService;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
+use Log;
 use Response;
 
 class RegisterController extends Controller
@@ -112,10 +113,12 @@ class RegisterController extends Controller
      */
     public function allocation_store(Register $register)
     {
-        $register->update(Request::validate(['comf_user_id' => 'required']));
-        $token = $register->comf_user->push_token;
+        $input = Request::validate(['comf_user_id' => 'required']);
+        $input['status_id'] = 3;
+        $register->update($input);;
+        $token = User::whereId($input['comf_user_id'])->first()->push_token ?? null;
         if ($token) {
-            FCMService::send(
+            $res = FCMService::send(
                 [$token],
                 [
                     'title' => 'Шинэ зөрчил танд хуваарьлагдан ирсэн байна',
@@ -125,6 +128,7 @@ class RegisterController extends Controller
                     'id' => $register->id,
                 ]
             );
+            Log::info($res);
         }
         return Redirect::route('admin.registers.index')->with('success', 'Register updated.');
     }

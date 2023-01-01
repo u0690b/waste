@@ -8,3 +8,4 @@ php artisan deto:api_scaffold Register --fromTable --tableName=registers
 php artisan deto:api_scaffold AttachedFile --fromTable --tableName=attached_files
 php artisan deto:api_scaffold RegisterHistory --fromTable --tableName=register_histories
 php artisan deto:api_scaffold UsersModel --fromTable --tableName=users
+php artisan deto:api_scaffold Resolve --fromTable --tableName=resolves

@@ -13,7 +13,7 @@
     <form @submit.prevent="submit">
       <div class="flex">
         <MySelect :value="data.comf_user" :error="errors.comf_user_id" class="w-96" label="Бүртгэгч"
-          :url="`/admin/users?soum_district_id=${data.soum_district_id}&roles=mhb`"
+          :url="`/admin/users?soum_district_id=${data.soum_district_id}`"
           @changeId="(id) => (form.comf_user_id = id)" />
 
         <LoadingButton :loading="form.processing"

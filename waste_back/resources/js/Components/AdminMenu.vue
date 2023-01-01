@@ -93,6 +93,12 @@ if (user.value.roles == 'admin')
           icon: markRaw(ChevronRightIcon),
           href: route("admin.entities.index"),
         },
+        {
+          text: "Шийдвэрийн төрөл",
+          icon: markRaw(ChevronRightIcon),
+          href: route("admin.resolves.index"),
+        },
+
       ],
     },
   )

@@ -40,3 +40,6 @@ Route::resource('soum_districts', App\Http\Controllers\Admin\SoumDistrictControl
 
 // UsersModels
 Route::resource('users', App\Http\Controllers\Admin\UsersController::class);
+
+// Resolves
+Route::resource('resolves', App\Http\Controllers\Admin\ResolveController::class);

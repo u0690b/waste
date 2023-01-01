@@ -43,28 +43,28 @@
           <div>
             <MenuItem v-slot="{ active }">
             <a href="#" :class="[
-              active ? 'bg-gray-200' : '',
-              'block px-4 py-2 text-sm text-gray-700',
-            ]">Нууц үг солих</a>
+  active ? 'bg-gray-200' : '',
+  'block px-4 py-2 text-sm text-gray-700',
+]">Нууц үг солих</a>
             </MenuItem>
             <MenuItem v-slot="{ active }">
             <a href="#" :class="[
-              active ? 'bg-gray-200' : '',
-              'block px-4 py-2 text-sm text-gray-700',
-            ]">Гарын авлага</a>
+  active ? 'bg-gray-200' : '',
+  'block px-4 py-2 text-sm text-gray-700',
+]">Гарын авлага</a>
             </MenuItem>
             <MenuItem v-slot="{ active }">
-            <a href="/app-release.apk" :class="[
-              active ? 'bg-gray-200' : '',
-              'block px-4 py-2 text-sm text-gray-700',
-            ]">Андройд татах</a>
+            <a href="/app_v1.apk" :class="[
+  active ? 'bg-gray-200' : '',
+  'block px-4 py-2 text-sm text-gray-700',
+]">Андройд татах</a>
             </MenuItem>
           </div>
           <MenuItem v-slot="{ active }">
           <inertia-link :href="route('logout')" method="post" :class="[
-            active ? 'bg-gray-200' : '',
-            'block px-4 py-2 text-sm text-gray-700',
-          ]">Гарах</inertia-link>
+  active ? 'bg-gray-200' : '',
+  'block px-4 py-2 text-sm text-gray-700',
+]">Гарах</inertia-link>
           </MenuItem>
         </MenuItems>
       </transition>
