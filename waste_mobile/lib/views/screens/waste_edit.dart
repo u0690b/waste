@@ -32,21 +32,19 @@ class _WasteEditState extends State<WasteEdit> {
           ),
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: WasteRegisterForm(
-              model: widget.model,
-              onSave: (WasteModel value) async {
-                await futureAlertDialog(
-                  context: context,
-                  futureStream: Get.find<WasteController>()
-                      .editLocalModels(value..index = widget.model.index),
-                  autoCloseSec: 1,
-                );
+          child: WasteRegisterForm(
+            model: widget.model,
+            onSave: (WasteModel value) async {
+              await futureAlertDialog(
+                context: context,
+                futureStream: Get.find<WasteController>()
+                    .editLocalModels(value..index = widget.model.index),
+                autoCloseSec: 1,
+              );
 
-                setState(() {});
-                return Future.value();
-              },
-            ),
+              setState(() {});
+              return Future.value();
+            },
           ),
         ));
   }
