@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/controllers/waste_controller.dart';
 import 'package:waste_mobile/models/attached_file.dart';
@@ -12,7 +13,6 @@ import 'package:waste_mobile/views/screens/video_payer.dart';
 import 'package:waste_mobile/views/screens/waste_resolve.dart';
 import 'package:waste_mobile/views/widgets/back_button.dart';
 import 'package:waste_mobile/views/widgets/top_container.dart';
-import 'package:waste_mobile/views/widgets/zoombuttons_plugin_option.dart';
 
 class WasteDetails extends StatefulWidget {
   final Waste waste;
@@ -25,32 +25,23 @@ class WasteDetails extends StatefulWidget {
 }
 
 class _WasteDetailsState extends State<WasteDetails> {
-  late final MapController _mapController;
-  int interActiveFlags = InteractiveFlag.all;
+  final Completer<GoogleMapController> _mapController =
+      Completer<GoogleMapController>();
+  MapType mapType = MapType.normal;
   final pointSize = 20.0;
   final pointY = 100.0;
   LatLng? latLng;
   late Waste waste;
+  late CameraPosition _kGooglePlex;
   @override
   void initState() {
     super.initState();
-    _mapController = MapController();
+
     waste = widget.waste;
-    // initLocationService();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      updatePoint(null, context);
-    });
-  }
-
-  void updatePoint(MapEvent? event, BuildContext context) {
-    final pointX = _getPointX(context);
-    setState(() {
-      latLng = _mapController.pointToLatLng(CustomPoint(pointX, pointY));
-    });
-  }
-
-  double _getPointX(BuildContext context) {
-    return MediaQuery.of(context).size.width / 2;
+    _kGooglePlex = CameraPosition(
+      target: LatLng(widget.waste.lat.toDouble(), widget.waste.long.toDouble()),
+      zoom: 14.4746,
+    );
   }
 
   @override
@@ -75,206 +66,201 @@ class _WasteDetailsState extends State<WasteDetails> {
           ),
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                TopContainer(
-                  padding: const EdgeInsets.all(0),
-                  height: 200,
-                  width: width,
-                  child: Stack(
-                    children: [
-                      FlutterMap(
-                        mapController: _mapController,
-                        options: MapOptions(
-                          center: LatLng(
-                            widget.waste.lat.toDouble(),
-                            widget.waste.long.toDouble(),
-                          ),
-                          zoom: 18,
-                          minZoom: 3,
-                        ),
-                        nonRotatedChildren: const [
-                          FlutterMapZoomButtons(
-                            minZoom: 4,
-                            maxZoom: 19,
-                            mini: true,
-                            padding: 5,
-                            alignment: Alignment.topRight,
-                          ),
-                        ],
-                        children: [
-                          TileLayer(
-                            urlTemplate:
-                                'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                            userAgentPackageName:
-                                'dev.fleaflet.flutter_map.example',
-                          ),
-                          if (latLng != null)
-                            MarkerLayer(
-                              markers: [
-                                Marker(
-                                  width: pointSize,
-                                  height: pointSize,
-                                  point: latLng!,
-                                  builder: (ctx) =>
-                                      Icon(Icons.crop_free, size: pointSize),
-                                )
-                              ],
-                            )
-                        ],
+          child: Column(
+            children: <Widget>[
+              TopContainer(
+                padding: const EdgeInsets.all(0),
+                height: 200,
+                width: width,
+                child: Stack(
+                  children: [
+                    GoogleMap(
+                      mapType: mapType,
+                      initialCameraPosition: _kGooglePlex,
+                      onMapCreated: (GoogleMapController controller) {
+                        _mapController.complete(controller);
+                      },
+                      markers: [
+                        Marker(
+                          markerId: MarkerId("1"),
+                          position: LatLng(widget.waste.lat.toDouble(),
+                              widget.waste.long.toDouble()),
+                        )
+                      ].toSet(),
+                    ),
+                    Positioned(
+                      right: 5,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.all(0)),
+                        child: Icon(Icons.map),
+                        onPressed: () {
+                          setState(() {
+                            mapType = mapType == MapType.normal
+                                ? MapType.satellite
+                                : MapType.normal;
+                          });
+                        },
                       ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      if (widget.wasteController != null &&
+                          AuthController.user!.roles != 'onb')
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  final ret = await Get.to<bool?>(() =>
+                                      WasteResolve(
+                                          waste: widget.waste,
+                                          wasteController:
+                                              widget.wasteController));
+                                  if (ret == true) {
+                                    Get.back();
+                                  }
+                                },
+                                child: Text('Шийдвэрлэх'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title:
+                            const Text("Албан байгууллага, Иргэний овог нэр:"),
+                        subtitle: Text(waste.name),
+                      ),
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text(
+                            "Байгууллага, ААН, Иргэний Овог регистр:"),
+                        subtitle: Text(waste.register ?? ''),
+                      ),
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text("Үйл Ажиллагааны чиглэл:"),
+                        subtitle: Text(waste.chiglel ?? ''),
+                      ),
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text("Хаяг тоот, утас:"),
+                        subtitle: Text(waste.fullAddress()),
+                      ),
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text("Гаргасан зөрчилийн байдал"),
+                        subtitle: Text(waste.description),
+                      ),
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text("Зөрчилийн Төрөл:"),
+                        subtitle: Text(waste.reason.name),
+                      ),
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text(
+                            "Зөрчсөн хууль тогтоомжийн зүйл, заалт:"),
+                        subtitle: Text(waste.zuilZaalt ?? ''),
+                      ),
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text("Гаргасан зөрчлийн байдал:"),
+                        subtitle: Text(waste.description),
+                      ),
+                      ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: const Text("Бүртгэсэн хүн:"),
+                        subtitle: Text(waste.regUser.name),
+                      ),
+                      if (waste.reg_at != null)
+                        ListTile(
+                          dense: true,
+                          style: ListTileStyle.drawer,
+                          title: const Text("Үүсгэсэн онгоо:"),
+                          subtitle: Text(waste.reg_at!.toString()),
+                        ),
+                      if (waste.createdAt != null)
+                        ListTile(
+                          dense: true,
+                          style: ListTileStyle.drawer,
+                          title: const Text("Илгээсэн онгоо:"),
+                          subtitle: Text(waste.createdAt!.toString()),
+                        ),
+                      const SizedBox(height: 20),
+                      const ListTile(
+                        dense: true,
+                        style: ListTileStyle.drawer,
+                        title: Text('Хавсаргасан файл'),
+                      ),
+                      if (waste.video != null)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: ElevatedButton(
+                              onPressed: () {
+                                Get.dialog(
+                                    MyVideoPlayer(url: waste.video!.path));
+                              },
+                              child: const Text('Бичлэг харах')),
+                        ),
+                      ImageScreen(galleryItems: waste.imgs),
+                      if (waste.comfUser != null)
+                        ListTile(
+                          dense: true,
+                          style: ListTileStyle.drawer,
+                          title: const Text("Шийдвэрлэсэн хүн:"),
+                          subtitle: Text(waste.comfUser!.name),
+                        ),
+                      if (waste.resolve != null)
+                        ListTile(
+                          dense: true,
+                          style: ListTileStyle.drawer,
+                          title: const Text("Шийдвэрийн төрөл:"),
+                          subtitle: Text(waste.resolve!.name),
+                        ),
+                      if (waste.resolveDesc != null)
+                        ListTile(
+                          dense: true,
+                          style: ListTileStyle.drawer,
+                          title: const Text("Шийдвэрлэсэн тэмэдэглэл:"),
+                          subtitle: Text(waste.resolveDesc ?? ''),
+                        ),
+                      if (waste.resolveImage != null)
+                        ListTile(
+                          dense: true,
+                          style: ListTileStyle.drawer,
+                          title: const Text("Шийдвэрлэсэн зураг:"),
+                          subtitle: ImageScreen(galleryItems: [
+                            AttachedFile(
+                                id: 0,
+                                register_id: 0,
+                                path: waste.resolveImage!)
+                          ]),
+                        ),
                     ],
                   ),
                 ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    if (widget.wasteController != null &&
-                        AuthController.user!.roles != 'onb')
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () async {
-                                final ret = await Get.to<bool?>(() =>
-                                    WasteResolve(
-                                        waste: widget.waste,
-                                        wasteController:
-                                            widget.wasteController));
-                                if (ret == true) {
-                                  Get.back();
-                                }
-                              },
-                              child: Text('Шийдвэрлэх'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ListTile(
-                      dense: true,
-                      style: ListTileStyle.drawer,
-                      title: const Text("Албан байгууллага, Иргэний овог нэр:"),
-                      subtitle: Text(waste.name),
-                    ),
-                    ListTile(
-                      dense: true,
-                      style: ListTileStyle.drawer,
-                      title:
-                          const Text("Байгууллага, ААН, Иргэний Овог регистр:"),
-                      subtitle: Text(waste.register ?? ''),
-                    ),
-                    ListTile(
-                      dense: true,
-                      style: ListTileStyle.drawer,
-                      title: const Text("Үйл Ажиллагааны чиглэл:"),
-                      subtitle: Text(waste.chiglel ?? ''),
-                    ),
-                    ListTile(
-                      dense: true,
-                      style: ListTileStyle.drawer,
-                      title: const Text("Хаяг тоот, утас:"),
-                      subtitle: Text(waste.fullAddress()),
-                    ),
-                    ListTile(
-                      dense: true,
-                      style: ListTileStyle.drawer,
-                      title: const Text("Гаргасан зөрчилийн байдал"),
-                      subtitle: Text(waste.description),
-                    ),
-                    ListTile(
-                      dense: true,
-                      style: ListTileStyle.drawer,
-                      title: const Text("Зөрчилийн Төрөл:"),
-                      subtitle: Text(waste.reason.name),
-                    ),
-                    ListTile(
-                      dense: true,
-                      style: ListTileStyle.drawer,
-                      title:
-                          const Text("Зөрчсөн хууль тогтоомжийн зүйл, заалт:"),
-                      subtitle: Text(waste.zuilZaalt ?? ''),
-                    ),
-                    ListTile(
-                      dense: true,
-                      style: ListTileStyle.drawer,
-                      title: const Text("Гаргасан зөрчлийн байдал:"),
-                      subtitle: Text(waste.description),
-                    ),
-                    ListTile(
-                      dense: true,
-                      style: ListTileStyle.drawer,
-                      title: const Text("Бүртгэсэн хүн:"),
-                      subtitle: Text(waste.regUser.name),
-                    ),
-                    if (waste.reg_at != null)
-                      ListTile(
-                        dense: true,
-                        style: ListTileStyle.drawer,
-                        title: const Text("Үүсгэсэн онгоо:"),
-                        subtitle: Text(waste.reg_at!.toString()),
-                      ),
-                    if (waste.createdAt != null)
-                      ListTile(
-                        dense: true,
-                        style: ListTileStyle.drawer,
-                        title: const Text("Илгээсэн онгоо:"),
-                        subtitle: Text(waste.createdAt!.toString()),
-                      ),
-                    const SizedBox(height: 20),
-                    const ListTile(
-                      dense: true,
-                      style: ListTileStyle.drawer,
-                      title: Text('Хавсаргасан файл'),
-                    ),
-                    if (waste.video != null)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: ElevatedButton(
-                            onPressed: () {
-                              Get.dialog(MyVideoPlayer(url: waste.video!.path));
-                            },
-                            child: const Text('Бичлэг харах')),
-                      ),
-                    ImageScreen(galleryItems: waste.imgs),
-                    if (waste.comfUser != null)
-                      ListTile(
-                        dense: true,
-                        style: ListTileStyle.drawer,
-                        title: const Text("Шийдвэрлэсэн хүн:"),
-                        subtitle: Text(waste.comfUser!.name),
-                      ),
-                    if (waste.resolve != null)
-                      ListTile(
-                        dense: true,
-                        style: ListTileStyle.drawer,
-                        title: const Text("Шийдвэрийн төрөл:"),
-                        subtitle: Text(waste.resolve!.name),
-                      ),
-                    if (waste.resolveDesc != null)
-                      ListTile(
-                        dense: true,
-                        style: ListTileStyle.drawer,
-                        title: const Text("Шийдвэрлэсэн тэмэдэглэл:"),
-                        subtitle: Text(waste.resolveDesc ?? ''),
-                      ),
-                    if (waste.resolveImage != null)
-                      ListTile(
-                        dense: true,
-                        style: ListTileStyle.drawer,
-                        title: const Text("Шийдвэрлэсэн зураг:"),
-                        subtitle: ImageScreen(galleryItems: [
-                          AttachedFile(
-                              id: 0, register_id: 0, path: waste.resolveImage!)
-                        ]),
-                      ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ));
   }

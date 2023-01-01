@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/controllers/waste_controller.dart';
 import 'package:waste_mobile/models/waste_model.dart';
@@ -40,14 +40,11 @@ class _WasteCreateState extends State<WasteCreate> {
           ),
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: WasteRegisterForm(
-              onSave: (value) => futureAlertDialog(
-                  context: context,
-                  futureStream:
-                      Get.find<WasteController>().addLocalModels(value),
-                  autoCloseSec: 1),
-            ),
+          child: WasteRegisterForm(
+            onSave: (value) => futureAlertDialog(
+                context: context,
+                futureStream: Get.find<WasteController>().addLocalModels(value),
+                autoCloseSec: 1),
           ),
         ));
   }
@@ -183,7 +180,6 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
       key: _formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           LocationMap(
             longitude: longitude,
@@ -193,344 +189,361 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
               latitude = latlng?.latitude;
             },
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Row(
-                  children: [
-                    Text(
-                      'Иргэн',
-                      style: TextStyle(
-                          fontWeight: whois == 'Иргэн'
-                              ? FontWeight.bold
-                              : FontWeight.normal),
-                    ),
-                    Switch(
-                        value: whois != 'Иргэн',
-                        onChanged: (val) {
-                          setState(() {
-                            whois = val ? 'Хуулийн этгээд' : 'Иргэн';
-                          });
-                        }),
-                    Text(
-                      'Хуулийн этгээд',
-                      style: TextStyle(
-                          fontWeight: whois == 'Хуулийн этгээд'
-                              ? FontWeight.bold
-                              : FontWeight.normal),
-                    ),
-                  ],
-                ),
-                //Албан байгууллага, Иргэний овог нэр:
-                TextFormField(
-                  maxLength: 100,
-                  initialValue: ner,
-                  validator: (value) {
-                    return (value == null || value.isEmpty)
-                        ? 'Нэр хоосон байна'
-                        : null;
-                  },
-                  onChanged: (value) => ner = value,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    labelText: whois == 'Хуулийн этгээд'
-                        ? 'Албан байгууллага нэр'
-                        : 'Иргэний овог нэр:',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                // Албан байгууллага, Иргэний  регистр:
-                TextFormField(
-                  maxLength: 15,
-                  initialValue: register,
-                  onChanged: (value) => register = value,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    labelText: whois == 'Хуулийн этгээд'
-                        ? 'Албан байгууллага регистр'
-                        : 'Иргэний овог регистр:',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                // Үйл Ажиллагааны чиглэл
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          children: [
+                            Text(
+                              'Иргэн',
+                              style: TextStyle(
+                                  fontWeight: whois == 'Иргэн'
+                                      ? FontWeight.bold
+                                      : FontWeight.normal),
+                            ),
+                            Switch(
+                                value: whois != 'Иргэн',
+                                onChanged: (val) {
+                                  setState(() {
+                                    whois = val ? 'Хуулийн этгээд' : 'Иргэн';
+                                  });
+                                }),
+                            Text(
+                              'Хуулийн этгээд',
+                              style: TextStyle(
+                                  fontWeight: whois == 'Хуулийн этгээд'
+                                      ? FontWeight.bold
+                                      : FontWeight.normal),
+                            ),
+                          ],
+                        ),
+                        //Албан байгууллага, Иргэний овог нэр:
+                        TextFormField(
+                          maxLength: 100,
+                          initialValue: ner,
+                          validator: (value) {
+                            return (value == null || value.isEmpty)
+                                ? 'Нэр хоосон байна'
+                                : null;
+                          },
+                          onChanged: (value) => ner = value,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 15.0),
+                            labelText: whois == 'Хуулийн этгээд'
+                                ? 'Албан байгууллага нэр'
+                                : 'Иргэний овог нэр:',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        // Албан байгууллага, Иргэний  регистр:
+                        TextFormField(
+                          maxLength: 15,
+                          initialValue: register,
+                          onChanged: (value) => register = value,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 15.0),
+                            labelText: whois == 'Хуулийн этгээд'
+                                ? 'Албан байгууллага регистр'
+                                : 'Иргэний овог регистр:',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        // Үйл Ажиллагааны чиглэл
 
-                TextFormField(
-                  maxLength: 100,
-                  initialValue: chiglel,
-                  onChanged: (value) => chiglel = value,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    labelText: 'Үйл Ажиллагааны чиглэл:',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  minLines: 1,
-                  maxLines: 10,
-                ),
-                const SizedBox(height: 20),
-                // Аймаг,Нийслэл:
-                TextFormField(
-                  validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
-                  initialValue: Constants.aimagCities
-                      .firstWhere((element) => element.id == aimagCity)
-                      .name,
-                  enabled: false,
-                  decoration: InputDecoration(
-                    labelText: "Аймаг,Нийслэл:",
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                //  Сум,Дүүрэг
-                if (!['admin', 'zaa'].contains(AuthController.user!.roles))
-                  TextFormField(
-                    validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
-                    initialValue: Constants.soumDistricts
-                        .firstWhere((element) => element.id == soumDistrict)
-                        .name,
-                    enabled: false,
-                    decoration: InputDecoration(
-                      labelText: "Сум,Дүүрэг:",
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 15.0),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                    ),
-                  )
-                else
-                  DropdownButtonFormField(
-                    validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
-                    decoration: InputDecoration(
-                      labelText: "Сум,Дүүрэг",
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 15.0),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                    ),
-                    enableFeedback: aimagCity == null,
-                    items: Constants.soumDistricts
-                        .where((el) => el.aimag_city_id == (aimagCity ?? -1))
-                        .map((e) => DropdownMenuItem(
-                              value: e.id,
-                              child: Text(e.name),
-                            ))
-                        .toList(),
-                    value: soumDistrict,
-                    onChanged: (int? value) {
-                      setState(() {
-                        soumDistrict = value;
-                        bagHoroo = null;
-                      });
-                    },
-                  ),
-                const SizedBox(height: 20),
-                // Баг,Хороо:
-                DropdownButtonFormField(
-                  validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
-                  decoration: InputDecoration(
-                    labelText: "Баг,Хороо:",
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                  ),
-                  enableFeedback: soumDistrict != null,
-                  items: Constants.bagHoroos
-                      .where((element) =>
-                          element.soum_district_id == (soumDistrict ?? -1))
-                      .map((e) => DropdownMenuItem(
-                            value: e.id,
-                            child: Text(e.name),
-                          ))
-                      .toList(),
-                  value: bagHoroo,
-                  onChanged: (int? value) {
-                    setState(() {
-                      bagHoroo = value;
-                    });
-                  },
-                ),
-                const SizedBox(height: 20),
-                // Хаяг тоот, утас
-                TextFormField(
-                  maxLength: 100,
-                  initialValue: address,
-                  validator: (value) {
-                    return (value == null || value.isEmpty)
-                        ? 'Хаяг тоот, утас хоосон байна'
-                        : null;
-                  },
-                  onChanged: (value) => address = value,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    labelText: 'Хаяг тоот, утас:',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                // Гаргасан зөрчлийн байдал:
-                TextFormField(
-                  maxLength: 1000,
-                  validator: (value) {
-                    return (value == null || value.isEmpty)
-                        ? 'Гаргасан зөрчилийн байдал'
-                        : null;
-                  },
-                  initialValue: description,
-                  onChanged: (value) => description = value,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    labelText: 'Гаргасан зөрчилийн байдал:',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                  ),
-                  minLines: 3,
-                  maxLines: 10,
-                ),
-                const SizedBox(height: 20),
-                // Зөрчлийн Төрөл:
-                DropdownButtonFormField(
-                    validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
-                    value: reason,
-                    decoration: InputDecoration(
-                      labelText: "Зөрчлийн Төрөл:",
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 15.0),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
-                    ),
-                    selectedItemBuilder: (context) {
-                      return Constants.reasons
-                          .map(
-                            (e) => Container(
-                              width: Get.width - 105,
-                              child: Text(
-                                e.name,
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                        TextFormField(
+                          maxLength: 100,
+                          initialValue: chiglel,
+                          onChanged: (value) => chiglel = value,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 15.0),
+                            labelText: 'Үйл Ажиллагааны чиглэл:',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          minLines: 1,
+                          maxLines: 10,
+                        ),
+                        const SizedBox(height: 20),
+                        // Аймаг,Нийслэл:
+                        TextFormField(
+                          validator: (p0) =>
+                              p0 == null ? 'Заавал бөглөх' : null,
+                          initialValue: Constants.aimagCities
+                              .firstWhere((element) => element.id == aimagCity)
+                              .name,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            labelText: "Аймаг,Нийслэл:",
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 15.0),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0)),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        //  Сум,Дүүрэг
+                        if (!['admin', 'zaa']
+                            .contains(AuthController.user!.roles))
+                          TextFormField(
+                            validator: (p0) =>
+                                p0 == null ? 'Заавал бөглөх' : null,
+                            initialValue: Constants.soumDistricts
+                                .firstWhere(
+                                    (element) => element.id == soumDistrict)
+                                .name,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              labelText: "Сум,Дүүрэг:",
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 15.0),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0)),
                             ),
                           )
-                          .toList();
-                    },
-                    items: Constants.reasons
-                        .map((e) => DropdownMenuItem(
-                              value: e.id,
-                              child: Text(e.name),
-                            ))
-                        .toList(),
-                    onChanged: (int? value) {
-                      setState(() {
-                        reason = value;
-                      });
-                    }),
-                const SizedBox(height: 20),
-                // Зөрчсөн хууль тогтоомжийн зүйл, заалт
-                TextFormField(
-                  maxLength: 500,
-                  initialValue: zuil_zaalt,
-                  onChanged: (value) => zuil_zaalt = value,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 15.0),
-                    labelText: 'Зөрчсөн хууль тогтоомжийн зүйл, заалт:',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+                        else
+                          DropdownButtonFormField(
+                            validator: (p0) =>
+                                p0 == null ? 'Заавал бөглөх' : null,
+                            decoration: InputDecoration(
+                              labelText: "Сум,Дүүрэг",
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 15.0),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0)),
+                            ),
+                            enableFeedback: aimagCity == null,
+                            items: Constants.soumDistricts
+                                .where((el) =>
+                                    el.aimag_city_id == (aimagCity ?? -1))
+                                .map((e) => DropdownMenuItem(
+                                      value: e.id,
+                                      child: Text(e.name),
+                                    ))
+                                .toList(),
+                            value: soumDistrict,
+                            onChanged: (int? value) {
+                              setState(() {
+                                soumDistrict = value;
+                                bagHoroo = null;
+                              });
+                            },
+                          ),
+                        const SizedBox(height: 20),
+                        // Баг,Хороо:
+                        DropdownButtonFormField(
+                          validator: (p0) =>
+                              p0 == null ? 'Заавал бөглөх' : null,
+                          decoration: InputDecoration(
+                            labelText: "Баг,Хороо:",
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 15.0),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0)),
+                          ),
+                          enableFeedback: soumDistrict != null,
+                          items: Constants.bagHoroos
+                              .where((element) =>
+                                  element.soum_district_id ==
+                                  (soumDistrict ?? -1))
+                              .map((e) => DropdownMenuItem(
+                                    value: e.id,
+                                    child: Text(e.name),
+                                  ))
+                              .toList(),
+                          value: bagHoroo,
+                          onChanged: (int? value) {
+                            setState(() {
+                              bagHoroo = value;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        // Хаяг тоот, утас
+                        TextFormField(
+                          maxLength: 100,
+                          initialValue: address,
+                          validator: (value) {
+                            return (value == null || value.isEmpty)
+                                ? 'Хаяг тоот, утас хоосон байна'
+                                : null;
+                          },
+                          onChanged: (value) => address = value,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 15.0),
+                            labelText: 'Хаяг тоот, утас:',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        // Гаргасан зөрчлийн байдал:
+                        TextFormField(
+                          maxLength: 1000,
+                          validator: (value) {
+                            return (value == null || value.isEmpty)
+                                ? 'Гаргасан зөрчилийн байдал'
+                                : null;
+                          },
+                          initialValue: description,
+                          onChanged: (value) => description = value,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 15.0),
+                            labelText: 'Гаргасан зөрчилийн байдал:',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          minLines: 3,
+                          maxLines: 10,
+                        ),
+                        const SizedBox(height: 20),
+                        // Зөрчлийн Төрөл:
+                        DropdownButtonFormField(
+                            validator: (p0) =>
+                                p0 == null ? 'Заавал бөглөх' : null,
+                            value: reason,
+                            decoration: InputDecoration(
+                              labelText: "Зөрчлийн Төрөл:",
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 15.0),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0)),
+                            ),
+                            selectedItemBuilder: (context) {
+                              return Constants.reasons
+                                  .map(
+                                    (e) => Container(
+                                      width: Get.width - 105,
+                                      child: Text(
+                                        e.name,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  )
+                                  .toList();
+                            },
+                            items: Constants.reasons
+                                .map((e) => DropdownMenuItem(
+                                      value: e.id,
+                                      child: Text(e.name),
+                                    ))
+                                .toList(),
+                            onChanged: (int? value) {
+                              setState(() {
+                                reason = value;
+                              });
+                            }),
+                        const SizedBox(height: 20),
+                        // Зөрчсөн хууль тогтоомжийн зүйл, заалт
+                        TextFormField(
+                          maxLength: 500,
+                          initialValue: zuil_zaalt,
+                          onChanged: (value) => zuil_zaalt = value,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 15.0),
+                            labelText: 'Зөрчсөн хууль тогтоомжийн зүйл, заалт:',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          minLines: 3,
+                          maxLines: 10,
+                        ),
+                        const SizedBox(height: 20),
+                        ImagePickerList(
+                          item: _imageFileList,
+                          onAdd: (List<int> file) {
+                            setState(() {
+                              _imageFileList.add(file);
+                            });
+                          },
+                          onDrop: (int index) {
+                            setState(() {
+                              _imageFileList.removeAt(index);
+                            });
+                          },
+                          videoButton: textButton,
+                          onPlay: _videoFile == null
+                              ? null
+                              : () {
+                                  var file = File.fromRawPath(
+                                      Uint8List.fromList(_videoFile!));
+                                  Get.dialog(MyVideoPlayerFile(file: file));
+                                },
+                        ),
+                        const SizedBox(height: 20),
+                      ],
                     ),
                   ),
-                  minLines: 3,
-                  maxLines: 10,
-                ),
-                const SizedBox(height: 20),
-                ImagePickerList(
-                  item: _imageFileList,
-                  onAdd: (List<int> file) {
-                    setState(() {
-                      _imageFileList.add(file);
-                    });
-                  },
-                  onDrop: (int index) {
-                    setState(() {
-                      _imageFileList.removeAt(index);
-                    });
-                  },
-                  videoButton: textButton,
-                  onPlay: _videoFile == null
-                      ? null
-                      : () {
-                          var file =
-                              File.fromRawPath(Uint8List.fromList(_videoFile!));
-                          Get.dialog(MyVideoPlayerFile(file: file));
-                        },
-                ),
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 80,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    if (latitude == null || longitude == null) {
-                      await Get.defaultDialog();
-                      return;
-                    }
-                    final w = WasteModel(
-                      user_id: AuthController.user!.id,
-                      aimag_city_id: aimagCity,
-                      bag_horoo_id: bagHoroo,
-                      soum_district_id: soumDistrict,
-                      address: address,
-                      description: description,
-                      imageFileList: _imageFileList,
-                      videoFile: _videoFile,
-                      register: register,
-                      whois: whois,
-                      name: ner,
-                      chiglel: chiglel,
-                      zuil_zaalt: zuil_zaalt,
-                      reason_id: reason,
-                      lat: latitude,
-                      long: longitude,
-                    );
+                  SizedBox(
+                    height: 80,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            if (latitude == null || longitude == null) {
+                              await Get.defaultDialog();
+                              return;
+                            }
+                            final w = WasteModel(
+                              user_id: AuthController.user!.id,
+                              aimag_city_id: aimagCity,
+                              bag_horoo_id: bagHoroo,
+                              soum_district_id: soumDistrict,
+                              address: address,
+                              description: description,
+                              imageFileList: _imageFileList,
+                              videoFile: _videoFile,
+                              register: register,
+                              whois: whois,
+                              name: ner,
+                              chiglel: chiglel,
+                              zuil_zaalt: zuil_zaalt,
+                              reason_id: reason,
+                              lat: latitude,
+                              long: longitude,
+                            );
 
-                    await widget.onSave(w);
-                    Get.back(result: '');
-                  }
-                },
-                child: const Text(
-                  'Хадгалах',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18),
-                ),
+                            await widget.onSave(w);
+                            Get.back(result: '');
+                          }
+                        },
+                        child: const Text(
+                          'Хадгалах',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
-          ),
-          const SizedBox(height: 20),
+          )
         ],
       ),
     );

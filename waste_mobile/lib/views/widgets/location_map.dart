@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:waste_mobile/views/widgets/top_container.dart';
-import 'package:waste_mobile/views/widgets/zoombuttons_plugin_option.dart';
 
 class LocationMap extends StatefulWidget {
   final Function(LatLng?) onChangeLocation;
@@ -21,25 +19,49 @@ class LocationMap extends StatefulWidget {
 }
 
 class _LocationMapState extends State<LocationMap> {
-  Position? _currentLocation;
-  late final MapController _mapController;
-  int interActiveFlags = InteractiveFlag.all;
+  late final GoogleMapController? controller;
+  late LatLng latlong;
 
-  final pointSize = 20.0;
-  final pointY = 100.0;
-  LatLng? latLng;
+  MapType _mapType = MapType.normal;
 
   @override
   void initState() {
     super.initState();
-    _mapController = MapController();
-    // initLocationService();
-    if (widget.latitude == null && widget.latitude == null) {
+
+    if (widget.latitude == null || widget.longitude == null) {
       _determinePosition();
     }
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      updatePoint(null, context);
-    });
+    latlong = LatLng(
+      widget.latitude ?? 47.9173283,
+      widget.longitude ?? 106.9247419,
+    );
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    this.controller = controller;
+  }
+
+  Widget _mapTypeCycler() {
+    final MapType nextType =
+        MapType.values[(_mapType.index + 1) % MapType.values.length];
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          elevation: 2,
+          backgroundColor: Colors.white70,
+          minimumSize: Size(36, 36),
+          fixedSize: Size(36, 36),
+          padding: EdgeInsets.all(0)),
+      child: Icon(
+        Icons.map,
+        color: Colors.black,
+      ),
+      onPressed: () {
+        setState(() {
+          _mapType =
+              _mapType == MapType.normal ? MapType.satellite : MapType.normal;
+        });
+      },
+    );
   }
 
   Future<Position> _determinePosition() async {
@@ -79,42 +101,22 @@ class _LocationMapState extends State<LocationMap> {
     final ss = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium);
     setState(() {
-      _currentLocation = ss;
-      final latlong =
-          LatLng(_currentLocation!.latitude, _currentLocation!.longitude);
+      final latlong = LatLng(ss.latitude, ss.longitude);
       widget.onChangeLocation(latlong);
-      _mapController.move(latlong, _mapController.zoom);
+      controller?.moveCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(target: latlong, zoom: 14.0),
+        ),
+      );
     });
     return ss;
   }
 
-  void updatePoint(MapEvent? event, BuildContext context) {
-    final pointX = _getPointX(context);
-    setState(() {
-      latLng = _mapController.pointToLatLng(CustomPoint(pointX, pointY));
-      if (latLng != null) widget.onChangeLocation(latLng);
-    });
-  }
-
-  double _getPointX(BuildContext context) {
-    return MediaQuery.of(context).size.width / 2;
-  }
-
+  ScreenCoordinate? ss;
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
-    LatLng currentLatLng;
-
-    if (_currentLocation != null) {
-      currentLatLng =
-          LatLng(_currentLocation!.latitude, _currentLocation!.longitude);
-    } else {
-      currentLatLng = LatLng(
-        widget.latitude ?? 47.9173283,
-        widget.longitude ?? 106.9247419,
-      );
-    }
+    Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
     return TopContainer(
       padding: const EdgeInsets.all(0),
@@ -122,57 +124,49 @@ class _LocationMapState extends State<LocationMap> {
       width: width,
       child: Stack(
         children: [
-          FlutterMap(
-            mapController: _mapController,
-            options: MapOptions(
-              onMapEvent: (event) {
-                updatePoint(null, context);
-              },
-              center: currentLatLng,
-              zoom: 15,
-              minZoom: 3,
-            ),
-            nonRotatedChildren: const [
-              FlutterMapZoomButtons(
-                minZoom: 4,
-                maxZoom: 19,
-                mini: true,
-                padding: 5,
-                alignment: Alignment.topRight,
-              ),
-            ],
-            children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'dev.fleaflet.flutter_map.example',
-              ),
-              if (latLng != null)
-                MarkerLayer(
-                  markers: [
-                    Marker(
-                      width: pointSize,
-                      height: pointSize,
-                      point: latLng!,
-                      builder: (ctx) => Icon(Icons.crop_free, size: pointSize),
-                    )
-                  ],
-                )
-            ],
+          GoogleMap(
+            mapType: _mapType,
+            myLocationEnabled: true,
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: CameraPosition(target: latlong, zoom: 11.0),
+            markers: Set<Marker>.of(markers.values),
+            onCameraMove: (position) async {
+              widget.onChangeLocation(position.target);
+              print(position.target);
+            },
           ),
           Positioned(
-              top: pointY - pointSize / 2,
-              left: _getPointX(context) - pointSize / 2,
-              child: Icon(Icons.crop_free, size: pointSize)),
-          Positioned(
-            right: 0,
-            bottom: 0,
-            child: FloatingActionButton(
-              heroTag: 'cancel',
-              mini: true,
-              child: const Icon(Icons.my_location),
-              onPressed: () => _determinePosition(),
+            top: 100 - 9,
+            left: width / 2 - 9,
+            child: Icon(
+              Icons.crop_free,
+              size: 18,
+              color: Colors.white,
             ),
           ),
+          Positioned(
+            top: 100 - 7,
+            left: width / 2 - 7,
+            child: Icon(
+              Icons.crop_free,
+              size: 14,
+              color: Colors.white,
+            ),
+          ),
+          Positioned(
+            top: 100 - 8,
+            left: width / 2 - 8,
+            child: Icon(
+              Icons.crop_free,
+              size: 16,
+              color: Colors.red,
+            ),
+          ),
+          Positioned(
+            top: 0,
+            left: 0,
+            child: _mapTypeCycler(),
+          )
         ],
       ),
     );
