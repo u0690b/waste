@@ -17,26 +17,29 @@
       <div class="bg-white rounded shadow w-2/5">
         <form @submit.prevent="submit">
           <div class="p-8 -mr-6 -mb-8 flex-wrap">
-            <MyInput v-model="form.name" :error="errors.name" label="Хэрэглэгчийн нэр" />
             <MyInput v-model="form.username" :error="errors.username" label="Нэвтрэх нэр" />
+            <MyInput v-model="form.name" :error="errors.name" label="Хэрэглэгчийн нэр" />
+            <MyInput v-model="form.phone" :error="errors.phone" label="Утас" />
             <MyInput v-model="form.password" type="password" autocomplete="new-password" :error="errors.password"
               label="Нууц үг" />
             <MyInput v-model="form.password_confirmation" type="password" autocomplete="new-password"
               :error="errors.password_confirmation" label="Нууц үг баталгаажуулалт" />
 
-            <MySelect :value="null" :error="errors.aimag_city_id" label="Аймаг/нийслэл" :url="`/admin/aimag_cities`"
-              @changeId="
-                (id) => {
-                  form.aimag_city_id = id;
-                  form.soum_district_id = null;
-                  form.bag_horoo_id = null;
-                }
-              " />
+            <MySelect :value="aimag_city" :error="errors.aimag_city_id"
+              :disabled="auth.user.roles == 'da' || auth.user.roles == 'mha'" label="Аймаг/нийслэл"
+              :url="`/admin/aimag_cities`" @changeId="
+  (id) => {
+    form.aimag_city_id = id;
+    form.soum_district_id = null;
+    form.bag_horoo_id = null;
+  }
+" />
 
-            <MySelect v-if="form.aimag_city_id" :value="null" :error="errors.soum_district_id" label="Сум/дүүрэг"
-              :url="`/admin/soum_districts?aimag_city_id=${form.aimag_city_id}`" @changeId="
-                (id) => ((form.soum_district_id = id), (form.bag_horoo_id = null))
-              " />
+            <MySelect v-if="form.aimag_city_id" :value="soum_district"
+              :disabled="auth.user.roles == 'da' || auth.user.roles == 'mha'" :error="errors.soum_district_id"
+              label="Сум/дүүрэг" :url="`/admin/soum_districts?aimag_city_id=${form.aimag_city_id}`" @changeId="
+  (id) => ((form.soum_district_id = id), (form.bag_horoo_id = null))
+" />
 
             <MySelect v-if="form.soum_district_id" :value="null" :error="errors.bag_horoo_id" label="Баг/хороо"
               :url="`/admin/bag_horoos?soum_district_id=${form.soum_district_id}`"
@@ -82,31 +85,48 @@ export default {
   props: {
     errors: Object,
     data: Object,
+    aimag_city: Object,
+    soum_district: Object,
     host: String,
+    auth: Object,
   },
   data() {
     return {
       form: this.$inertia.form({
         id: null,
+        phone: null,
         name: null,
         username: null,
         password: null,
         password_confirmation: null,
-        aimag_city_id: null,
-        soum_district_id: null,
+        aimag_city_id: this.aimag_city.id,
+        soum_district_id: this.aimag_city.id,
         bag_horoo_id: null,
         roles: null,
         remember_token: null,
         created_at: null,
         updated_at: null,
       }),
-      roles: [
-        { id: "admin", name: "Админ" },
-        { id: "register", name: "Бүртгэгч" },
-        { id: "dt", name: "Дүүргийн төлөөлөгч" },
-        { id: "onb", name: "Олон нийтийн байцаагч" },
-        { id: "mh", name: "МХЕГ" },
-      ],
+      roles: this.auth.user.roles == 'admin' || this.auth.user.roles == 'zaa' ?
+        [
+          { id: "admin", name: "Админ" },
+          { id: "zaa", name: "Захирагчийн ажлын алба" },
+          { id: "mha", name: "МХ админ" },
+          { id: "mhb", name: "МХ байцаагч" },
+          { id: "da", name: "Дүүргийн админ" },
+          { id: "hd", name: "Хороон дарга" },
+          { id: "onb", name: "Олон нийтийн байцаагч" },
+        ] :
+        this.auth.user.roles == 'mha' ? [
+          { id: "mha", name: "МХ админ" },
+          { id: "mhb", name: "МХ байцаагч" },
+        ] :
+          this.auth.user.roles == 'da' ? [
+            { id: "da", name: "Дүүргийн админ" },
+            { id: "hd", name: "Хороон дарга" },
+            { id: "onb", name: "Олон нийтийн байцаагч" },
+          ] : []
+      ,
     };
   },
 

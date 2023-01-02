@@ -28,6 +28,6 @@
         "vue-toast-notification": "^3.0.4",
         "vue3-apexcharts": "^1.4.1",
         "vue3-carousel": "^0.2.9",
-        "vue3-openlayers": "^0.1.71"
+        "vue3-google-map": "^0.15.0"
     }
 }

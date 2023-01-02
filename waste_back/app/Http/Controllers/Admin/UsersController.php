@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\BagHoroo;
 use App\Models\User;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -11,9 +12,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
+use Spatie\FlareClient\Http\Exceptions\NotFound;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UsersController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = Auth::user();
+            if (!($user->roles == 'admin' || $user->roles == 'mha' || $user->roles == 'da' || $user->roles == 'zaa')) {
+                abort(403);
+            }
+            return $next($request);
+        });
+    }
     /**
      * Display a listing of the User.
      *
@@ -21,7 +35,15 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::filter(Request::all(["search", ...User::$searchIn]))->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name');
+        $input = Request::all(["search", ...User::$searchIn]);
+        $user = Auth::user();
+
+        if (!($user->roles == 'admin' || $user->roles == 'zaa')) {
+            $input['soum_district_id'] = $user->soum_district_id;
+        }
+
+        $users = User::filter($input)->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name');
+
         if (Request::has('only')) {
             return json_encode($users->paginate(Request::input('per_page'), ['id', 'name']));
         }
@@ -31,6 +53,7 @@ class UsersController extends Controller
                 ->paginate(Request::input('per_page'))
                 ->withQueryString()
                 ->toArray(),
+
             'host' => config('app.url'),
         ]);
     }
@@ -42,7 +65,11 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/users_models/Create', ['host' => config('app.url')]);
+        return Inertia::render('Admin/users_models/Create', [
+            'host' => config('app.url'),
+            'aimag_city' => Auth::user()->aimag_city,
+            'soum_district' => Auth::user()->soum_district,
+        ]);
     }
 
     /**
@@ -55,7 +82,20 @@ class UsersController extends Controller
         $rules = User::$rules;
         $rules['username'] = 'required|string|max:255|unique:' . User::class;
         $rules['password'] = ['required', 'confirmed', Rules\Password::defaults()];
+        $rules['bag_horoo_id'] = 'nullable';
+
         $input = Request::validate($rules);
+        if ($input['roles'] == 'mhb' || $input['roles'] == 'mha' || $input['roles'] == 'da') {
+            if (!$input['bag_horoo_id']) {
+                $input['bag_horoo_id'] = BagHoroo::whereSoumDistrictId($input['soum_district_id'])->first()->id;
+            }
+        } else {
+            Request::validate([
+                'bag_horoo_id' => 'required',
+            ]);
+        }
+
+
 
         $input['password'] = Hash::make($input['password']);
         User::create($input);
@@ -75,6 +115,8 @@ class UsersController extends Controller
         return Inertia::render('Admin/users_models/Edit', [
             'data' =>  $user,
             'host' => config('app.url'),
+            'aimag_city' => Auth::user()->aimag_city,
+            'soum_district' => Auth::user()->soum_district,
         ]);
     }
 

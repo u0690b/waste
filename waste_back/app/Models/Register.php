@@ -71,6 +71,7 @@ class Register extends Model
         'comf_user_id',
         'status_id',
         'reg_at',
+        'resolved_at',
     ];
 
     /**
@@ -100,7 +101,7 @@ class Register extends Model
         'status_id' => 'integer',
         'created_at' => 'date:Y-m-d H:i:s',
         'reg_at' => 'date:Y-m-d H:i:s',
-
+        'resolved_at' => 'date:Y-m-d H:i:s',
 
     ];
 
@@ -131,6 +132,7 @@ class Register extends Model
         'images.*' => 'sometimes|file',
         'video' => 'sometimes|file',
         'reg_at' => 'nullable',
+        'resolved_at' => 'nullable',
     ];
 
     /**

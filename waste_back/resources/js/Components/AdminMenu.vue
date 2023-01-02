@@ -45,7 +45,7 @@ const menus = ref([
 
 ]);
 const user = computed(() => usePage().props.value.auth.user);
-if (user.value.roles == 'admin')
+if (['admin', 'zaa'].includes(user.value.roles)) {
   menus.value.push(
     {
       text: "Байгууллага",
@@ -102,6 +102,18 @@ if (user.value.roles == 'admin')
       ],
     },
   )
+} else if (['da', 'mha'].includes(user.value.roles)) {
+  menus.value.push(
+
+    {
+      text: "Хэрэглэгч",
+      icon: markRaw(UserGroupIcon),
+      href: route("admin.users.index"),
+    },
+
+  )
+}
+
 const totalStat = computed(() => usePage().props.value.totalStat)
 menus.value.push(
   {

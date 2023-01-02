@@ -18,23 +18,20 @@
       <div class="w-full">
         <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
           <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-            <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal"
-              v-on:click="toggleTabs(1)"
-              v-bind:class="{'text-orange-600 bg-white': openTab !== 1, 'text-white bg-orange-600': openTab === 1}">
+            <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-orange-600 bg-white"
+              @click="form.status_id = 2" :class="{'!text-white bg-orange-600': openTab === 2}">
               Илгээсэн
             </a>
           </li>
           <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-            <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal"
-              v-on:click="toggleTabs(2)"
-              v-bind:class="{ 'text-blue-600 bg-white': openTab !== 2, 'text-white bg-blue-600': openTab === 2 }">
+            <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white"
+              @click="form.status_id = 3" v-bind:class="{ '!text-white bg-blue-600': openTab === 3 }">
               Хуваарилсан
             </a>
           </li>
           <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-            <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal"
-              v-on:click="toggleTabs(3)"
-              v-bind:class="{ 'text-green-600 bg-white': openTab !== 3, 'text-white bg-green-600': openTab === 3 }">
+            <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-green-600 bg-white"
+              @click="form.status_id = 4" v-bind:class="{ '!text-white bg-green-600': openTab === 4 }">
               Шийдвэрлэсэн
             </a>
           </li>
@@ -43,7 +40,7 @@
         <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
           <div class="px-4 py-5 flex-auto">
             <div class="tab-content tab-space">
-              <div v-bind:class="{ 'hidden': openTab !== 1, 'block': openTab === 1 }">
+              <div>
                 <div class="p-4 bg-white rounded">
                   <div class="flex justify-between">
                     <div>
@@ -60,18 +57,7 @@
                           placeholder="Бүртгэл хайх" />
                       </div>
                     </div>
-                    <!-- <div>
-          <div>
-            <button class="flex items-center bg-green-500 p-2 text-white rounded text-sm hover:bg-green-600">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
 
-              Create New
-            </button>
-          </div>
-        </div> -->
                   </div>
 
                   <table class="w-full mt-2 text-gray-500">
@@ -115,7 +101,7 @@
                             {{ data.status?.name ?? 'хоосон' }}
                           </span>
                         </td>
-                        <td></td>
+                        <td>{{ calcDateRange(data.reg_at, data.resolved_at) }} хоног</td>
                         <td>{{ data.created_at }}</td>
                         <td class="text-right">
                           <Menu as="div" class="relative inline-block text-left">
@@ -152,7 +138,7 @@
                                     Дэлгэрэнгүй
                                   </InertiaLink>
                                   </MenuItem>
-                                  <MenuItem v-if="data.status_id != 4" v-slot="{ active }">
+                                  <MenuItem v-if="data.status_id != 4 && auth.user.roles == 'mha'" v-slot="{ active }">
                                   <InertiaLink :href="route('admin.register.allocation', data.id)"
                                     :class="[active ? 'bg-red-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-2 py-2 text-sm',]">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-violet-400"
@@ -163,7 +149,9 @@
                                     Хуваарилах
                                   </InertiaLink>
                                   </MenuItem>
-                                  <MenuItem v-if="data.status_id != 4" v-slot="{ active }">
+                                  <MenuItem
+                                    v-if="data.status_id != 4 && (auth.user.roles != 'onb') && (data.reason_id <= 3 && ['admin', 'mhb', 'mha'].includes(auth.user.roles))"
+                                    v-slot="{ active }">
                                   <button
                                     :class="[active ? 'bg-red-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-2 py-2 text-sm',]">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-violet-400"
@@ -190,289 +178,7 @@
                   </table>
                 </div>
               </div>
-              <div v-bind:class="{ 'hidden': openTab !== 2, 'block': openTab === 2 }">
-                <div class="p-4 bg-white rounded">
-                  <div class="flex justify-between">
-                    <div>
-                      <div class="relative text-gray-400">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                          </svg>
-                        </span>
-                        <input id="search" name="search" type="search" v-model="form.search"
-                          class="w-full py-2 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-gray-500  focus:z-10"
-                          placeholder="Бүртгэл хайх" />
-                      </div>
-                    </div>
-                    <!-- <div>
-          <div>
-            <button class="flex items-center bg-green-500 p-2 text-white rounded text-sm hover:bg-green-600">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
 
-              Create New
-            </button>
-          </div>
-        </div> -->
-                  </div>
-
-                  <table class="w-full mt-2 text-gray-500">
-                    <thead class="border-b">
-                      <tr>
-                        <th class="p-2 text-left text-gray-600">
-                          <input type="checkbox"
-                            class="h-5 w-5 text-blue-500 border-gray-300 rounded cursor-pointer focus:ring-0" />
-                        </th>
-                        <th class="text-left text-gray-600">ЗӨРЧЛИЙН МЭДЭЭЛЭЛ</th>
-                        <th class="text-left text-gray-600">ХЭРЭГЛЭГЧ</th>
-                        <th class="text-left text-gray-600">ТӨЛӨВ</th>
-                        <th class="text-left text-gray-600">ЗАРЦУУЛСАН ХУГАЦАА</th>
-                        <th class="text-left text-gray-600">БҮРТГЭСЭН ОГНОО</th>
-                        <th class="text-right text-gray-600">ҮЙЛДЛҮҮД</th>
-                      </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                      <tr v-for="data in datas.data">
-                        <td class="p-2">
-                          <input type="checkbox"
-                            class="h-5 w-5 text-blue-500 border-gray-300 rounded cursor-pointer focus:ring-0" />
-                        </td>
-                        <td class="flex items-center py-4">
-                          <!-- <img class="inline-block h-12 w-12 rounded-full ring-2 ring-white" alt="" /> -->
-                          <div class="px-4">
-                            <div>
-                              <a href="#" class="text-gray-600 font-bolder">{{ data.name }}</a>
-                            </div>
-                            <div class="font-bold text-sm">
-                              {{ data.register }}
-                            </div>
-                          </div>
-                        </td>
-                        <td>{{ data.reg_user_id }}</td>
-                        <td>
-                          <span v-if="data.status_id == 2" class="px-2 py-1 rounded text-xs text-white bg-green-500">
-                            {{ data.status?.name ?? 'хоосон' }}
-                          </span>
-                          <span v-else class="px-2 py-1 rounded text-xs text-white bg-red-500">
-                            {{ data.status?.name ?? 'хоосон' }}
-                          </span>
-                        </td>
-                        <td></td>
-                        <td>{{ data.created_at }}</td>
-                        <td class="text-right">
-                          <Menu as="div" class="relative inline-block text-left">
-                            <div>
-                              <MenuButton
-                                class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white rounded-md bg-gray-500 hover:bg-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 ">
-                                Үйлдэл
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                  class="w-5 h-5 ml-2 -mr-1 text-violet-200 hover:text-violet-100" fill="none"
-                                  viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                                </svg>
-                              </MenuButton>
-                            </div>
-
-                            <Transition enter-active-class="transition duration-100 ease-out"
-                              enter-from-class="transform scale-95 opacity-0"
-                              enter-to-class="transform scale-100 opacity-100"
-                              leave-active-class="transition duration-75 ease-in"
-                              leave-from-class="transform scale-100 opacity-100"
-                              leave-to-class="transform scale-95 opacity-0">
-                              <MenuItems
-                                class=" absolute right-0 w-32 mt-1 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50 focus:outline-none ">
-                                <div class="px-1 py-1">
-                                  <MenuItem v-slot="{ active }">
-                                  <InertiaLink :href="route('admin.registers.show', data.id)"
-                                    :class="[active ? 'bg-gray-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-2 py-2 text-sm',]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-violet-400"
-                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                    </svg>
-                                    Дэлгэрэнгүй
-                                  </InertiaLink>
-                                  </MenuItem>
-                                  <MenuItem v-if="data.status_id != 4" v-slot="{ active }">
-                                  <InertiaLink :href="route('admin.register.allocation', data.id)"
-                                    :class="[active ? 'bg-red-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-2 py-2 text-sm',]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-violet-400"
-                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                    Хуваарилах
-                                  </InertiaLink>
-                                  </MenuItem>
-                                  <MenuItem v-if="data.status_id != 4" v-slot="{ active }">
-                                  <button
-                                    :class="[active ? 'bg-red-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-2 py-2 text-sm',]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-violet-400"
-                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                    Шийдвэрлэх
-                                  </button>
-                                  </MenuItem>
-                                </div>
-                              </MenuItems>
-                            </Transition>
-                          </Menu>
-                        </td>
-                      </tr>
-                    </tbody>
-                    <div class="py-2 flex items-center justify-between border-t border-gray-200 border">
-                      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
-                      <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
-                        <pagination :links="datas.links" />
-                      </div>
-                    </div>
-                  </table>
-                </div>
-              </div>
-              <div v-bind:class="{ 'hidden': openTab !== 3, 'block': openTab === 3 }">
-
-                <div class="p-4 bg-white rounded">
-                  <div class="flex justify-between">
-                    <div>
-                      <div class="relative text-gray-400">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                          </svg>
-                        </span>
-                        <input id="search" name="search" type="search" v-model="form.search"
-                          class="w-full py-2 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-gray-500  focus:z-10"
-                          placeholder="Бүртгэл хайх" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <table class="w-full mt-2 text-gray-500">
-                    <thead class="border-b">
-                      <tr>
-                        <th class="p-2 text-left text-gray-600">
-                          <input type="checkbox"
-                            class="h-5 w-5 text-blue-500 border-gray-300 rounded cursor-pointer focus:ring-0" />
-                        </th>
-                        <th class="text-left text-gray-600">ЗӨРЧЛИЙН МЭДЭЭЛЭЛ</th>
-                        <th class="text-left text-gray-600">ХЭРЭГЛЭГЧ</th>
-                        <th class="text-left text-gray-600">ТӨЛӨВ</th>
-                        <th class="text-left text-gray-600">ЗАРЦУУЛСАН ХУГАЦАА</th>
-                        <th class="text-left text-gray-600">БҮРТГЭСЭН ОГНОО</th>
-                        <th class="text-right text-gray-600">ҮЙЛДЛҮҮД</th>
-                      </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                      <tr v-for="data in datas.data">
-                        <td class="p-2">
-                          <input type="checkbox"
-                            class="h-5 w-5 text-blue-500 border-gray-300 rounded cursor-pointer focus:ring-0" />
-                        </td>
-                        <td class="flex items-center py-4">
-                          <!-- <img class="inline-block h-12 w-12 rounded-full ring-2 ring-white" alt="" /> -->
-                          <div class="px-4">
-                            <div>
-                              <a href="#" class="text-gray-600 font-bolder">{{ data.name }}</a>
-                            </div>
-                            <div class="font-bold text-sm">
-                              {{ data.register }}
-                            </div>
-                          </div>
-                        </td>
-                        <td>{{ data.reg_user_id }}</td>
-                        <td>
-                          <span v-if="data.status_id == 2" class="px-2 py-1 rounded text-xs text-white bg-green-500">
-                            {{ data.status?.name ?? 'хоосон' }}
-                          </span>
-                          <span v-else class="px-2 py-1 rounded text-xs text-white bg-red-500">
-                            {{ data.status?.name ?? 'хоосон' }}
-                          </span>
-                        </td>
-                        <td></td>
-                        <td>{{ data.created_at }}</td>
-                        <td class="text-right">
-                          <Menu as="div" class="relative inline-block text-left">
-                            <div>
-                              <MenuButton
-                                class="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-white rounded-md bg-gray-500 hover:bg-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 ">
-                                Үйлдэл
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                  class="w-5 h-5 ml-2 -mr-1 text-violet-200 hover:text-violet-100" fill="none"
-                                  viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                                </svg>
-                              </MenuButton>
-                            </div>
-
-                            <Transition enter-active-class="transition duration-100 ease-out"
-                              enter-from-class="transform scale-95 opacity-0"
-                              enter-to-class="transform scale-100 opacity-100"
-                              leave-active-class="transition duration-75 ease-in"
-                              leave-from-class="transform scale-100 opacity-100"
-                              leave-to-class="transform scale-95 opacity-0">
-                              <MenuItems
-                                class=" absolute right-0 w-32 mt-1 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50 focus:outline-none ">
-                                <div class="px-1 py-1">
-                                  <MenuItem v-slot="{ active }">
-                                  <InertiaLink :href="route('admin.registers.show', data.id)"
-                                    :class="[active ? 'bg-gray-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-2 py-2 text-sm',]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-violet-400"
-                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                    </svg>
-                                    Дэлгэрэнгүй
-                                  </InertiaLink>
-                                  </MenuItem>
-                                  <MenuItem v-if="data.status_id != 4" v-slot="{ active }">
-                                  <InertiaLink :href="route('admin.register.allocation', data.id)"
-                                    :class="[active ? 'bg-red-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-2 py-2 text-sm',]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-violet-400"
-                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                    Хуваарилах
-                                  </InertiaLink>
-                                  </MenuItem>
-                                  <MenuItem v-if="data.status_id != 4" v-slot="{ active }">
-                                  <button
-                                    :class="[active ? 'bg-red-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-2 py-2 text-sm',]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-violet-400"
-                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                    Шийдвэрлэх
-                                  </button>
-                                  </MenuItem>
-                                </div>
-                              </MenuItems>
-                            </Transition>
-                          </Menu>
-                        </td>
-                      </tr>
-                    </tbody>
-                    <div class="py-2 flex items-center justify-between border-t border-gray-200 border">
-                      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
-                      <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
-                        <pagination :links="datas.links" />
-                      </div>
-                    </div>
-                  </table>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -526,10 +232,10 @@ export default {
     datas: Object,
     filters: [Object, Array],
     host: String,
+    auth: [Object, Array],
   },
   data() {
     return {
-      openTab: 1,
       form: {
         aimag_city_id: null,
         soum_district_id: null,
@@ -577,13 +283,20 @@ export default {
       deep: true,
     },
   },
+  computed: {
+    openTab() {
+      return parseInt(this.form.status_id) ?? 2;
+    }
+  },
   methods: {
     reset() {
       this.form = mapValues(this.form, () => null);
     },
-    toggleTabs: function (tabNumber) {
-      this.openTab = tabNumber
+    calcDateRange(start, end) {
+      let difference = (isNaN(Date.parse(end)) ? Date.now() : Date.parse(end)) - Date.parse(start);
+      return (isNaN(difference) ? '~' : Math.ceil(difference / (1000 * 3600 * 24)));
     }
+
   },
 };
 

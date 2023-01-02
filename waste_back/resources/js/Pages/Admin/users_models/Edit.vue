@@ -28,17 +28,17 @@
 
             <MySelect :value="data.aimag_city" :error="errors.aimag_city_id" label="Аймаг/нийслэл"
               :url="`/admin/aimag_cities`" @changeId="
-                (id) => {
-                  form.aimag_city_id = id;
-                  form.soum_district_id = null;
-                  form.bag_horoo_id = null;
-                }
-              " />
+  (id) => {
+    form.aimag_city_id = id;
+    form.soum_district_id = null;
+    form.bag_horoo_id = null;
+  }
+" />
 
             <MySelect v-if="form.aimag_city_id" :value="data.soum_district" :error="errors.soum_district_id"
               label="Сум/дүүрэг" :url="`/admin/soum_districts?aimag_city_id=${form.aimag_city_id}`" @changeId="
-                (id) => ((form.soum_district_id = id), (form.bag_horoo_id = null))
-              " />
+  (id) => ((form.soum_district_id = id), (form.bag_horoo_id = null))
+" />
 
             <MySelect v-if="form.soum_district_id" :value="data.bag_horoo" :error="errors.bag_horoo_id"
               label="Баг/хороо" :url="`/admin/bag_horoos?soum_district_id=${form.soum_district_id}`"
@@ -104,15 +104,26 @@ export default {
         created_at: this.data.created_at,
         updated_at: this.data.updated_at,
       }),
-      roles: [
-        { id: "admin", name: "Админ" },
-        { id: "zaa", name: "Захирагчийн ажлын алба" },
-        { id: "mha", name: "МХ админ" },
-        { id: "mhb", name: "МХ байцаагч" },
-        { id: "da", name: "Дүүргийн админ" },
-        { id: "hd", name: "Хороон дарга" },
-        { id: "onb", name: "Олон нийтийн байцаагч" },
-      ],
+      roles: this.auth.user.roles == 'admin' || this.auth.user.roles == 'zaa' ?
+        [
+          { id: "admin", name: "Админ" },
+          { id: "zaa", name: "Захирагчийн ажлын алба" },
+          { id: "mha", name: "МХ админ" },
+          { id: "mhb", name: "МХ байцаагч" },
+          { id: "da", name: "Дүүргийн админ" },
+          { id: "hd", name: "Хороон дарга" },
+          { id: "onb", name: "Олон нийтийн байцаагч" },
+        ] :
+        this.auth.user.roles == 'mha' ? [
+          { id: "mha", name: "МХ админ" },
+          { id: "mhb", name: "МХ байцаагч" },
+        ] :
+          this.auth.user.roles == 'da' ? [
+            { id: "da", name: "Дүүргийн админ" },
+            { id: "hd", name: "Хороон дарга" },
+            { id: "onb", name: "Олон нийтийн байцаагч" },
+          ] : []
+      ,
     };
   },
   computed: {

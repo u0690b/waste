@@ -1,55 +1,18 @@
 <template>
   <div>
-    <ol-map
-      :loadTilesWhileAnimating="true"
-      :loadTilesWhileInteracting="true"
-      style="height: 800px"
-    >
-      <ol-view
-        ref="view"
-        :center="center"
-        :rotation="rotation"
-        :zoom="zoom"
-        :projection="projection"
-      />
-      <ol-tile-layer>
-        <ol-source-osm />
-      </ol-tile-layer>
+    <div>
+      <MySelect :value="form.soum_district_id" type="text" class="" label="Сум,Дүүрэг" :url="`/admin/soum_districts`"
+        @changeId="(id) => (form.soum_district_id = id)" />
+    </div>
+    <GoogleMap api-key="AIzaSyBX2h1XKlleDEXJCKTekPVDk2lI2LNDFNc" style="width: 100%; height: 600px" :center="center"
+      :zoom="15">
 
-      <ol-vector-layer>
-        <ol-source-cluster :ref="(el) => (clusterRef = el)" :distance="40">
-          <ol-interaction-clusterselect @select="featureSelected" :pointRadius="20">
-            <ol-style>
-              <ol-style-stroke color="green" :width="5"></ol-style-stroke>
-              <ol-style-fill color="rgba(255,255,255,0.5)"></ol-style-fill>
-              <ol-style-icon :src="markerIcon" :scale="0.05"></ol-style-icon>
-            </ol-style>
-          </ol-interaction-clusterselect>
-          <ol-source-vector>
-            <ol-feature
-              v-for="index in myFeatures"
-              :key="index"
-              :properties="{ id: index, name: 'haha' + index }"
-            >
-              <ol-geom-point :coordinates="index"></ol-geom-point>
-            </ol-feature>
-          </ol-source-vector>
-        </ol-source-cluster>
-
-        <ol-style :overrideStyleFunction="overrideStyleFunction">
-          <ol-style-stroke color="red" :width="2"></ol-style-stroke>
-          <ol-style-fill color="rgba(255,255,255,0.1)"></ol-style-fill>
-
-          <ol-style-circle :radius="10">
-            <ol-style-fill color="#3399CC"></ol-style-fill>
-            <ol-style-stroke color="#fff" :width="1"></ol-style-stroke>
-          </ol-style-circle>
-          <ol-style-text>
-            <ol-style-fill color="#fff"></ol-style-fill>
-          </ol-style-text>
-        </ol-style>
-      </ol-vector-layer>
-    </ol-map>
+      <MarkerCluster>
+        <Marker v-for="(location, i) in datas"
+          :options="{ position: { lat: parseFloat(location.lat), lng: parseFloat(location.long) }, title: location.name }"
+          :key="i" @click="() => onclick(location)" />
+      </MarkerCluster>
+    </GoogleMap>
   </div>
 </template>
 
@@ -61,56 +24,26 @@ import pickBy from "lodash/pickBy";
 import SearchFilter from "@/Components/SearchFilter.vue";
 import debounce from "lodash/debounce";
 import AdminTable from "@/Components/AdminTable.vue";
-import "vue3-openlayers/dist/vue3-openlayers.css";
-import { ref, inject } from "vue";
-import markerIcon from "./marker.png";
-
+import { ref } from "vue";
+import { GoogleMap, Marker, MarkerCluster } from "vue3-google-map";
+import { Inertia } from "@inertiajs/inertia";
+import MySelect from "@/Components/MySelect.vue";
 export default {
   metaInfo: { title: "Places" },
   components: {
     Pagination,
     SearchFilter,
     AdminTable,
+    GoogleMap,
+    Marker,
+    MarkerCluster,
+    MySelect
   },
   setup(props) {
-    const center = ref([106.9247419, 47.9173283]);
-    const projection = ref("EPSG:4326");
-    const zoom = ref(13.8);
-    const rotation = ref(0);
-    const selectedCityName = ref();
-    const clusterRef = ref(null);
-    const overrideStyleFunction = (feature, style) => {
-      let clusteredFeatures = feature.get("features");
-      let size = clusteredFeatures.length;
+    const center = { lat: parseFloat(47.9173283), lng: parseFloat(106.9247419) };
+    const markerOptions = { position: center, label: "L", title: "LADY LIBERTY" };
 
-      style.getText().setText(size.toString());
-    };
-
-    const getRandomInRange = (from, to, fixed) => {
-      return (Math.random() * (to - from) + from).toFixed(fixed) * 1;
-    };
-
-    const featureSelected = (event) => {
-      if (event.selected.length == 1) {
-        console.log(event.selected[0].get("id"));
-
-        selectedCityName.value = event.selected[0].values_.name;
-      } else {
-        selectedCityName.value = "";
-      }
-    };
-
-    return {
-      center,
-      projection,
-      zoom,
-      clusterRef,
-      rotation,
-      featureSelected,
-      overrideStyleFunction,
-      getRandomInRange,
-      markerIcon,
-    };
+    return { center, markerOptions };
   },
   layout: Layout,
   props: {
@@ -127,13 +60,13 @@ export default {
   },
   computed: {
     myFeatures() {
-      return this.datas.data.map((v) => [v.long, v.lat]);
+      return this.datas.data.map((v) => ({ lat: parseFloat(v.lat), lng: parseFloat(v.long) }));
     },
   },
   watch: {
     form: {
       handler: debounce(function () {
-        this.$inertia.get(this.route("admin.places.index"), pickBy(this.form), {
+        this.$inertia.get(this.route("register.map"), pickBy(this.form), {
           preserveState: true,
         });
       }, 150),
@@ -141,6 +74,9 @@ export default {
     },
   },
   methods: {
+    onclick(e, v) {
+      // Inertia.visit('')
+    },
     reset() {
       this.form = mapValues(this.form, () => null);
     },

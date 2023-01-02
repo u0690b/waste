@@ -9,6 +9,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Models\AttachedFile;
 use App\Models\User;
 use App\Services\FCMService;
+use Date;
 use DB;
 use Illuminate\Http\UploadedFile;
 use Response;
@@ -181,6 +182,8 @@ class RegisterAPIController extends AppBaseController
             /** @var Register $register */
             $input['comf_user_id'] = $request->user()->id;
             $input['status_id'] = 4;
+            $input['resolved_at'] = Date::now();
+
             $register->fill($input);
             if ($request->image instanceof UploadedFile) {
 

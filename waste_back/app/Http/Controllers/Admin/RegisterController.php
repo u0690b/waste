@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Register;
 use App\Models\User;
 use App\Services\FCMService;
+use Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
@@ -21,7 +22,24 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $registers = Register::filter(Request::all(["search", ...Register::$searchIn]))
+        $input = Request::all(["search", ...Register::$searchIn]);
+        if (!$input['status_id']) {
+            $input['status_id'] = 2;
+        }
+        $user = Auth::user();
+
+        if (!($user->roles == 'admin' || $user->roles == 'zaa')) {
+            $input['soum_district_id'] = $user->soum_district_id;
+        }
+        if ($user->roles == 'onb' || $user->roles == 'hd') {
+            $input['bag_horoo_id'] = $user->bag_horoo_id;
+        }
+
+        if ($user->roles == 'mha' || $user->roles == 'mhb') {
+            $input['reason_id'] =  [1, 2, 3];
+        }
+
+        $registers = Register::filter($input)
             ->with('aimag_city:id,name')
             ->with('bag_horoo:id,name')
             ->with('comf_user:id,name')
@@ -31,11 +49,14 @@ class RegisterController extends Controller
             ->with('status:id,name')
             ->with('attached_images:id,register_id,path')
             ->with('attached_video:id,register_id,path');
+
+
+
         if (Request::has('only')) {
             return json_encode($registers->paginate(Request::input('per_page'), ['id', 'name']));
         }
         return Inertia::render('Admin/registers/Index', [
-            'filters' => Request::only(["search", ...Register::$searchIn]),
+            'filters' =>   $input,
             'datas' => $registers
                 ->paginate(Request::input('per_page'))
                 ->withQueryString(),

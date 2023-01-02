@@ -27,14 +27,15 @@
         </div>
       </div>
       <admin-table :headers="{
-        name: 'Хэрэглэгчийн нэр',
-        username: 'Нэвтрэх нэр',
-        'deleted_at': 'Төлөв',
-        'aimag_city.name': 'Аймаг/нийслэл',
-        'soum_district.name': 'Сум/дүүрэг',
-        'bag_horoo.name': 'Баг/хороо',
-        roles: 'Эрх',
-      }" :datas="datas" url="admin.users.edit" insertUrl="admin.users.create" deleteUrl="admin.users.create" />
+  name: 'Хэрэглэгчийн нэр',
+  username: 'Нэвтрэх нэр',
+  'deleted_at': 'Төлөв',
+  'aimag_city.name': 'Аймаг/нийслэл',
+  'soum_district.name': 'Сум/дүүрэг',
+  'bag_horoo.name': 'Баг/хороо',
+  roles: 'Эрх',
+}" :datas="datas" url="admin.users.edit" :insertUrl="route('admin.users.create')"
+        :deleteUrl="route('admin.users.create')" />
     </div>
     <div class="py-2 flex items-center justify-between border-t border-gray-200 border">
       <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
