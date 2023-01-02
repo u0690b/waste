@@ -11,6 +11,62 @@
   </div>
 
   <div class="p-4 mt-8 sm:px-8 sm:py-4">
+    <!---->
+
+    <div class="flex flex-wrap">
+      <div class="w-full">
+        <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
+          <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+            <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-orange-600 bg-white"
+              :class="{ '!text-white bg-orange-600': openTab === 2 }">
+              Мэргэжлийн хяналт
+            </a>
+          </li>
+          <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+            <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white"
+              v-bind:class="{ '!text-white bg-blue-600': openTab === 3 }">
+              Захирагчийн ажлын алба
+            </a>
+          </li>
+          <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+            <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-green-600 bg-white"
+              v-bind:class="{ '!text-white bg-green-600': openTab === 4 }">
+              Шийдвэрлэсэн
+            </a>
+          </li>
+
+        </ul>
+        <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+          <div class="px-4 py-5 flex-auto">
+            <div class="tab-content tab-space">
+              <div>
+                <div class="p-4 bg-white rounded">
+                  <div class="flex justify-between">
+                    <div>
+                      <div class="relative text-gray-400">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-2">
+
+                        </span>
+                        <p>{{ datas.data.roles }}</p>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!---->
+
+
     <div class="p-4 bg-white rounded">
       <div class="mb-6 flex justify-between items-center">
         <div class="relative text-gray-400">
@@ -70,6 +126,11 @@ export default {
     datas: Object,
     filters: [Object, Array],
     host: String,
+  },
+  computed: {
+    openTab() {
+      return 2;
+    }
   },
   data() {
     return {
