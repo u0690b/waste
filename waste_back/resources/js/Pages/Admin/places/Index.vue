@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <admin-table :headers="{ name: 'Байгууллага нэр' }" :datas="datas" url="admin.places.edit" />
+      <admin-table :headers="{ name: 'Байгууллага нэр' }" :datas="datas" />
       <div class="py-2 flex items-center justify-between border-t border-gray-200 border">
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
         <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">

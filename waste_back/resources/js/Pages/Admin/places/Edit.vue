@@ -29,7 +29,7 @@
               Засах
             </button>
             <button :loading="form.processing"
-              class="flex bg-blue-400 p-3 mx-4 text-white rounded text-base hover:bg-blue-500" @click="goBack">
+              class="flex bg-gray-600 p-3 mx-4 text-white rounded text-base hover:bg-gray-500" @click="goBack">
               Буцах
             </button>
           </div>

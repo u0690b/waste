@@ -1,7 +1,7 @@
 
 <template>
     <div class="flex justify-between px-4 mt-4 sm:px-8">
-        <h2 class="text-2xl text-gray-600 underline font-bold">Зөрчлийн бүртгэл</h2>
+        <h2 class="text-xl text-gray-600  font-bold">Зөрчлийн бүртгэл</h2>
         <div class="flex items-center space-x-1 text-xs">
             <inertia-link href="/" class="font-bold text-indigo-700 text-sm">Нүүр хуудас</inertia-link>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24"
