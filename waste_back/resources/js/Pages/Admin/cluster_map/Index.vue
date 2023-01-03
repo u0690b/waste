@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div>
-      <MySelect :value="form.soum_district_id" type="text" class="" label="Сум,Дүүрэг" :url="`/admin/soum_districts`"
-        @changeId="(id) => (form.soum_district_id = id)" />
+    <div class="p-4 bg-white">
+      <MySelect v-model="form.soum_district_id" class="w-96" label="Сум,Дүүрэг" :url="`/admin/soum_districts`" />
     </div>
-    <GoogleMap api-key="AIzaSyBX2h1XKlleDEXJCKTekPVDk2lI2LNDFNc" style="width: 100%; height: 600px" :center="center"
-      :zoom="15">
+    <GoogleMap api-key="AIzaSyBX2h1XKlleDEXJCKTekPVDk2lI2LNDFNc" style="width: 100%; " class="h-[calc(100vh-200px)]"
+      :center="center" :zoom="15">
 
       <MarkerCluster>
         <Marker v-for="(location, i) in datas"

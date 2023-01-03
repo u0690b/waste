@@ -14,7 +14,10 @@ class AuthController extends GetxController with CacheManager, Api {
   static User? user;
   void logOut() {
     isLogged.value = false;
+
     removeToken();
+    final box = GetStorage();
+    box.remove('UserModel');
   }
 
   void login(User user) async {

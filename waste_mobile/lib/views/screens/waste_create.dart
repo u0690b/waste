@@ -12,6 +12,7 @@ import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/utils/contants.dart';
 import 'package:waste_mobile/views/screens/video_payer_file.dart';
 import 'package:waste_mobile/views/widgets/back_button.dart';
+import 'package:waste_mobile/views/widgets/company_name.dart';
 import 'package:waste_mobile/views/widgets/future_alert_dialog.dart';
 import 'package:waste_mobile/views/widgets/image_pick_list.dart';
 import 'package:waste_mobile/views/widgets/location_map.dart';
@@ -80,6 +81,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
   int? reason;
   List<List<int>> _imageFileList = [];
   List<int>? _videoFile;
+  TextEditingController registerController = TextEditingController();
   @override
   void initState() {
     if (widget.model != null) {
@@ -95,6 +97,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
       _videoFile = widget.model!.videoFile;
       ner = widget.model!.name;
       register = widget.model!.register;
+      registerController.text = widget.model!.register ?? '';
       chiglel = widget.model!.chiglel;
       zuil_zaalt = widget.model!.zuil_zaalt;
       reason = widget.model!.reason_id;
@@ -224,31 +227,41 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                           ],
                         ),
                         //Албан байгууллага, Иргэний овог нэр:
-                        TextFormField(
-                          maxLength: 100,
-                          initialValue: ner,
-                          validator: (value) {
-                            return (value == null || value.isEmpty)
-                                ? 'Нэр хоосон байна'
-                                : null;
-                          },
-                          onChanged: (value) => ner = value,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 15.0),
-                            labelText: whois == 'Хуулийн этгээд'
-                                ? 'Албан байгууллага нэр'
-                                : 'Иргэний овог нэр:',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
+                        if (whois != 'Хуулийн этгээд')
+                          TextFormField(
+                            maxLength: 100,
+                            initialValue: ner,
+                            validator: (value) {
+                              return (value == null || value.isEmpty)
+                                  ? 'Нэр хоосон байна'
+                                  : null;
+                            },
+                            onChanged: (value) => ner = value,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 15.0),
+                              labelText: whois == 'Хуулийн этгээд'
+                                  ? 'Албан байгууллага нэр'
+                                  : 'Иргэний овог нэр:',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
                             ),
+                          )
+                        else
+                          CompanyNameFormField(
+                            changeCompanyName: (val) => ner = val,
+                            changeRegister: (val) => setState(() {
+                              register = val;
+                              registerController.text = val;
+                            }),
+                            initText: ner ?? '',
                           ),
-                        ),
                         const SizedBox(height: 20),
                         // Албан байгууллага, Иргэний  регистр:
                         TextFormField(
+                          controller: registerController,
                           maxLength: 15,
-                          initialValue: register,
                           onChanged: (value) => register = value,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
@@ -416,13 +429,13 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                           maxLines: 10,
                         ),
                         const SizedBox(height: 20),
-                        // Зөрчлийн Төрөл:
+                        // Зөрчлийн төрөл:
                         DropdownButtonFormField(
                             validator: (p0) =>
                                 p0 == null ? 'Заавал бөглөх' : null,
                             value: reason,
                             decoration: InputDecoration(
-                              labelText: "Зөрчлийн Төрөл:",
+                              labelText: "Зөрчлийн төрөл:",
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 20.0, vertical: 15.0),
                               border: OutlineInputBorder(

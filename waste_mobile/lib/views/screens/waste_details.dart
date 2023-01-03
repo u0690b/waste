@@ -113,7 +113,12 @@ class _WasteDetailsState extends State<WasteDetails> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       if (widget.wasteController != null &&
-                          AuthController.user!.roles != 'onb')
+                          ((['mhb', 'mha']
+                                      .contains(AuthController.user!.roles) &&
+                                  widget.waste.reasonId <= 3) ||
+                              (!['onb', 'mhb', 'mha']
+                                      .contains(AuthController.user!.roles) &&
+                                  widget.waste.reasonId > 3)))
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
@@ -170,7 +175,7 @@ class _WasteDetailsState extends State<WasteDetails> {
                       ListTile(
                         dense: true,
                         style: ListTileStyle.drawer,
-                        title: const Text("Зөрчилийн Төрөл:"),
+                        title: const Text("Зөрчилийн төрөл:"),
                         subtitle: Text(waste.reason.name),
                       ),
                       ListTile(
@@ -227,7 +232,7 @@ class _WasteDetailsState extends State<WasteDetails> {
                         ListTile(
                           dense: true,
                           style: ListTileStyle.drawer,
-                          title: const Text("Шийдвэрлэсэн хүн:"),
+                          title: const Text("Хариуцсан / Шийдвэрлэсэн хүн:"),
                           subtitle: Text(waste.comfUser!.name),
                         ),
                       if (waste.resolve != null)

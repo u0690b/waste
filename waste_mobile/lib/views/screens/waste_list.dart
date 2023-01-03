@@ -14,7 +14,7 @@ class WasteList extends StatelessWidget {
   Widget build(BuildContext context) {
     final IPaginationModel<Waste> wasteController = title == 'Шийдвэрлэгдсэн'
         ? Get.put(CompleteWasteController())
-        : Get.put(WasteController());
+        : Get.put(WasteController(title));
     wasteController.refresh();
     return Scaffold(
       appBar: AppBar(
@@ -42,9 +42,10 @@ class WasteList extends StatelessWidget {
                   contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                   onTap: () => Get.to(() => WasteDetails(
                         waste: item,
-                        wasteController: title == 'Илгээсэн'
-                            ? wasteController as WasteController
-                            : null,
+                        wasteController:
+                            title == 'Илгээсэн' || title == 'Хуваарилагдсан'
+                                ? wasteController as WasteController
+                                : null,
                       )),
                   dense: false,
                   title: Text(item.name),

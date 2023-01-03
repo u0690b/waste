@@ -53,13 +53,20 @@ class IndexController extends Controller
         );
         $etgeed = DB::select(
             " select  concat(trim(register),' ',trim(name)) name,count(*) niit from registers"
-                .   " where DATE(created_at) between ? and ? "
+                .   " where whois='Хуулийн этгээд' and DATE(created_at) between ? and ? "
                 . " group by concat(trim(register),' ',trim(name)) "
                 . " order by niit desc "
                 . " limit 10  ",
             [$start, $end]
         );
-
+        $irgen = DB::select(
+            " select  concat(trim(register),' ',trim(name)) name,count(*) niit from registers"
+                .   " where whois='Иргэн' and DATE(created_at) between ? and ? "
+                . " group by concat(trim(register),' ',trim(name)) "
+                . " order by niit desc "
+                . " limit 10  ",
+            [$start, $end]
+        );
         $view = 'DashboardGuest';
         if (Auth::user()) {
             $view = 'Dashboard';
@@ -72,6 +79,7 @@ class IndexController extends Controller
 
             'chart' =>  $chartData,
             'etgeed' => $etgeed,
+            'irgen' => $irgen,
             'host' => config('app.url'),
         ]);
     }

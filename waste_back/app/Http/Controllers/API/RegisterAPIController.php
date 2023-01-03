@@ -9,6 +9,7 @@ use App\Http\Controllers\AppBaseController;
 use App\Models\AttachedFile;
 use App\Models\User;
 use App\Services\FCMService;
+use Auth;
 use Date;
 use DB;
 use Illuminate\Http\UploadedFile;
@@ -30,7 +31,21 @@ class RegisterAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = Register::filter($request->all(["search", ...Register::$searchIn]))
+        $input = $request->only(["search", ...Register::$searchIn]);
+        $user = Auth::user();
+
+        if (!($user->roles == 'admin' || $user->roles == 'zaa')) {
+            $input['soum_district_id'] = $user->soum_district_id;
+        }
+        if ($user->roles == 'onb' || $user->roles == 'hd') {
+            $input['bag_horoo_id'] = $user->bag_horoo_id;
+        }
+
+        if ($user->roles == 'mha' || $user->roles == 'mhb') {
+            $input['reason_id'] =  [1, 2, 3];
+        }
+
+        $query = Register::filter($input)
 
             ->with('reg_user:id,name')
             ->with('comf_user:id,name')

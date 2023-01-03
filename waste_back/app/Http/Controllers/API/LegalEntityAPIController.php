@@ -37,11 +37,20 @@ class LegalEntityAPIController extends AppBaseController
         }
         if ($request->get('limit')) {
             $query->limit($request->get('limit'));
+        } else {
+            $query->limit(10);
         }
 
-        $statuses = $query->get();
+        $statuses = $query->get(['register', 'name'])->transform(
+            function ($item, $key) {
+                return [
+                    'name' => $item->name,
+                    'id' => $item->register,
+                ];
+            }
+        );
 
-        return   $statuses->toJson(JSON_UNESCAPED_UNICODE);
+        return  $statuses->toJson(JSON_UNESCAPED_UNICODE);
     }
 
     /**

@@ -1,0 +1,314 @@
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `aimag_cities`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `aimag_cities` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Код',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Аймаг нэр',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `aimag_cities_code_unique` (`code`),
+  UNIQUE KEY `aimag_cities_name_unique` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `attached_files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `attached_files` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `register_id` bigint unsigned NOT NULL COMMENT 'Зөрчлийн бүртгэл',
+  `path` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'файлын зам',
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Төрөл',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `attached_files_register_id_foreign` (`register_id`),
+  CONSTRAINT `attached_files_register_id_foreign` FOREIGN KEY (`register_id`) REFERENCES `registers` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `bag_horoos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bag_horoos` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Код',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Баг,Хороо',
+  `soum_district_id` bigint unsigned NOT NULL COMMENT 'Сум,Дүүрэг',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `bag_horoos_soum_district_id_foreign` (`soum_district_id`),
+  CONSTRAINT `bag_horoos_soum_district_id_foreign` FOREIGN KEY (`soum_district_id`) REFERENCES `soum_districts` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `failed_jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `legal_entity`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `legal_entity` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `register` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Хуулийн этгээдийн регистр',
+  `name` varchar(2000) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Хуулийн этгээдийн нэр',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `legal_entity_register_unique` (`register`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `migrations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `password_resets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `personal_access_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `places`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `places` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Газрын нэр',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `places_name_unique` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `reasons`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reasons` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Шалтгаан',
+  `place_id` bigint unsigned NOT NULL COMMENT 'Харьялагдах газар',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `reasons_name_unique` (`name`),
+  KEY `reasons_place_id_foreign` (`place_id`),
+  CONSTRAINT `reasons_place_id_foreign` FOREIGN KEY (`place_id`) REFERENCES `places` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `register_histories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `register_histories` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `register_id` bigint unsigned NOT NULL,
+  `long` double NOT NULL COMMENT 'Уртраг',
+  `lat` double NOT NULL COMMENT 'Өргөрөг',
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Тайлбар',
+  `resolve_desc` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Тэмдэглэл',
+  `reason_id` bigint unsigned NOT NULL COMMENT 'Шалтгаан',
+  `status_id` bigint unsigned NOT NULL COMMENT 'Төлөв',
+  `aimag_city_id` bigint unsigned NOT NULL COMMENT 'Аймаг,Нийслэл',
+  `soum_district_id` bigint unsigned NOT NULL COMMENT 'Сум,Дүүрэг',
+  `bag_horoo_id` bigint unsigned NOT NULL COMMENT 'Баг,Хороо',
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Хаяг',
+  `user_id` bigint unsigned NOT NULL COMMENT 'Бүртгэсэн хүн',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `register_histories_register_id_foreign` (`register_id`),
+  KEY `register_histories_reason_id_foreign` (`reason_id`),
+  KEY `register_histories_status_id_foreign` (`status_id`),
+  KEY `register_histories_aimag_city_id_foreign` (`aimag_city_id`),
+  KEY `register_histories_soum_district_id_foreign` (`soum_district_id`),
+  KEY `register_histories_bag_horoo_id_foreign` (`bag_horoo_id`),
+  KEY `register_histories_user_id_foreign` (`user_id`),
+  CONSTRAINT `register_histories_aimag_city_id_foreign` FOREIGN KEY (`aimag_city_id`) REFERENCES `aimag_cities` (`id`),
+  CONSTRAINT `register_histories_bag_horoo_id_foreign` FOREIGN KEY (`bag_horoo_id`) REFERENCES `bag_horoos` (`id`),
+  CONSTRAINT `register_histories_reason_id_foreign` FOREIGN KEY (`reason_id`) REFERENCES `reasons` (`id`),
+  CONSTRAINT `register_histories_register_id_foreign` FOREIGN KEY (`register_id`) REFERENCES `registers` (`id`),
+  CONSTRAINT `register_histories_soum_district_id_foreign` FOREIGN KEY (`soum_district_id`) REFERENCES `soum_districts` (`id`),
+  CONSTRAINT `register_histories_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`),
+  CONSTRAINT `register_histories_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `registers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `registers` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `whois` enum('Иргэн','Хуулийн этгээд') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Иргэн/ААН',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Байгууллага, аж ахуйн нэгжийн нэр, иргэний овог нэр',
+  `register` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Регистрийн дугаар',
+  `chiglel` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Үйл ажиллагааны чиглэл',
+  `aimag_city_id` bigint unsigned NOT NULL COMMENT 'Аймаг,Нийслэл',
+  `soum_district_id` bigint unsigned NOT NULL COMMENT 'Сум,Дүүрэг',
+  `bag_horoo_id` bigint unsigned NOT NULL COMMENT 'Баг,Хороо',
+  `address` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Хаяг, байршилд',
+  `description` varchar(2000) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Гаргасан зөрчилийн байдал',
+  `reason_id` bigint unsigned NOT NULL COMMENT 'Зөрчилийн төрөл',
+  `zuil_zaalt` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Зөрчсөн хууль тогтоомжийн зүйл, заалт',
+  `long` double NOT NULL COMMENT 'Уртраг',
+  `lat` double NOT NULL COMMENT 'Өргөрөг',
+  `reg_user_id` bigint unsigned NOT NULL COMMENT 'Бүртгэсэн хүн',
+  `resolve_id` bigint unsigned DEFAULT NULL COMMENT 'Шийдвэрийн төрөл',
+  `resolve_desc` varchar(2000) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Шийдвэрлэсэн байдал',
+  `resolve_image` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Шийдвэрлэсэн зураг',
+  `comf_user_id` bigint unsigned DEFAULT NULL COMMENT 'Шийдвэрлэсэн хүн',
+  `status_id` bigint unsigned NOT NULL COMMENT 'Төлөв',
+  `reg_at` timestamp NULL DEFAULT NULL COMMENT 'Үүсгэсэн',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `resolved_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `registers_aimag_city_id_foreign` (`aimag_city_id`),
+  KEY `registers_soum_district_id_foreign` (`soum_district_id`),
+  KEY `registers_bag_horoo_id_foreign` (`bag_horoo_id`),
+  KEY `registers_reason_id_foreign` (`reason_id`),
+  KEY `registers_reg_user_id_foreign` (`reg_user_id`),
+  KEY `registers_resolve_id_foreign` (`resolve_id`),
+  KEY `registers_comf_user_id_foreign` (`comf_user_id`),
+  KEY `registers_status_id_foreign` (`status_id`),
+  CONSTRAINT `registers_aimag_city_id_foreign` FOREIGN KEY (`aimag_city_id`) REFERENCES `aimag_cities` (`id`),
+  CONSTRAINT `registers_bag_horoo_id_foreign` FOREIGN KEY (`bag_horoo_id`) REFERENCES `bag_horoos` (`id`),
+  CONSTRAINT `registers_comf_user_id_foreign` FOREIGN KEY (`comf_user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `registers_reason_id_foreign` FOREIGN KEY (`reason_id`) REFERENCES `reasons` (`id`),
+  CONSTRAINT `registers_reg_user_id_foreign` FOREIGN KEY (`reg_user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `registers_resolve_id_foreign` FOREIGN KEY (`resolve_id`) REFERENCES `resolves` (`id`),
+  CONSTRAINT `registers_soum_district_id_foreign` FOREIGN KEY (`soum_district_id`) REFERENCES `soum_districts` (`id`),
+  CONSTRAINT `registers_status_id_foreign` FOREIGN KEY (`status_id`) REFERENCES `statuses` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `resolves`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `resolves` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Шийдвэрийн төрөл',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `resolves_name_unique` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `soum_districts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `soum_districts` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Код',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Аймаг нэр',
+  `aimag_city_id` bigint unsigned NOT NULL COMMENT 'Аймаг/Нийслэл',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `soum_districts_aimag_city_id_foreign` (`aimag_city_id`),
+  CONSTRAINT `soum_districts_aimag_city_id_foreign` FOREIGN KEY (`aimag_city_id`) REFERENCES `aimag_cities` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `statuses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `statuses` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Төлөв',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `statuses_name_unique` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `aimag_city_id` bigint unsigned NOT NULL,
+  `soum_district_id` bigint unsigned NOT NULL,
+  `bag_horoo_id` bigint unsigned NOT NULL,
+  `phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `roles` json NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `push_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_username_unique` (`username`),
+  KEY `users_aimag_city_id_foreign` (`aimag_city_id`),
+  KEY `users_soum_district_id_foreign` (`soum_district_id`),
+  KEY `users_bag_horoo_id_foreign` (`bag_horoo_id`),
+  CONSTRAINT `users_aimag_city_id_foreign` FOREIGN KEY (`aimag_city_id`) REFERENCES `aimag_cities` (`id`),
+  CONSTRAINT `users_bag_horoo_id_foreign` FOREIGN KEY (`bag_horoo_id`) REFERENCES `bag_horoos` (`id`),
+  CONSTRAINT `users_soum_district_id_foreign` FOREIGN KEY (`soum_district_id`) REFERENCES `soum_districts` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+INSERT INTO `migrations` VALUES (1,'2013_11_24_114704_create_aimag_cities_table',1);
+INSERT INTO `migrations` VALUES (2,'2013_11_24_134918_create_soum_districts_table',1);
+INSERT INTO `migrations` VALUES (3,'2013_11_24_135029_create_bag_horoos_table',1);
+INSERT INTO `migrations` VALUES (4,'2014_10_12_000000_create_users_table',1);
+INSERT INTO `migrations` VALUES (5,'2014_10_12_100000_create_password_resets_table',1);
+INSERT INTO `migrations` VALUES (6,'2019_08_19_000000_create_failed_jobs_table',1);
+INSERT INTO `migrations` VALUES (7,'2019_12_14_000001_create_personal_access_tokens_table',1);
+INSERT INTO `migrations` VALUES (8,'2022_11_24_110114_create_places_table',1);
+INSERT INTO `migrations` VALUES (9,'2022_11_24_110135_create_reasons_table',1);
+INSERT INTO `migrations` VALUES (10,'2022_11_24_111319_create_statuses_table',1);
+INSERT INTO `migrations` VALUES (11,'2022_11_24_124916_create_resolves_table',1);
+INSERT INTO `migrations` VALUES (12,'2022_11_24_124917_create_registers_table',1);
+INSERT INTO `migrations` VALUES (13,'2022_11_24_131420_create_attached_files_table',1);
+INSERT INTO `migrations` VALUES (14,'2022_11_24_133355_create_register_histories_table',1);
+INSERT INTO `migrations` VALUES (15,'2022_12_22_151341_create_legal_entity',1);

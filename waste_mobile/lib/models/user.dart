@@ -36,6 +36,8 @@ class User {
     return "${aimag_city?.name ?? ''} ${soum_district?.name ?? ''} ${bag_horoo?.name ?? ''} ";
   }
 
+  bool get isMH => ['mhb', 'mha'].contains(roles);
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,

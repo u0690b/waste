@@ -15,6 +15,7 @@ const props = defineProps({
   datas: Object,
   chart: [Array],
   etgeed: [Array],
+  irgen: [Array],
   filters: [Object, Array],
   host: String,
 });
@@ -250,6 +251,55 @@ const etgeedOptions = computed(() => {
 });
 
 
+const irgenOptions = computed(() => {
+
+  return {
+    chartOptions: {
+      chart: {
+        type: 'bar'
+      },
+      xaxis: {
+        categories: props.irgen.map(v => v.name),
+      },
+      yaxis: {
+        labels: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          distributed: true,
+          horizontal: true,
+
+        }
+      },
+      dataLabels: {
+        enabled: true,
+        textAnchor: 'start',
+        style: {
+          colors: ['#fff']
+        },
+        formatter: function (val, opt) {
+          return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
+        },
+        offsetX: 0,
+        dropShadow: {
+          enabled: true
+        }
+      },
+
+      colors: ['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#2b908f', '#f9a3a4', '#90ee7e',
+        '#f48024', '#69d2e7'
+      ],
+    },
+    series: [
+      {
+        data: props.irgen.map(v => v.niit),
+      },
+    ],
+  };
+});
 const rangeDay = computed(() => {
 
   let difference = Date.parse(form.end) - Date.parse(form.start);
@@ -288,29 +338,32 @@ const rangeDay = computed(() => {
         </div>
       </div>
       <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-3 sm:px-8">
-        <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
-          <h3 class="text-xl text-gray-600 mb-4">Байгууллагаар</h3>
-          <VueApexCharts class="bg-white p-4" type="pie" :options="donut.chartOptions" :series="donut.series">
-          </VueApexCharts>
-        </div>
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow col-span-2">
           <h3 class="text-xl text-gray-600 mb-4">Харъяалагдах нутаг дэвсгэрээр</h3>
           <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="regionOptions.chartOptions"
             :series="regionOptions.series">
           </VueApexCharts>
         </div>
+        <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
+          <h3 class="text-xl text-gray-600 mb-4">Байгууллагаар</h3>
+          <VueApexCharts class="bg-white p-4" type="pie" :options="donut.chartOptions" :series="donut.series">
+          </VueApexCharts>
+        </div>
+
       </div>
-      <div class=" px-4 mx-4 mt-8 sm:mx-8  py-2 bg-white border rounded-md overflow-hidden shadow col-span-2">
-        <h3 class="text-xl text-gray-600 mb-4">Зөрчил гаргасан иргэдийн жагсаалт</h3>
-        <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="etgeedOptions.chartOptions"
-          :series="etgeedOptions.series">
-        </VueApexCharts>
-      </div>
-      <div class=" px-4 mx-4 mt-8 sm:mx-8  py-2 bg-white border rounded-md overflow-hidden shadow col-span-2">
-        <h3 class="text-xl text-gray-600 mb-4">Зөрчил гаргасан аж ахуй нэгжийн жагсаалт</h3>
-        <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="etgeedOptions.chartOptions"
-          :series="etgeedOptions.series">
-        </VueApexCharts>
+      <div class="grid grid-cols-2">
+        <div class=" px-4 mx-4 mt-8 sm:mx-8  py-2 bg-white border rounded-md shadow">
+          <h3 class="text-xl text-gray-600 mb-4">Аж ахуйн нэгж</h3>
+          <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="etgeedOptions.chartOptions"
+            :series="etgeedOptions.series">
+          </VueApexCharts>
+        </div>
+        <div class=" px-4 mx-4 mt-8 sm:mx-8  py-2 bg-white border rounded-md shadow">
+          <h3 class="text-xl text-gray-600 mb-4">Иргэн</h3>
+          <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="irgenOptions.chartOptions"
+            :series="irgenOptions.series">
+          </VueApexCharts>
+        </div>
       </div>
 
     </div>

@@ -19,6 +19,7 @@ class CompleteWasteController extends WasteController
         ..._getAimagCityFilter(),
         'status_id': 4,
         'next_cursor': nextCursor,
+        if (AuthController.user!.isMH) 'comf_user_id': AuthController.user!.id
       },
       decoder: (data) {
         if (data is Map) {
@@ -80,16 +81,17 @@ class WasteController with Api implements IPaginationModel<Waste> {
 
   @override
   final RxList<Waste> datas = <Waste>[].obs;
+  String? title;
+  WasteController([this.title]);
 
   Future<Iterable<Waste>?> _getQuery() async {
     final res = await fetch<Iterable<Waste>>(
-      '/registers',
+      '/registers?status_id[]=2&status_id[]=3',
       'get',
       body: {
         ..._getAimagCityFilter(),
-        'status_id[0]': 2,
-        'status_id[1]': 3,
         'next_cursor': nextCursor,
+        if (AuthController.user!.isMH) 'comf_user_id': AuthController.user!.id
       },
       decoder: (data) {
         if (data is Map) {

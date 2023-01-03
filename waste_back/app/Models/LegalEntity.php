@@ -72,7 +72,6 @@ class LegalEntity extends Model
      */
     public static $searchIn = [
         'name',
-        'register'
     ];
 
     /**
