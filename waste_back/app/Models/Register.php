@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\FCMService;
 use Illuminate\Database\Eloquent\Builder;
 
 
@@ -245,5 +246,40 @@ class Register extends Model
             $query = $this->buildFilter($query, $filters, Register::$searchIn);
         }
         return $query;
+    }
+
+    /**
+     * Filter Model
+     * 
+     * @return array
+     */
+    public function createWasteNotify()
+    {
+        $not =  Notification::create([
+            'user_id' => $this->reg_user_id,
+            'type' => 'Шинэ зөрчил бүртгэсэн',
+            'title' => $this->id,
+            'content' => $this->reason->name . ' ' . $this->name,
+        ]);
+
+        if ($this->reason_id <= 3) {
+        } else {
+            $tokens = User::whereSoumDistrictId($this->soum_district_id)
+                ->whereBagHorooId($this->bag_horoo_id)
+
+                ->whereNotNull('push_token')->get('push_token')->pluck('push_token')->toArray();
+        }
+        if (count($tokens)) {
+            FCMService::send(
+                $tokens,
+                [
+                    'title' => 'Шинэ зөрчил бүргэл нь',
+                    'body' => $not->content,
+                ],
+                [
+                    'id' => $this->id,
+                ]
+            );
+        }
     }
 }
