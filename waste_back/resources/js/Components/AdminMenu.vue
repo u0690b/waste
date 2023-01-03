@@ -124,7 +124,7 @@ menus.value.push(
   },
 
   {
-    text: "Газрын зураг",
+    text: "Зөрчлийн байрлал",
     icon: markRaw(MapIcon),
     href: route("register.map"),
   },
