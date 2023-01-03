@@ -38,7 +38,10 @@ class LegalEntityAPIController extends AppBaseController
         if ($request->get('limit')) {
             $query->limit($request->get('limit'));
         } else {
-            $query->limit(10);
+            if (count($request->input('search')) < 5)
+                $query->limit(20);
+            else
+                $query->limit(50);
         }
 
         $statuses = $query->get(['register', 'name'])->transform(

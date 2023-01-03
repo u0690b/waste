@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('notification', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('from')->nullable()->comment('Хэнээс')->constrained('users');
-            $table->foreignId('to')->comment('хэнд')->constrained('users');
-            $table->string('title', 2000)->comment('Гарчиг');
-            $table->text('body', 2000)->nullable()->comment('дэд гарчиг');
-            $table->text('payload')->nullable()->comment('Агуулга');
+            $table->foreignId('user_id')->comment('Хэнээс')->constrained('users');
+            $table->string('type', 100)->comment('Төрөл');
+            $table->string('title', 500)->comment('Гарчиг');
+            $table->text('content')->nullable()->comment('Агуулга');
+            $table->timestamp('read_at')->nullable()->comment('Уншсан');
         });
     }
 
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notification');
+        Schema::dropIfExists('notifications');
     }
 };

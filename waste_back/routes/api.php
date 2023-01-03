@@ -53,3 +53,8 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'admin'], function () {
     Route::resource('resolves', App\Http\Controllers\API\ResolveAPIController::class);
 });
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('notifications', App\Http\Controllers\API\NotificationAPIController::class);
+});

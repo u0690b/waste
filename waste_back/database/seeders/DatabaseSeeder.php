@@ -8,6 +8,7 @@ use App\Models\Place;
 use App\Models\Reason;
 use App\Models\SoumDistrict;
 use App\Models\LegalEntity;
+use App\Models\Register;
 use App\Models\Resolve;
 use App\Models\Status;
 use Illuminate\Database\Seeder;
@@ -110,5 +111,7 @@ class DatabaseSeeder extends Seeder
             'phone' => '8888-8888',
             'roles' => 'onb'
         ]);
+
+        Register::factory(100)->create();
     }
 }

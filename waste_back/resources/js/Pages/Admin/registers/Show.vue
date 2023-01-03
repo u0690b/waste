@@ -11,6 +11,7 @@
             <span class="text-gray-600 text-sm">Зөрчлийн бүртгэл</span>
         </div>
     </div>
+    <slot></slot>
     <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-2 sm:px-8">
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
             <h3 class="text-xl text-gray-600 mb-4 tracking-wider">Үндсэн мэдээлэл</h3>

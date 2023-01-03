@@ -7,6 +7,8 @@ use App\Models\Register;
 use App\Models\User;
 use App\Services\FCMService;
 use Auth;
+use Date;
+use DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
@@ -179,7 +181,79 @@ class RegisterController extends Controller
         ]);
     }
 
+    /**
+     * Show the form for editing the specified Register.
+     *
+     * @param Register $register
+     *
+     * @return Response
+     */
+    public function show_resolve(Register $register)
+    {
+        $register
+            ->load('aimag_city:id,name')
+            ->load('bag_horoo:id,name')
+            ->load('comf_user:id,name')
+            ->load('reason:id,name')
+            ->load('reg_user:id,name')
+            ->load('soum_district:id,name')
+            ->load('status:id,name')
+            ->load('attached_images:id,register_id,path')
+            ->load('attached_video:id,register_id,path');
+        return Inertia::render('Admin/registers/Resolve', [
+            'data' =>  $register,
+            'host' => config('app.url'),
+        ]);
+    }
 
+    /**
+     * Resolve the specified Register in storage.
+     * PUT/PATCH /registers/{id}
+     *
+     * @param Register $registers
+     *
+     * @return Response
+     */
+    public function resolve(Register $register)
+    {
+        $input = Request::validate([
+            'resolve_desc' => 'required|string|max:2000',
+            'resolve_id' => 'required|integer',
+            'image' => 'nullable|file',
+        ]);
+
+
+        try {
+            DB::beginTransaction();
+
+            $input['comf_user_id'] = Auth::user()->id;
+            $input['status_id'] = 4;
+            $input['resolved_at'] = Date::now();
+
+            $register->update($input);
+
+            DB::commit();
+            if ($register->reg_user->push_token) {
+                FCMService::send(
+                    [$register->reg_user->push_token],
+                    [
+                        'title' => 'Бүргүүлсэн зөрчил шийдвэрлэгдлээ',
+                        'body' => $register->name,
+                    ],
+                    [
+                        'id' => $register->id,
+                    ]
+                );
+            }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+
+
+
+        return Redirect::route('admin.registers.index')->with('success', 'Register updated.');
+    }
     /**
      * Update the specified Register in storage.
      *

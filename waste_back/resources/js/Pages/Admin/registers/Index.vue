@@ -1,17 +1,12 @@
 <template>
   <div class="flex justify-between px-4 mt-4 sm:px-8">
-    <h2 class="text-xl text-gray-600 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75" />
-      </svg>
-      Зөрчлийн жагсаалт</h2>
+    <h2 class="text-xl text-gray-600">Зөрчлийн бүртгэл</h2>
     <div class="flex items-center space-x-1 text-xs">
       <inertia-link href="/" class="font-bold text-indigo-700 text-sm">Нүүр хуудас</inertia-link>
       <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
       </svg>
-      <span class="text-gray-600 text-sm">Зөрчлийн жагсаалт</span>
+      <span class="text-gray-600 text-sm">Зөрчлийн бүртгэл</span>
     </div>
   </div>
   <div class="p-4 mt-8 sm:px-8 sm:py-4">
@@ -69,6 +64,7 @@
                             class="h-5 w-5 text-blue-500 border-gray-300 rounded cursor-pointer focus:ring-0" />
                         </th>
                         <th class="text-left text-gray-600">ЗӨРЧЛИЙН МЭДЭЭЛЭЛ</th>
+                        <th class="text-left text-gray-600">ЗӨРЧЛИЙН ТӨРӨЛ</th>
                         <th class="text-left text-gray-600">ХЭРЭГЛЭГЧ</th>
                         <th class="text-left text-gray-600">ТӨЛӨВ</th>
                         <th class="text-left text-gray-600">ЗАРЦУУЛСАН ХУГАЦАА</th>
@@ -83,9 +79,7 @@
                             class="h-5 w-5 text-blue-500 border-gray-300 rounded cursor-pointer focus:ring-0" />
                         </td>
                         <td class="flex items-center py-4">
-                          <!-- <img class="inline-block h-1 w-1 rounded-full ring-2 ring-white" alt=""
-                            src="../../../../../public/img/mh.png" /> -->
-
+                          <!-- <img class="inline-block h-12 w-12 rounded-full ring-2 ring-white" alt="" /> -->
                           <div class="px-4">
                             <div>
                               <a href="#" class="text-gray-600 font-bolder">{{ data.name }}</a>
@@ -95,7 +89,9 @@
                             </div>
                           </div>
                         </td>
-                        <td>{{ data.reg_user?.name ?? '' }}</td>
+                        <td>{{ data.reason?.name ?? '' }}</td>
+                        <td>{{ data.status_id == 2 ? data.reg_user?.name ?? '' : data.comf_user?.name ?? '' }}</td>
+
                         <td>
                           <span v-if="data.status_id == 2" class="px-2 py-1 rounded text-xs text-white bg-orange-500">
                             {{ data.status?.name ?? 'хоосон' }}
@@ -175,13 +171,14 @@
                         </td>
                       </tr>
                     </tbody>
-                    <div class="py-2 flex items-center justify-between border-t border-gray-200">
-                      <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
-                      <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
-                        <pagination :links="datas.links" />
-                      </div>
-                    </div>
+
                   </table>
+                  <div class="py-2 flex items-center justify-between border-t border-gray-200 ">
+                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
+                    <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
+                      <pagination :links="datas.links" />
+                    </div>
+                  </div>
                 </div>
               </div>
 

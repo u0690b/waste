@@ -26,6 +26,8 @@ Route::resource('entities', App\Http\Controllers\Admin\LegalEntityController::cl
 
 // Registers
 Route::resource('registers', App\Http\Controllers\Admin\RegisterController::class);
+Route::get('/registers/{register}/resolve', [App\Http\Controllers\Admin\RegisterController::class, 'show_resolve'])->name('registers.show_resolve');
+Route::put('/registers/{register}/resolve', [App\Http\Controllers\Admin\RegisterController::class, 'resolve'])->name('registers.resolve');
 Route::get('/registers/{register}/allocation', [App\Http\Controllers\Admin\RegisterController::class, 'allocation'])->name('register.allocation');
 Route::put('/registers/{register}/allocation', [App\Http\Controllers\Admin\RegisterController::class, 'allocation_store'])->name('register.allocation_store');
 
@@ -42,4 +44,8 @@ Route::resource('soum_districts', App\Http\Controllers\Admin\SoumDistrictControl
 Route::resource('users', App\Http\Controllers\Admin\UsersController::class);
 
 // Resolves
-Route::resource('resolves', App\Http\Controllers\Admin\ResolveController::class);
+Route::resource('resolves', App\Http\Controllers\Admin\ResolvesController::class);
+
+
+// Notifications
+Route::resource('notifications', App\Http\Controllers\Admin\NotificationController::class);

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 use Response;
 
-class ResolveController extends Controller
+class ResolvesController extends Controller
 {
     /**
      * Display a listing of the Resolve.
@@ -20,14 +20,14 @@ class ResolveController extends Controller
     {
         $resolves = Resolve::filter(Request::all(["search", ...Resolve::$searchIn]));
         if (Request::has('only')) {
-            return json_encode($resolves->paginate(Request::input('per_page'),['id', 'name']));
+            return json_encode($resolves->paginate(Request::input('per_page'), ['id', 'name']));
         }
         return Inertia::render('Admin/resolves/Index', [
             'filters' => Request::only(["search", ...Resolve::$searchIn]),
             'datas' => $resolves
                 ->paginate(Request::input('per_page'))
                 ->withQueryString()
-                ->through(fn ($row) => $row->only('id','name')),
+                ->through(fn ($row) => $row->only('id', 'name')),
             'host' => config('app.url'),
         ]);
     }
@@ -60,8 +60,9 @@ class ResolveController extends Controller
      *
      * @return Response
      */
-    public function edit(Resolve $resolve)
+    public function edit($id)
     {
+        $resolve = Resolve::findOrFail($id);
         return Inertia::render('Admin/resolves/Edit', [
             'data' =>  $resolve,
             'host' => config('app.url'),
@@ -75,8 +76,9 @@ class ResolveController extends Controller
      *
      * @return Response
      */
-    public function update(Resolve $resolve)
+    public function update($id)
     {
+        $resolve = Resolve::findOrFail($id);
         $resolve->update(Request::validate(Resolve::$rules));
         return Redirect::route('admin.resolves.index')->with('success', 'Resolve updated.');
     }
@@ -90,8 +92,9 @@ class ResolveController extends Controller
      *
      * @return Response
      */
-    public function destroy(Resolve $resolve)
+    public function destroy($id)
     {
+        $resolve = Resolve::findOrFail($id);
         $resolve->delete();
         return Redirect::route('admin.resolves.index')->with('success', 'Resolve deleted.');
     }

@@ -104,19 +104,6 @@ class RegisterAPIController extends AppBaseController
                 $this->saveFiles($register, [$input['video']], 'video');
             }
             DB::commit();
-            $tokens = User::whereSoumDistrictId($register->soum_district_id)->whereNotNull('push_token')->get('push_token')->pluck('push_token')->toArray();
-            if (count($tokens)) {
-                FCMService::send(
-                    $tokens,
-                    [
-                        'title' => 'Шинэ зөрчил ирлээ',
-                        'body' => $register->name,
-                    ],
-                    [
-                        'id' => $register->id,
-                    ]
-                );
-            }
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
