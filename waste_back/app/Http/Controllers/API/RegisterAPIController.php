@@ -104,6 +104,7 @@ class RegisterAPIController extends AppBaseController
                 $this->saveFiles($register, [$input['video']], 'video');
             }
             DB::commit();
+            $register->sendCreatedWasteNotify();
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
@@ -197,19 +198,8 @@ class RegisterAPIController extends AppBaseController
             $register->save();
 
 
-            if ($register->reg_user->push_token) {
-                FCMService::send(
-                    [$register->reg_user->push_token],
-                    [
-                        'title' => 'Бүргүүлсэн зөрчил шийдвэрлэгдлээ',
-                        'body' => $register->name,
-                    ],
-                    [
-                        'id' => $register->id,
-                    ]
-                );
-            }
             DB::commit();
+            $register->sendResolvedWasteNotify();
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
@@ -220,7 +210,25 @@ class RegisterAPIController extends AppBaseController
 
         return $register->toJson();
     }
+    /**
+     * Show the form for editing the specified Register.
+     *
+     * @param Register $register
+     *
+     * @return Response
+     */
+    public function allocation_store($id, Request $request)
+    {
+        $input = Request::validate(['comf_user_id' => 'required']);
+        $input['status_id'] = 3;
 
+        /** @var Register $register */
+        $register = Register::find($id);
+        $register->update($input);
+        $register->sendAllocationWasteNotify();
+
+        return $register->toJson();
+    }
     /**
      * Remove the specified Register from storage.
      * DELETE /registers/{id}

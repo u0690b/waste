@@ -84,6 +84,7 @@ class RegisterController extends Controller
     public function store()
     {
         Register::create(Request::validate(Register::$rules));
+
         return Redirect::route('admin.registers.index')->with('success', 'Register created.');
     }
 
@@ -139,20 +140,9 @@ class RegisterController extends Controller
         $input = Request::validate(['comf_user_id' => 'required']);
         $input['status_id'] = 3;
         $register->update($input);;
-        $token = User::whereId($input['comf_user_id'])->first()->push_token ?? null;
-        if ($token) {
-            $res = FCMService::send(
-                [$token],
-                [
-                    'title' => 'Шинэ зөрчил танд хуваарьлагдан ирсэн байна',
-                    'body' => $register->name,
-                ],
-                [
-                    'id' => $register->id,
-                ]
-            );
-            Log::info($res);
-        }
+        $register->update($input);
+        $register->sendAllocationWasteNotify();
+
         return Redirect::route('admin.registers.index')->with('success', 'Register updated.');
     }
 
@@ -233,18 +223,7 @@ class RegisterController extends Controller
             $register->update($input);
 
             DB::commit();
-            if ($register->reg_user->push_token) {
-                FCMService::send(
-                    [$register->reg_user->push_token],
-                    [
-                        'title' => 'Бүргүүлсэн зөрчил шийдвэрлэгдлээ',
-                        'body' => $register->name,
-                    ],
-                    [
-                        'id' => $register->id,
-                    ]
-                );
-            }
+            $register->sendResolvedWasteNotify();
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\FCMService;
+use Auth;
 use Illuminate\Database\Eloquent\Builder;
 
 
@@ -253,7 +254,7 @@ class Register extends Model
      * 
      * @return array
      */
-    public function createWasteNotify()
+    public function sendCreatedWasteNotify()
     {
         $not =  Notification::create([
             'user_id' => $this->reg_user_id,
@@ -263,18 +264,91 @@ class Register extends Model
         ]);
 
         if ($this->reason_id <= 3) {
+            $tokens = User::whereSoumDistrictId($this->soum_district_id)
+                ->whereRoles('mha')
+                ->whereNotNull('push_token')->get('push_token')->pluck('push_token')->toArray();
         } else {
             $tokens = User::whereSoumDistrictId($this->soum_district_id)
                 ->whereBagHorooId($this->bag_horoo_id)
-
+                ->whereRoles('hd')
                 ->whereNotNull('push_token')->get('push_token')->pluck('push_token')->toArray();
         }
         if (count($tokens)) {
             FCMService::send(
                 $tokens,
                 [
-                    'title' => 'Шинэ зөрчил бүргэл нь',
+                    'title' => 'Шинэ зөрчил бүртгэгдлээ',
                     'body' => $not->content,
+                ],
+                [
+                    'id' => $this->id,
+                ]
+            );
+        }
+    }
+
+    /**
+     * Filter Model
+     * 
+     * @return array
+     */
+    public function sendResolvedWasteNotify()
+    {
+        Notification::create([
+            'user_id' => $this->reg_user_id,
+            'type' => 'Шийдвэрлэгдсэн',
+            'title' => $this->id,
+            'content' => $this->reason->name . ' ' . $this->name,
+        ]);
+        Notification::create([
+            'user_id' => $this->comf_user_id,
+            'type' => 'Шийдвэрлэгдсэн',
+            'title' => $this->id,
+            'content' => $this->reason->name . ' ' . $this->name,
+        ]);
+
+
+        if ($this->reg_user->push_token) {
+            FCMService::send(
+                [$this->reg_user->push_token],
+                [
+                    'title' => 'Зөрчил шийдвэрлэгдлээ',
+                    'body' => $this->reason->name . ' ' . $this->name,
+                ],
+                [
+                    'id' => $this->id,
+                ]
+            );
+        }
+    }
+
+    /**
+     * Filter Model
+     * 
+     * @return array
+     */
+    public function sendAllocationWasteNotify()
+    {
+        Notification::create([
+            'user_id' => Auth::user()->id,
+            'type' => 'Хуварьласан',
+            'title' => $this->id,
+            'content' => $this->reason->name . ' ' . $this->name,
+        ]);
+        Notification::create([
+            'user_id' => $this->comf_user_id,
+            'type' => 'Хуварьласан',
+            'title' => $this->id,
+            'content' => 'Танд ' . Auth::user()->name . '-ээс зөрчил хуварьласан байна. \n' . $this->reason->name . ' ' . $this->name,
+        ]);
+
+
+        if ($this->comf_user->push_token) {
+            FCMService::send(
+                [$this->comf_user->push_token],
+                [
+                    'title' => 'Танд ' . Auth::user()->name . '-ээс зөрчил хуварьласан байна.',
+                    'body' =>   $this->reason->name . ' ' . $this->name,
                 ],
                 [
                     'id' => $this->id,
