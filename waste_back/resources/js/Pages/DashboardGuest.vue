@@ -326,12 +326,12 @@ const rangeDay = computed(() => {
       </div>
       <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-3 sm:px-8">
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
-          <h3 class="text-xl text-gray-600 mb-4">Нийт зөрчил</h3>
+          <h3 class="text-xl text-gray-600 mb-4">Зөрчил төлвөөр</h3>
           <VueApexCharts class="bg-white p-4" type="pie" :options="statDonut.chartOptions" :series="statDonut.series">
           </VueApexCharts>
         </div>
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow col-span-2">
-          <h3 class="text-xl text-gray-600 mb-4">Хог хаягдлын төрлөөр</h3>
+          <h3 class="text-xl text-gray-600 mb-4">Зөрчлийн төрлөөр</h3>
           <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="dateOptions.chartOptions"
             :series="dateOptions.series">
           </VueApexCharts>
@@ -345,7 +345,7 @@ const rangeDay = computed(() => {
           </VueApexCharts>
         </div>
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
-          <h3 class="text-xl text-gray-600 mb-4">Байгууллагаар</h3>
+          <h3 class="text-xl text-gray-600 mb-4">Зөрчил хуваарилалтаар</h3>
           <VueApexCharts class="bg-white p-4" type="pie" :options="donut.chartOptions" :series="donut.series">
           </VueApexCharts>
         </div>
@@ -353,13 +353,13 @@ const rangeDay = computed(() => {
       </div>
       <div class="grid grid-cols-2">
         <div class=" px-4 mx-4 mt-8 sm:mx-8  py-2 bg-white border rounded-md shadow">
-          <h3 class="text-xl text-gray-600 mb-4">Аж ахуйн нэгж</h3>
+          <h3 class="text-xl text-gray-600 mb-4">Олон зөрчил гаргасан аж ахуйн нэгжүүд</h3>
           <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="etgeedOptions.chartOptions"
             :series="etgeedOptions.series">
           </VueApexCharts>
         </div>
         <div class=" px-4 mx-4 mt-8 sm:mx-8  py-2 bg-white border rounded-md shadow">
-          <h3 class="text-xl text-gray-600 mb-4">Иргэн</h3>
+          <h3 class="text-xl text-gray-600 mb-4">Олон зөрчил гаргасан иргэд</h3>
           <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="irgenOptions.chartOptions"
             :series="irgenOptions.series">
           </VueApexCharts>

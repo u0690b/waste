@@ -1,18 +1,22 @@
 <template>
-  <div>
-    <div class="p-4 bg-white">
-      <MySelect v-model="form.soum_district_id" class="w-96" label="Сум,Дүүрэг" :url="`/admin/soum_districts`" />
-    </div>
-    <GoogleMap api-key="AIzaSyBX2h1XKlleDEXJCKTekPVDk2lI2LNDFNc" style="width: 100%; " class="h-[calc(100vh-200px)]"
-      :center="center" :zoom="15">
 
-      <MarkerCluster>
-        <Marker v-for="(location, i) in datas"
-          :options="{ position: { lat: parseFloat(location.lat), lng: parseFloat(location.long) }, title: location.name }"
-          :key="i" @click="() => onclick(location)" />
-      </MarkerCluster>
-    </GoogleMap>
+
+  <div class="p-4 bg-gray flex">
+    <MySelect v-model="form.soum_district_id" class="w-52" label="Дүүрэг сонгох" :url="`/admin/soum_districts`" />
+    <MySelect v-model="form.status_id" class="w-52 px-3" label="Төлөв сонгох" :url="`/admin/statuses`" />
   </div>
+
+  <GoogleMap api-key="AIzaSyBX2h1XKlleDEXJCKTekPVDk2lI2LNDFNc" style="width: 100%; " class="h-[calc(100vh-200px)]"
+    :center="center" :zoom="15">
+
+    <MarkerCluster>
+      <Marker v-for="(location, i) in datas"
+        :options="{ position: { lat: parseFloat(location.lat), lng: parseFloat(location.long) }, title: location.name }"
+        :key="i" @click="() => onclick(location)" />
+    </MarkerCluster>
+  </GoogleMap>
+
+
 </template>
 
 <script>

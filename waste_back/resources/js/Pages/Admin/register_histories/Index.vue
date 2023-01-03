@@ -20,7 +20,7 @@
       <admin-table
         :headers="{ 'register.name': '', 'register_id': '', 'long': 'Уртраг', 'lat': 'Өргөрөг', 'description': 'Тайлбар', 'resolve_desc': 'Тэмдэглэл', 'reason.name': 'Шалтгаан', 'reason_id': 'Шалтгаан', 'status.name': 'Төлөв', 'status_id': 'Төлөв', 'aimag_city.name': 'Аймаг,Нийслэл', 'aimag_city_id': 'Аймаг,Нийслэл', 'soum_district.name': 'Сум,Дүүрэг', 'soum_district_id': 'Сум,Дүүрэг', 'bag_horoo.name': 'Баг,Хороо', 'bag_horoo_id': 'Баг,Хороо', 'address': 'Хаяг', 'user.name': 'Бүртгэсэн хүн', 'user_id': 'Бүртгэсэн хүн' }"
         :datas="datas" url="admin.register_histories.edit" />
-      <div class="py-2 flex items-center justify-between border-t border-gray-200 border">
+      <div class="py-2 flex items-center justify-between border-t border-gray-200 ">
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
         <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
           <pagination :links="datas.links" />
