@@ -83,7 +83,9 @@
                             class="h-5 w-5 text-blue-500 border-gray-300 rounded cursor-pointer focus:ring-0" />
                         </td>
                         <td class="flex items-center py-4">
-                          <!-- <img class="inline-block h-12 w-12 rounded-full ring-2 ring-white" alt="" /> -->
+                          <!-- <img class="inline-block h-1 w-1 rounded-full ring-2 ring-white" alt=""
+                            src="../../../../../public/img/mh.png" /> -->
+
                           <div class="px-4">
                             <div>
                               <a href="#" class="text-gray-600 font-bolder">{{ data.name }}</a>
