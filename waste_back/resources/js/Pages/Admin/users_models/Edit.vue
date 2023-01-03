@@ -86,6 +86,7 @@ export default {
     errors: Object,
     data: Object,
     host: String,
+    auth: Object,
   },
   remember: "form",
   data() {

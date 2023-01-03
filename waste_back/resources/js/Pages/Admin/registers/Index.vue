@@ -88,7 +88,7 @@
                             </div>
                           </div>
                         </td>
-                        <td>{{ data.reg_user_id }}</td>
+                        <td>{{ data.reg_user?.name ?? '' }}</td>
                         <td>
                           <span v-if="data.status_id == 2" class="px-2 py-1 rounded text-xs text-white bg-orange-500">
                             {{ data.status?.name ?? 'хоосон' }}
@@ -149,9 +149,9 @@
                                   </InertiaLink>
                                   </MenuItem>
                                   <MenuItem
-                                    v-if="data.status_id != 4 && (auth.user.roles != 'onb') && (data.reason_id <= 3 && ['admin', 'mhb', 'mha'].includes(auth.user.roles))"
+                                    v-if="data.status_id != 4 && ((auth.user.roles != 'onb' < data.reason_id > 3) || (data.reason_id <= 3 && ['admin', 'mhb', 'mha'].includes(auth.user.roles)))"
                                     v-slot="{ active }">
-                                  <button
+                                  <InertiaLink :href="route('admin.registers.show_resolve', data.id)"
                                     :class="[active ? 'bg-green-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-1 py-2 text-sm',]">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-gray-600"
                                       fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -159,7 +159,7 @@
                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
                                     Шийдвэрлэх
-                                  </button>
+                                  </InertiaLink>
                                   </MenuItem>
                                 </div>
                               </MenuItems>
