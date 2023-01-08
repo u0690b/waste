@@ -10,13 +10,15 @@ import 'package:waste_mobile/models/waste.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/views/screens/Image_screen.dart';
 import 'package:waste_mobile/views/screens/video_payer.dart';
+import 'package:waste_mobile/views/screens/waste_allocation.dart';
 import 'package:waste_mobile/views/screens/waste_resolve.dart';
 import 'package:waste_mobile/views/widgets/back_button.dart';
+import 'package:waste_mobile/views/widgets/pagination_builder.dart';
 import 'package:waste_mobile/views/widgets/top_container.dart';
 
 class WasteDetails extends StatefulWidget {
   final Waste waste;
-  final WasteController? wasteController;
+  final IPaginationModel<Waste>? wasteController;
   const WasteDetails({Key? key, required this.waste, this.wasteController})
       : super(key: key);
 
@@ -112,34 +114,58 @@ class _WasteDetailsState extends State<WasteDetails> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      if (widget.wasteController != null &&
-                          ((['mhb', 'mha']
-                                      .contains(AuthController.user!.roles) &&
-                                  widget.waste.reasonId <= 3) ||
-                              (!['onb', 'mhb', 'mha']
-                                      .contains(AuthController.user!.roles) &&
-                                  widget.waste.reasonId > 3)))
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            if (widget.waste.statusId != 4 &&
+                                ((['mhb', 'mha'].contains(
+                                            AuthController.user!.roles) &&
+                                        widget.waste.reasonId <= 3) ||
+                                    (!['onb', 'mhb', 'mha'].contains(
+                                            AuthController.user!.roles) &&
+                                        widget.waste.reasonId > 3)))
                               ElevatedButton(
                                 onPressed: () async {
                                   final ret = await Get.to<bool?>(() =>
                                       WasteResolve(
                                           waste: widget.waste,
                                           wasteController:
-                                              widget.wasteController));
+                                              widget.wasteController
+                                                  as WasteController));
                                   if (ret == true) {
                                     Get.back();
                                   }
                                 },
                                 child: Text('Шийдвэрлэх'),
                               ),
-                            ],
-                          ),
+                            if (AuthController.user!.isMHA &&
+                                widget.waste.statusId != 4) ...[
+                              SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  final ret = await showModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return WasteAllocation(
+                                          waste: widget.waste,
+                                          wasteController:
+                                              widget.wasteController
+                                                  as WasteController,
+                                        );
+                                      });
+
+                                  if (ret == true) {
+                                    Get.back();
+                                  }
+                                },
+                                child: Text('Хуваарьлах'),
+                              ),
+                            ]
+                          ],
                         ),
+                      ),
                       ListTile(
                         dense: true,
                         style: ListTileStyle.drawer,
@@ -232,7 +258,8 @@ class _WasteDetailsState extends State<WasteDetails> {
                         ListTile(
                           dense: true,
                           style: ListTileStyle.drawer,
-                          title: const Text("Хариуцсан / Шийдвэрлэсэн хүн:"),
+                          title:
+                              const Text("Хуваарьлагдсан / Шийдвэрлэсэн хүн:"),
                           subtitle: Text(waste.comfUser!.name),
                         ),
                       if (waste.resolve != null)

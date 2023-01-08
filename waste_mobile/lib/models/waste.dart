@@ -142,9 +142,14 @@ class Waste {
     resolveId = snap['resolve_id'];
     resolveDesc = snap['resolve_desc'];
     resolveImage = snap['resolve_image'];
-    createdAt = DateTime.tryParse(snap['created_at']);
-    updatedAt = DateTime.tryParse(snap['updated_at']);
-    reg_at = DateTime.tryParse(snap['reg_at']);
+    createdAt = snap['created_at'] == null
+        ? null
+        : DateTime.tryParse(snap['created_at']);
+    updatedAt = snap['created_at'] == null
+        ? null
+        : DateTime.tryParse(snap['updated_at']);
+    reg_at =
+        snap['created_at'] == null ? null : DateTime.tryParse(snap['reg_at']);
 
     imgs = snap['attached_images'] != null
         ? (snap['attached_images'] as List)

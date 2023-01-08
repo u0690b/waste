@@ -33,10 +33,13 @@ Future<T?> futureAlertDialog<T>({
     return Column(
       children: <Widget>[
         Icon(Icons.sentiment_very_dissatisfied,
-            size: 40, color: Theme.of(context).primaryColor),
+            size: 22, color: Theme.of(context).primaryColor),
         Text("ӨӨ алдаа гарчихлаа дахад нэг оролдхуу?",
-            style: Theme.of(context).textTheme.headline4),
-        SelectableText(error.toString()),
+            style: Theme.of(context).textTheme.headline5),
+        if (error is FormatException)
+          SelectableText(error.message)
+        else
+          SelectableText(error.message),
       ],
     );
   }

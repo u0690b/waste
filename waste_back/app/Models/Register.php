@@ -256,29 +256,37 @@ class Register extends Model
      */
     public function sendCreatedWasteNotify()
     {
-        $not =  Notification::create([
-            'user_id' => $this->reg_user_id,
-            'type' => 'Шинэ зөрчил бүртгэсэн',
-            'title' => $this->id,
-            'content' => $this->reason->name . ' ' . $this->name,
-        ]);
+
 
         if ($this->reason_id <= 3) {
-            $tokens = User::whereSoumDistrictId($this->soum_district_id)
+            $users = User::whereSoumDistrictId($this->soum_district_id)
                 ->whereRoles('mha')
-                ->whereNotNull('push_token')->get('push_token')->pluck('push_token')->toArray();
+                ->get();
+            $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
         } else {
-            $tokens = User::whereSoumDistrictId($this->soum_district_id)
+            $users = User::whereSoumDistrictId($this->soum_district_id)
                 ->whereBagHorooId($this->bag_horoo_id)
                 ->whereRoles('hd')
-                ->whereNotNull('push_token')->get('push_token')->pluck('push_token')->toArray();
+                ->get();
+            $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
         }
+
+        foreach ($users as $key => $user) {
+            Notification::create([
+                'user_id' => $user->id,
+                'type' => 'Шинэ зөрчил бүртгэсэн',
+                'title' =>  $this->reg_user->name . "-аас танд шинэ зөрчил ирлээ ",
+                'rid' => $this->id,
+                'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
+            ]);
+        }
+
         if (count($tokens)) {
             FCMService::send(
                 $tokens,
                 [
                     'title' => 'Шинэ зөрчил бүртгэгдлээ',
-                    'body' => $not->content,
+                    'body' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
                 ],
                 [
                     'id' => $this->id,
@@ -297,23 +305,41 @@ class Register extends Model
         Notification::create([
             'user_id' => $this->reg_user_id,
             'type' => 'Шийдвэрлэгдсэн',
-            'title' => $this->id,
-            'content' => $this->reason->name . ' ' . $this->name,
+            'rid' => $this->id,
+            'title' => $this->comf_user->name  . ' зөрчил шийдвэрлэсэн',
+            'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
         ]);
-        Notification::create([
-            'user_id' => $this->comf_user_id,
-            'type' => 'Шийдвэрлэгдсэн',
-            'title' => $this->id,
-            'content' => $this->reason->name . ' ' . $this->name,
-        ]);
+        if ($this->reason_id <= 3) {
+            $users = User::whereSoumDistrictId($this->soum_district_id)
+                ->whereRoles('mha')
+                ->get();
+            $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
+        } else {
+            $users = User::whereSoumDistrictId($this->soum_district_id)
+                ->whereBagHorooId($this->bag_horoo_id)
+                ->whereRoles('hd')
+                ->get();
+            $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
+        }
+
+        foreach ($users as $key => $user) {
+
+            Notification::create([
+                'user_id' => $user->id,
+                'type' => 'Шийдвэрлэгдсэн',
+                'rid' => $this->id,
+                'title' =>  $this->comf_user->name  . ' зөрчил шийдвэрлэсэн',
+                'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
+            ]);
+        }
 
 
-        if ($this->reg_user->push_token) {
+        if ($this->reg_user->push_token || $tokens) {
             FCMService::send(
-                [$this->reg_user->push_token],
+                [$this->reg_user->push_token, ...$tokens],
                 [
                     'title' => 'Зөрчил шийдвэрлэгдлээ',
-                    'body' => $this->reason->name . ' ' . $this->name,
+                    'body' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
                 ],
                 [
                     'id' => $this->id,
@@ -332,14 +358,16 @@ class Register extends Model
         Notification::create([
             'user_id' => Auth::user()->id,
             'type' => 'Хуварьласан',
-            'title' => $this->id,
-            'content' => $this->reason->name . ' ' . $this->name,
+            'rid' => $this->id,
+            'title' =>  $this->comf_user->name . '-д зөрчил хуваарьласан',
+            'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
         ]);
         Notification::create([
             'user_id' => $this->comf_user_id,
             'type' => 'Хуварьласан',
-            'title' => $this->id,
-            'content' => 'Танд ' . Auth::user()->name . '-ээс зөрчил хуварьласан байна. \n' . $this->reason->name . ' ' . $this->name,
+            'rid' => $this->id,
+            'title' => 'Танд ' . Auth::user()->name . '-ээс зөрчил хуварьласан байна. ',
+            'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
         ]);
 
 

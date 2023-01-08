@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/controllers/common_controller.dart';
+import 'package:waste_mobile/controllers/notification_controller.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/utils/contants.dart';
 import 'package:waste_mobile/utils/messaging_service.dart';
@@ -13,6 +14,7 @@ import 'package:waste_mobile/views/screens/local_waste_list.dart';
 import 'package:waste_mobile/views/screens/splash_screen.dart';
 import 'package:waste_mobile/views/screens/waste_create.dart';
 import 'package:waste_mobile/views/screens/waste_list.dart';
+import 'package:waste_mobile/views/widgets/NotificationBadge.dart';
 import 'package:waste_mobile/views/widgets/active_project_card.dart';
 import 'package:waste_mobile/views/widgets/task_column.dart';
 import 'package:waste_mobile/views/widgets/top_container.dart';
@@ -47,8 +49,12 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late StreamSubscription<ConnectivityResult> subscription;
+  late StreamSubscription notificationSub;
   final CommonController commonController = Get.find();
   final AuthController authController = Get.find();
+  final NotificationController notificationController = Get.find();
+
+  late MessagingService service;
   Text subheading(String title) {
     return Text(
       title,
@@ -77,19 +83,30 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     subscription = listenToConnectivitySubscription();
 
-    final service = MessagingService();
+    service = MessagingService();
     service.setupInteractedMessage((token) {
       print('FCM Token: $token');
       if (token != null) authController.savePushToken(token);
+    });
+    notificationController.refresh();
+    notificationSub = MessagingService.messageRx.listen((p0) {
+      print('fuck');
+      notificationController.refresh();
+      Get.snackbar(
+        p0.notification?.title ?? '',
+        p0.notification?.body ?? '',
+        snackPosition: SnackPosition.BOTTOM,
+      );
     });
     super.initState();
   }
 
   @override
   dispose() {
-    super.dispose();
-
+    service.dispose();
     subscription.cancel();
+    notificationSub.cancel();
+    super.dispose();
   }
 
   noConnection() =>
@@ -221,22 +238,38 @@ class _HomeViewState extends State<HomeView> {
                                         ],
                                       ),
                                       const SizedBox(height: 15.0),
-                                      if (!AuthController.user!.isMH)
-                                        TextButton(
-                                          onPressed: () => Get.to(() =>
-                                              const LocalWasteList(
-                                                  title: 'Илгээгээгүй')),
-                                          child: const TaskColumn(
-                                            icon: Icons.alarm,
-                                            iconBackgroundColor:
-                                                LightColors.kRed,
-                                            title: 'Илгээгээгүй',
-                                            subtitle: 'Бүртгэл',
-                                          ),
+                                      TextButton(
+                                        onPressed: () => Get.to(() =>
+                                            const LocalWasteList(
+                                                title: 'Илгээгээгүй')),
+                                        child: const TaskColumn(
+                                          icon: Icons.alarm,
+                                          iconBackgroundColor: LightColors.kRed,
+                                          title: 'Илгээгээгүй',
+                                          subtitle: 'Бүртгэл',
                                         ),
+                                      ),
                                       const SizedBox(
                                         height: 15.0,
                                       ),
+                                      if (AuthController.user!.isMHA) ...[
+                                        TextButton(
+                                          onPressed: isOnline
+                                              ? () => Get.to(() =>
+                                                  WasteList(title: 'Ирсэн'))
+                                              : noConnection,
+                                          child: TaskColumn(
+                                            icon: Icons.blur_circular,
+                                            iconBackgroundColor:
+                                                LightColors.kDarkYellow,
+                                            title: 'Ирсэн',
+                                            subtitle: 'Бүртгэл',
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 15.0,
+                                        ),
+                                      ],
                                       TextButton(
                                         onPressed: isOnline
                                             ? () => Get.to(() => WasteList(
@@ -322,6 +355,7 @@ class _HomeViewState extends State<HomeView> {
                           icon: HomeView.plusIcon(),
                         ),
                       ),
+                    Positioned(top: 0, right: 20, child: NotificationBadge())
                   ],
                 ),
               );

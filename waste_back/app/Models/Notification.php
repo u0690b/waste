@@ -25,7 +25,7 @@ class Notification extends Model
     use HasFactory;
 
     public $table = 'notifications';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -37,6 +37,7 @@ class Notification extends Model
         'type',
         'title',
         'content',
+        'rid',
         'read_at'
     ];
 
@@ -51,6 +52,7 @@ class Notification extends Model
         'type' => 'string',
         'title' => 'string',
         'content' => 'string',
+        'rid' => 'integer',
         'read_at' => 'datetime'
     ];
 
@@ -64,6 +66,7 @@ class Notification extends Model
         'type' => 'required|string|max:100',
         'title' => 'required|string|max:500',
         'content' => 'nullable|string',
+        'rid' => 'nullable|integer',
         'read_at' => 'nullable'
     ];
 
@@ -87,10 +90,10 @@ class Notification extends Model
     ];
 
     /**
-    * Filter Model
-    * @param Array $filters
-    * @return App\Models\Notification
-    */
+     * Filter Model
+     * @param Array $filters
+     * @return App\Models\Notification
+     */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {

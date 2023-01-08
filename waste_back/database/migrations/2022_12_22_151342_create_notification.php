@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('type', 100)->comment('Төрөл');
             $table->string('title', 500)->comment('Гарчиг');
             $table->text('content')->nullable()->comment('Агуулга');
+            $table->unsignedBigInteger('rid')->nullable()->comment('Холоотой айди');
             $table->timestamp('read_at')->nullable()->comment('Уншсан');
+            $table->timestamps();
         });
     }
 

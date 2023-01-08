@@ -516,7 +516,10 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                         onPressed: () async {
                           if (_formKey.currentState?.validate() ?? false) {
                             if (latitude == null || longitude == null) {
-                              await Get.defaultDialog();
+                              await Get.defaultDialog(
+                                middleText:
+                                    'Газрын зуграг дээрх байршил сонгоогүй байна',
+                              );
                               return;
                             }
                             final w = WasteModel(

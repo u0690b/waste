@@ -21,6 +21,42 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class UserAPIController extends AppBaseController
 {
 
+    function __construct()
+    {
+        // $this->middleware(function ($request, $next) {
+        //     $user = Auth::user();
+        //     if (!($user->roles == 'admin' || $user->roles == 'mha' || $user->roles == 'da' || $user->roles == 'zaa')) {
+        //         abort(403);
+        //     }
+        //     return $next($request);
+        // });
+    }
+
+    /**
+     * Display a listing of the User.
+     * GET|HEAD /Users
+     *
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        $input = $request->all(["search", ...User::$searchIn]);
+        $input['soum_district_id'] =  Auth::user()->soum_district_id;
+        $input['roles'] = ['mha', 'mhb'];
+
+        $query = User::filter($input);
+
+        if ($request->get('skip')) {
+            $query->skip($request->get('skip'));
+        }
+        if ($request->get('limit')) {
+            $query->limit($request->get('limit'));
+        }
+
+        $statuses = $query->get();
+
+        return   $statuses->toJson();
+    }
 
     /**
      * Store a newly created User in storage.
@@ -39,7 +75,7 @@ class UserAPIController extends AppBaseController
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'username' => ['The provided credentials are incorrect.'],
+                'username' => 'Нэвтрэх нэр нууц үг буруу байна',
             ]);
         }
 

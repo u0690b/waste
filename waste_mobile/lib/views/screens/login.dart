@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
+import 'package:waste_mobile/models/model.dart';
+import 'package:waste_mobile/views/widgets/future_alert_dialog.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -54,7 +56,18 @@ class _LoginViewState extends State<LoginView> {
         ElevatedButton(
           onPressed: () async {
             if (formKey.currentState?.validate() ?? false) {
-              await _auth.loginUser(emailCtr.text, passwordCtr.text);
+              futureAlertDialog(
+                autoCloseSec: 0,
+                context: context,
+                futureStream: _auth.loginUser(emailCtr.text, passwordCtr.text),
+                onError: (context, err) {
+                  print(err.toString());
+                  if (err is ValidationException) {
+                    return Text(err.message);
+                  }
+                  return Text(err.toString());
+                },
+              );
             }
           },
           child: const Text('Нэвтрэх'),

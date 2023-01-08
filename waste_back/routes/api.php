@@ -34,6 +34,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('save_token', [UserAPIController::class, 'save_token'])->name('api.save_token');
     Route::get('/commons', [CommonController::class, 'index'])->name('commons.index');
     Route::post('/registers/{register}/resolve', [App\Http\Controllers\API\RegisterAPIController::class, 'resolve'])->name('commons.index');
+    Route::put('/registers/{register}/allocation', [App\Http\Controllers\API\RegisterAPIController::class, 'allocation_store'])->name('register.allocation_store');
+    Route::resource('notifications', App\Http\Controllers\API\NotificationAPIController::class);
 });
 
 
@@ -56,5 +58,4 @@ Route::group(['prefix' => 'admin'], function () {
 
 
 Route::group(['prefix' => 'admin'], function () {
-    Route::resource('notifications', App\Http\Controllers\API\NotificationAPIController::class);
 });

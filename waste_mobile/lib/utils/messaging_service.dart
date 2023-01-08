@@ -1,7 +1,32 @@
+import 'dart:async';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:get/get.dart';
+import 'package:waste_mobile/views/screens/notification_list.dart';
+
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
+  MessagingService.messageRx.value = message;
+}
 
 class MessagingService {
+  static Rx<RemoteMessage> messageRx = Rx<RemoteMessage>(RemoteMessage());
   late NotificationSettings settings;
+  StreamSubscription? _onMessageSub;
+  StreamSubscription? _onTokenRefreshSub;
+  StreamSubscription? _onMessageOpenedAppSub;
+
+  void dispose() {
+    _onMessageSub?.cancel();
+    _onTokenRefreshSub?.cancel();
+    _onMessageOpenedAppSub?.cancel();
+  }
 
   Future<void> setupInteractedMessage(Function(String?) setToken) async {
     // Get any messages which caused the application to open from
@@ -15,17 +40,21 @@ class MessagingService {
       _handleMessage(initialMessage);
     }
     FirebaseMessaging.instance.getToken().then(setToken);
-    FirebaseMessaging.instance.onTokenRefresh.listen(setToken);
+    _onTokenRefreshSub =
+        FirebaseMessaging.instance.onTokenRefresh.listen(setToken);
     // Also handle any interaction when the app is in the background via a
     // Stream listener
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+    _onMessageSub = FirebaseMessaging.onMessage.listen(_recieveMessage);
+    _onMessageOpenedAppSub =
+        FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _recieveMessage(RemoteMessage message) {
+    MessagingService.messageRx.value = message;
   }
 
   void _handleMessage(RemoteMessage message) {
-    print(message.data);
-    if (message.data['type'] == 'chat') {
-      //TO DO haha
-    }
+    Get.to(() => NotificationList(refreshable: true));
   }
 
   Future<void> checkPermissions() async {

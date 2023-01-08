@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -63,6 +64,12 @@ class NameModel {
       );
 }
 
+class ValidationException implements Exception {
+  String message;
+  Map<String, dynamic> errors;
+  ValidationException(this.message, this.errors) : super();
+}
+
 mixin Api {
   Future<T?> fetch<T>(
     String path,
@@ -99,9 +106,9 @@ mixin Api {
         return decoder(body);
       }
       return body;
-    }
-    if (res.statusCode == 401) {
+    } else if (res.statusCode == 401) {
       final body = jsonDecode(resBody);
+
       if (body is Map<String, dynamic> && body.containsKey('message')) {
         text = body['message'];
       }
@@ -114,6 +121,13 @@ mixin Api {
             Get.back(closeOverlays: true);
             Get.find<AuthController>().logOut();
           });
+    } else if (res.statusCode == 422) {
+      final body = jsonDecode(resBody);
+      text = res.reasonPhrase ?? text;
+      if (body is Map<String, dynamic> && body.containsKey('message')) {
+        text = body['message'];
+      }
+      throw ValidationException(text, body['errors']);
     } else {
       print(res.reasonPhrase);
       final body = jsonDecode(resBody);
@@ -124,11 +138,7 @@ mixin Api {
       if (onError != null) {
         onError(text);
       } else {
-        await Get.defaultDialog(
-            middleText: text,
-            textConfirm: 'OK',
-            confirmTextColor: Colors.white,
-            onConfirm: Get.back);
+        throw PlatformException(code: res.statusCode.toString(), message: text);
       }
       return null;
     }

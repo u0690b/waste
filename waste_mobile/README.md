@@ -18,3 +18,7 @@ samples, guidance on mobile development, and a full API reference.
 role uudiin yalgaag tusgah
 Shiidver lelt hiih tsonh nemeh
 zurag havsargah
+
+[ ] huwaarilalt
+[ ] burtgel uusgeh huselt
+[ ] notification

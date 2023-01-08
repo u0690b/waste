@@ -125,7 +125,10 @@ class RegisterAPIController extends AppBaseController
     {
         /** @var Register $register */
         $register = Register::find($id);
-
+        $register->load('reg_user:id,name');
+        $register->load('comf_user:id,name');
+        $register->load('attached_images:id,register_id,path');
+        $register->load('attached_video:id,register_id,path');;
         if (empty($register)) {
             return $this->sendError('Register not found');
         }
@@ -219,7 +222,7 @@ class RegisterAPIController extends AppBaseController
      */
     public function allocation_store($id, Request $request)
     {
-        $input = Request::validate(['comf_user_id' => 'required']);
+        $input = $request->validate(['comf_user_id' => 'required']);
         $input['status_id'] = 3;
 
         /** @var Register $register */

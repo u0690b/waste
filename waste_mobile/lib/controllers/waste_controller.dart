@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/models/model.dart';
+import 'package:waste_mobile/models/user.dart';
 import 'package:waste_mobile/models/waste.dart';
 import 'package:waste_mobile/models/waste_model.dart';
 import 'package:waste_mobile/views/widgets/pagination_builder.dart';
@@ -19,7 +20,8 @@ class CompleteWasteController extends WasteController
         ..._getAimagCityFilter(),
         'status_id': 4,
         'next_cursor': nextCursor,
-        if (AuthController.user!.isMH) 'comf_user_id': AuthController.user!.id
+        if (AuthController.user!.isMH && !AuthController.user!.isMHA)
+          'comf_user_id': AuthController.user!.id
       },
       decoder: (data) {
         if (data is Map) {
@@ -36,41 +38,6 @@ class CompleteWasteController extends WasteController
     );
     return res;
   }
-
-  @override
-  Future<List<Waste>?> fetchMore() async {
-    if (loading.value) return null;
-    loading.value = true;
-    try {
-      var q = await _getQuery();
-
-      List<Waste> retVal = q?.toList() ?? [];
-
-      if (retVal.isNotEmpty) {
-        datas.addAll(retVal);
-      }
-    } catch (_) {
-      rethrow;
-    } finally {
-      loading.value = false;
-    }
-    return datas;
-  }
-
-  @override
-  Future<List<Waste>?> refresh() async {
-    if (loading.value) return null;
-    loading.value = true;
-    var q = await _getQuery();
-
-    List<Waste> retVal = q?.toList() ?? [];
-
-    if (retVal.isNotEmpty) {
-      datas.value = retVal;
-    }
-    loading.value = false;
-    return null;
-  }
 }
 
 class WasteController with Api implements IPaginationModel<Waste> {
@@ -85,14 +52,20 @@ class WasteController with Api implements IPaginationModel<Waste> {
   WasteController([this.title]);
 
   Future<Iterable<Waste>?> _getQuery() async {
+    String ss = "";
+    Map<String, dynamic> headers = {};
+    if (title == 'Ирсэн')
+      ss = 'status_id[]=2';
+    else if (title == 'Хуваарилагдсан') {
+      ss = 'status_id[]=3';
+      if (AuthController.user!.isMH && !AuthController.user!.isMHA)
+        headers['comf_user_id'] = AuthController.user!.id;
+    } else
+      ss = 'status_id[]=2&status_id[]=3';
     final res = await fetch<Iterable<Waste>>(
-      '/registers?status_id[]=2&status_id[]=3',
+      '/registers?$ss',
       'get',
-      body: {
-        ..._getAimagCityFilter(),
-        'next_cursor': nextCursor,
-        if (AuthController.user!.isMH) 'comf_user_id': AuthController.user!.id
-      },
+      body: {..._getAimagCityFilter(), 'next_cursor': nextCursor, ...headers},
       decoder: (data) {
         if (data is Map) {
           nextCursor = data['next_cursor'];
@@ -258,6 +231,78 @@ class WasteController with Api implements IPaginationModel<Waste> {
       loading.value = false;
     }
     return ret;
+  }
+
+  Future<bool> allocationWaste({
+    required int id,
+    required int comf_user_id,
+  }) async {
+    bool ret = false;
+    if (loading.value) return ret;
+    loading.value = true;
+    try {
+      String? _hasError;
+      final res = await fetch(
+        '/registers/$id/allocation',
+        'PUT',
+        body: {
+          'id': id,
+          'comf_user_id': comf_user_id,
+        },
+        onError: (msg) async {
+          _hasError = msg;
+          await Get.defaultDialog(
+              middleText: msg,
+              textConfirm: 'OK',
+              confirmTextColor: Colors.white,
+              onConfirm: () => Get.back());
+          throw Exception(msg);
+        },
+      );
+      if (_hasError != null) throw Exception(_hasError);
+      ret = true;
+      loading.value = false;
+      await refresh();
+    } catch (e) {
+      rethrow;
+    } finally {
+      loading.value = false;
+    }
+    return ret;
+  }
+
+  Future<List<User>> getUsers() async {
+    List<User> users = [];
+
+    try {
+      String? _hasError;
+      final res = await fetch(
+        '/users',
+        'GET',
+        body: {},
+        onError: (msg) async {
+          _hasError = msg;
+          await Get.defaultDialog(
+              middleText: msg,
+              textConfirm: 'OK',
+              confirmTextColor: Colors.white,
+              onConfirm: () => Get.back());
+          throw Exception(msg);
+        },
+      );
+      if (_hasError != null) throw Exception(_hasError);
+      for (var el in res) {
+        users.add(User.fromJson(el));
+      }
+    } catch (e) {
+      rethrow;
+    } finally {}
+    return users;
+  }
+
+  Future<Waste> getWaste({required int id}) async {
+    final res = await fetch('/registers/$id', 'GET');
+    return Waste.fromJson(res);
   }
 
   Map<String, dynamic> _getAimagCityFilter() {

@@ -41,28 +41,15 @@ class AuthController extends GetxController with CacheManager, Api {
   }
 
   Future<void> loginUser(String email, String password) async {
-    final res = await GetConnect().post(
-      '${Constants.host}/api/login',
-      {'username': email, 'password': password},
+    final res = await fetch(
+      '/login',
+      'POST',
+      body: {'username': email, 'password': password},
       headers: {"Accept": "application/json"},
     );
 
-    if (res.statusCode == HttpStatus.ok) {
-      final user = User.fromJson(res.body);
-      login(user);
-    } else {
-      String text = 'User not found!';
-      if (res.body is Map<String, dynamic> && res.body.containsKey('message')) {
-        text = res.body['message'];
-      }
-      Get.defaultDialog(
-          middleText: text,
-          textConfirm: 'OK',
-          confirmTextColor: Colors.white,
-          onConfirm: () {
-            Get.back();
-          });
-    }
+    final user = User.fromJson(res);
+    login(user);
   }
 
   Future<void> getUser(token) async {

@@ -2,7 +2,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/models/model.dart';
 
 class Constants {
-  static String host = 'http://103.17.108.190';
+  static String host = 'http://192.168.10.36:8000';
   static NameModel Function(NameModel, NameModel) combine = (element, value) =>
       element.updated_at != null &&
               value.updated_at != null &&
@@ -27,9 +27,7 @@ class Constants {
     GetStorage().write('places', value.map((e) => e.toJson()).toList());
 
     GetStorage().write(
-      'places_date',
-      value.reduce(combine).updated_at?.toIso8601String(),
-    );
+        'places_date', value.reduce(combine).updated_at?.toIso8601String());
   }
 
   static List<NameModel>? _reasons;

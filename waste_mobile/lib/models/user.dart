@@ -37,6 +37,7 @@ class User {
   }
 
   bool get isMH => ['mhb', 'mha'].contains(roles);
+  bool get isMHA => ['mha'].contains(roles);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -60,15 +61,21 @@ class User {
       name: snap['name'],
       username: snap['username'],
       aimag_city_id: snap['aimag_city_id'],
-      aimag_city: NameModel.fromJson(snap['aimag_city']),
+      aimag_city: snap['aimag_city'] == null
+          ? null
+          : NameModel.fromJson(snap['aimag_city']),
       soum_district_id: snap['soum_district_id'],
-      soum_district: NameModel.fromJson(snap['soum_district']),
+      soum_district: snap['soum_district'] == null
+          ? null
+          : NameModel.fromJson(snap['soum_district']),
       bag_horoo_id: snap['bag_horoo_id'],
-      bag_horoo: NameModel.fromJson(snap['bag_horoo']),
+      bag_horoo: snap['bag_horoo'] == null
+          ? null
+          : NameModel.fromJson(snap['bag_horoo']),
       roles: snap['roles'],
       created_at: DateTime.tryParse(snap['created_at']),
       updated_at: DateTime.tryParse(snap['updated_at']),
-      token: snap['token'],
+      token: snap['token'] ?? '',
     );
   }
 }

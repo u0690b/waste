@@ -6,6 +6,8 @@ namespace App\Http\Controllers\API;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use Auth;
+use Date;
 use Response;
 
 /**
@@ -23,54 +25,15 @@ class NotificationAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = Notification::filter( $request->all(["search", ...Notification::$searchIn]))->with('user:id,name');
 
-        if ($request->get('skip')) {
-            $query->skip($request->get('skip'));
-        }
-        if ($request->get('limit')) {
-            $query->limit($request->get('limit'));
-        }
+        $input = $request->all(["search", ...Notification::$searchIn]);
+        $input['user_id'] = Auth::user()->id;
+        $query = Notification::filter($input);
 
-        $notifications = $query->get();
-
-        return $notifications->toJson();
-    }
-
-    /**
-     * Store a newly created Notification in storage.
-     * POST /notifications
-     *
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        $input = $request->validate(Notification::$rules);
-
-        /** @var Notification $notification */
-        $notification = Notification::create($input);
-
-        return $notification->toJson();
-    }
-
-    /**
-     * Display the specified Notification.
-     * GET|HEAD /notifications/{id}
-     *
-     * @param Notification $notifications
-     *
-     * @return Response
-     */
-    public function show($id)
-    {
-        /** @var Notification $notification */
-        $notification = Notification::find($id);
-
-        if (empty($notification)) {
-            return $this->sendError('Notification not found');
-        }
-
-        return $notification->toJson();
+        // $notifications = $query->get();
+        $pagination = $query->orderByDesc('id')->cursorPaginate(null, ['*'], 'cursor', $request->input('next_cursor'))->toArray();
+        $pagination['count'] = $query->whereReadAt(null)->count();
+        return $pagination;
     }
 
     /**
@@ -83,41 +46,17 @@ class NotificationAPIController extends AppBaseController
      */
     public function update($id, Request $request)
     {
-        $input = $request->validate(Notification::$rules);
+        // $input = $request->validate(Notification::$rules);
         /** @var Notification $notification */
         $notification = Notification::find($id);
 
         if (empty($notification)) {
             return $this->sendError('Notification not found');
         }
-
+        $input['read_at'] = Date::now();
         $notification->fill($input);
         $notification->save();
 
-        return $notification->toJson();
-    }
-
-    /**
-     * Remove the specified Notification from storage.
-     * DELETE /notifications/{id}
-     *
-     * @param Notification $notifications
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        /** @var Notification $notification */
-        $notification = Notification::find($id);
-
-        if (empty($notification)) {
-            return $this->sendError('Notification not found');
-        }
-
-        $notification->delete();
-
-        return $this->sendSuccess('Notification deleted successfully');
+        return true;
     }
 }

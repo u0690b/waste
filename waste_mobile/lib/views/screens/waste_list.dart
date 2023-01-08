@@ -42,10 +42,7 @@ class WasteList extends StatelessWidget {
                   contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                   onTap: () => Get.to(() => WasteDetails(
                         waste: item,
-                        wasteController:
-                            title == 'Илгээсэн' || title == 'Хуваарилагдсан'
-                                ? wasteController as WasteController
-                                : null,
+                        wasteController: wasteController,
                       )),
                   dense: false,
                   title: Text(item.name),
