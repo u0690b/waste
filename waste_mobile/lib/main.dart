@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(() => CommonController());
-    Get.lazyPut(() => AuthController());
+    Get.put(CommonController());
+    Get.put(AuthController());
     Get.lazyPut(() => WasteController());
     Get.lazyPut(() => NotificationController());
     return GetMaterialApp(

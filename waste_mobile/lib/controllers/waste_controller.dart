@@ -40,7 +40,9 @@ class CompleteWasteController extends WasteController
   }
 }
 
-class WasteController with Api implements IPaginationModel<Waste> {
+class WasteController extends GetxController
+    with Api
+    implements IPaginationModel<Waste> {
   @override
   ValueNotifier<bool> loading = ValueNotifier<bool>(false);
   @override

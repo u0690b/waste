@@ -18,53 +18,18 @@
   <div class="p-4 mt-8 sm:px-8 sm:py-4">
     <!---->
 
-    <div class="flex flex-wrap">
+    <div class=" flex flex-wrap">
       <div class="w-full">
-        <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
-          <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
+        <div class="flex mb-0  flex-wrap pt-3 pb-4 gap-2">
+
+          <div v-for="role in  roles" class="">
             <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-orange-600 bg-white"
-              :class="{ '!text-white bg-orange-600': openTab === 2 }">
-              Мэргэжлийн хяналт
+              :class="{ '!text-white bg-orange-600': form.roles == role.id }" @click="form.roles = role.id">
+              {{ role.name }}
             </a>
-          </li>
-          <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-            <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white"
-              v-bind:class="{ '!text-white bg-blue-600': openTab === 3 }">
-              Захирагчийн ажлын алба
-            </a>
-          </li>
-          <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
-            <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-green-600 bg-white"
-              v-bind:class="{ '!text-white bg-green-600': openTab === 4 }">
-              Шийдвэрлэсэн
-            </a>
-          </li>
-
-        </ul>
-        <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-          <div class="px-4 py-5 flex-auto">
-            <div class="tab-content tab-space">
-              <div>
-                <div class="p-4 bg-white rounded">
-                  <div class="flex justify-between">
-                    <div>
-                      <div class="relative text-gray-400">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-
-                        </span>
-                        <p>{{ datas.data.roles }}</p>
-                      </div>
-                    </div>
-
-                  </div>
-
-
-                </div>
-              </div>
-
-            </div>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -88,15 +53,15 @@
         </div>
       </div>
       <admin-table :headers="{
-  name: 'Хэрэглэгчийн нэр',
-  username: 'Нэвтрэх нэр',
-  'deleted_at': 'Төлөв',
-  'aimag_city.name': 'Аймаг/нийслэл',
-  'soum_district.name': 'Сум/дүүрэг',
-  'bag_horoo.name': 'Баг/хороо',
-  roles: 'Эрх',
-}" :datas="datas" url="admin.users.edit" :insertUrl="route('admin.users.create')"
-        :deleteUrl="route('admin.users.create')" />
+        name: 'Хэрэглэгчийн нэр',
+        username: 'Нэвтрэх нэр',
+        'deleted_at': 'Төлөв',
+        'aimag_city.name': 'Аймаг/нийслэл',
+        'soum_district.name': 'Сум/дүүрэг',
+        'bag_horoo.name': 'Баг/хороо',
+        roles: 'Эрх',
+      }" :datas="datas" url="admin.users.edit" :insertUrl="route('admin.users.create')"
+        :deleteUrl="'admin.users.destroy'" />
     </div>
     <div class="py-2 flex items-center justify-between border-t border-gray-200">
       <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
@@ -131,6 +96,7 @@ export default {
     datas: Object,
     filters: [Object, Array],
     host: String,
+    auth: Object,
   },
   computed: {
     openTab() {
@@ -143,8 +109,32 @@ export default {
         aimag_city_id: null,
         soum_district_id: null,
         bag_horoo_id: null,
+        roles: null,
         ...(this.filters ? this.filters : {}),
       },
+      roles: this.auth.user.roles == 'admin' || this.auth.user.roles == 'zaa' ?
+        [
+          { id: "admin", name: "Админ" },
+          { id: "zaa", name: "Захирагчийн ажлын алба" },
+          { id: "mha", name: "МХ админ" },
+          { id: "mhb", name: "МХ байцаагч" },
+          { id: "da", name: "Дүүргийн админ" },
+          { id: "hd", name: "Хороон дарга" },
+          { id: "onb", name: "Олон нийтийн байцаагч" },
+          { id: "none", name: "Идвэхгүй" },
+        ] :
+        this.auth.user.roles == 'mha' ? [
+          { id: "mha", name: "МХ админ" },
+          { id: "mhb", name: "МХ байцаагч" },
+          { id: "none", name: "Идвэхгүй" },
+        ] :
+          this.auth.user.roles == 'da' ? [
+            { id: "da", name: "Дүүргийн админ" },
+            { id: "hd", name: "Хороон дарга" },
+            { id: "onb", name: "Олон нийтийн байцаагч" },
+            { id: "none", name: "Идвэхгүй" },
+          ] : []
+      ,
     };
   },
   watch: {

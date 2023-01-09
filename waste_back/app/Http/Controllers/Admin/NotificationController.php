@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
+use Auth;
+use Date;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
@@ -18,16 +20,16 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $notifications = Notification::filter(Request::all(["search", ...Notification::$searchIn]))->with('user:id,name');
-        if (Request::has('only')) {
-            return json_encode($notifications->paginate(Request::input('per_page'),['id', 'name']));
-        }
+        $input = Request::all(["search", ...Notification::$searchIn]);
+        $input['user_id'] = Auth::user()->id;
+        $notifications = Notification::filter($input)->with('user:id,name')->orderByDesc('id')->paginate(Request::input('per_page') ?? 35);
+
+        Notification::whereReadAt(null)->update(['read_at' => Date::now()]);
         return Inertia::render('Admin/notifications/Index', [
             'filters' => Request::only(["search", ...Notification::$searchIn]),
             'datas' => $notifications
-                ->paginate(Request::input('per_page'))
-                ->withQueryString()
-                ->through(fn ($row) => $row->only('id','user','user_id','type','title','content','read_at')),
+
+                ->withQueryString(),
             'host' => config('app.url'),
         ]);
     }

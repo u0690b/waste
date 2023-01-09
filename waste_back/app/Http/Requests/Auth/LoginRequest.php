@@ -52,6 +52,12 @@ class LoginRequest extends FormRequest
                 'username' => trans('auth.failed'),
             ]);
         }
+        if (Auth::user()->roles == 'none') {
+            Auth::guard('web')->logout();
+            throw ValidationException::withMessages([
+                'username' => trans('auth.failed'),
+            ]);
+        }
 
         RateLimiter::clear($this->throttleKey());
     }

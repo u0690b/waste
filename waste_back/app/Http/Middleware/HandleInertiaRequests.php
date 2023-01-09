@@ -46,8 +46,9 @@ class HandleInertiaRequests extends Middleware
                 'user' => User::count(),
                 'register' => Register::count(),
                 'file' => AttachedFile::count(),
-                'reason'=>Reason::count(),
+                'reason' => Reason::count(),
             ],
+            'notifiCount' =>  $request->user() ? $request->user()->notifications()->whereReadAt(null)->count() : null,
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [
                     'location' => $request->url(),

@@ -53,8 +53,10 @@ class Notification extends Model
         'title' => 'string',
         'content' => 'string',
         'rid' => 'integer',
-        'read_at' => 'datetime'
+        'read_at' => 'date:Y-m-d H:i:s',
+        'created_at' => 'date:Y-m-d H:i:s',
     ];
+
 
     /**
      * Validation rules

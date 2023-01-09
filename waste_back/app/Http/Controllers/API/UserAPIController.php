@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use Auth;
+use Doctrine\Inflector\Rules\English\Rules;
 use Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -71,7 +72,7 @@ class UserAPIController extends AppBaseController
             'password' => 'required',
         ]);
 
-        $user = User::where('username', $request->username)->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name')->first();
+        $user = User::where('username', $request->username)->where('roles', '<>', 'none')->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name')->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
@@ -83,6 +84,31 @@ class UserAPIController extends AppBaseController
 
         return  Response::json($user->toArray(), 200, [], JSON_UNESCAPED_SLASHES);
     }
+
+    /**
+     * Store a newly created User in storage.
+     *
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        $rules = User::$rules;
+        $rules['username'] = 'required|string|max:255|unique:' . User::class;
+        $rules['password'] = ['required',  \Illuminate\Validation\Rules\Password::defaults()];
+        $rules['bag_horoo_id'] = 'nullable';
+        $rules['aimag_city_id'] = 'nullable';
+        unset($rules['roles']);
+
+        $input =  $request->validate($rules);
+        $input['aimag_city_id'] = 7;
+        $input['roles'] = 'none';
+
+        $input['password'] = Hash::make($input['password']);
+        $user = User::create($input);
+        $user->sendUserCreated();
+        return true;
+    }
+
     /**
      * Store a newly created User in storage.
      * POST /usersModels

@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:waste_mobile/models/model.dart';
 import 'package:waste_mobile/models/waste.dart';
 
-class WasteDetailsController with Api {
+class WasteDetailsController extends GetxController with Api {
   ValueNotifier<bool> loading = ValueNotifier<bool>(false);
 
   Future<Waste?> getQuery(int id) async {

@@ -5,7 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/models/model.dart';
 import 'package:waste_mobile/utils/contants.dart';
 
-class CommonController with Api {
+class CommonController extends GetxController with Api {
   String? nextCursor;
 
   final RxList<NameModel> datas = <NameModel>[].obs;

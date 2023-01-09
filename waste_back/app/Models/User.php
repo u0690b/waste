@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Services\FCMService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -175,6 +177,14 @@ class User extends Model  implements
     {
         return $this->hasMany(\App\Models\RegisterHistory::class, 'user_id');
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function notifications()
+    {
+        return $this->hasMany(\App\Models\Notification::class, 'user_id');
+    }
+
 
     /**
      * @var array
@@ -198,6 +208,52 @@ class User extends Model  implements
     {
         return UsersModel::$searchIn;
     }
+
+    /**
+     * Filter Model
+     * 
+     * @return array
+     */
+    public function sendUserCreated()
+    {
+        Notification::create([
+            'user_id' => $this->id,
+            'type' => 'user',
+            'title' => 'Тавай морил',
+            'content' =>  'Шинэ хэргэлэгч бүргэгдсэн',
+        ]);
+
+        $users = User::whereSoumDistrictId($this->soum_district_id)
+            ->whereIn('roles', ['mha', 'da', 'zaa'])
+            ->get();
+        $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
+
+
+        foreach ($users as $key => $user) {
+
+            Notification::create([
+                'user_id' => $user->id,
+                'type' => 'user',
+                'title' => 'Шинэ хэргэлэгч бүргэгдсэн',
+                'content' =>   $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч',
+            ]);
+        }
+
+
+        if (count($tokens)) {
+            FCMService::send(
+                $tokens,
+                [
+                    'title' => 'Зөрчил шийдвэрлэгдлээ',
+                    'body' =>   $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч',
+                ],
+                [
+                    'id' => $this->id,
+                ]
+            );
+        }
+    }
+
     /**
      * Filter Model
      * @param Array $filters

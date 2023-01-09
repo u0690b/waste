@@ -32,17 +32,17 @@
 
             <MySelect :value="data.aimag_city" :error="errors.aimag_city_id" label="Аймаг/нийслэл"
               :url="`/admin/aimag_cities`" @changeId="
-  (id) => {
-    form.aimag_city_id = id;
-    form.soum_district_id = null;
-    form.bag_horoo_id = null;
-  }
-" />
+                (id) => {
+                  form.aimag_city_id = id;
+                  form.soum_district_id = null;
+                  form.bag_horoo_id = null;
+                }
+              " />
 
             <MySelect v-if="form.aimag_city_id" :value="data.soum_district" :error="errors.soum_district_id"
               label="Сум/дүүрэг" :url="`/admin/soum_districts?aimag_city_id=${form.aimag_city_id}`" @changeId="
-  (id) => ((form.soum_district_id = id), (form.bag_horoo_id = null))
-" />
+                (id) => ((form.soum_district_id = id), (form.bag_horoo_id = null))
+              " />
 
             <MySelect v-if="form.soum_district_id" :value="data.bag_horoo" :error="errors.bag_horoo_id"
               label="Баг/хороо" :url="`/admin/bag_horoos?soum_district_id=${form.soum_district_id}`"
@@ -58,7 +58,7 @@
             </button>
             <button :loading="form.processing"
               class="flex bg-gray-600  p-3 mx-4 my-3 text-white rounded text-base hover:bg-gray-500">
-              <inertia-link class="text-white hover:text-white" :href="route('admin.soum_districts.index')">
+              <inertia-link class="text-white hover:text-white" :href="route('admin.users.index')">
                 Буцах</inertia-link>
             </button>
           </div>

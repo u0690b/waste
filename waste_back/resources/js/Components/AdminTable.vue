@@ -12,7 +12,7 @@
           <th v-for="(header, i) in Object.values(headers)" :key="i" class="text-gray-600" @click="$emit('orderBy', i)">
             {{ header }}
           </th>
-          <th class="pl-2">Үйлдэл</th>
+          <th v-if="url" class="pl-2">Үйлдэл</th>
         </tr>
       </thead>
       <tbody>
@@ -79,6 +79,7 @@
 </template>
 
 <script>
+import { Inertia } from "@inertiajs/inertia";
 import Icon from "./Icon.vue";
 
 export default {
@@ -112,8 +113,8 @@ export default {
   },
   methods: {
     destroy(rowId) {
-      if (confirm("Та идэвхигүй болгохдоо итгэлтэй байна уу?")) {
-        $inertia.delete(this.route(this.deleteUrl, rowId));
+      if (confirm("Та устгахдаа итгэлтэй байна уу?")) {
+        Inertia.delete(this.route(this.deleteUrl, rowId));
       }
     },
   },

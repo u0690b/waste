@@ -52,6 +52,30 @@ class AuthController extends GetxController with CacheManager, Api {
     login(user);
   }
 
+  Future<dynamic> signUp({
+    required String name,
+    required String phone,
+    required String password,
+    required int soum_district_id,
+    required int bag_horoo_id,
+  }) async {
+    final res = await fetch(
+      '/signup',
+      'POST',
+      body: {
+        'name': name,
+        'username': phone,
+        'phone': phone,
+        'password': password,
+        'soum_district_id': soum_district_id,
+        'bag_horoo_id': bag_horoo_id,
+      },
+      headers: {"Accept": "application/json"},
+    );
+
+    return res;
+  }
+
   Future<void> getUser(token) async {
     final res = await GetConnect().get(
       '${Constants.host}/api/user',

@@ -41,14 +41,16 @@ class UsersController extends Controller
         if (!($user->roles == 'admin' || $user->roles == 'zaa')) {
             $input['soum_district_id'] = $user->soum_district_id;
         }
-
+        if (!$input['roles']) {
+            $input['roles'] = $user->roles;
+        }
         $users = User::filter($input)->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name');
 
         if (Request::has('only')) {
             return json_encode($users->paginate(Request::input('per_page'), ['id', 'name']));
         }
         return Inertia::render('Admin/users_models/Index', [
-            'filters' => Request::only(["search", ...User::$searchIn]),
+            'filters' =>  $input,
             'datas' => $users
                 ->paginate(Request::input('per_page'))
                 ->withQueryString()
@@ -98,7 +100,8 @@ class UsersController extends Controller
 
 
         $input['password'] = Hash::make($input['password']);
-        User::create($input);
+        $user = User::create($input);
+        $user->sendUserCreated();
         return Redirect::route('admin.users.index')->with('success', 'Хэрэглэгчийг амжилттай бүртгэлээ.');
     }
 
@@ -151,6 +154,6 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return Redirect::route('admin.users.index')->with('success', 'Хэрэглэгчийг идэвхигүй болголоо.');
+        return Redirect::back()->with('success', 'Хэрэглэгчийг идэвхигүй болголоо.');
     }
 }
