@@ -60,3 +60,8 @@ Route::group(['prefix' => 'admin'], function () {
 
 Route::group(['prefix' => 'admin'], function () {
 });
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('industries', App\Http\Controllers\API\IndustryAPIController::class);
+});

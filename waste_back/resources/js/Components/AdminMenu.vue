@@ -94,10 +94,16 @@ if (['admin', 'zaa'].includes(user.value.roles)) {
           href: route("admin.entities.index"),
         },
         {
+          text: "Үйл ажиллагааны чиглэл",
+          icon: markRaw(ChevronRightIcon),
+          href: route("admin.industries.index"),
+        },
+        {
           text: "Шийдвэрийн төрөл",
           icon: markRaw(ChevronRightIcon),
           href: route("admin.resolves.index"),
         },
+
 
       ],
     },

@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('legal_entity', function (Blueprint $table) {
             $table->id();
             $table->string('register')->unique()->comment('Хуулийн этгээдийн регистр');
-            $table->string('name',2000)->comment('Хуулийн этгээдийн нэр');
+            $table->string('name', 2000)->comment('Хуулийн этгээдийн нэр');
+            $table->foreignId('industry_id')->comment('Үйл ажиллагааны чиглэл')->constrained('industries');
         });
     }
 

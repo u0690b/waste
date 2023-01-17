@@ -49,3 +49,6 @@ Route::resource('resolves', App\Http\Controllers\Admin\ResolvesController::class
 
 // Notifications
 Route::resource('notifications', App\Http\Controllers\Admin\NotificationController::class);
+
+// Industries
+Route::resource('industries', App\Http\Controllers\Admin\IndustryController::class);

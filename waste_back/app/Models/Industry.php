@@ -8,31 +8,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * Class Status
- *
+ * Class Industry
  * @package App\Models
- * @version November 24, 2022, 7:41 pm UTC
- * @property \Illuminate\Database\Eloquent\Collection $registers
- * @property \Illuminate\Database\Eloquent\Collection $registerHistories
+ * @version January 18, 2023, 2:50 am +08
+ *
+ * @property \Illuminate\Database\Eloquent\Collection $legalEntities
  * @property string $name
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read int|null $register_histories_count
- * @property-read int|null $registers_count
- * @method static \Database\Factories\StatusFactory factory(...$parameters)
- * @method static Builder|Status filter(array $filters)
- * @method static Builder|Status newModelQuery()
- * @method static Builder|Status newQuery()
- * @method static Builder|Status query()
- * @method static Builder|Status whereCreatedAt($value)
- * @method static Builder|Status whereId($value)
- * @method static Builder|Status whereName($value)
- * @method static Builder|Status whereUpdatedAt($value)
- * @mixin \Eloquent
  */
-
-
 class Industry extends Model
 {
 
@@ -40,6 +22,12 @@ class Industry extends Model
 
     public $table = 'industries';
     public $timestamps = false;
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
+
+
+
+
     public $fillable = [
         'name'
     ];
@@ -64,6 +52,14 @@ class Industry extends Model
     ];
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function legalEntities()
+    {
+        return $this->hasMany(\App\Models\LegalEntity::class, 'industry_id');
+    }
+
+    /**
      * @var array
      */
     public static $searchIn = [
@@ -78,7 +74,7 @@ class Industry extends Model
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
-            $this->buildFilter($query, $filters, Industry::$searchIn);
+            $query =  $this->buildFilter($query, $filters, Industry::$searchIn);
         }
         return $query;
     }
