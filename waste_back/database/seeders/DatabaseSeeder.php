@@ -11,6 +11,7 @@ use App\Models\LegalEntity;
 use App\Models\Register;
 use App\Models\Resolve;
 use App\Models\Status;
+use App\Models\Industry;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -51,7 +52,12 @@ class DatabaseSeeder extends Seeder
         Reason::create(['name' => 'Барилгын хог хаягдал, үйлчилгээний хөлс төлөөгүй', 'place_id' => 1]);
         Reason::create(['name' => 'Бохир ус, угаадас асгах', 'place_id' => 1]);
 
-
+        Industry::create(['name' => 'Үйлдвэрлэл']);
+        Industry::create(['name' => 'Барилга']);
+        Industry::create(['name' => 'Бөөний болон жижиглэн худалдаа, машин, мотоциклийн засвар үйлчилгээ']);
+        Industry::create(['name' => 'Тээвэр, агуулахын үйлчилгээ']);
+        Industry::create(['name' => 'Мэргэжлийн, шинжлэх ухаан болон техникийн үйл ажиллагаа']);
+        Industry::create(['name' => 'Удирдлагын болон дэмжлэг үзүүлэх үйл ажиллагаа']);
 
 
         Status::create(['name' => 'Бүртгэсэн']);

@@ -306,32 +306,111 @@ const rangeDay = computed(() => {
   return (isNaN(difference) ? '~' : Math.ceil(difference / (1000 * 3600 * 24))) + ' өдрийн мэдээ';
 });
 </script>
-
 <template>
 
   <Head title="Үндсэн хуудас" />
-
   <GuestLayout>
     <div class="container">
+      <div class="grid px-4 gap-4 mt-8 sm:px-8 border">
+        <div class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="about" role="tabpanel"
+          aria-labelledby="about-tab">
+          <h2 class="mb-5 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white slide-in-bottom">
+            Системийн зорилго
+            хүрэх үр дүн:
+          </h2>
+          <!-- List -->
+          <ul role="list" class="space-y-4 text-gray-500 dark:text-gray-400">
+            <li class="flex space-x-2">
+              <!-- Icon -->
+              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
+                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span class="font-light leading-tight slide-in-bottom">Хог хаягдлын олон нийтийн байцаагч /ОНБ/-ийн
+                зөрчлийн тэмдэглэл
+                хөтлөх үйлдэл цахимжин хялбар болж, зөрчлийн
+                мэдээллийн цахим сан бий болно</span>
+            </li>
+            <li class="flex space-x-2">
+              <!-- Icon -->
+              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
+                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span class="font-light leading-tight slide-in-bottom">Аливаа зөрчлийн мэдээллийг хариуцсан эрх бүхий
+                байгууллага, албан
+                тушаалтанд шуурхай хүргэн, шийдвэрлүүлнэ</span>
+            </li>
+            <li class="flex space-x-2">
+              <!-- Icon -->
+              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
+                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span class="font-light leading-tight slide-in-bottom">Зөрчил үүсгэж байгаа иргэн, аж ахуй нэгж,
+                байгууллагын нэрс,
+                зөрчлийн мэдээлэл, зөрчлийн шийдвэрлэлтийн явц,
+                үр дүн олон нийтэд нээлттэй ил тод болно</span>
+            </li>
+            <li class="flex space-x-2">
+              <!-- Icon -->
+              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
+                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span class="font-light leading-tight slide-in-bottom">Нийслэл, дүүргийн асуудал хариуцсан холбогдох нэгж,
+                хэлтсүүд хот,
+                дүүргийн хэмжээнд гарч байгаа зөрчлийн тоо
+                хэмжээ, төрөл, түүний шийдвэрлэлтийг тухай бүр хянах, шаардлагатай тайланг гаргах, дээд шатны удирдлагыг
+                мэдээллээр шуурхай хангана</span>
+            </li>
+            <li class="flex space-x-2">
+              <!-- Icon -->
+              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
+                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span class="font-light leading-tight slide-in-bottom">Монгол Улсын Үндсэн хуульд заасан иргэний эрүүл,
+                аюулгүй орчинд
+                амьдрах нөхцөл бүрдэнэ</span>
+            </li>
+          </ul>
+        </div>
 
-
+      </div>
       <div class="ml-12 flex gap-2 py-6 items-center">
         <MyInput v-model="form.start" type="date" label="Эхлэх"></MyInput>
         <MyInput v-model="form.end" type="date" label="Дуусах"></MyInput>
         <span class="pt-6">
           {{ rangeDay }}
         </span>
-
-
       </div>
       <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-3 sm:px-8">
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
-          <h3 class="text-xl text-gray-600 mb-4">Зөрчил төлвөөр</h3>
+          <h3 class="text-xl text-gray-600 mb-4 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
+            </svg>Зөрчил төлвөөр</h3>
           <VueApexCharts class="bg-white p-4" type="pie" :options="statDonut.chartOptions" :series="statDonut.series">
           </VueApexCharts>
         </div>
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow col-span-2">
-          <h3 class="text-xl text-gray-600 mb-4">Зөрчлийн төрлөөр</h3>
+          <h3 class="text-xl text-gray-600 mb-4 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
+            </svg>Зөрчлийн төрлөөр</h3>
           <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="dateOptions.chartOptions"
             :series="dateOptions.series">
           </VueApexCharts>
@@ -339,13 +418,21 @@ const rangeDay = computed(() => {
       </div>
       <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-3 sm:px-8">
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow col-span-2">
-          <h3 class="text-xl text-gray-600 mb-4">Харъяалагдах нутаг дэвсгэрээр</h3>
+          <h3 class="text-xl text-gray-600 mb-4 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
+            </svg>Харъяалагдах нутаг дэвсгэрээр</h3>
           <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="regionOptions.chartOptions"
             :series="regionOptions.series">
           </VueApexCharts>
         </div>
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
-          <h3 class="text-xl text-gray-600 mb-4">Зөрчил хуваарилалтаар</h3>
+          <h3 class="text-xl text-gray-600 mb-4 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
+            </svg>Зөрчил хуваарилалтаар</h3>
           <VueApexCharts class="bg-white p-4" type="pie" :options="donut.chartOptions" :series="donut.series">
           </VueApexCharts>
         </div>
@@ -353,13 +440,23 @@ const rangeDay = computed(() => {
       </div>
       <div class="grid grid-cols-2">
         <div class=" px-4 mx-4 mt-8 sm:mx-8  py-2 bg-white border rounded-md shadow">
-          <h3 class="text-xl text-gray-600 mb-4">Олон зөрчил гаргасан аж ахуйн нэгжүүд</h3>
+          <h3 class="text-xl text-gray-600 mb-4 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+            </svg>
+            Олон зөрчил гаргасан аж ахуйн нэгжүүд</h3>
           <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="etgeedOptions.chartOptions"
             :series="etgeedOptions.series">
           </VueApexCharts>
         </div>
         <div class=" px-4 mx-4 mt-8 sm:mx-8  py-2 bg-white border rounded-md shadow">
-          <h3 class="text-xl text-gray-600 mb-4">Олон зөрчил гаргасан иргэд</h3>
+          <h3 class="text-xl text-gray-600 mb-4 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
+            </svg>
+            Олон зөрчил гаргасан иргэд</h3>
           <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="irgenOptions.chartOptions"
             :series="irgenOptions.series">
           </VueApexCharts>
@@ -367,5 +464,23 @@ const rangeDay = computed(() => {
       </div>
 
     </div>
+
+    <!--Footer-->
+    <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-4 sm:px-8">
+      <a href="http://www.ubservice.mn/?fbclid=IwAR0DRdfuer1AfiIURNjUTtXk4-XIjHP3H2dRBMwLw-dcMwQ1WA11mxS0fMc"
+        target="_blank"><img src="../../../public/img/zaa1.jpg"
+          class="object-contain w-48 ... px-4 slide-in-bottom" /></a>
+      <a href="http://inspection.gov.mn/new/" target="_blank"><img src="../../../public/img/mergejil.jpg"
+          class="object-contain w-48 ... slide-in-bottom" /></a>
+      <a href="https://www.eda.admin.ch/countries/mongolia/mn/home/chegzhlijn.html" target="_blank"><img
+          src="../../../public/img/sha.png" class="object-contain w-48 ... px-4 slide-in-bottom" /></a>
+    </div>
+    <div class="w-full pt-5 pb-5 my-20 text-sm text-center md:text-left fade-in bg-gray-100">
+      Developed by Лансерс ХХК /Хуулбарлахыг хориглоно
+      <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; {{ (new
+        Date()).getFullYear()
+      }} он</a>
+    </div>
   </GuestLayout>
+
 </template>

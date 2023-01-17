@@ -9,24 +9,13 @@ import { Link } from '@inertiajs/inertia-vue3';
         <div class="h-screen pb-14 bg-right bg-cover" style="background-image:url('/bg.svg');">
             <!--Nav-->
             <div class="w-full container mx-auto p-1 bg-gray-100">
-
                 <div class="w-full flex items-center justify-between">
                     <a class="flex items-center text-gray-600 no-underline hover:no-underline font-bold text-2xl lg:text-xl"
-                        href="/">
-                        <img src="@/assets/logo.png" class="w-14 mr-4" />Waste Inspection
+                        :href="route('dashboard')">
+                        <img src="../assets/logo.png" class="w-12 mr-4" />Waste Inspection
                     </a>
 
                     <div class="flex justify-center">
-                        <Inertia-Link
-                            class="inline-grid grid-flow-col text-indigo-600 no-underline hover:text-indigo-800 hover:text-underline text-center h-10 md:h-auto md:p-4 uppercase "
-                            :class="{ 'font-bold': route().current('home') }" href="/">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                            </svg>
-                            Нүүр хуудас
-                        </Inertia-Link>
                         <Inertia-Link
                             class="inline-grid grid-flow-col text-indigo-600 no-underline hover:text-indigo-800 hover:text-underline text-center h-5 p-2 md:h-auto md:p-4 uppercase "
                             :class="{ 'font-bold': route().current('dashboard') }" :href="route('dashboard')">
