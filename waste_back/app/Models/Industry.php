@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * Class LegalEntity
+ * Class Status
  *
  * @package App\Models
  * @version November 24, 2022, 7:41 pm UTC
@@ -20,30 +20,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read int|null $register_histories_count
  * @property-read int|null $registers_count
- * @method static \Database\Factories\LegalEntityFactory factory(...$parameters)
- * @method static Builder|LegalEntity filter(array $filters)
- * @method static Builder|LegalEntity newModelQuery()
- * @method static Builder|LegalEntity newQuery()
- * @method static Builder|LegalEntity query()
- * @method static Builder|LegalEntity whereCreatedAt($value)
- * @method static Builder|LegalEntity whereId($value)
- * @method static Builder|LegalEntity whereName($value)
- * @method static Builder|LegalEntity whereUpdatedAt($value)
+ * @method static \Database\Factories\StatusFactory factory(...$parameters)
+ * @method static Builder|Status filter(array $filters)
+ * @method static Builder|Status newModelQuery()
+ * @method static Builder|Status newQuery()
+ * @method static Builder|Status query()
+ * @method static Builder|Status whereCreatedAt($value)
+ * @method static Builder|Status whereId($value)
+ * @method static Builder|Status whereName($value)
+ * @method static Builder|Status whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 
 
-class LegalEntity extends Model
+class Industry extends Model
 {
 
     use HasFactory;
-    public $timestamps = false;
-    public $table = 'legal_entity';
 
+    public $table = 'industries';
+    public $timestamps = false;
     public $fillable = [
-        'register',
-        'name',
-        'industry'
+        'name'
     ];
 
     /**
@@ -53,9 +51,7 @@ class LegalEntity extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'register'=>'string',
-        'name' => 'string',
-        'industry'=>'string'
+        'name' => 'string'
     ];
 
     /**
@@ -64,28 +60,25 @@ class LegalEntity extends Model
      * @var array
      */
     public static $rules = [
-        'register' => 'required|string|max:10',
-        'name' => 'required|string|max:1000',
-        'industry' => 'required|string|max:2000',
+        'name' => 'required|string|max:255'
     ];
 
-    
     /**
      * @var array
      */
     public static $searchIn = [
-        'name',
+        'name'
     ];
 
     /**
      * Filter Model
      * @param Array $filters
-     * @return App\Models\LegalEntity
+     * @return App\Models\Industry
      */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
-            $this->buildFilter($query, $filters, LegalEntity::$searchIn);
+            $this->buildFilter($query, $filters, Industry::$searchIn);
         }
         return $query;
     }

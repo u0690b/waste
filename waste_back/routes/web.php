@@ -17,14 +17,15 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
+// Route::get('/', function () {
+//     return Inertia::render('Welcome');
+// })->name('home');
 Route::get('/test', [IndexController::class, 'sendNotificationrToUser'])->name('reg.sendNotificationrToUser');
 
 // Registers
 Route::get('/reg', [IndexController::class, 'register'])->name('reg.index');
 Route::get('/reg/{register}', [IndexController::class, 'show'])->name('reg.show');
+Route::get('/', [IndexController::class, 'index'])->name('dashboard');
 Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard');
 
 // Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard');
