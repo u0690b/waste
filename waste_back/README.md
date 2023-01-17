@@ -10,3 +10,10 @@ php artisan deto:api_scaffold RegisterHistory --fromTable --tableName=register_h
 php artisan deto:api_scaffold UsersModel --fromTable --tableName=users
 php artisan deto:api_scaffold Resolve --fromTable --tableName=resolves
 php artisan deto:api_scaffold Notification --fromTable --tableName=notifications
+
+-   [x] Mobile deer ilgeesen shiidvelesen huuvarilan hed baigaa too ird taliin icon deer
+-   [ ] gazriin zurgiin markiig shiidsen shiideegui unguur ulaandeer darhaar zurchliin medeelel haragdaval zugeer
+-   [x] huuliin etgeediin neriig yanzalna
+-   [ ] uil ajillagaani chigleliigni nemchuul zugeerb aiga
+-   [ ] huuliin zaaltiig songuul zugeer bna
+-   [ ] duurgeer erhiin tuvchineer graphiciin too bailgah

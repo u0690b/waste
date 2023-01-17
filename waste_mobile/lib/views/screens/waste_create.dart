@@ -18,7 +18,9 @@ import 'package:waste_mobile/views/widgets/image_pick_list.dart';
 import 'package:waste_mobile/views/widgets/location_map.dart';
 
 class WasteCreate extends StatefulWidget {
-  const WasteCreate({Key? key}) : super(key: key);
+  final WasteController wasteController;
+  const WasteCreate({Key? key, required this.wasteController})
+      : super(key: key);
 
   @override
   State<WasteCreate> createState() => _WasteCreateState();
@@ -44,7 +46,7 @@ class _WasteCreateState extends State<WasteCreate> {
           child: WasteRegisterForm(
             onSave: (value) => futureAlertDialog(
                 context: context,
-                futureStream: Get.find<WasteController>().addLocalModels(value),
+                futureStream: widget.wasteController.addLocalModels(value),
                 autoCloseSec: 1),
           ),
         ));

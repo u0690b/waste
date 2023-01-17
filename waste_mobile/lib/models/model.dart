@@ -20,6 +20,7 @@ class NameModel {
   final int? soum_district_id;
   final DateTime? updated_at;
   final DateTime? created_at;
+
   NameModel({
     required this.id,
     required this.name,

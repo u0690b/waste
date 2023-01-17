@@ -9,37 +9,6 @@ import 'package:waste_mobile/models/waste.dart';
 import 'package:waste_mobile/models/waste_model.dart';
 import 'package:waste_mobile/views/widgets/pagination_builder.dart';
 
-class CompleteWasteController extends WasteController
-    implements IPaginationModel<Waste> {
-  @override
-  Future<Iterable<Waste>?> _getQuery() async {
-    final res = await fetch<Iterable<Waste>>(
-      '/registers',
-      'get',
-      body: {
-        ..._getAimagCityFilter(),
-        'status_id': 4,
-        'next_cursor': nextCursor,
-        if (AuthController.user!.isMH && !AuthController.user!.isMHA)
-          'comf_user_id': AuthController.user!.id
-      },
-      decoder: (data) {
-        if (data is Map) {
-          nextCursor = data['next_cursor'];
-          return (data['data'] as List<dynamic>).map(
-            (e) => Waste.fromJson(e),
-          );
-        }
-        // return [];
-        return (data as List<dynamic>).map(
-          (e) => Waste.fromJson(e),
-        );
-      },
-    );
-    return res;
-  }
-}
-
 class WasteController extends GetxController
     with Api
     implements IPaginationModel<Waste> {
@@ -47,7 +16,7 @@ class WasteController extends GetxController
   ValueNotifier<bool> loading = ValueNotifier<bool>(false);
   @override
   String? nextCursor;
-
+  final RxInt total = 0.obs;
   @override
   final RxList<Waste> datas = <Waste>[].obs;
   String? title;
@@ -62,6 +31,10 @@ class WasteController extends GetxController
       ss = 'status_id[]=3';
       if (AuthController.user!.isMH && !AuthController.user!.isMHA)
         headers['comf_user_id'] = AuthController.user!.id;
+    } else if (title == 'Шийдвэрлэгдсэн') {
+      ss = 'status_id[]=4';
+      if (AuthController.user!.isMH && !AuthController.user!.isMHA)
+        headers['comf_user_id'] = AuthController.user!.id;
     } else
       ss = 'status_id[]=2&status_id[]=3';
     final res = await fetch<Iterable<Waste>>(
@@ -71,6 +44,7 @@ class WasteController extends GetxController
       decoder: (data) {
         if (data is Map) {
           nextCursor = data['next_cursor'];
+          total.value = data['total'] ?? 0;
           return (data['data'] as List<dynamic>).map((e) => Waste.fromJson(e));
         }
         // return [];
@@ -123,6 +97,7 @@ class WasteController extends GetxController
     final localModels =
         GetStorage('WasteModel').read<List>('LocalWasteModel') ?? [];
     localModels.insert(0, value.toJson());
+    total.value = localModels.length;
     await GetStorage('WasteModel').write('LocalWasteModel', localModels);
     loading.value = false;
   }
@@ -137,6 +112,7 @@ class WasteController extends GetxController
             ?.map((e) => WasteModel.fromJson(e))
             .toList() ??
         [];
+    total.value = ret.length;
     return ret;
   }
 
@@ -147,6 +123,7 @@ class WasteController extends GetxController
         GetStorage('WasteModel').read<List>('LocalWasteModel') ?? [];
     localModels.removeAt(index);
     await GetStorage('WasteModel').write('LocalWasteModel', localModels);
+    total.value = localModels.length;
     loading.value = false;
   }
 

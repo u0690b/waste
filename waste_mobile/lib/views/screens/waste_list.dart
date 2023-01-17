@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waste_mobile/controllers/waste_controller.dart';
 import 'package:waste_mobile/models/waste.dart';
-import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/views/screens/waste_details.dart';
 import 'package:waste_mobile/views/widgets/pagination_builder.dart';
 
@@ -12,10 +11,9 @@ class WasteList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final IPaginationModel<Waste> wasteController = title == 'Шийдвэрлэгдсэн'
-        ? Get.put(CompleteWasteController())
-        : Get.put(WasteController(title));
-    wasteController.refresh();
+    final IPaginationModel<Waste> wasteController =
+        Get.find<WasteController>(tag: title);
+    // wasteController.refresh();
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -29,7 +27,7 @@ class WasteList extends StatelessWidget {
             itemBuilder: (context, index) {
               var item = datas[index];
               return ListTile(
-                  tileColor: LightColors.kPalePink,
+                  // tileColor: LightColors.kPalePink,
                   textColor: Colors.black,
                   iconColor: Colors.blue,
                   shape: const RoundedRectangleBorder(
@@ -60,7 +58,7 @@ class WasteList extends StatelessWidget {
                   ));
             },
             separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(height: 10);
+              return const Divider(height: 10);
             },
           );
         },

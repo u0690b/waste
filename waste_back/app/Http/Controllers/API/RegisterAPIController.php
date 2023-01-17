@@ -60,9 +60,10 @@ class RegisterAPIController extends AppBaseController
             $query->limit($request->get('limit'));
         }
 
-
-
-        return $query->orderByDesc('id')->cursorPaginate(null, ['*'], 'cursor', $request->input('next_cursor'));
+        $total = $query->toBase()->getCountForPagination();
+        $pagination = $query->orderByDesc('id')->cursorPaginate(null, ['*'], 'cursor', $request->input('next_cursor'))->toArray();
+        $pagination['total'] = $total;
+        return $pagination;
     }
 
     private function saveFiles(Register $model, $files, $type)

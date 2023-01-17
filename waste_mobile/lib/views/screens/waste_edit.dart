@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:waste_mobile/controllers/waste_controller.dart';
 import 'package:waste_mobile/models/waste_model.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
@@ -9,7 +8,10 @@ import 'package:waste_mobile/views/widgets/future_alert_dialog.dart';
 
 class WasteEdit extends StatefulWidget {
   final WasteModel model;
-  const WasteEdit({Key? key, required this.model}) : super(key: key);
+  final WasteController wasteController;
+  const WasteEdit(
+      {Key? key, required this.model, required this.wasteController})
+      : super(key: key);
 
   @override
   State<WasteEdit> createState() => _WasteEditState();
@@ -37,7 +39,7 @@ class _WasteEditState extends State<WasteEdit> {
             onSave: (WasteModel value) async {
               await futureAlertDialog(
                 context: context,
-                futureStream: Get.find<WasteController>()
+                futureStream: widget.wasteController
                     .editLocalModels(value..index = widget.model.index),
                 autoCloseSec: 1,
               );

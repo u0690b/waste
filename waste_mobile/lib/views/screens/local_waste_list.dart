@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:waste_mobile/controllers/waste_controller.dart';
-import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/views/screens/splash_screen.dart';
 import 'package:waste_mobile/views/screens/waste_create.dart';
 import 'package:waste_mobile/views/screens/waste_edit.dart';
@@ -19,14 +18,15 @@ class LocalWasteList extends StatefulWidget {
 class _LocalWasteListState extends State<LocalWasteList> {
   @override
   Widget build(BuildContext context) {
-    final WasteController wasteController = Get.find();
+    final WasteController wasteController = Get.find(tag: widget.title);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
           IconButton(
-            onPressed: () => Get.to(() => const WasteCreate()),
+            onPressed: () =>
+                Get.to(() => WasteCreate(wasteController: wasteController)),
             icon: const Icon(Icons.create_new_folder_rounded),
           )
         ],
@@ -93,7 +93,7 @@ class _LocalWasteListState extends State<LocalWasteList> {
                                 ],
                               ),
                               child: ListTile(
-                                  tileColor: LightColors.kPalePink,
+                                  // tileColor: LightColors.kPalePink,
                                   textColor: Colors.black,
                                   iconColor: Colors.blue,
                                   shape: const RoundedRectangleBorder(
@@ -105,8 +105,9 @@ class _LocalWasteListState extends State<LocalWasteList> {
                                   leading: const Icon(Icons.map),
                                   contentPadding:
                                       const EdgeInsets.symmetric(horizontal: 8),
-                                  onTap: () =>
-                                      Get.to(() => WasteEdit(model: item)),
+                                  onTap: () => Get.to(() => WasteEdit(
+                                      model: item,
+                                      wasteController: wasteController)),
                                   dense: false,
                                   title: Text(item.name ?? ''),
                                   subtitle: Column(
@@ -124,7 +125,7 @@ class _LocalWasteListState extends State<LocalWasteList> {
                             );
                           },
                           separatorBuilder: (BuildContext context, int index) {
-                            return const SizedBox(height: 10);
+                            return const Divider(height: 10);
                           },
                         );
                 });

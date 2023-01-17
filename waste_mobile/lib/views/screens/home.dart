@@ -7,6 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/controllers/common_controller.dart';
 import 'package:waste_mobile/controllers/notification_controller.dart';
+import 'package:waste_mobile/controllers/waste_controller.dart';
 import 'package:waste_mobile/theme/colors/light_colors.dart';
 import 'package:waste_mobile/utils/contants.dart';
 import 'package:waste_mobile/utils/messaging_service.dart';
@@ -53,6 +54,12 @@ class _HomeViewState extends State<HomeView> {
   final CommonController commonController = Get.find();
   final AuthController authController = Get.find();
   final NotificationController notificationController = Get.find();
+  final WasteController wasteController_ilgeegeegui =
+      Get.find(tag: 'Илгээгээгүй');
+  final WasteController wasteController2 = Get.find(tag: 'Ирсэн');
+  final WasteController wasteController3 = Get.find(tag: 'Хуваарилагдсан');
+  final WasteController wasteController4 = Get.find(tag: 'Илгээсэн');
+  final WasteController wasteController5 = Get.find(tag: 'Шийдвэрлэгдсэн');
 
   late MessagingService service;
   Text subheading(String title) {
@@ -82,7 +89,15 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     subscription = listenToConnectivitySubscription();
-
+    if (AuthController.user!.isMHA) wasteController2.refresh();
+    if (AuthController.user!.isMH)
+      wasteController3.refresh();
+    else
+      wasteController4.refresh();
+    wasteController5.refresh();
+    wasteController_ilgeegeegui
+        .initWasteModel()
+        .then((value) => wasteController_ilgeegeegui.getLocalModels());
     service = MessagingService();
     service.setupInteractedMessage((token) {
       print('FCM Token: $token');
@@ -239,11 +254,15 @@ class _HomeViewState extends State<HomeView> {
                                       ),
                                       const SizedBox(height: 15.0),
                                       TextButton(
-                                        onPressed: () => Get.to(() =>
-                                            const LocalWasteList(
-                                                title: 'Илгээгээгүй')),
-                                        child: const TaskColumn(
+                                        onPressed: () => Get.to(
+                                          () => const LocalWasteList(
+                                            title: 'Илгээгээгүй',
+                                          ),
+                                        ),
+                                        child: TaskColumn(
                                           icon: Icons.alarm,
+                                          wasteController:
+                                              wasteController_ilgeegeegui,
                                           iconBackgroundColor: LightColors.kRed,
                                           title: 'Илгээгээгүй',
                                           subtitle: 'Бүртгэл',
@@ -260,6 +279,7 @@ class _HomeViewState extends State<HomeView> {
                                               : noConnection,
                                           child: TaskColumn(
                                             icon: Icons.blur_circular,
+                                            wasteController: wasteController2,
                                             iconBackgroundColor:
                                                 LightColors.kDarkYellow,
                                             title: 'Ирсэн',
@@ -270,23 +290,36 @@ class _HomeViewState extends State<HomeView> {
                                           height: 15.0,
                                         ),
                                       ],
-                                      TextButton(
-                                        onPressed: isOnline
-                                            ? () => Get.to(() => WasteList(
-                                                title: AuthController.user!.isMH
-                                                    ? 'Хуваарилагдсан'
-                                                    : 'Илгээсэн'))
-                                            : noConnection,
-                                        child: TaskColumn(
-                                          icon: Icons.blur_circular,
-                                          iconBackgroundColor:
-                                              LightColors.kDarkYellow,
-                                          title: AuthController.user!.isMH
-                                              ? 'Хуваарилагдсан'
-                                              : 'Илгээсэн',
-                                          subtitle: 'Бүртгэл',
+                                      if (AuthController.user!.isMH)
+                                        TextButton(
+                                          onPressed: isOnline
+                                              ? () => Get.to(() => WasteList(
+                                                  title: 'Хуваарилагдсан'))
+                                              : noConnection,
+                                          child: TaskColumn(
+                                            icon: Icons.blur_circular,
+                                            wasteController: wasteController3,
+                                            iconBackgroundColor:
+                                                LightColors.kDarkYellow,
+                                            title: 'Хуваарилагдсан',
+                                            subtitle: 'Бүртгэл',
+                                          ),
+                                        )
+                                      else
+                                        TextButton(
+                                          onPressed: isOnline
+                                              ? () => Get.to(() =>
+                                                  WasteList(title: 'Илгээсэн'))
+                                              : noConnection,
+                                          child: TaskColumn(
+                                            wasteController: wasteController4,
+                                            icon: Icons.blur_circular,
+                                            iconBackgroundColor:
+                                                LightColors.kDarkYellow,
+                                            title: 'Илгээсэн',
+                                            subtitle: 'Бүртгэл',
+                                          ),
                                         ),
-                                      ),
                                       const SizedBox(height: 15.0),
                                       TextButton(
                                         onPressed: isOnline
@@ -294,7 +327,8 @@ class _HomeViewState extends State<HomeView> {
                                                 const WasteList(
                                                     title: 'Шийдвэрлэгдсэн'))
                                             : noConnection,
-                                        child: const TaskColumn(
+                                        child: TaskColumn(
+                                          wasteController: wasteController5,
                                           icon: Icons.check_circle_outline,
                                           iconBackgroundColor:
                                               LightColors.kBlue,
@@ -351,7 +385,11 @@ class _HomeViewState extends State<HomeView> {
                         right: 20,
                         child: IconButton(
                           iconSize: 60,
-                          onPressed: () => Get.to(() => const WasteCreate()),
+                          onPressed: () => Get.to(
+                            () => WasteCreate(
+                              wasteController: wasteController_ilgeegeegui,
+                            ),
+                          ),
                           icon: HomeView.plusIcon(),
                         ),
                       ),

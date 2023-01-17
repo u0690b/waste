@@ -7,8 +7,8 @@ import 'package:timeago/timeago.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/controllers/common_controller.dart';
 import 'package:waste_mobile/controllers/notification_controller.dart';
-
 import 'package:waste_mobile/controllers/waste_controller.dart';
+
 import 'package:waste_mobile/utils/messaging_service.dart';
 import 'package:waste_mobile/views/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,16 +26,36 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
+  void initState() {
+    super.initState();
+
+    Get.lazyPut(() => CommonController(), fenix: true);
+    Get.lazyPut(() => AuthController(), fenix: true);
+    Get.lazyPut(() => WasteController('Илгээгээгүй'),
+        tag: 'Илгээгээгүй', fenix: true);
+    Get.lazyPut(() => WasteController('Ирсэн'), tag: 'Ирсэн', fenix: true);
+    Get.lazyPut(() => WasteController('Хуваарилагдсан'),
+        tag: 'Хуваарилагдсан', fenix: true);
+    Get.lazyPut(() => WasteController('Илгээсэн'),
+        tag: 'Илгээсэн', fenix: true);
+    Get.lazyPut(() => WasteController('Шийдвэрлэгдсэн'),
+        tag: 'Шийдвэрлэгдсэн', fenix: true);
+
+    Get.lazyPut(() => NotificationController(), fenix: true);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Get.put(CommonController());
-    Get.put(AuthController());
-    Get.lazyPut(() => WasteController());
-    Get.lazyPut(() => NotificationController());
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
