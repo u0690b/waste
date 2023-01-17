@@ -32,9 +32,9 @@
         </div>
       </div>
       <admin-table
-        :headers="{ 'register': 'Хуулийн этгээдийн регистр', 'name': 'Хуулийн этгээдийн нэр', 'industry.name': 'Үйл ажиллагааны чиглэл', }"
-        :datas="datas" url="admin.entities.edit" :insertUrl="route('admin.entities.create')"
-        deleteUrl="admin.entities.destroy" />
+        :headers="{ 'register': 'Хуулийн этгээдийн регистр', 'name': 'Хуулийн этгээдийн нэр', 'industry': 'Үйл ажиллагааны чиглэл' }"
+        :datas="datas" url="admin.legal_entities.edit" :insertUrl="route('admin.legal_entities.create')"
+        deleteUrl="admin.legal_entities.destroy" />
       <div class="py-2 flex items-center justify-between border-t border-gray-200">
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
         <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
@@ -54,14 +54,14 @@ import pickBy from 'lodash/pickBy'
 import SearchFilter from '@/Components/SearchFilter.vue'
 import debounce from 'lodash/debounce'
 import AdminTable from '@/Components/AdminTable.vue'
-import MySelect from '@/Components/MySelect.vue'
+
 export default {
   metaInfo: { title: 'Legal Entities' },
   components: {
     Pagination,
     SearchFilter,
     AdminTable,
-    MySelect,
+
   },
   layout: Layout,
   props: {
@@ -72,7 +72,7 @@ export default {
   data() {
     return {
       form: {
-        industry_id: null,
+
         ...this.filters ? this.filters : {},
       },
     }
@@ -80,7 +80,7 @@ export default {
   watch: {
     form: {
       handler: debounce(function () {
-        this.$inertia.get(this.route('admin.entities.index'), pickBy(this.form), { preserveState: true })
+        this.$inertia.get(this.route('admin.legal_entities.index'), pickBy(this.form), { preserveState: true })
       }, 150),
       deep: true,
     },

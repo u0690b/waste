@@ -23,7 +23,7 @@ class LegalEntityAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = LegalEntity::filter($request->all(["search", ...LegalEntity::$searchIn]))->with('industry:id,name');
+        $query = LegalEntity::filter( $request->all(["search", ...LegalEntity::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -42,7 +42,7 @@ class LegalEntityAPIController extends AppBaseController
                 return [
                     'name' => $item->name,
                     'id' => $item->register,
-                    'industry' => $item->industry->name,
+                    'industry' => $item->industry,
                 ];
             }
         );

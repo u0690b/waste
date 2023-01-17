@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('register')->unique()->comment('Хуулийн этгээдийн регистр');
             $table->string('name', 2000)->comment('Хуулийн этгээдийн нэр');
-            $table->foreignId('industry_id')->comment('Үйл ажиллагааны чиглэл')->constrained('industries');
+            $table->string('industry',200)->comment('Үйл ажиллагааны чиглэл');
         });
     }
 

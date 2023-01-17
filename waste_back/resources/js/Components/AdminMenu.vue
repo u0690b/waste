@@ -91,7 +91,7 @@ if (['admin', 'zaa'].includes(user.value.roles)) {
         {
           text: "Хуулийн этгээд",
           icon: markRaw(ChevronRightIcon),
-          href: route("admin.entities.index"),
+          href: route("admin.legal_entities.index"),
         },
         {
           text: "Үйл ажиллагааны чиглэл",

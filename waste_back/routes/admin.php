@@ -54,3 +54,7 @@ Route::resource('industries', App\Http\Controllers\Admin\IndustryController::cla
 
 // LegalEntities
 Route::resource('entities', App\Http\Controllers\Admin\LegalEntityController::class);
+
+
+// LegalEntities
+Route::resource('legal_entities', App\Http\Controllers\Admin\LegalEntityController::class);

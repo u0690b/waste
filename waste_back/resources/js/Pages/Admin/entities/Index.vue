@@ -77,7 +77,7 @@ export default {
   watch: {
     form: {
       handler: debounce(function () {
-        this.$inertia.get(this.route("admin.entities.index"), pickBy(this.form), {
+        this.$inertia.get(this.route("admin.legal_entities.index"), pickBy(this.form), {
           preserveState: true,
         });
       }, 150),

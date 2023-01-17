@@ -24,7 +24,7 @@ class LegalEntityFactory extends Factory
         return [
             'register' => $this->faker->word,
         'name' => $this->faker->word,
-        'industry_id' => $this->faker->word
+        'industry' => $this->faker->word
         ];
     }
 }

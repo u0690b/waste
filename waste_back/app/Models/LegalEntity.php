@@ -10,12 +10,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class LegalEntity
  * @package App\Models
- * @version January 18, 2023, 3:07 am +08
+ * @version January 18, 2023, 5:16 am +08
  *
- * @property \App\Models\Industry $industry
  * @property string $register
  * @property string $name
- * @property integer $industry_id
+ * @property string $industry
  */
 class LegalEntity extends Model
 {
@@ -23,7 +22,7 @@ class LegalEntity extends Model
     use HasFactory;
     public $timestamps = false;
     public $table = 'legal_entity';
-
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -33,7 +32,7 @@ class LegalEntity extends Model
     public $fillable = [
         'register',
         'name',
-        'industry_id'
+        'industry'
     ];
 
     /**
@@ -45,7 +44,7 @@ class LegalEntity extends Model
         'id' => 'integer',
         'register' => 'string',
         'name' => 'string',
-        'industry_id' => 'integer'
+        'industry' => 'string'
     ];
 
     /**
@@ -56,16 +55,10 @@ class LegalEntity extends Model
     public static $rules = [
         'register' => 'required|string|max:255',
         'name' => 'required|string|max:2000',
-        'industry_id' => 'required'
+        'industry' => 'required|string|max:200'
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
-    public function industry()
-    {
-        return $this->belongsTo(\App\Models\Industry::class, 'industry_id');
-    }
+    
 
     /**
      * @var array
@@ -75,10 +68,10 @@ class LegalEntity extends Model
     ];
 
     /**
-     * Filter Model
-     * @param Array $filters
-     * @return App\Models\LegalEntity
-     */
+    * Filter Model
+    * @param Array $filters
+    * @return App\Models\LegalEntity
+    */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {

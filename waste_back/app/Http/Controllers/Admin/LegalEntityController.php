@@ -18,16 +18,16 @@ class LegalEntityController extends Controller
      */
     public function index()
     {
-        $legalEntities = LegalEntity::filter(Request::all(["search", ...LegalEntity::$searchIn]))->with('industry:id,name');
+        $legalEntities = LegalEntity::filter(Request::all(["search", ...LegalEntity::$searchIn]));
         if (Request::has('only')) {
-            return json_encode($legalEntities->paginate(Request::input('per_page'), ['id', 'name']));
+            return json_encode($legalEntities->paginate(Request::input('per_page'),['id', 'name']));
         }
         return Inertia::render('Admin/legal_entities/Index', [
             'filters' => Request::only(["search", ...LegalEntity::$searchIn]),
             'datas' => $legalEntities
                 ->paginate(Request::input('per_page'))
                 ->withQueryString()
-                ->through(fn ($row) => $row->only('id', 'register', 'name', 'industry', 'industry_id')),
+                ->through(fn ($row) => $row->only('id','register','name','industry')),
             'host' => config('app.url'),
         ]);
     }
@@ -50,7 +50,7 @@ class LegalEntityController extends Controller
     public function store()
     {
         LegalEntity::create(Request::validate(LegalEntity::$rules));
-        return Redirect::route('admin.entities.index')->with('success', 'LegalEntity created.');
+        return Redirect::route('admin.legal_entities.index')->with('success', 'LegalEntity created.');
     }
 
     /**
@@ -78,7 +78,7 @@ class LegalEntityController extends Controller
     public function update(LegalEntity $legalEntity)
     {
         $legalEntity->update(Request::validate(LegalEntity::$rules));
-        return Redirect::route('admin.entities.index')->with('success', 'LegalEntity updated.');
+        return Redirect::route('admin.legal_entities.index')->with('success', 'LegalEntity updated.');
     }
 
     /**
@@ -93,6 +93,6 @@ class LegalEntityController extends Controller
     public function destroy(LegalEntity $legalEntity)
     {
         $legalEntity->delete();
-        return Redirect::route('admin.entities.index')->with('success', 'LegalEntity deleted.');
+        return Redirect::route('admin.legal_entities.index')->with('success', 'LegalEntity deleted.');
     }
 }
