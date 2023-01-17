@@ -9,30 +9,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class LegalEntity
- *
  * @package App\Models
- * @version November 24, 2022, 7:41 pm UTC
- * @property \Illuminate\Database\Eloquent\Collection $registers
- * @property \Illuminate\Database\Eloquent\Collection $registerHistories
+ * @version January 18, 2023, 3:07 am +08
+ *
+ * @property \App\Models\Industry $industry
+ * @property string $register
  * @property string $name
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read int|null $register_histories_count
- * @property-read int|null $registers_count
- * @method static \Database\Factories\LegalEntityFactory factory(...$parameters)
- * @method static Builder|LegalEntity filter(array $filters)
- * @method static Builder|LegalEntity newModelQuery()
- * @method static Builder|LegalEntity newQuery()
- * @method static Builder|LegalEntity query()
- * @method static Builder|LegalEntity whereCreatedAt($value)
- * @method static Builder|LegalEntity whereId($value)
- * @method static Builder|LegalEntity whereName($value)
- * @method static Builder|LegalEntity whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property integer $industry_id
  */
-
-
 class LegalEntity extends Model
 {
 
@@ -40,10 +24,16 @@ class LegalEntity extends Model
     public $timestamps = false;
     public $table = 'legal_entity';
 
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
+
+
+
+
     public $fillable = [
         'register',
         'name',
-        'industry'
+        'industry_id'
     ];
 
     /**
@@ -53,9 +43,9 @@ class LegalEntity extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'register'=>'string',
+        'register' => 'string',
         'name' => 'string',
-        'industry'=>'string'
+        'industry_id' => 'integer'
     ];
 
     /**
@@ -64,12 +54,19 @@ class LegalEntity extends Model
      * @var array
      */
     public static $rules = [
-        'register' => 'required|string|max:10',
-        'name' => 'required|string|max:1000',
-        'industry' => 'required|string|max:2000',
+        'register' => 'required|string|max:255',
+        'name' => 'required|string|max:2000',
+        'industry_id' => 'required'
     ];
 
-    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function industry()
+    {
+        return $this->belongsTo(\App\Models\Industry::class, 'industry_id');
+    }
+
     /**
      * @var array
      */
@@ -85,7 +82,7 @@ class LegalEntity extends Model
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
-            $this->buildFilter($query, $filters, LegalEntity::$searchIn);
+            $query =  $this->buildFilter($query, $filters, LegalEntity::$searchIn);
         }
         return $query;
     }

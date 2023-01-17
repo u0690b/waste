@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('soum_districts', App\Http\Controllers\API\SoumDistrictAPIController::class);
     Route::resource('users', App\Http\Controllers\API\UserAPIController::class);
     Route::put('save_token', [UserAPIController::class, 'save_token'])->name('api.save_token');
+    Route::resource('industries', App\Http\Controllers\API\IndustryAPIController::class);
 
     Route::post('/registers/{register}/resolve', [App\Http\Controllers\API\RegisterAPIController::class, 'resolve'])->name('commons.index');
     Route::put('/registers/{register}/allocation', [App\Http\Controllers\API\RegisterAPIController::class, 'allocation_store'])->name('register.allocation_store');
@@ -62,6 +63,8 @@ Route::group(['prefix' => 'admin'], function () {
 });
 
 
+
+
 Route::group(['prefix' => 'admin'], function () {
-    Route::resource('industries', App\Http\Controllers\API\IndustryAPIController::class);
+    Route::resource('legal_entities', App\Http\Controllers\API\LegalEntityAPIController::class);
 });

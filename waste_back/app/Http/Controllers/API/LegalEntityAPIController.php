@@ -9,7 +9,7 @@ use App\Http\Controllers\AppBaseController;
 use Response;
 
 /**
- * Class StatusController
+ * Class LegalEntityController
  * @package App\Http\Controllers\API
  */
 
@@ -17,20 +17,13 @@ class LegalEntityAPIController extends AppBaseController
 {
     /**
      * Display a listing of the LegalEntity.
-     * GET|HEAD /entities
+     * GET|HEAD /legalEntities
      *
      * @return Response
      */
     public function index(Request $request)
     {
-        // $input = $request->validate(['date' => 'nullable|date']);
-        // if (isset($input['date'])) {
-        //     $count =   LegalEntity::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
-        //     if ($count <= 0) {
-        //         return [];
-        //     }
-        // }
-        $query = LegalEntity::filter($request->all(["search", ...LegalEntity::$searchIn]));
+        $query = LegalEntity::filter($request->all(["search", ...LegalEntity::$searchIn]))->with('industry:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -44,11 +37,12 @@ class LegalEntityAPIController extends AppBaseController
                 $query->limit(50);
         }
 
-        $statuses = $query->get(['register', 'name'])->transform(
+        $statuses = $query->get()->transform(
             function ($item, $key) {
                 return [
                     'name' => $item->name,
                     'id' => $item->register,
+                    'industry' => $item->industry->name,
                 ];
             }
         );
@@ -57,8 +51,8 @@ class LegalEntityAPIController extends AppBaseController
     }
 
     /**
-     * Store a newly created Status in storage.
-     * POST /statuses
+     * Store a newly created LegalEntity in storage.
+     * POST /legalEntities
      *
      * @return Response
      */
@@ -66,61 +60,61 @@ class LegalEntityAPIController extends AppBaseController
     {
         $input = $request->validate(LegalEntity::$rules);
 
-        /** @var LegalEntity $entities */
-        $entities = LegalEntity::create($input);
+        /** @var LegalEntity $legalEntity */
+        $legalEntity = LegalEntity::create($input);
 
-        return $entities;
+        return $legalEntity->toJson();
     }
 
     /**
      * Display the specified LegalEntity.
-     * GET|HEAD /entities/{id}
+     * GET|HEAD /legalEntities/{id}
      *
-     * @param LegalEntity $entities
+     * @param LegalEntity $legalEntities
      *
      * @return Response
      */
     public function show($id)
     {
-        /** @var LegalEntity $entities */
-        $entities = LegalEntity::find($id);
+        /** @var LegalEntity $legalEntity */
+        $legalEntity = LegalEntity::find($id);
 
-        if (empty($entities)) {
-            return $this->sendError('Entity not found');
+        if (empty($legalEntity)) {
+            return $this->sendError('Legal Entity not found');
         }
 
-        return $entities;
+        return $legalEntity->toJson();
     }
 
     /**
-     * Update the specified Status in storage.
-     * PUT/PATCH /statuses/{id}
+     * Update the specified LegalEntity in storage.
+     * PUT/PATCH /legalEntities/{id}
      *
-     * @param LegalEntity $statuses
+     * @param LegalEntity $legalEntities
      *
      * @return Response
      */
     public function update($id, Request $request)
     {
         $input = $request->validate(LegalEntity::$rules);
-        /** @var LegalEntity $entities */
-        $entities = LegalEntity::find($id);
+        /** @var LegalEntity $legalEntity */
+        $legalEntity = LegalEntity::find($id);
 
-        if (empty($entities)) {
-            return $this->sendError('Entity not found');
+        if (empty($legalEntity)) {
+            return $this->sendError('Legal Entity not found');
         }
 
-        $entities->fill($input);
-        $entities->save();
+        $legalEntity->fill($input);
+        $legalEntity->save();
 
-        return $entities;
+        return $legalEntity->toJson();
     }
 
     /**
-     * Remove the specified Status from storage.
-     * DELETE /statuses/{id}
+     * Remove the specified LegalEntity from storage.
+     * DELETE /legalEntities/{id}
      *
-     * @param LegalEntity $entities
+     * @param LegalEntity $legalEntities
      *
      * @throws \Exception
      *
@@ -128,15 +122,15 @@ class LegalEntityAPIController extends AppBaseController
      */
     public function destroy($id)
     {
-        /** @var LegalEntity $entities */
-        $entities = LegalEntity::find($id);
+        /** @var LegalEntity $legalEntity */
+        $legalEntity = LegalEntity::find($id);
 
-        if (empty($entities)) {
-            return $this->sendError('Entity not found');
+        if (empty($legalEntity)) {
+            return $this->sendError('Legal Entity not found');
         }
 
-        $entities->delete();
+        $legalEntity->delete();
 
-        return $this->sendSuccess('Entity deleted successfully');
+        return $this->sendSuccess('Legal Entity deleted successfully');
     }
 }

@@ -10,27 +10,30 @@ import 'dart:convert';
 
 import 'package:waste_mobile/utils/contants.dart';
 
-class CompanyNameFormField extends StatefulWidget {
-  final void Function(String val) changeCompanyName;
-  final void Function(String val, String industry) changeRegister;
+class CompanyUAChiglelFormField extends StatefulWidget {
+  final void Function(String val)? onChange;
   final String initText;
-  const CompanyNameFormField(
+  final TextEditingController? textEditingController;
+  const CompanyUAChiglelFormField(
       {super.key,
-      required this.changeCompanyName,
-      required this.changeRegister,
-      required this.initText});
+      this.onChange,
+      required this.initText,
+      this.textEditingController});
 
   @override
-  State<CompanyNameFormField> createState() => _CompanyNameFormField();
+  State<CompanyUAChiglelFormField> createState() =>
+      _CompanyUAChiglelFormField();
 }
 
-class _CompanyNameFormField extends State<CompanyNameFormField> {
-  final TextEditingController _typeAheadController = TextEditingController();
+class _CompanyUAChiglelFormField extends State<CompanyUAChiglelFormField> {
+  late TextEditingController _typeAheadController;
 
   @override
   void initState() {
     super.initState();
-    _typeAheadController.text = widget.initText;
+    _typeAheadController = widget.textEditingController != null
+        ? widget.textEditingController!
+        : TextEditingController(text: widget.initText);
   }
 
   Map<String, String> _hasToken() {
@@ -44,7 +47,7 @@ class _CompanyNameFormField extends State<CompanyNameFormField> {
   Future<List<Map<String, String>>> _getOptions(String searchTerm) async {
     final response = await http.get(
         Uri.parse(
-          '${Constants.host}/api/entities?search=$searchTerm',
+          '${Constants.host}/api/industries?search=$searchTerm',
         ),
         headers: {
           'User-Agent': 'waste_mobile',
@@ -55,11 +58,7 @@ class _CompanyNameFormField extends State<CompanyNameFormField> {
     final ret = json.decode(response.body) as List;
     print(ret);
     return ret.map((v) {
-      return {
-        'id': v['id']?.toString() ?? '',
-        'name': v['name']?.toString() ?? '',
-        'industry': v['industry']?.toString() ?? '',
-      };
+      return {'id': v['id'].toString(), 'name': v['name'].toString()};
     }).toList();
   }
 
@@ -71,14 +70,14 @@ class _CompanyNameFormField extends State<CompanyNameFormField> {
         decoration: InputDecoration(
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-          labelText: 'Албан байгууллага нэр',
+          labelText: 'Үйл Ажиллагааны чиглэл:',
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
           ),
         ),
       ),
       suggestionsCallback: (pattern) {
-        widget.changeCompanyName(pattern);
+        if (widget.onChange != null) widget.onChange!(pattern);
         return _getOptions(pattern);
       },
       itemBuilder: (context, suggestion) {
@@ -91,17 +90,8 @@ class _CompanyNameFormField extends State<CompanyNameFormField> {
       },
       onSuggestionSelected: (suggestion) {
         this._typeAheadController.text = suggestion['name'] ?? '';
-        if (suggestion['name'] != null)
-          widget.changeCompanyName(suggestion['name']!);
-        if (suggestion['id'] != null)
-          widget.changeRegister(
-              suggestion['id']!, suggestion['industry'] ?? '');
-      },
-      validator: (value) {
-        if (value != null && value.isEmpty) {
-          return 'Please select a Нэр';
-        }
-        return null;
+        if (suggestion['name'] != null && widget.onChange != null)
+          widget.onChange!(suggestion['name']!);
       },
       onSaved: (value) {
         this._typeAheadController.text = value ?? '';

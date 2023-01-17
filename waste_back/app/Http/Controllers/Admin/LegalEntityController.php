@@ -12,38 +12,38 @@ use Response;
 class LegalEntityController extends Controller
 {
     /**
-     * Display a listing of the Status.
+     * Display a listing of the LegalEntity.
      *
      * @return Response
      */
     public function index()
     {
-        $entities = LegalEntity::filter(Request::all(["search", ...LegalEntity::$searchIn]));
+        $legalEntities = LegalEntity::filter(Request::all(["search", ...LegalEntity::$searchIn]))->with('industry:id,name');
         if (Request::has('only')) {
-            return json_encode($entities->paginate(Request::input('per_page'),['register', 'name']));
+            return json_encode($legalEntities->paginate(Request::input('per_page'), ['id', 'name']));
         }
-        return Inertia::render('Admin/entities/Index', [
+        return Inertia::render('Admin/legal_entities/Index', [
             'filters' => Request::only(["search", ...LegalEntity::$searchIn]),
-            'datas' => $entities
+            'datas' => $legalEntities
                 ->paginate(Request::input('per_page'))
                 ->withQueryString()
-                ->through(fn ($row) => $row->only('register','name')),
+                ->through(fn ($row) => $row->only('id', 'register', 'name', 'industry', 'industry_id')),
             'host' => config('app.url'),
         ]);
     }
 
     /**
-     * Show the form for creating a new Status.
+     * Show the form for creating a new LegalEntity.
      *
      * @return Response
      */
     public function create()
     {
-        return Inertia::render('Admin/entities/Create', ['host' => config('app.url')]);
+        return Inertia::render('Admin/legal_entities/Create', ['host' => config('app.url')]);
     }
 
     /**
-     * Store a newly created Status in storage.
+     * Store a newly created LegalEntity in storage.
      *
      * @return Response
      */
@@ -54,45 +54,45 @@ class LegalEntityController extends Controller
     }
 
     /**
-     * Show the form for editing the specified Status.
+     * Show the form for editing the specified LegalEntity.
      *
-     * @param LegalEntity $legal
+     * @param LegalEntity $legalEntity
      *
      * @return Response
      */
-    public function edit(LegalEntity $legal)
+    public function edit(LegalEntity $legalEntity)
     {
-        return Inertia::render('Admin/entities/Edit', [
-            'data' =>  $legal,
+        return Inertia::render('Admin/legal_entities/Edit', [
+            'data' =>  $legalEntity,
             'host' => config('app.url'),
         ]);
     }
 
     /**
-     * Update the specified Status in storage.
+     * Update the specified LegalEntity in storage.
      *
-     * @param LegalEntity $legal
+     * @param LegalEntity $legalEntity
      *
      * @return Response
      */
-    public function update(LegalEntity $legal)
+    public function update(LegalEntity $legalEntity)
     {
-        $status->update(Request::validate(LegalEntity::$rules));
+        $legalEntity->update(Request::validate(LegalEntity::$rules));
         return Redirect::route('admin.entities.index')->with('success', 'LegalEntity updated.');
     }
 
     /**
-     * Remove the specified Status from storage.
+     * Remove the specified LegalEntity from storage.
      *
-     * @param LegalEntity $legal
+     * @param LegalEntity $legalEntity
      *
      * @throws \Exception
      *
      * @return Response
      */
-    public function destroy(LegalEntity $legal)
+    public function destroy(LegalEntity $legalEntity)
     {
-        $legal->delete();
-        return Redirect::route('admin.legal.index')->with('success', 'LegalEntity deleted.');
+        $legalEntity->delete();
+        return Redirect::route('admin.entities.index')->with('success', 'LegalEntity deleted.');
     }
 }

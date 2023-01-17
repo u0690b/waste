@@ -13,6 +13,7 @@ import 'package:waste_mobile/utils/contants.dart';
 import 'package:waste_mobile/views/screens/video_payer_file.dart';
 import 'package:waste_mobile/views/widgets/back_button.dart';
 import 'package:waste_mobile/views/widgets/company_name.dart';
+import 'package:waste_mobile/views/widgets/company_uachiglel_field.dart';
 import 'package:waste_mobile/views/widgets/future_alert_dialog.dart';
 import 'package:waste_mobile/views/widgets/image_pick_list.dart';
 import 'package:waste_mobile/views/widgets/location_map.dart';
@@ -78,7 +79,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
   double? longitude;
   String? address;
   String? description;
-  String? chiglel;
+  TextEditingController chiglel = TextEditingController();
   String? zuil_zaalt;
   int? reason;
   List<List<int>> _imageFileList = [];
@@ -100,7 +101,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
       ner = widget.model!.name;
       register = widget.model!.register;
       registerController.text = widget.model!.register ?? '';
-      chiglel = widget.model!.chiglel;
+      chiglel.text = widget.model!.chiglel ?? '';
       zuil_zaalt = widget.model!.zuil_zaalt;
       reason = widget.model!.reason_id;
     } else {
@@ -181,6 +182,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
               ? 'Дүрс бичлэг хавсаргах'
               : 'Сонгосон дүрс бичлэг устгах'),
     );
+    Key industryKey = Key('industryKey');
     return Form(
       key: _formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -253,9 +255,11 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                         else
                           CompanyNameFormField(
                             changeCompanyName: (val) => ner = val,
-                            changeRegister: (val) => setState(() {
+                            changeRegister: (val, industy) => setState(() {
                               register = val;
                               registerController.text = val;
+                              chiglel.text = industy;
+                              industryKey = Key(industy);
                             }),
                             initText: ner ?? '',
                           ),
@@ -278,22 +282,11 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                         ),
                         const SizedBox(height: 20),
                         // Үйл Ажиллагааны чиглэл
-
-                        TextFormField(
-                          maxLength: 100,
-                          initialValue: chiglel,
-                          onChanged: (value) => chiglel = value,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 15.0),
-                            labelText: 'Үйл Ажиллагааны чиглэл:',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                          ),
-                          minLines: 1,
-                          maxLines: 10,
+                        CompanyUAChiglelFormField(
+                          initText: chiglel.text,
+                          textEditingController: chiglel,
                         ),
+
                         const SizedBox(height: 20),
                         // Аймаг,Нийслэл:
                         TextFormField(
@@ -536,7 +529,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                               register: register,
                               whois: whois,
                               name: ner,
-                              chiglel: chiglel,
+                              chiglel: chiglel.text,
                               zuil_zaalt: zuil_zaalt,
                               reason_id: reason,
                               lat: latitude,

@@ -20,8 +20,7 @@ Route::resource('reasons', App\Http\Controllers\Admin\ReasonController::class);
 // Statuses
 Route::resource('statuses', App\Http\Controllers\Admin\StatusController::class);
 
-// LegalEntity
-Route::resource('entities', App\Http\Controllers\Admin\LegalEntityController::class);
+
 
 
 // Registers
@@ -52,3 +51,6 @@ Route::resource('notifications', App\Http\Controllers\Admin\NotificationControll
 
 // Industries
 Route::resource('industries', App\Http\Controllers\Admin\IndustryController::class);
+
+// LegalEntities
+Route::resource('entities', App\Http\Controllers\Admin\LegalEntityController::class);
