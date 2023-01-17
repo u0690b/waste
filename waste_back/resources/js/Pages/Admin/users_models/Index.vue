@@ -121,18 +121,18 @@ export default {
           { id: "da", name: "Дүүргийн админ" },
           { id: "hd", name: "Хороон дарга" },
           { id: "onb", name: "Олон нийтийн байцаагч" },
-          { id: "none", name: "Идвэхгүй" },
+          { id: "none", name: "Идэвхгүй" },
         ] :
         this.auth.user.roles == 'mha' ? [
           { id: "mha", name: "МХ админ" },
           { id: "mhb", name: "МХ байцаагч" },
-          { id: "none", name: "Идвэхгүй" },
+          { id: "none", name: "Идэвхгүй" },
         ] :
           this.auth.user.roles == 'da' ? [
             { id: "da", name: "Дүүргийн админ" },
             { id: "hd", name: "Хороон дарга" },
             { id: "onb", name: "Олон нийтийн байцаагч" },
-            { id: "none", name: "Идвэхгүй" },
+            { id: "none", name: "Идэвхгүй" },
           ] : []
       ,
     };

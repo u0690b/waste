@@ -105,6 +105,7 @@ class IndexController extends Controller
                 'long',
                 'lat',
                 'name',
+                'status_id',
                 'id',
             ]),
             'host' => config('app.url'),

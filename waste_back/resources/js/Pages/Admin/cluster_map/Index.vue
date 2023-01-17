@@ -11,7 +11,7 @@
 
     <MarkerCluster>
       <Marker v-for="(location, i) in datas"
-        :options="{ position: { lat: parseFloat(location.lat), lng: parseFloat(location.long) }, title: location.name }"
+        :options="{ position: { lat: parseFloat(location.lat), lng: parseFloat(location.long) }, label: parseState(location.status_id), title: location.name, icon: { fillColor: '#fff', strokeColor: 'white' } }"
         :key="i" @click="() => onclick(location)" />
     </MarkerCluster>
   </GoogleMap>
@@ -59,6 +59,9 @@ export default {
       form: {
         ...(this.filters ? this.filters : {}),
       },
+      orange: 'http://maps.google.com/mapfiles/kml/paddle/orange-circle.png',
+      yellow: 'http://maps.google.com/mapfiles/kml/paddle/ylw-circle.png',
+      blue: 'http://maps.google.com/mapfiles/kml/paddle/blu-circle.png',
     };
   },
   computed: {
@@ -77,8 +80,17 @@ export default {
     },
   },
   methods: {
-    onclick(e, v) {
-      // Inertia.visit('')
+    parseState(state) {
+      if (state == 2) {
+        return 'И';
+      } else if (state == 3) {
+        return 'Х';
+      }
+      return 'Ш';
+    },
+    onclick(location) {
+      Inertia.visit(`/admin/registers/${location.id}`);
+      console.log(location);
     },
     reset() {
       this.form = mapValues(this.form, () => null);
