@@ -220,16 +220,19 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-1 sm:px-8">
+    <div v-if="data.comf_user" class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-1 sm:px-8">
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
             <h3 class="text-lg text-gray-600 mb-4">Хуваарилагдсан мэдээлэл</h3>
-
+            {{ data.comf_user?.name }}
         </div>
     </div>
-    <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-1 sm:px-8">
+    <div v-if="data.status_id == 4" class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-1 sm:px-8">
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
             <h3 class="text-lg text-gray-600 mb-4">Шийдвэрлэгдсэн мэдээлэл</h3>
-
+            {{ data.resolve_id }}
+            {{ data.resolve_desc }}
+            {{ data.resolve_image }}
+            {{ data.resolved_at }}
         </div>
     </div>
 
