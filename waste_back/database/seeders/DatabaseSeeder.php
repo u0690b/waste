@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\AttachedFile;
 use App\Models\Place;
 use App\Models\Reason;
 use App\Models\SoumDistrict;
@@ -119,5 +120,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Register::factory(100)->create();
+        AttachedFile::factory(150)->create();
     }
 }
