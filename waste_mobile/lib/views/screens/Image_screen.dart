@@ -130,8 +130,12 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
 
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
     final AttachedFile item = widget.galleryItems[index];
+    RegExp exp = RegExp(
+        r'^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$');
+    String url =
+        exp.hasMatch(item.path) ? item.path : '${Constants.host}${item.path}';
     return PhotoViewGalleryPageOptions(
-      imageProvider: NetworkImage('${Constants.host}${item.path}'),
+      imageProvider: NetworkImage(url),
       initialScale: PhotoViewComputedScale.contained,
       minScale: PhotoViewComputedScale.contained * (0.5 + index / 10),
       maxScale: PhotoViewComputedScale.covered * 4.1,
@@ -153,14 +157,18 @@ class ImageItemThumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RegExp exp = RegExp(
+        r'^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$');
+    String url = exp.hasMatch(galleryExampleItem.path)
+        ? galleryExampleItem.path
+        : '${Constants.host}${galleryExampleItem.path}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: GestureDetector(
         onTap: onTap,
         child: Hero(
           tag: galleryExampleItem.id,
-          child: Image.network('${Constants.host}${galleryExampleItem.path}',
-              height: 80.0),
+          child: Image.network(url, height: 80.0),
         ),
       ),
     );

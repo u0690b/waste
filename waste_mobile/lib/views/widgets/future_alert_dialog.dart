@@ -34,7 +34,7 @@ Future<T?> futureAlertDialog<T>({
       children: <Widget>[
         Icon(Icons.sentiment_very_dissatisfied,
             size: 22, color: Theme.of(context).primaryColor),
-        Text("ӨӨ алдаа гарчихлаа дахад нэг оролдхуу?",
+        Text(":-( Алдаа гарлаа дахин оролдоно уу?",
             style: Theme.of(context).textTheme.headline5),
         if (error is FormatException)
           SelectableText(error.message)

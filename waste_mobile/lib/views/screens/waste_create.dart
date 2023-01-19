@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -70,8 +67,8 @@ class WasteRegisterForm extends StatefulWidget {
 class WasteRegisterFormState extends State<WasteRegisterForm> {
   final _formKey = GlobalKey<FormState>();
   late String whois;
-  String? ner;
-  String? register;
+  TextEditingController ner = TextEditingController();
+  TextEditingController register = TextEditingController();
   int? aimagCity;
   int? soumDistrict;
   int? bagHoroo;
@@ -98,12 +95,13 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
       description = widget.model!.description;
       _imageFileList = widget.model!.imageFileList ?? [];
       _videoFile = widget.model!.videoFile;
-      ner = widget.model!.name;
-      register = widget.model!.register;
+      ner.text = widget.model!.name ?? '';
+      register.text = widget.model!.register ?? '';
       registerController.text = widget.model!.register ?? '';
       chiglel.text = widget.model!.chiglel ?? '';
       zuil_zaalt = widget.model!.zuil_zaalt;
       reason = widget.model!.reason_id;
+      isChecked = register.text == 'Эзэнгүй';
     } else {
       whois = 'Иргэн';
       aimagCity = AuthController.user?.aimag_city_id;
@@ -113,6 +111,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
     super.initState();
   }
 
+  bool isChecked = false;
   @override
   Widget build(BuildContext context) {
     var textButton = TextButton(
@@ -188,18 +187,18 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
         children: [
-          LocationMap(
-            longitude: longitude,
-            latitude: latitude,
-            onChangeLocation: (LatLng? latlng) {
-              longitude = latlng?.longitude;
-              latitude = latlng?.latitude;
-            },
-          ),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  LocationMap(
+                    longitude: longitude,
+                    latitude: latitude,
+                    onChangeLocation: (LatLng? latlng) {
+                      longitude = latlng?.longitude;
+                      latitude = latlng?.latitude;
+                    },
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
@@ -228,82 +227,88 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                                       ? FontWeight.bold
                                       : FontWeight.normal),
                             ),
+                            Expanded(child: SizedBox()),
+                            Checkbox(
+                              onChanged: (value) {
+                                setState(() {
+                                  isChecked = value!;
+                                  if (isChecked) {
+                                    register.text = 'Эзэнгүй';
+                                    registerController.text = 'Эзэнгүй';
+                                    ner.text = 'Эзэнгүй';
+                                  } else {
+                                    register.text = '';
+                                    registerController.text = '';
+                                    ner.text = '';
+                                  }
+                                });
+                              },
+                              value: isChecked,
+                            ),
+                            Text(
+                              'Эзэнгүй',
+                              style: TextStyle(fontWeight: FontWeight.normal),
+                            ),
                           ],
                         ),
-                        //Албан байгууллага, Иргэний овог нэр:
-                        if (whois != 'Хуулийн этгээд')
+                        if (!isChecked) ...[
+                          //Албан байгууллага, Иргэний овог нэр:
+                          if (whois != 'Хуулийн этгээд')
+                            TextFormField(
+                              maxLength: 100,
+                              controller: ner,
+                              validator: (value) {
+                                return (value == null || value.isEmpty)
+                                    ? 'Нэр хоосон байна'
+                                    : null;
+                              },
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 15.0),
+                                labelText: whois == 'Хуулийн этгээд'
+                                    ? 'Албан байгууллага нэр'
+                                    : 'Иргэний овог нэр:',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+                            )
+                          else
+                            CompanyNameFormField(
+                              changeCompanyName: (val) => ner.text = val,
+                              changeRegister: (val, industy) => setState(() {
+                                register.text = val;
+                                registerController.text = val;
+                                chiglel.text = industy;
+                                industryKey = Key(industy);
+                              }),
+                              initText: ner.text,
+                            ),
+                          const SizedBox(height: 20),
+                          // Албан байгууллага, Иргэний  регистр:
                           TextFormField(
-                            maxLength: 100,
-                            initialValue: ner,
-                            validator: (value) {
-                              return (value == null || value.isEmpty)
-                                  ? 'Нэр хоосон байна'
-                                  : null;
-                            },
-                            onChanged: (value) => ner = value,
+                            controller: registerController,
+                            maxLength: 15,
+                            onChanged: (value) => register.text = value,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 20.0, vertical: 15.0),
                               labelText: whois == 'Хуулийн этгээд'
-                                  ? 'Албан байгууллага нэр'
-                                  : 'Иргэний овог нэр:',
+                                  ? 'Албан байгууллага регистр'
+                                  : 'Иргэний овог регистр:',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
                             ),
-                          )
-                        else
-                          CompanyNameFormField(
-                            changeCompanyName: (val) => ner = val,
-                            changeRegister: (val, industy) => setState(() {
-                              register = val;
-                              registerController.text = val;
-                              chiglel.text = industy;
-                              industryKey = Key(industy);
-                            }),
-                            initText: ner ?? '',
                           ),
-                        const SizedBox(height: 20),
-                        // Албан байгууллага, Иргэний  регистр:
-                        TextFormField(
-                          controller: registerController,
-                          maxLength: 15,
-                          onChanged: (value) => register = value,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 15.0),
-                            labelText: whois == 'Хуулийн этгээд'
-                                ? 'Албан байгууллага регистр'
-                                : 'Иргэний овог регистр:',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
+                          const SizedBox(height: 20),
+                          // Үйл Ажиллагааны чиглэл
+                          CompanyUAChiglelFormField(
+                            initText: chiglel.text,
+                            textEditingController: chiglel,
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        // Үйл Ажиллагааны чиглэл
-                        CompanyUAChiglelFormField(
-                          initText: chiglel.text,
-                          textEditingController: chiglel,
-                        ),
+                        ],
 
-                        const SizedBox(height: 20),
-                        // Аймаг,Нийслэл:
-                        TextFormField(
-                          validator: (p0) =>
-                              p0 == null ? 'Заавал бөглөх' : null,
-                          initialValue: Constants.aimagCities
-                              .firstWhere((element) => element.id == aimagCity)
-                              .name,
-                          enabled: false,
-                          decoration: InputDecoration(
-                            labelText: "Аймаг,Нийслэл:",
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 15.0),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0)),
-                          ),
-                        ),
                         const SizedBox(height: 20),
                         //  Сум,Дүүрэг
                         if (!['admin', 'zaa']
@@ -494,9 +499,8 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                           onPlay: _videoFile == null
                               ? null
                               : () {
-                                  var file = File.fromRawPath(
-                                      Uint8List.fromList(_videoFile!));
-                                  Get.dialog(MyVideoPlayerFile(file: file));
+                                  Get.dialog(
+                                      MyVideoPlayerFile(file: _videoFile!));
                                 },
                         ),
                         const SizedBox(height: 20),
@@ -517,6 +521,12 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                               );
                               return;
                             }
+                            if (_imageFileList.length == 0) {
+                              await Get.defaultDialog(
+                                middleText: 'Зураг хоосон байна',
+                              );
+                              return;
+                            }
                             final w = WasteModel(
                               user_id: AuthController.user!.id,
                               aimag_city_id: aimagCity,
@@ -526,9 +536,9 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                               description: description,
                               imageFileList: _imageFileList,
                               videoFile: _videoFile,
-                              register: register,
+                              register: register.text,
                               whois: whois,
-                              name: ner,
+                              name: ner.text,
                               chiglel: chiglel.text,
                               zuil_zaalt: zuil_zaalt,
                               reason_id: reason,

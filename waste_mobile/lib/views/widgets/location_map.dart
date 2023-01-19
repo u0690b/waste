@@ -126,8 +126,10 @@ class _LocationMapState extends State<LocationMap> {
         children: [
           GoogleMap(
             mapType: _mapType,
+            myLocationButtonEnabled: true,
             myLocationEnabled: true,
             onMapCreated: _onMapCreated,
+            scrollGesturesEnabled: false,
             initialCameraPosition: CameraPosition(target: latlong, zoom: 11.0),
             markers: Set<Marker>.of(markers.values),
             onCameraMove: (position) async {

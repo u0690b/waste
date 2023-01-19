@@ -54,6 +54,7 @@ dependencies:
   firebase_analytics: ^10.0.7
   google_maps_flutter: ^2.2.2
   flutter_typeahead: ^4.1.1
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:

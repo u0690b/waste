@@ -16,9 +16,13 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
   @override
   void initState() {
     super.initState();
-
+    RegExp exp = RegExp(
+        r'^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$');
+    String url = exp.hasMatch(widget.url)
+        ? widget.url
+        : '${Constants.host}${widget.url}';
     _controller = VideoPlayerController.network(
-      '${Constants.host}${widget.url}',
+      url,
     )..initialize().then((_) {
         _controller.play();
         setState(() {});

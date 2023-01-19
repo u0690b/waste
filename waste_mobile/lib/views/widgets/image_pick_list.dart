@@ -33,7 +33,9 @@ class ImagePickerList extends StatelessWidget {
           if (onPlay != null)
             GestureDetector(
               onTap: onPlay,
-              child: const Text('Бичлэг үзэх'),
+              child: Container(
+                  color: Colors.orange,
+                  child: Center(child: const Text('Бичлэг үзэх'))),
             ),
           for (var i = 0; i < item.length; i++)
             GestureDetector(
@@ -51,7 +53,7 @@ class ImagePickerList extends StatelessWidget {
               },
               child: Image.memory(Uint8List.fromList(item[i])),
             ),
-          if (item.length % 2 == 1) const SizedBox(),
+          if (item.length % 2 == (onPlay != null ? 0 : 1)) const SizedBox(),
           TextButton(
             style: TextButton.styleFrom(
                 foregroundColor: Colors.white,

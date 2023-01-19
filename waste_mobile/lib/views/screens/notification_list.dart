@@ -53,7 +53,8 @@ class _NotificationListState extends State<NotificationList> {
                               .then((value) => setState(() {
                                     item.read_at = DateTime.now();
                                   }));
-                        WasteController controller = Get.find();
+                        WasteController controller =
+                            Get.find(tag: 'Хуваарилагдсан');
                         if (item.rid != null) {
                           futureAlertDialog(
                             context: context,
