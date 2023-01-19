@@ -1,6 +1,6 @@
 <template>
     <div class="flex justify-between px-4 mt-4 sm:px-8">
-        <h2 class="text-xl text-gray-600  font-bold">Зөрчлийн бүртгэл дэлгэрэнгүй</h2>
+        <h2 class="text-xl text-gray-600  font-bold">Зөрчлийн дэлгэрэнгүй бүртгэл </h2>
         <div class="flex items-center space-x-1 text-xs">
             <inertia-link href="/" class="font-bold text-indigo-700 text-sm">Нүүр хуудас</inertia-link>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24"
@@ -168,7 +168,7 @@
                     <TabPanels class="px-4 py-2">
                         <TabPanel key="tab_1">
                             asdasd
-                            <!-- <Carousel>
+                            <Carousel>
                                 <Slide v-for="slide in data.attached_images" :key="slide">
                                     <div class="carousel__item">
                                         <img :src="slide.path" alt="" @click="() => selected = slide.path">
@@ -178,33 +178,16 @@
                                     <Pagination />
                                 </template>
                             </Carousel>
-                            <video v-if="data.attached_video?.path" class="w-full" controls>
-                                <source :src="data.attached_video.path" />
-                                <a :href="data.attached_video.path"> Бичлэг татах</a>
-                            </video>
+
                             <Modal :show="!!selected" @close="() => (selected = null)">
                                 <img :src="selected" alt="" />
-                            </Modal> -->
+                            </Modal>
                         </TabPanel>
                         <TabPanel key="tab_2">
-                            asdasd1
-                            <!-- <Carousel>
-                                <Slide v-for="slide in data.attached_images" :key="slide">
-                                    <div class="carousel__item">
-                                        <img :src="slide.path" alt="" @click="() => selected = slide.path">
-                                    </div>
-                                </Slide>
-                                <template #addons>
-                                    <Pagination />
-                                </template>
-                            </Carousel>
                             <video v-if="data.attached_video?.path" class="w-full" controls>
                                 <source :src="data.attached_video.path" />
                                 <a :href="data.attached_video.path"> Бичлэг татах</a>
                             </video>
-                            <Modal :show="!!selected" @close="() => (selected = null)">
-                                <img :src="selected" alt="" />
-                            </Modal> -->
                         </TabPanel>
                     </TabPanels>
                 </div>

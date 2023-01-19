@@ -39,9 +39,9 @@ class DatabaseSeeder extends Seeder
         Place::create(['id' => 1, 'name' => 'Захирагчийн ажлын алба']);
         Place::create(['id' => 2, 'name' => 'Мэргэжлийн хяналтын ерөнхий газар']);
 
-        Reason::create(['name' => 'Аюултай хог хаягдал', 'place_id' => 2]);
-        Reason::create(['name' => 'Эмнэлгийн хог хаягдал', 'place_id' => 2]);
-        Reason::create(['name' => 'Барилгын хог хаягдал', 'place_id' => 2]);
+        Reason::create(['name' => 'Аюултай хог хаягдал/Байгаль орчин аялал жуучлалын яам/', 'place_id' => 2]);
+        Reason::create(['name' => 'Эмнэлгийн хог хаягдал/Эрүүл мэндийн яам/', 'place_id' => 2]);
+        Reason::create(['name' => 'Барилгын хог хаягдал/Барилга, хот байгуулалтын яам/', 'place_id' => 2]);
         Reason::create(['name' => 'Ил задгай шатаах', 'place_id' => 1]);
         Reason::create(['name' => 'Хогийн сав, цэгээс бусад газарт хаях', 'place_id' => 1]);
         Reason::create(['name' => 'Ногоон бүс, үерийн далан, шугам, хоолой руу хаях', 'place_id' => 1]);
