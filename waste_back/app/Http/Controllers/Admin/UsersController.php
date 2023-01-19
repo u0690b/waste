@@ -44,6 +44,9 @@ class UsersController extends Controller
         if (!$input['roles']) {
             $input['roles'] = $user->roles;
         }
+        if ($user->roles == 'mha') {
+            $input['roles'] = ['mha', 'mhb'];
+        }
         $users = User::filter($input)->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name');
 
         if (Request::has('only')) {

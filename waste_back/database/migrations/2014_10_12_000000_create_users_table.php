@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignId('soum_district_id')->constrained('soum_districts');
             $table->foreignId('bag_horoo_id')->constrained('bag_horoos');
             $table->string('phone');
-            $table->json('roles');
+            $table->string('roles');
             $table->rememberToken();
             $table->string('push_token')->nullable();
             $table->timestamps();

@@ -139,9 +139,9 @@
                         class="flex flex-col space-y-2 items-center px-4 mb-2 py-2  text-gray-600 sm:flex-row sm:justify-between">
                         <h3 class="tracking-wider">Нотлох баримт</h3>
                         <TabList class="flex space-x-1">
-                            <Tab v-slot="{ selected }">
+                            <Tab v-slot="{ selected }" key="tab_1">
                                 <button class="px-4 py-2 text-xs rounded-md hover:bg-blue-400 hover:text-white"
-                                    @click="selected = true" :class="selected ? 'bg-blue-400 text-white' : ''">
+                                    :class="selected ? 'bg-blue-400 text-white' : ''">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="2" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -150,9 +150,9 @@
 
                                 </button>
                             </Tab>
-                            <Tab v-slot="{ selected }">
+                            <Tab v-slot="{ selected }" key="tab_2">
                                 <button class="px-4 py-2 text-xs rounded-md hover:bg-blue-400 hover:text-white"
-                                    @click="selected = false" :class="selected ? 'bg-blue-400 text-white' : ''">
+                                    :class="selected ? 'bg-blue-400 text-white' : ''">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="2" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round"
@@ -166,7 +166,28 @@
                     </div>
 
                     <TabPanels class="px-4 py-2">
-                        <TabPanel v-if="selected">
+                        <TabPanel key="tab_1">
+                            asdasd
+                            <!-- <Carousel>
+                                <Slide v-for="slide in data.attached_images" :key="slide">
+                                    <div class="carousel__item">
+                                        <img :src="slide.path" alt="" @click="() => selected = slide.path">
+                                    </div>
+                                </Slide>
+                                <template #addons>
+                                    <Pagination />
+                                </template>
+                            </Carousel>
+                            <video v-if="data.attached_video?.path" class="w-full" controls>
+                                <source :src="data.attached_video.path" />
+                                <a :href="data.attached_video.path"> Бичлэг татах</a>
+                            </video>
+                            <Modal :show="!!selected" @close="() => (selected = null)">
+                                <img :src="selected" alt="" />
+                            </Modal> -->
+                        </TabPanel>
+                        <TabPanel key="tab_2">
+                            asdasd1
                             <!-- <Carousel>
                                 <Slide v-for="slide in data.attached_images" :key="slide">
                                     <div class="carousel__item">

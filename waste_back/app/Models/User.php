@@ -115,7 +115,7 @@ class User extends Model  implements
         'aimag_city_id' => 'integer',
         'soum_district_id' => 'integer',
         'bag_horoo_id' => 'integer',
-        'roles' => 'json',
+        'roles' => 'string',
         'push_token' => 'string',
     ];
 
