@@ -58,7 +58,7 @@ function setIsOpen(value) {
 
             <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 italic">
                 {{ item.aimag_city.name }}, {{ item.soum_district.name }},
-                {{ item.bag_horoo.name }} {{ hideMoreButton ? item.bag_horoo.name : "" }}
+                {{ item.bag_horoo.name }} {{ hideMoreButton? item.bag_horoo.name : "" }}
             </p>
             <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">
                 <span class="font-bold text-black">

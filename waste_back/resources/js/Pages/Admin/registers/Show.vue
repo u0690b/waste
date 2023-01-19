@@ -19,7 +19,7 @@
 
                 </div>
             </div>
-            <div class="grid grid-cols-3 gap-3">
+            <div class="grid grid-cols-4 gap-3">
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="who_is">Иргэн/Аж
                         ахуй
@@ -39,7 +39,15 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name">Иргэн/Аж ахуй
                         нэгжийн нэр</label>
-                    <input v-model="data.name" type="text" :error="errors.name" class="bg-gray-50 border
+                    <textarea v-model="data.name" type="text" :error="errors.name" rows="1" class="bg-gray-50 border
+                        border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
+                        w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                        dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="register">Үйл
+                        ажиллагааны чиглэл </label>
+                    <textarea v-model="data.chiglel" type="text" :error="errors.chiglel" rows="1" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -74,9 +82,10 @@
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                 </div>
                 <div>
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="address">Зөрчлийн
-                        хуваарилалт</label>
-                    <input v-model="data.chiglel" type="text" :error="errors.name" class="bg-gray-50 border
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="address">Зөрчсөн
+                        хууль тогтоомжийн зүйл, заалт
+                    </label>
+                    <textarea v-model="data.zuil_zaalt" type="text" :error="errors.name" rows="1" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -132,7 +141,6 @@
             </RegisterCard> -->
         </div>
         <div class="px-4 py-2 bg-white  rounded-md overflow-hidden shadow">
-            <!-- <h3 class="text-lg text-gray-600 mb-4 tracking-wider"></h3> -->
             <TabGroup>
                 <div class="bg-white  rounded-lg shadow sm:col-span-2">
                     <div
@@ -167,8 +175,7 @@
 
                     <TabPanels class="px-4 py-2">
                         <TabPanel key="tab_1">
-                            asdasd
-                            <Carousel>
+                            <Carousel class="h-full">
                                 <Slide v-for="slide in data.attached_images" :key="slide">
                                     <div class="carousel__item">
                                         <img :src="slide.path" alt="" @click="() => selected = slide.path">
@@ -184,10 +191,11 @@
                             </Modal>
                         </TabPanel>
                         <TabPanel key="tab_2">
-                            <video v-if="data.attached_video?.path" class="w-full" controls>
+                            <video v-if="data.attached_video?.path" class="w-full h-80" controls>
                                 <source :src="data.attached_video.path" />
-                                <a :href="data.attached_video.path"> Бичлэг татах</a>
+                                <a :href="data.attached_video.path">Бичлэг татах</a>
                             </video>
+
                         </TabPanel>
                     </TabPanels>
                 </div>
@@ -206,16 +214,73 @@
     <div v-if="data.comf_user" class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-1 sm:px-8">
         <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
             <h3 class="text-lg text-gray-600 mb-4">Хуваарилагдсан мэдээлэл</h3>
-            {{ data.comf_user?.name }}
+            <div class="grid grid-cols-2 gap-2 py-2">
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name">Хуваарилсан
+                        хэрэглэгч
+                    </label>
+                    <input v-model="data.comf_user.name" type="text" :error="errors.name" class="bg-gray-50 border
+                        border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
+                        w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                        dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        for="address">Хуваарилсан огноо</label>
+                    <input v-model="data.resolved_at" type="text" :error="errors.resolved_at" class="bg-gray-50 border
+                        border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
+                        w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                        dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                </div>
+            </div>
+
         </div>
     </div>
-    <div v-if="data.status_id == 4" class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-1 sm:px-8">
-        <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
-            <h3 class="text-lg text-gray-600 mb-4">Шийдвэрлэгдсэн мэдээлэл</h3>
-            {{ data.resolve_id }}
-            {{ data.resolve_desc }}
-            {{ data.resolve_image }}
-            {{ data.resolved_at }}
+    <div v-if="data.status_id == 4" class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-3 sm:px-8">
+        <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow sm:col-span-2">
+            <h3 class="text-lg text-gray-600 mb-4">Шийдвэрлэсэн мэдээлэл</h3>
+            <div class="grid grid-cols-3 gap-3 py-2">
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name">Шийдвэрлэсэн
+                        хэрэглэгч
+                    </label>
+                    <input v-model="data.comf_user.name" type="text" :error="errors.name" class="bg-gray-50 border
+                        border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
+                        w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                        dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        for="address">Шийдвэрлэсэн огноо</label>
+                    <input v-model="data.resolved_at" type="text" :error="errors.resolved_at" class="bg-gray-50 border
+                        border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
+                        w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                        dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                </div>
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="address">Шийдвэрийн
+                        төрөл</label>
+                    <input v-model="data.resolve_id" type="text" :error="errors.resolved_at" class="bg-gray-50 border
+                        border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
+                        w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                        dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                </div>
+            </div>
+            <div class="grid grid-cols-1 gap-2 py-2">
+                <label class="block text-sm font-medium text-gray-900 dark:text-white" for="address">Шийдвэрлэсэн
+                    тайлбар
+                </label>
+                <textarea v-model="data.resolve_desc" type="text" :error="errors.name" rows="4" class="bg-gray-50 border
+                        border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
+                        w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                        dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+            </div>
+
+        </div>
+        <div class="px-4 py-2 bg-white  rounded-md overflow-hidden shadow">
+            <h3 class="text-lg text-gray-600 mb-4">Шийдвэрлэсэн баримт</h3>
+            <img v-bind:src="data.resolve_image" class="w-full h-auto" alt="..." />
+
         </div>
     </div>
 
@@ -223,7 +288,7 @@
 <style lang="postcss" scoped>
 .carousel__item {
     min-height: 200px;
-    height: 200px;
+    height: 350px;
     width: 100%;
     background-color: var(--vc-clr-primary);
     color: var(--vc-clr-white);
