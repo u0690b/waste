@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('register_histories', function (Blueprint $table) {
             $table->id();
-            $table->bigIncrements('register_id')->comment('хог хаягдалын ID');
+            $table->unsignedBigInteger('register_id')->comment('хог хаягдалын ID');
             $table->enum('whois', ['Иргэн', 'Хуулийн этгээд'])->comment('Иргэн/ААН');
             $table->string('name')->comment('Байгууллага, аж ахуйн нэгжийн нэр, иргэний овог нэр');
             $table->string('register')->nullable()->comment('Регистрийн дугаар');
