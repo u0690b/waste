@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,43 +49,21 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyB9q7d3mPcI63DTUyXjIjsGo61n3Iz3eLM',
-    appId: '1:759328300749:web:193ac8945a7c6ee27b1384',
-    messagingSenderId: '759328300749',
-    projectId: 'waste-project-49d6d',
-    authDomain: 'waste-project-49d6d.firebaseapp.com',
-    storageBucket: 'waste-project-49d6d.appspot.com',
-    measurementId: 'G-3MEWKD2GBN',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCW_Q7wU4Ir6CXBhJhZpVNBC63sJg2neN8',
-    appId: '1:759328300749:android:fd7b7934ef14004c7b1384',
+    apiKey: 'AIzaSyAkylGaklNKJARA5ATwP3LWzOuucYMszcA',
+    appId: '1:759328300749:android:142121800c6b92047b1384',
     messagingSenderId: '759328300749',
     projectId: 'waste-project-49d6d',
     storageBucket: 'waste-project-49d6d.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBpZRNAIMy02TkDbEZLcubSW9aTTWKN-Sg',
-    appId: '1:759328300749:ios:21d47e9114a855dd7b1384',
+    apiKey: 'AIzaSyBmMz7SxrmcXYaZZ00mmcqsHyimYWIJP8M',
+    appId: '1:759328300749:ios:9680c4a740ef2d147b1384',
     messagingSenderId: '759328300749',
     projectId: 'waste-project-49d6d',
     storageBucket: 'waste-project-49d6d.appspot.com',
-    iosClientId:
-        '759328300749-teaevt9o2if8ju2bg0dsj2179ta9629k.apps.googleusercontent.com',
-    iosBundleId: 'mn.lancers.wasteMobile',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBpZRNAIMy02TkDbEZLcubSW9aTTWKN-Sg',
-    appId: '1:759328300749:ios:21d47e9114a855dd7b1384',
-    messagingSenderId: '759328300749',
-    projectId: 'waste-project-49d6d',
-    storageBucket: 'waste-project-49d6d.appspot.com',
-    iosClientId:
-        '759328300749-teaevt9o2if8ju2bg0dsj2179ta9629k.apps.googleusercontent.com',
+    iosClientId: '759328300749-85d6ufc7n8qadqeojujpds1gb050k027.apps.googleusercontent.com',
     iosBundleId: 'mn.lancers.wasteMobile',
   );
 }
