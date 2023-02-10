@@ -67,8 +67,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '759328300749',
     projectId: 'waste-project-49d6d',
     storageBucket: 'waste-project-49d6d.appspot.com',
-    iosClientId: '759328300749-teaevt9o2if8ju2bg0dsj2179ta9629k.apps.googleusercontent.com',
-    iosBundleId: 'com.example.wasteMobile',
+    iosClientId:
+        '759328300749-teaevt9o2if8ju2bg0dsj2179ta9629k.apps.googleusercontent.com',
+    iosBundleId: 'mn.lancers.wasteMobile',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '759328300749',
     projectId: 'waste-project-49d6d',
     storageBucket: 'waste-project-49d6d.appspot.com',
-    iosClientId: '759328300749-teaevt9o2if8ju2bg0dsj2179ta9629k.apps.googleusercontent.com',
-    iosBundleId: 'com.example.wasteMobile',
+    iosClientId:
+        '759328300749-teaevt9o2if8ju2bg0dsj2179ta9629k.apps.googleusercontent.com',
+    iosBundleId: 'mn.lancers.wasteMobile',
   );
 }

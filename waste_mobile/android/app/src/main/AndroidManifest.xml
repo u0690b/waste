@@ -1,17 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.waste_mobile">
+    package="mn.lancers.waste_mobile">
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:label="waste_mobile"
+        android:label="Хог хяналт"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBGwVvZ6idDNwRPFZngCnUMcsPC9O4UvWY" />
+            android:value="AIzaSyCW_Q7wU4Ir6CXBhJhZpVNBC63sJg2neN8" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

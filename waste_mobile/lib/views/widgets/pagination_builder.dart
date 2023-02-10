@@ -33,7 +33,19 @@ class PaginationBuilder<T> extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }
             return paginationModel.datas.isEmpty
-                ? noResult ?? const Text('Мэдээлэл байхгүй байна')
+                ? Center(
+                    child: noResult ??
+                        Column(
+                          children: [
+                            Text('Мэдээлэл байхгүй байна'),
+                            ElevatedButton(
+                              onPressed:
+                                  refreshAble ? paginationModel.refresh : null,
+                              child: Text('refresh'),
+                            )
+                          ],
+                        ),
+                  )
                 : itemBuilder(context, paginationModel.datas.toList());
           },
         ),

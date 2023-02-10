@@ -24,14 +24,14 @@
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="who_is">Иргэн/Аж
                         ахуй
                         нэгж</label>
-                    <input v-model="data.whois" type="text" :error="errors.name"
+                    <input :value="data.whois" type="text" :error="errors.name"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 " />
                 </div>
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         for="register">Регистрийн
                         дугаар</label>
-                    <input v-model="data.register" type="text" :error="errors.name" class="bg-gray-50 border
+                    <input :value="data.register" type="text" :error="errors.name" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -39,7 +39,7 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name">Иргэн/Аж ахуй
                         нэгжийн нэр</label>
-                    <textarea v-model="data.name" type="text" :error="errors.name" rows="1" class="bg-gray-50 border
+                    <textarea :value="data.name" type="text" :error="errors.name" rows="1" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -47,7 +47,7 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="register">Үйл
                         ажиллагааны чиглэл </label>
-                    <textarea v-model="data.chiglel" type="text" :error="errors.chiglel" rows="1" class="bg-gray-50 border
+                    <textarea :value="data.chiglel" type="text" :error="errors.chiglel" rows="1" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -57,7 +57,7 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name">Зөрчлийн
                         төрөл</label>
-                    <input v-model="data.reason.name" type="text" :error="errors.name" class="bg-gray-50 border
+                    <input :value="data.reason.name" type="text" :error="errors.name" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -65,7 +65,7 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         for="address">Хаяг</label>
-                    <input v-model="data.address" type="text" :error="errors.name" class="bg-gray-50 border
+                    <input :value="data.address" type="text" :error="errors.name" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -76,7 +76,7 @@
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name">Гаргасан
                         зөрчлийн тайлбар
                     </label>
-                    <input v-model="data.description" type="text" :error="errors.name" class="bg-gray-50 border
+                    <input :value="data.description" type="text" :error="errors.name" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -85,7 +85,7 @@
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="address">Зөрчсөн
                         хууль тогтоомжийн зүйл, заалт
                     </label>
-                    <textarea v-model="data.zuil_zaalt" type="text" :error="errors.name" rows="1" class="bg-gray-50 border
+                    <textarea :value="data.zuil_zaalt" type="text" :error="errors.name" rows="1" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -95,7 +95,7 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         for="address">Уртраг</label>
-                    <input v-model="data.long" type="text" :error="errors.name" class="bg-gray-50 border
+                    <input :value="data.long" type="text" :error="errors.name" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -103,7 +103,7 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         for="address">Өргөрөг</label>
-                    <input v-model="data.lat" type="text" :error="errors.name" class="bg-gray-50 border
+                    <input :value="data.lat" type="text" :error="errors.name" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -113,7 +113,7 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="address">Бүртгэсэн
                         хэрэглэгч</label>
-                    <input v-model="data.reg_user.name" type="text" :error="errors.name" class="bg-gray-50 border
+                    <input :value="data.reg_user.name" type="text" :error="errors.name" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -121,7 +121,7 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="address">Бүртгэсэн
                         огноо</label>
-                    <input v-model="data.created_at" type="text" :error="errors.name" class="bg-gray-50 border
+                    <input :value="data.created_at" type="text" :error="errors.name" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -219,7 +219,7 @@
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name">Хуваарилсан
                         хэрэглэгч
                     </label>
-                    <input v-model="data.comf_user.name" type="text" :error="errors.name" class="bg-gray-50 border
+                    <input :value="data.comf_user?.name" type="text" :error="errors.name" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -227,7 +227,7 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         for="address">Хуваарилсан огноо</label>
-                    <input v-model="data.resolved_at" type="text" :error="errors.resolved_at" class="bg-gray-50 border
+                    <input :value="data.resolved_at" type="text" :error="errors.resolved_at" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -244,7 +244,7 @@
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name">Шийдвэрлэсэн
                         хэрэглэгч
                     </label>
-                    <input v-model="data.comf_user.name" type="text" :error="errors.name" class="bg-gray-50 border
+                    <input :value="data.comf_user?.name" type="text" :error="errors.name" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -252,7 +252,7 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         for="address">Шийдвэрлэсэн огноо</label>
-                    <input v-model="data.resolved_at" type="text" :error="errors.resolved_at" class="bg-gray-50 border
+                    <input :value="data.resolved_at" type="text" :error="errors.resolved_at" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -260,7 +260,7 @@
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="address">Шийдвэрийн
                         төрөл</label>
-                    <input v-model="data.resolve_id" type="text" :error="errors.resolved_at" class="bg-gray-50 border
+                    <input :value="data.resolve_id" type="text" :error="errors.resolved_at" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -270,7 +270,7 @@
                 <label class="block text-sm font-medium text-gray-900 dark:text-white" for="address">Шийдвэрлэсэн
                     тайлбар
                 </label>
-                <textarea v-model="data.resolve_desc" type="text" :error="errors.name" rows="4" class="bg-gray-50 border
+                <textarea :value="data.resolve_desc" type="text" :error="errors.name" rows="4" class="bg-gray-50 border
                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />

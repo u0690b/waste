@@ -7,17 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:759328300749:android:fd7b7934ef14004c7b1384",
+        "mobilesdk_app_id": "1:759328300749:android:96011e06e97cb6667b1384",
         "android_client_info": {
-          "package_name": "com.example.waste_mobile"
+          "package_name": "mn.lancers.waste_mobile"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "759328300749-p0bif506bt9vhcv3g44rfr1cor14t1aj.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyCW_Q7wU4Ir6CXBhJhZpVNBC63sJg2neN8"
@@ -25,19 +20,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "759328300749-p0bif506bt9vhcv3g44rfr1cor14t1aj.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "759328300749-teaevt9o2if8ju2bg0dsj2179ta9629k.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.wasteMobile"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

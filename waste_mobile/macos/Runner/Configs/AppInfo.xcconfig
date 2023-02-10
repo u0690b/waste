@@ -8,7 +8,7 @@
 PRODUCT_NAME = waste_mobile
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.wasteMobile
+PRODUCT_BUNDLE_IDENTIFIER = mn.lancers.wasteMobile
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2022 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2022 mn.lancers. All rights reserved.

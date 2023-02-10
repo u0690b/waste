@@ -1,5 +1,5 @@
 <template>
-  <Show :errors='errors' :data='data' :host='host'>
+  <Show :errors='errors' :data='data' :host='host' :auth="auth">
     <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-1 sm:px-8">
       <div class="px-3 py-2 bg-white border rounded-md shadow">
         <h3 class="text-lg text-gray-600 mb-4">Шийдвэрлэлтийн мэдээлэл оруулах</h3>
@@ -67,6 +67,7 @@ export default {
     errors: Object,
     data: Object,
     host: String,
+    auth: Object,
   },
   setup(props) {
 

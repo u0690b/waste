@@ -58,10 +58,10 @@ class CommonController extends Controller
                 $where .= " soum_district_id=" . $user->soum_district_id . ' and ';
             }
             if ($user->roles == 'hd' || $user->roles == 'onb') {
-                $$where .= " bag_horoo_id=" . $user->bag_horoo_id . ' and ';
+                $where .= " bag_horoo_id=" . $user->bag_horoo_id . ' and ';
             }
             if ($user->roles == 'onb') {
-                $$where .= " reg_user_id=" . $user->id . ' and ';
+                $where .= " reg_user_id=" . $user->id . ' and ';
             }
 
             $haha = DB::select(
