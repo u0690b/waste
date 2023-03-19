@@ -287,7 +287,6 @@ const rangeDay = computed(() => {
 </script>
 
 <template>
-
   <Head title="Үндсэн хуудас" />
 
   <Admin>
@@ -312,8 +311,8 @@ const rangeDay = computed(() => {
         </span>
 
         <div class="flex-1 flex w-full justify-end mr-8 fade-in">
-          <img src="@/assets/App_Store.svg" class="h-12 pr-4 bounce-top-icons">
-          <a href="/app_v1.apk">
+          <!-- <img src="@/assets/App_Store.svg" class="h-12 pr-4 bounce-top-icons"> -->
+          <a href="https://play.google.com/store/apps/details?id=mn.lancers.waste_mobile" target="_blank">
             <img src="@/assets/Play_Store.svg" class="h-12 bounce-top-icons">
           </a>
         </div>
@@ -360,5 +359,5 @@ const rangeDay = computed(() => {
         </div>
       </div>
     </div>
-  </Admin>
+</Admin>
 </template>

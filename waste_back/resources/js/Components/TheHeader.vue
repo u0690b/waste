@@ -1,11 +1,11 @@
 <template>
   <header class="flex justify-between items-center gap-5 bg-white border-b-2 px-4 sm:justify-end sm:px-6">
     <!-- <a href="http://inspection.gov.mn/new/" target="_blank"><img src="../../../public/img/mergejil.jpg"
-        class="object-contain w-48 ..." /></a>
-    <a href="https://www.eda.admin.ch/countries/mongolia/mn/home/chegzhlijn.html" target="_blank"><img
-        src="../../../public/img/sha.png" class="object-contain w-48 ..." /></a>
-    <a href="http://www.ubservice.mn/?fbclid=IwAR0DRdfuer1AfiIURNjUTtXk4-XIjHP3H2dRBMwLw-dcMwQ1WA11mxS0fMc"
-      target="_blank"><img src="../../../public/img/zaa.png" class="object-contain w-20 ..." /></a> -->
+                        class="object-contain w-48 ..." /></a>
+                    <a href="https://www.eda.admin.ch/countries/mongolia/mn/home/chegzhlijn.html" target="_blank"><img
+                        src="../../../public/img/sha.png" class="object-contain w-48 ..." /></a>
+                    <a href="http://www.ubservice.mn/?fbclid=IwAR0DRdfuer1AfiIURNjUTtXk4-XIjHP3H2dRBMwLw-dcMwQ1WA11mxS0fMc"
+                      target="_blank"><img src="../../../public/img/zaa.png" class="object-contain w-20 ..." /></a> -->
     <div>
       <inertia-link :href="route('admin.notifications.index')">
         <strong class="relative inline-flex items-center rounded border-gray-200 px-2.5 py-1.5 text-xs font-medium">
@@ -50,13 +50,13 @@
             ]">Нууц үг солих</inertia-link>
             </MenuItem>
             <MenuItem v-slot="{ active }">
-            <a href="#" :class="[
+            <a href="/Waste_usermanual.pdf" target="_blank" :class="[
               active ? 'bg-gray-200' : '',
               'block px-4 py-2 text-sm text-gray-700',
             ]">Гарын авлага</a>
             </MenuItem>
             <MenuItem v-slot="{ active }">
-            <a href="/app_v1.apk" :class="[
+            <a href="https://play.google.com/store/apps/details?id=mn.lancers.waste_mobile" target="_blank" :class="[
               active ? 'bg-gray-200' : '',
               'block px-4 py-2 text-sm text-gray-700',
             ]">Андройд татах</a>
@@ -71,7 +71,7 @@
         </MenuItems>
       </transition>
     </Menu>
-  </header>
+</header>
 </template>
 
 <script>

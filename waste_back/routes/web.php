@@ -44,6 +44,7 @@ require __DIR__ . '/auth.php';
 
 
 Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
+    Route::get('/report', [App\Http\Controllers\ReportController::class, 'index'])->name('tailan');
     require __DIR__ . '/admin.php';
 
     // Route::delete('/logout', [App\Http\Controllers\Admin\LoginController::class, 'logout'])->name('logout');

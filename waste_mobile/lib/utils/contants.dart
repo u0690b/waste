@@ -2,7 +2,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/models/model.dart';
 
 class Constants {
-  static String host = 'http://103.17.108.190';
+  static String host = 'http://khog-khyanalt.mn';
   static NameModel Function(NameModel, NameModel) combine = (element, value) =>
       element.updated_at != null &&
               value.updated_at != null &&

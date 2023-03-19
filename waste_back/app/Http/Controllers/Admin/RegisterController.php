@@ -50,7 +50,8 @@ class RegisterController extends Controller
             ->with('soum_district:id,name')
             ->with('status:id,name')
             ->with('attached_images:id,register_id,path')
-            ->with('attached_video:id,register_id,path');
+            ->with('attached_video:id,register_id,path')
+            ->orderByDesc('id');
 
 
 

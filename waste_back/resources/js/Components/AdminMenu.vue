@@ -7,6 +7,7 @@ import {
   ClipboardDocumentCheckIcon,
   ChevronRightIcon,
   MapIcon,
+  ChartBarIcon,
 } from "@heroicons/vue/24/outline";
 import Backdrop from "./Backdrop.vue";
 import SidebarItem from "./SidebarItem.vue";
@@ -41,9 +42,13 @@ const menus = ref([
     text: "Нүүр хуудас",
     href: "/dashboard",
   },
-
-
+  {
+    icon: markRaw(ChartBarIcon),
+    text: "Тайлан",
+    href: route("admin.tailan"),
+  },
 ]);
+const settings = ref([]);
 const user = computed(() => usePage().props.value.auth.user);
 if (['admin', 'zaa'].includes(user.value.roles)) {
   menus.value.push(
@@ -57,6 +62,9 @@ if (['admin', 'zaa'].includes(user.value.roles)) {
       icon: markRaw(UserGroupIcon),
       href: route("admin.users.index"),
     },
+
+  )
+  settings.value.push(
     {
       text: "Өгөгдлийн сан",
       icon: markRaw(WrenchScrewdriverIcon),
@@ -109,8 +117,7 @@ if (['admin', 'zaa'].includes(user.value.roles)) {
     },
   )
 } else if (['da', 'mha'].includes(user.value.roles)) {
-  menus.value.push(
-
+  settings.value.push(
     {
       text: "Хэрэглэгч",
       icon: markRaw(UserGroupIcon),
@@ -121,7 +128,7 @@ if (['admin', 'zaa'].includes(user.value.roles)) {
 }
 
 const totalStat = computed(() => usePage().props.value.totalStat)
-menus.value.push(
+const zurchil = [
   {
     text: "Зөрчлийн жагсаалт",
     icon: markRaw(ClipboardDocumentCheckIcon),
@@ -134,7 +141,7 @@ menus.value.push(
     icon: markRaw(MapIcon),
     href: route("register.map"),
   },
-)
+]
 // const InsItTul = computed(() => user.value.rolecodelist.includes('InsItTul'))	// baitsaagch
 </script>
 
@@ -152,13 +159,13 @@ menus.value.push(
     <nav class="text-sm text-gray-300">
       <ul class="flex flex-col">
         <li class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold">Үндсэн цэс</li>
-        <SidebarItem v-for="menu in menus.slice(0, 3)" :key="menu.text" :menu="menu"
+        <SidebarItem v-for="menu in menus" :key="menu.text" :menu="menu"
           class="px-4 py-2 text-xs uppercase tracking-wider text-white font-bold" />
         <li class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold">Тохиргоо</li>
-        <SidebarItem v-for="menu in menus.slice(3, 4)" :key="menu.text" :menu="menu"
+        <SidebarItem v-for="menu in settings" :key="menu.text" :menu="menu"
           class="px-4 py-2 text-xs uppercase tracking-wider text-white font-bold" />
         <li class="px-4 py-2 text-xs uppercase tracking-wider text-gray-500 font-bold">Зөрчлийн мэдээлэл</li>
-        <SidebarItem v-for="menu in menus.slice(4, 6)" :key="menu.text" :menu="menu"
+        <SidebarItem v-for="menu in zurchil" :key="menu.text" :menu="menu"
           class="px-4 py-2 text-xs uppercase tracking-wider text-white font-bold" />
       </ul>
     </nav>
