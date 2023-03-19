@@ -194,6 +194,14 @@ class Register extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function resolve()
+    {
+        return $this->belongsTo(\App\Models\Resolve::class, 'resolve_id');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
     public function registerHistories()

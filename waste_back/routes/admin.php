@@ -26,7 +26,7 @@ Route::resource('statuses', App\Http\Controllers\Admin\StatusController::class);
 // Registers
 Route::resource('registers', App\Http\Controllers\Admin\RegisterController::class);
 Route::get('/registers/{register}/resolve', [App\Http\Controllers\Admin\RegisterController::class, 'show_resolve'])->name('registers.show_resolve');
-Route::put('/registers/{register}/resolve', [App\Http\Controllers\Admin\RegisterController::class, 'resolve'])->name('registers.resolve');
+Route::post('/registers/{register}/resolve', [App\Http\Controllers\Admin\RegisterController::class, 'resolve'])->name('registers.resolve');
 Route::get('/registers/{register}/allocation', [App\Http\Controllers\Admin\RegisterController::class, 'allocation'])->name('register.allocation');
 Route::put('/registers/{register}/allocation', [App\Http\Controllers\Admin\RegisterController::class, 'allocation_store'])->name('register.allocation_store');
 

@@ -7,48 +7,17 @@
                     <form @submit.prevent="submit">
                         <MySelect :value="data.resolve_id" :error="errors.resolve_id"
                             class=" text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-80 p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            label="Шийдвэрийн төрөл" :url="`/admin/resolves`"
-                            @changeId="(id) => (form.resolve_id = id)" />
+                            label="Шийдвэрийн төрөл" :url="`/admin/resolves`" @changeId="(id) => (form.resolve_id = id)" />
                         <div
                             class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
                             <div class="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
-                                <div
-                                    class="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
+                                <div class="flex flex-wrap items-center divide-gray-200 sm:divide-x dark:divide-gray-600">
                                     <div class="flex items-center space-x-1 sm:pr-4">
-                                        <button type="button"
-                                            class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor"
-                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                    d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                            <span class="sr-only">Attach file</span>
-                                        </button>
+                                        <FileInput v-model="form.image" :error="errors.image" class="" accept="image/*"
+                                            label="Зураг">
 
-                                        <button type="button"
-                                            class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor"
-                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                            <span class="sr-only">Upload image</span>
-                                        </button>
+                                        </FileInput>
 
-                                    </div>
-                                    <div class="flex flex-wrap items-center space-x-1 sm:pl-4">
-                                        <button type="button"
-                                            class="p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-                                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor"
-                                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                            <span class="sr-only">Timeline</span>
-                                        </button>
                                     </div>
                                 </div>
                                 <button type="button" data-tooltip-target="tooltip-fullscreen"
@@ -86,8 +55,7 @@
                             </button>
                             <button :loading="form.processing"
                                 class="flex bg-gray-600  p-2 mx-4 my-3 text-white rounded text-base hover:bg-gray-500">
-                                <inertia-link class="text-white hover:text-white"
-                                    :href="route('admin.registers.index')">
+                                <inertia-link class="text-white hover:text-white" :href="route('admin.registers.index')">
                                     Буцах</inertia-link>
                             </button>
                         </div>
@@ -117,6 +85,7 @@ import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
 import { ref } from "vue";
 import Show from "./Show.vue";
 import TextareaInput from "@/Components/TextareaInput.vue";
+import FileInput from "@/Components/FileInput.vue";
 
 export default {
     metaInfo: { title: "Edit Registers" },
@@ -133,6 +102,7 @@ export default {
         Pagination,
         Show,
         TextareaInput,
+        FileInput
     },
     layout: Layout,
     props: {
@@ -148,6 +118,7 @@ export default {
             form: this.$inertia.form({
                 id: this.data.id,
                 resolve_id: this.data.resolve_id,
+                image: null,
                 resolve_desc: this.data.resolve_desc,
             }),
         };
@@ -155,7 +126,7 @@ export default {
     computed: {},
     methods: {
         submit() {
-            this.form.put(this.route("admin.registers.resolve", this.data.id));
+            this.form.post(this.route("admin.registers.resolve", this.data.id));
         },
     },
 };

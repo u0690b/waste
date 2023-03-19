@@ -9,11 +9,13 @@ use App\Services\FCMService;
 use Auth;
 use Date;
 use DB;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 use Log;
 use Response;
+use Storage;
 
 class RegisterController extends Controller
 {
@@ -162,6 +164,7 @@ class RegisterController extends Controller
             ->load('comf_user:id,name')
             ->load('reason:id,name')
             ->load('reg_user:id,name')
+            ->load('resolve:id,name')
             ->load('soum_district:id,name')
             ->load('status:id,name')
             ->load('attached_images:id,register_id,path')
@@ -221,7 +224,17 @@ class RegisterController extends Controller
             $input['status_id'] = 4;
             $input['resolved_at'] = Date::now();
 
-            $register->update($input);
+
+            $register->fill($input);
+            if ($input['image'] instanceof UploadedFile) {
+
+                if ($file =  $input['image']->store('/public/uploads/hyanalt')) {
+                    $register->resolve_image =  Storage::url($file);
+                }
+            }
+
+            $register->save();
+            // $register->update($input);
 
             DB::commit();
             $register->sendResolvedWasteNotify();
