@@ -43,7 +43,6 @@ class UserAPIController extends AppBaseController
     {
         $input = $request->all(["search", ...User::$searchIn]);
         $input['soum_district_id'] =  Auth::user()->soum_district_id;
-        $input['roles'] = ['mha', 'mhb'];
 
         $query = User::filter($input);
 

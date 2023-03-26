@@ -41,9 +41,6 @@ class RegisterAPIController extends AppBaseController
             $input['bag_horoo_id'] = $user->bag_horoo_id;
         }
 
-        if ($user->roles == 'mha' || $user->roles == 'mhb') {
-            $input['reason_id'] =  [1, 2, 3];
-        }
 
         $query = Register::filter($input)
 

@@ -48,9 +48,7 @@ class ReportController extends Controller
             $where .= "  AND  r.bag_horoo_id = " . $user->bag_horoo_id . " ";
         }
 
-        if ($user->roles == 'mha' || $user->roles == 'mhb') {
-            $where .= "  AND  r.reason_id <= 3 ";
-        }
+
 
         $status_infos = DB::select("select $cols,  count(*) niit
             from (

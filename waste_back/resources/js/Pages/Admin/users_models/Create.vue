@@ -65,7 +65,7 @@
         </form>
       </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -115,21 +115,16 @@ export default {
         [
           { id: "admin", name: "Админ" },
           { id: "zaa", name: "Захирагчийн ажлын алба" },
-          { id: "mha", name: "МХ админ" },
-          { id: "mhb", name: "МХ байцаагч" },
+          { id: "mha", name: "МХ байцаагч" },
           { id: "da", name: "Дүүргийн админ" },
           { id: "hd", name: "Хороон дарга" },
           { id: "onb", name: "Олон нийтийн байцаагч" },
         ] :
-        this.auth.user.roles == 'mha' ? [
-          { id: "mha", name: "МХ админ" },
-          { id: "mhb", name: "МХ байцаагч" },
-        ] :
-          this.auth.user.roles == 'da' ? [
-            { id: "da", name: "Дүүргийн админ" },
-            { id: "hd", name: "Хороон дарга" },
-            { id: "onb", name: "Олон нийтийн байцаагч" },
-          ] : []
+        this.auth.user.roles == 'da' ? [
+          { id: "mha", name: "МХ байцаагч" },
+          { id: "hd", name: "Хороон дарга" },
+          { id: "onb", name: "Олон нийтийн байцаагч" },
+        ] : []
       ,
     };
   },

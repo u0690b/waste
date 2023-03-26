@@ -27,10 +27,14 @@ class RegisterController extends Controller
     public function index()
     {
         $input = Request::all(["search", ...Register::$searchIn]);
+        $user = Auth::user();
         if (!$input['status_id']) {
             $input['status_id'] = 2;
+        } elseif ($input['status_id'] == 3 && $user->roles != 'mha') {
+            $input['comf_user_id'] = $user->id;
+        } elseif ($input['status_id'] == 3 && $user->roles != 'onb') {
+            $input['reg_user_id'] = $user->id;
         }
-        $user = Auth::user();
 
         if (!($user->roles == 'admin' || $user->roles == 'zaa')) {
             $input['soum_district_id'] = $user->soum_district_id;
@@ -39,9 +43,7 @@ class RegisterController extends Controller
             $input['bag_horoo_id'] = $user->bag_horoo_id;
         }
 
-        if ($user->roles == 'mha' || $user->roles == 'mhb') {
-            $input['reason_id'] =  [1, 2, 3];
-        }
+
 
         $registers = Register::filter($input)
             ->with('aimag_city:id,name')
@@ -143,7 +145,6 @@ class RegisterController extends Controller
         $input = Request::validate(['comf_user_id' => 'required']);
         $input['status_id'] = 3;
         $register->update($input);;
-        $register->update($input);
         $register->sendAllocationWasteNotify();
 
         return Redirect::route('admin.registers.index')->with('success', 'Register updated.');

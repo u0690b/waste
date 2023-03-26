@@ -116,7 +116,7 @@ if (['admin', 'zaa'].includes(user.value.roles)) {
       ],
     },
   )
-} else if (['da', 'mha'].includes(user.value.roles)) {
+} else if (['da'].includes(user.value.roles)) {
   settings.value.push(
     {
       text: "Хэрэглэгч",
@@ -172,6 +172,4 @@ const zurchil = [
   </aside>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

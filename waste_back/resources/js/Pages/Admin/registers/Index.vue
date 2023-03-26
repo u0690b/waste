@@ -15,7 +15,7 @@
         <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
           <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
             <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-orange-600 bg-white"
-              @click="form.status_id = 2" :class="{'!text-white bg-orange-600': openTab === 2}">
+              @click="form.status_id = 2" :class="{ '!text-white bg-orange-600': openTab === 2 }">
               Илгээсэн
             </a>
           </li>
@@ -132,8 +132,8 @@
                                   <MenuItem v-slot="{ active }">
                                   <InertiaLink :href="route('admin.registers.show', data.id)"
                                     :class="[active ? 'bg-gray-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-1 py-2 text-sm',]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-gray-600"
-                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-gray-600" fill="none"
+                                      viewBox="0 0 24 24" stroke="currentColor">
                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                     </svg>
@@ -143,21 +143,20 @@
                                   <MenuItem v-if="data.status_id != 4 && auth.user.roles == 'mha'" v-slot="{ active }">
                                   <InertiaLink :href="route('admin.register.allocation', data.id)"
                                     :class="[active ? 'bg-blue-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-1 py-2 text-sm',]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-gray-600"
-                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-gray-600" fill="none"
+                                      viewBox="0 0 24 24" stroke="currentColor">
                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
                                     Хуваарилах
                                   </InertiaLink>
                                   </MenuItem>
-                                  <MenuItem
-                                    v-if="data.status_id != 4 && ((auth.user.roles != 'onb' < data.reason_id > 3) || (data.reason_id <= 3 && ['admin', 'mhb', 'mha'].includes(auth.user.roles)))"
+                                  <MenuItem v-if="data.status_id == 3 || ['mha'].includes(auth.user.roles)"
                                     v-slot="{ active }">
                                   <InertiaLink :href="route('admin.registers.show_resolve', data.id)"
                                     :class="[active ? 'bg-green-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-1 py-2 text-sm',]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-gray-600"
-                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-gray-600" fill="none"
+                                      viewBox="0 0 24 24" stroke="currentColor">
                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
@@ -196,9 +195,6 @@
 eaders" :datas="datas"></AdminCard>
       </div> -->
   <!-- <admin-table :headers="headers" :datas="datas" url="admin.registers.edit" /> -->
-
-
-
 </template>
 
 <script>

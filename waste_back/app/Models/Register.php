@@ -266,18 +266,10 @@ class Register extends Model
     {
 
 
-        if ($this->reason_id <= 3) {
-            $users = User::whereSoumDistrictId($this->soum_district_id)
-                ->whereRoles('mha')
-                ->get();
-            $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
-        } else {
-            $users = User::whereSoumDistrictId($this->soum_district_id)
-                ->whereBagHorooId($this->bag_horoo_id)
-                ->whereRoles('hd')
-                ->get();
-            $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
-        }
+        $users = User::whereSoumDistrictId($this->soum_district_id)
+            ->whereRoles('mha')
+            ->get();
+        $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
 
         foreach ($users as $key => $user) {
             Notification::create([

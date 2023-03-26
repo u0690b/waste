@@ -42,10 +42,10 @@ class UsersController extends Controller
             $input['soum_district_id'] = $user->soum_district_id;
         }
         if (!$input['roles']) {
-            $input['roles'] = $user->roles;
+            $input['roles'] = 'none';
         }
         if ($user->roles == 'mha') {
-            $input['roles'] = ['mha', 'mhb'];
+            $input['roles'] = ['mha',  'zaa', 'da'];
         }
         $users = User::filter($input)->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name');
 
@@ -90,7 +90,7 @@ class UsersController extends Controller
         $rules['bag_horoo_id'] = 'nullable';
 
         $input = Request::validate($rules);
-        if ($input['roles'] == 'mhb' || $input['roles'] == 'mha' || $input['roles'] == 'da') {
+        if ($input['roles'] == 'mha' || $input['roles'] == 'da') {
             if (!$input['bag_horoo_id']) {
                 $input['bag_horoo_id'] = BagHoroo::whereSoumDistrictId($input['soum_district_id'])->first()->id;
             }

@@ -89,17 +89,12 @@ class DatabaseSeeder extends Seeder
         ]);
         \App\Models\User::factory()->create([
             'username' => 'mha',
-            'name' => 'МХ админ',
+            'name' => 'МХ байцаагч',
             'phone' => '8888-8888',
             'roles' => 'mha'
         ]);
 
-        \App\Models\User::factory()->create([
-            'username' => 'mhb',
-            'name' => 'МХ байцаагч',
-            'phone' => '8888-8888',
-            'roles' => 'mhb'
-        ]);
+
         \App\Models\User::factory()->create([
             'username' => 'da',
             'name' => 'Дүүргийн админ',

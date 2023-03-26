@@ -41,8 +41,7 @@
       <div class="mb-6 flex justify-between items-center">
         <div class="relative text-gray-400">
           <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
@@ -116,24 +115,19 @@ export default {
         [
           { id: "admin", name: "Админ" },
           { id: "zaa", name: "Захирагчийн ажлын алба" },
-          { id: "mha", name: "МХ админ" },
-          { id: "mhb", name: "МХ байцаагч" },
+          { id: "mha", name: "МХ байцаагч" },
           { id: "da", name: "Дүүргийн админ" },
           { id: "hd", name: "Хороон дарга" },
           { id: "onb", name: "Олон нийтийн байцаагч" },
           { id: "none", name: "Идэвхигүй" },
         ] :
-        this.auth.user.roles == 'mha' ? [
-          { id: "mha", name: "МХ админ" },
-          { id: "mhb", name: "МХ байцаагч" },
+
+        this.auth.user.roles == 'da' ? [
+          { id: "mha", name: "МХ байцаагч" },
+          { id: "hd", name: "Хороон дарга" },
+          { id: "onb", name: "Олон нийтийн байцаагч" },
           { id: "none", name: "Идэвхигүй" },
-        ] :
-          this.auth.user.roles == 'da' ? [
-            { id: "da", name: "Дүүргийн админ" },
-            { id: "hd", name: "Хороон дарга" },
-            { id: "onb", name: "Олон нийтийн байцаагч" },
-            { id: "none", name: "Идэвхигүй" },
-          ] : []
+        ] : []
       ,
     };
   },
