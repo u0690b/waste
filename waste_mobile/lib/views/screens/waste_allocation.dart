@@ -19,7 +19,7 @@ class WasteAllocation extends StatefulWidget {
 
 class _WasteAllocationState extends State<WasteAllocation> with Api {
   int? userId;
-
+  String? resolve_desc;
   XFile? pickedFile;
 
   final _formKey = GlobalKey<FormState>();
@@ -28,80 +28,105 @@ class _WasteAllocationState extends State<WasteAllocation> with Api {
   void initState() {
     super.initState();
     userId = widget.waste.comfUserId;
-    userFuture = widget.wasteController!.getUsers();
+    userFuture = widget.wasteController!.getUsers(widget.waste.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: FutureBuilder(
-          future: userFuture,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) return Text(snapshot.error.toString());
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: FutureBuilder(
+            future: userFuture,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) return Text(snapshot.error.toString());
 
-            if (snapshot.connectionState != ConnectionState.done ||
-                !snapshot.hasData)
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Center(child: CircularProgressIndicator()),
-                ],
-              );
-            print(snapshot.data!.map((e) => e.id));
-            return Form(
-              key: _formKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      DropdownButtonFormField(
-                          validator: (p0) =>
-                              p0 == null ? 'Заавал бөглөх' : null,
-                          value: userId == null
-                              ? null
-                              : snapshot.data!.contains(
-                                      (element) => element.id == userId)
-                                  ? userId
-                                  : null,
-                          decoration: InputDecoration(
-                            labelText: "Хуваарьлах хүн:",
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 15.0),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0)),
+              if (snapshot.connectionState != ConnectionState.done ||
+                  !snapshot.hasData)
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Center(child: CircularProgressIndicator()),
+                  ],
+                );
+              print(snapshot.data!.map((e) => e.id));
+              return Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: SizedBox(
+                  height: 300,
+                  child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: DropdownButtonFormField(
+                                isExpanded: true,
+                                validator: (p0) =>
+                                    p0 == null ? 'Заавал бөглөх' : null,
+                                value: userId == null
+                                    ? null
+                                    : snapshot.data!.contains(
+                                            (element) => element.id == userId)
+                                        ? userId
+                                        : null,
+                                decoration: InputDecoration(
+                                  helperMaxLines: 1,
+                                  labelText: "Шилжүүлэх хүн:",
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 15.0),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0)),
+                                ),
+                                items: snapshot.data!
+                                    .map((e) => DropdownMenuItem(
+                                          value: e.id,
+                                          child: Text(e.name),
+                                        ))
+                                    .toList(),
+                                onChanged: (int? value) => userId = value),
                           ),
-                          items: snapshot.data!
-                              .map((e) => DropdownMenuItem(
-                                    value: e.id,
-                                    child: Text(e.name),
-                                  ))
-                              .toList(),
-                          onChanged: (int? value) => userId = value),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            await futureAlertDialog(
-                              context: context,
-                              futureStream: widget.wasteController!
-                                  .allocationWaste(
-                                      id: widget.waste.id,
-                                      comf_user_id: userId!),
-                              autoCloseSec: 1,
-                            );
+                          TextFormField(
+                            maxLength: 100,
+                            maxLines: 2,
+                            initialValue: '',
+                            onChanged: (value) => resolve_desc = value,
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 15.0),
+                              labelText: 'Тэмдэглэл',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: () async {
+                              if (_formKey.currentState?.validate() ?? false) {
+                                await futureAlertDialog(
+                                  context: context,
+                                  futureStream: widget.wasteController!
+                                      .allocationWaste(
+                                          id: widget.waste.id,
+                                          comf_user_id: userId!,
+                                          note: resolve_desc),
+                                  autoCloseSec: 1,
+                                );
 
-                            Get.back(result: true);
-                          }
-                        },
-                        child: Text('Хуваарьлах'),
-                      )
-                    ],
-                  )),
-            );
-          }),
+                                Get.back(result: true);
+                              }
+                            },
+                            child: Text('Шилжүүлэх'),
+                          )
+                        ],
+                      )),
+                ),
+              );
+            }),
+      ),
     );
   }
 }

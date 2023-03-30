@@ -76,8 +76,8 @@ class _SignUpState extends State<SignUp> {
           validator: (value) {
             return (value == null || value.isEmpty)
                 ? 'Утасны дугаар'
-                : !new RegExp(r'\b\d{4}-\d{4}\b').hasMatch(value)
-                    ? 'жишээ: 1234-5678'
+                : !new RegExp(r'\b\d{4}\d{4}\b').hasMatch(value)
+                    ? 'жишээ: 99118811'
                     : null;
           },
           decoration: inputDecoration('Утасны дугаар', Icons.phone),

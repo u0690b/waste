@@ -59,8 +59,7 @@
         'soum_district.name': 'Сум/дүүрэг',
         'bag_horoo.name': 'Баг/хороо',
         roles: 'Эрх',
-      }" :datas="datas" url="admin.users.edit" :insertUrl="route('admin.users.create')"
-        :deleteUrl="'admin.users.destroy'" />
+      }" :datas="datas" url="admin.users.edit" :insertUrl="route('admin.users.create')" />
     </div>
     <div class="py-2 flex items-center justify-between border-t border-gray-200">
       <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
@@ -119,6 +118,9 @@ export default {
           { id: "da", name: "Дүүргийн админ" },
           { id: "hd", name: "Хороон дарга" },
           { id: "onb", name: "Олон нийтийн байцаагч" },
+          { id: "boajy", name: "Байгаль орчин, аялал жуулчлалын яам" },
+          { id: "bhby", name: "Барилга, хот байгуулалтын яам " },
+          { id: "emy", name: "Эруул мэндийн яам" },
           { id: "none", name: "Идэвхигүй" },
         ] :
 

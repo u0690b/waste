@@ -34,6 +34,7 @@ class RegisterAPIController extends AppBaseController
         $input = $request->only(["search", ...Register::$searchIn]);
         $user = Auth::user();
 
+
         if (!($user->roles == 'admin' || $user->roles == 'zaa')) {
             $input['soum_district_id'] = $user->soum_district_id;
         }
@@ -41,7 +42,9 @@ class RegisterAPIController extends AppBaseController
             $input['bag_horoo_id'] = $user->bag_horoo_id;
         }
 
-
+        if (!$input['status_id']) {
+            $input['status_id'] = 2;
+        }
         $query = Register::filter($input)
 
             ->with('reg_user:id,name')
@@ -49,6 +52,27 @@ class RegisterAPIController extends AppBaseController
             ->with('attached_images:id,register_id,path')
             ->with('attached_video:id,register_id,path');
 
+        if (!$input['status_id'] || $input['status_id'] == 2) {
+            if ($user->roles == 'onb') {
+                $query = $query->where('reg_user_id', $user->id);
+            }
+        } elseif ($input['status_id'] == 3) {
+            if ($user->roles != 'mha') {
+                $query = $query->where('reg_user_id', $user->id);
+                $query = $query->orWhere(function ($query) use ($user) {
+
+                    $query->where('status_id', '=', 3)
+                        ->Where('comf_user_id', '=', $user->id);
+                });
+            }
+        } elseif ($input['status_id'] == 4) {
+            if ($user->roles != 'mha') {
+                $query = $query->where(function ($query) use ($user) {
+                    $query->where('comf_user_id', '=', $user->id)
+                        ->orWhere('reg_user_id', '=', $user->id);
+                });
+            }
+        }
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -58,7 +82,7 @@ class RegisterAPIController extends AppBaseController
         }
 
         $total = $query->toBase()->getCountForPagination();
-        $pagination = $query->orderByDesc('id')->cursorPaginate(null, ['*'], 'cursor', $request->input('next_cursor'))->toArray();
+        $pagination = $query->orderByDesc('updated_at')->orderByDesc('id')->cursorPaginate(null, ['*'], 'cursor', $request->input('next_cursor'))->toArray();
         $pagination['total'] = $total;
         return $pagination;
     }
@@ -222,11 +246,11 @@ class RegisterAPIController extends AppBaseController
     {
         $input = $request->validate(['comf_user_id' => 'required']);
         $input['status_id'] = 3;
-
+        $input['allocate_by'] = Auth::user()->id;
         /** @var Register $register */
         $register = Register::find($id);
         $register->update($input);
-        $register->sendAllocationWasteNotify();
+        $register->sendAllocationWasteNotify($request->note);
 
         return $register->toJson();
     }

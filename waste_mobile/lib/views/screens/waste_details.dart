@@ -114,58 +114,6 @@ class _WasteDetailsState extends State<WasteDetails> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            if (widget.waste.statusId != 4 &&
-                                ((['mhb', 'mha'].contains(
-                                            AuthController.user!.roles) &&
-                                        widget.waste.reasonId <= 3) ||
-                                    (!['onb', 'mhb', 'mha'].contains(
-                                            AuthController.user!.roles) &&
-                                        widget.waste.reasonId > 3)))
-                              ElevatedButton(
-                                onPressed: () async {
-                                  final ret = await Get.to<bool?>(() =>
-                                      WasteResolve(
-                                          waste: widget.waste,
-                                          wasteController:
-                                              widget.wasteController
-                                                  as WasteController));
-                                  if (ret == true) {
-                                    Get.back();
-                                  }
-                                },
-                                child: Text('Шийдвэрлэх'),
-                              ),
-                            if (AuthController.user!.isMHA &&
-                                widget.waste.statusId != 4) ...[
-                              SizedBox(width: 10),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  final ret = await showModalBottomSheet(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return WasteAllocation(
-                                          waste: widget.waste,
-                                          wasteController:
-                                              widget.wasteController
-                                                  as WasteController,
-                                        );
-                                      });
-
-                                  if (ret == true) {
-                                    Get.back();
-                                  }
-                                },
-                                child: Text('Хуваарьлах'),
-                              ),
-                            ]
-                          ],
-                        ),
-                      ),
                       ListTile(
                         dense: true,
                         style: ListTileStyle.drawer,
@@ -259,7 +207,7 @@ class _WasteDetailsState extends State<WasteDetails> {
                           dense: true,
                           style: ListTileStyle.drawer,
                           title:
-                              const Text("Хуваарьлагдсан / Шийдвэрлэсэн хүн:"),
+                              const Text("Хуваарилагдсан / Шийдвэрлэсэн хүн:"),
                           subtitle: Text(waste.comfUser!.name),
                         ),
                       if (waste.resolve != null)
@@ -288,6 +236,57 @@ class _WasteDetailsState extends State<WasteDetails> {
                                 path: waste.resolveImage!)
                           ]),
                         ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            if (widget.waste.statusId != 4 &&
+                                (['mha'].contains(AuthController.user!.roles) ||
+                                    widget.waste.comfUserId ==
+                                        AuthController.user!.id))
+                              ElevatedButton(
+                                onPressed: () async {
+                                  final ret = await Get.to<bool?>(() =>
+                                      WasteResolve(
+                                          waste: widget.waste,
+                                          wasteController:
+                                              widget.wasteController
+                                                  as WasteController));
+                                  if (ret == true) {
+                                    Get.back();
+                                  }
+                                },
+                                child: Text('Шийдвэрлэх'),
+                              ),
+                            if ((['mha'].contains(AuthController.user!.roles) ||
+                                    widget.waste.comfUserId ==
+                                        AuthController.user!.id) &&
+                                widget.waste.statusId != 4) ...[
+                              SizedBox(width: 10),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  final ret = await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return WasteAllocation(
+                                          waste: widget.waste,
+                                          wasteController:
+                                              widget.wasteController
+                                                  as WasteController,
+                                        );
+                                      });
+
+                                  if (ret == true) {
+                                    Get.back();
+                                  }
+                                },
+                                child: Text('Шилжүүлэх'),
+                              ),
+                            ]
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),

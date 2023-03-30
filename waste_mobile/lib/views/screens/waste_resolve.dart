@@ -141,7 +141,7 @@ class _WasteResolveState extends State<WasteResolve> {
                                             Get.back();
                                           });
                                         },
-                                        child: Text('Зургын сан'))
+                                        child: Text('Зургийн сан'))
                                   ]);
                             },
                             child: Text('Зураг хавсаргах'),

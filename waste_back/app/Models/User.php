@@ -137,7 +137,18 @@ class User extends Model  implements
         'updated_at' => 'nullable',
         'push_token' => 'nullable',
     ];
-
+    public static $rolesModel = [
+        "admin" => "Админ",
+        "zaa" => "Захирагчийн ажлын алба",
+        "mha" => "МХ байцаагч",
+        "da" => "Дүүргийн админ",
+        "hd" => "Хороон дарга",
+        "onb" => "Олон нийтийн байцаагч",
+        "boajy" => "Байгаль орчин, аялал жуулчлалын яам",
+        "bhby" => "Барилга, хот байгуулалтын яам ",
+        "emy" => "Эрүүл мэндийн яам",
+        "none" => "Идэвхигүй",
+    ];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
@@ -219,12 +230,12 @@ class User extends Model  implements
         Notification::create([
             'user_id' => $this->id,
             'type' => 'user',
-            'title' => 'Тавай морил',
-            'content' =>  'Шинэ хэргэлэгч бүргэгдсэн',
+            'title' => 'Тавтай морил',
+            'content' =>  'Шинэ хэрэглэгч бүртгэгдсэн',
         ]);
 
         $users = User::whereSoumDistrictId($this->soum_district_id)
-            ->whereIn('roles', ['mha', 'da', 'zaa'])
+            ->whereIn('roles', ['da', 'zaa'])
             ->get();
         $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
 
@@ -234,7 +245,7 @@ class User extends Model  implements
             Notification::create([
                 'user_id' => $user->id,
                 'type' => 'user',
-                'title' => 'Шинэ хэргэлэгч бүргэгдсэн',
+                'title' => 'Шинэ хэрэглэгч бүртгэгдсэн',
                 'content' =>   $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч',
             ]);
         }

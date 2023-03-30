@@ -6,6 +6,7 @@ namespace App\Http\Controllers\API;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Register;
 use Auth;
 use Doctrine\Inflector\Rules\English\Rules;
 use Response;
@@ -42,10 +43,60 @@ class UserAPIController extends AppBaseController
     public function index(Request $request)
     {
         $input = $request->all(["search", ...User::$searchIn]);
-        $input['soum_district_id'] =  Auth::user()->soum_district_id;
+        $user = Auth::user();
+        $input['soum_district_id'] =  $user->soum_district_id;
+        switch ($user->roles) {
+            case 'mha':
+                $input['roles'] = ['mha',  'zaa', 'da'];
+                break;
+            case 'da':
+                $input['roles'] = ['mha',  'hd'];
+                break;
+            case 'zaa':
+                $input['roles'] = ['da',  'mha'];
+                break;
+            default:
+                $input['roles'] = 'null';
+                break;
+        }
 
+
+        $roles = User::$rolesModel;
         $query = User::filter($input);
+        $query->where('id', '<>', $user->id);
+        if ($user->roles == 'mha') {
+        }
+        if ($request->waste_id) {
+            if ($reg = Register::where('id', $request->waste_id)->first()) {
+                if ($reg->allocate_by)
+                    $query->orWhere('id', '=', $reg->allocate_by);
+            }
+            switch ($user->roles) {
+                case 'hd':
 
+                    break;
+                case 'mha':
+                    $query->orWhere('roles', '=', 'zaa');
+                    $query->orWhere('roles', '=', 'emy');
+                    $query->orWhere('roles', '=', 'boajy');
+                    $query->orWhere('roles', '=', 'bhby');
+                case 'zaa':
+                    $query->orWhere('roles', '=', 'da');
+                    break;
+                case 'bhby':
+                    $query->orWhere('roles', '=', 'boajy');
+                    break;
+                case 'boajy':
+                    $query->orWhere('roles', '=', 'bhby');
+                    break;
+                default:
+
+                    break;
+            }
+
+
+            $input['id'] = ['mha',  'zaa', 'da'];
+        }
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
         }
@@ -53,7 +104,14 @@ class UserAPIController extends AppBaseController
             $query->limit($request->get('limit'));
         }
 
-        $statuses = $query->get();
+        $statuses = $query->get()->map(function ($v) use ($roles) {
+            if ($v->roles == 'hd') {
+                $name = $v->soum_district->short . ' ' . $v->bag_horoo->name;
+            } else {
+                $name = $v->name . ' /' . $v->soum_district->short . ' ' . $roles[$v->roles] . '/';
+            }
+            return array_merge($v->toArray(), ["name" =>  $name]);
+        });
 
         return   $statuses->toJson();
     }

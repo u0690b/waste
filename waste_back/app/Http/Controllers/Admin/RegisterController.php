@@ -28,12 +28,9 @@ class RegisterController extends Controller
     {
         $input = Request::all(["search", ...Register::$searchIn]);
         $user = Auth::user();
+
         if (!$input['status_id']) {
             $input['status_id'] = 2;
-        } elseif ($input['status_id'] == 3 && $user->roles != 'mha') {
-            $input['comf_user_id'] = $user->id;
-        } elseif ($input['status_id'] == 3 && $user->roles != 'onb') {
-            $input['reg_user_id'] = $user->id;
         }
 
         if (!($user->roles == 'admin' || $user->roles == 'zaa')) {
@@ -54,11 +51,29 @@ class RegisterController extends Controller
             ->with('soum_district:id,name')
             ->with('status:id,name')
             ->with('attached_images:id,register_id,path')
-            ->with('attached_video:id,register_id,path')
-            ->orderByDesc('id');
+            ->with('attached_video:id,register_id,path');
 
 
-
+        if (!$input['status_id'] || $input['status_id'] == 2) {
+            if ($user->roles == 'onb') {
+                $registers = $registers->where('reg_user_id', $user->id);
+            }
+        } elseif ($input['status_id'] == 3) {
+            if ($user->roles != 'mha') {
+                $registers = $registers->where(function ($registers) use ($user) {
+                    $registers->where('comf_user_id', '=', $user->id)
+                        ->orWhere('reg_user_id', '=', $user->id);
+                });
+            }
+        } elseif ($input['status_id'] == 4) {
+            if ($user->roles != 'mha') {
+                $registers = $registers->where(function ($registers) use ($user) {
+                    $registers->where('comf_user_id', '=', $user->id)
+                        ->orWhere('reg_user_id', '=', $user->id);
+                });
+            }
+        }
+        $registers = $registers->orderByDesc('updated_at')->orderByDesc('id');
         if (Request::has('only')) {
             return json_encode($registers->paginate(Request::input('per_page'), ['id', 'name']));
         }

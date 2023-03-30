@@ -43,11 +43,11 @@ class _MyAppState extends State<MyApp> {
     Get.lazyPut(() => AuthController(), fenix: true);
     Get.lazyPut(() => WasteController('Илгээгээгүй'),
         tag: 'Илгээгээгүй', fenix: true);
-    Get.lazyPut(() => WasteController('Ирсэн'), tag: 'Ирсэн', fenix: true);
+    Get.lazyPut(() => WasteController('Бүртгэсэн'),
+        tag: 'Бүртгэсэн', fenix: true);
     Get.lazyPut(() => WasteController('Хуваарилагдсан'),
         tag: 'Хуваарилагдсан', fenix: true);
-    Get.lazyPut(() => WasteController('Илгээсэн'),
-        tag: 'Илгээсэн', fenix: true);
+
     Get.lazyPut(() => WasteController('Шийдвэрлэгдсэн'),
         tag: 'Шийдвэрлэгдсэн', fenix: true);
 

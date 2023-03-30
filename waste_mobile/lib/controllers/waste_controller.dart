@@ -25,14 +25,14 @@ class WasteController extends GetxController
   Future<Iterable<Waste>?> _getQuery() async {
     String ss = "";
     Map<String, dynamic> headers = {};
-    if (title == 'Ирсэн')
-      ss = 'status_id[]=2';
+    if (title == 'Бүртгэсэн')
+      ss = 'status_id=2';
     else if (title == 'Хуваарилагдсан') {
-      ss = 'status_id[]=3';
+      ss = 'status_id=3';
       if (AuthController.user!.isMH && !AuthController.user!.isMHA)
         headers['comf_user_id'] = AuthController.user!.id;
     } else if (title == 'Шийдвэрлэгдсэн') {
-      ss = 'status_id[]=4';
+      ss = 'status_id=4';
       if (AuthController.user!.isMH && !AuthController.user!.isMHA)
         headers['comf_user_id'] = AuthController.user!.id;
     } else
@@ -215,6 +215,7 @@ class WasteController extends GetxController
   Future<bool> allocationWaste({
     required int id,
     required int comf_user_id,
+    String? note,
   }) async {
     bool ret = false;
     if (loading.value) return ret;
@@ -227,6 +228,7 @@ class WasteController extends GetxController
         body: {
           'id': id,
           'comf_user_id': comf_user_id,
+          'note': note,
         },
         onError: (msg) async {
           _hasError = msg;
@@ -250,7 +252,7 @@ class WasteController extends GetxController
     return ret;
   }
 
-  Future<List<User>> getUsers() async {
+  Future<List<User>> getUsers([int? id]) async {
     List<User> users = [];
 
     try {
@@ -258,7 +260,7 @@ class WasteController extends GetxController
       final res = await fetch(
         '/users',
         'GET',
-        body: {},
+        body: id == null ? {} : {"waste_id": id},
         onError: (msg) async {
           _hasError = msg;
           await Get.defaultDialog(

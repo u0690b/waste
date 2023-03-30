@@ -114,6 +114,26 @@ class DatabaseSeeder extends Seeder
             'roles' => 'onb'
         ]);
 
+        \App\Models\User::factory()->create([
+            'username' => 'boajy',
+            'name' => 'Sandag',
+            'phone' => '8888-8888',
+            'roles' => 'boajy'
+        ]);
+        \App\Models\User::factory()->create([
+            'username' => 'bhby',
+            'name' => 'brigad',
+            'phone' => '8888-8888',
+            'roles' => 'bhby'
+        ]);
+        \App\Models\User::factory()->create([
+            'username' => 'emy',
+            'name' => 'Эмч',
+            'phone' => '8888-8888',
+            'roles' => 'emy'
+        ]);
+
+
         Register::factory(100)->create();
         AttachedFile::factory(150)->create();
     }

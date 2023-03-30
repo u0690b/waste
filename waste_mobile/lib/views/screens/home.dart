@@ -56,9 +56,8 @@ class _HomeViewState extends State<HomeView> {
   final NotificationController notificationController = Get.find();
   final WasteController wasteController_ilgeegeegui =
       Get.find(tag: 'Илгээгээгүй');
-  final WasteController wasteController2 = Get.find(tag: 'Ирсэн');
+  final WasteController wasteController2 = Get.find(tag: 'Бүртгэсэн');
   final WasteController wasteController3 = Get.find(tag: 'Хуваарилагдсан');
-  final WasteController wasteController4 = Get.find(tag: 'Илгээсэн');
   final WasteController wasteController5 = Get.find(tag: 'Шийдвэрлэгдсэн');
 
   late MessagingService service;
@@ -90,10 +89,9 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     subscription = listenToConnectivitySubscription();
     if (AuthController.user!.isMHA) wasteController2.refresh();
-    if (AuthController.user!.isMH)
-      wasteController3.refresh();
-    else
-      wasteController4.refresh();
+
+    wasteController3.refresh();
+
     wasteController5.refresh();
     wasteController_ilgeegeegui
         .initWasteModel()
@@ -271,55 +269,37 @@ class _HomeViewState extends State<HomeView> {
                                       const SizedBox(
                                         height: 15.0,
                                       ),
-                                      if (AuthController.user!.isMHA) ...[
-                                        TextButton(
-                                          onPressed: isOnline
-                                              ? () => Get.to(() =>
-                                                  WasteList(title: 'Ирсэн'))
-                                              : noConnection,
-                                          child: TaskColumn(
-                                            icon: Icons.blur_circular,
-                                            wasteController: wasteController2,
-                                            iconBackgroundColor:
-                                                LightColors.kDarkYellow,
-                                            title: 'Ирсэн',
-                                            subtitle: 'Бүртгэл',
-                                          ),
+                                      TextButton(
+                                        onPressed: isOnline
+                                            ? () => Get.to(() =>
+                                                WasteList(title: 'Бүртгэсэн'))
+                                            : noConnection,
+                                        child: TaskColumn(
+                                          icon: Icons.blur_circular,
+                                          wasteController: wasteController2,
+                                          iconBackgroundColor:
+                                              LightColors.kDarkYellow,
+                                          title: 'Бүртгэсэн',
+                                          subtitle: 'Бүртгэл',
                                         ),
-                                        const SizedBox(
-                                          height: 15.0,
+                                      ),
+                                      const SizedBox(
+                                        height: 15.0,
+                                      ),
+                                      TextButton(
+                                        onPressed: isOnline
+                                            ? () => Get.to(() => WasteList(
+                                                title: 'Хуваарилагдсан'))
+                                            : noConnection,
+                                        child: TaskColumn(
+                                          icon: Icons.blur_circular,
+                                          wasteController: wasteController3,
+                                          iconBackgroundColor:
+                                              LightColors.kDarkYellow,
+                                          title: 'Хуваарилагдсан',
+                                          subtitle: 'Бүртгэл',
                                         ),
-                                      ],
-                                      if (AuthController.user!.isMH)
-                                        TextButton(
-                                          onPressed: isOnline
-                                              ? () => Get.to(() => WasteList(
-                                                  title: 'Хуваарилагдсан'))
-                                              : noConnection,
-                                          child: TaskColumn(
-                                            icon: Icons.blur_circular,
-                                            wasteController: wasteController3,
-                                            iconBackgroundColor:
-                                                LightColors.kDarkYellow,
-                                            title: 'Хуваарилагдсан',
-                                            subtitle: 'Бүртгэл',
-                                          ),
-                                        )
-                                      else
-                                        TextButton(
-                                          onPressed: isOnline
-                                              ? () => Get.to(() =>
-                                                  WasteList(title: 'Илгээсэн'))
-                                              : noConnection,
-                                          child: TaskColumn(
-                                            wasteController: wasteController4,
-                                            icon: Icons.blur_circular,
-                                            iconBackgroundColor:
-                                                LightColors.kDarkYellow,
-                                            title: 'Илгээсэн',
-                                            subtitle: 'Бүртгэл',
-                                          ),
-                                        ),
+                                      ),
                                       const SizedBox(height: 15.0),
                                       TextButton(
                                         onPressed: isOnline

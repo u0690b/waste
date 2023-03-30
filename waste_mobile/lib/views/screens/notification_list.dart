@@ -106,8 +106,9 @@ class _NotificationListState extends State<NotificationList> {
                                     fontSize: 9),
                               ),
                               Text(
-                                timeago
-                                    .format(item.created_at ?? DateTime.now()),
+                                timeago.format(
+                                    item.created_at ?? DateTime.now(),
+                                    locale: 'mn'),
                                 style: TextStyle(
                                     fontWeight: item.read_at == null
                                         ? FontWeight.w500

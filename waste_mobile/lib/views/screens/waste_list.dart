@@ -13,7 +13,7 @@ class WasteList extends StatelessWidget {
   Widget build(BuildContext context) {
     final IPaginationModel<Waste> wasteController =
         Get.find<WasteController>(tag: title);
-    // wasteController.refresh();
+    wasteController.refresh();
     return Scaffold(
       appBar: AppBar(
         title: Text(title),

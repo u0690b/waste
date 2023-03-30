@@ -74,6 +74,7 @@ class Register extends Model
         'status_id',
         'reg_at',
         'resolved_at',
+        'allocate_by',
     ];
 
     /**
@@ -101,10 +102,10 @@ class Register extends Model
         'reg_user_id' => 'integer',
         'comf_user_id' => 'integer',
         'status_id' => 'integer',
-        'created_at' => 'date:Y-m-d H:i:s',
-        'reg_at' => 'date:Y-m-d H:i:s',
-        'resolved_at' => 'date:Y-m-d H:i:s',
-
+        'created_at' => 'datetime:Y-m-d h:mi',
+        'reg_at' => 'datetime:Y-m-d h:mi',
+        'resolved_at' => 'datetime:Y-m-d h:mi',
+        'allocate_by' => 'integer',
     ];
 
     /**
@@ -135,6 +136,7 @@ class Register extends Model
         'video' => 'sometimes|file',
         'reg_at' => 'nullable',
         'resolved_at' => 'nullable',
+        "allocate_by" => 'nullable'
     ];
 
     /**
@@ -176,6 +178,16 @@ class Register extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'reg_user_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function allocate()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'allocate_by');
+    }
+
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -265,9 +277,18 @@ class Register extends Model
     public function sendCreatedWasteNotify()
     {
 
-
+        $regUser = $this->reg_user;
         $users = User::whereSoumDistrictId($this->soum_district_id)
-            ->whereRoles('mha')
+            ->where(function ($query) use ($regUser) {
+                $query->where('roles', '=', 'mha')
+                    ->orWhere(
+                        function ($query) use ($regUser) {
+                            $query->where('roles', '=', 'hd')
+                                ->where('bag_horoo_id', '=', $regUser->bag_horoo_id);
+                        }
+                    );
+            })
+
             ->get();
         $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
 
@@ -275,7 +296,7 @@ class Register extends Model
             Notification::create([
                 'user_id' => $user->id,
                 'type' => 'Шинэ зөрчил бүртгэсэн',
-                'title' =>  $this->reg_user->name . "-аас танд шинэ зөрчил ирлээ ",
+                'title' =>  $this->reg_user->name . "-аас танд шинэ зөрчил бүртгэгдлээ ",
                 'rid' => $this->id,
                 'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
             ]);
@@ -306,21 +327,25 @@ class Register extends Model
             'user_id' => $this->reg_user_id,
             'type' => 'Шийдвэрлэгдсэн',
             'rid' => $this->id,
-            'title' => $this->comf_user->name  . ' зөрчил шийдвэрлэсэн',
+            'title' => $this->comf_user->name  . '/' . User::$rolesModel[$this->comf_user->roles] . '/' . ' зөрчил ' . $this->resolve->name . '-аар шийдвэрлэсэн',
             'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
         ]);
-        if ($this->reason_id <= 3) {
-            $users = User::whereSoumDistrictId($this->soum_district_id)
-                ->whereRoles('mha')
-                ->get();
-            $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
-        } else {
-            $users = User::whereSoumDistrictId($this->soum_district_id)
-                ->whereBagHorooId($this->bag_horoo_id)
-                ->whereRoles('hd')
-                ->get();
-            $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
-        }
+        $regUser = $this->reg_user;
+        $users = User::whereSoumDistrictId($this->soum_district_id)
+            ->where(function ($query) use ($regUser) {
+                $query->where('roles', '=', 'mha')
+                    ->orWhere(
+                        function ($query) use ($regUser) {
+                            $query->where('roles', '=', 'hd')
+                                ->where('bag_horoo_id', '=', $regUser->bag_horoo_id);
+                        }
+                    );
+            })
+
+            ->get();
+        $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
+
+
 
         foreach ($users as $key => $user) {
 
@@ -328,7 +353,7 @@ class Register extends Model
                 'user_id' => $user->id,
                 'type' => 'Шийдвэрлэгдсэн',
                 'rid' => $this->id,
-                'title' =>  $this->comf_user->name  . ' зөрчил шийдвэрлэсэн',
+                'title' => $this->comf_user->name . '/' . User::$rolesModel[$this->comf_user->roles] . '/' . ' зөрчил ' . $this->resolve->name . '-аар шийдвэрлэсэн',
                 'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
             ]);
         }
@@ -338,7 +363,7 @@ class Register extends Model
             FCMService::send(
                 [$this->reg_user->push_token, ...$tokens],
                 [
-                    'title' => 'Зөрчил шийдвэрлэгдлээ',
+                    'title' => 'Зөрчил ' . $this->resolve->name . '-аар шийдвэрлэгдлээ',
                     'body' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
                 ],
                 [
@@ -353,29 +378,36 @@ class Register extends Model
      * 
      * @return array
      */
-    public function sendAllocationWasteNotify()
+    public function sendAllocationWasteNotify($note = '')
     {
         Notification::create([
             'user_id' => Auth::user()->id,
-            'type' => 'Хуварьласан',
+            'type' => 'Шилжүүлсэн',
             'rid' => $this->id,
-            'title' =>  $this->comf_user->name . '-д зөрчил хуваарьласан',
-            'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
+            'title' =>  ' ' . Auth::user()->name . '/' . User::$rolesModel[Auth::user()->roles] . '/' . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
+            'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
         ]);
         Notification::create([
             'user_id' => $this->comf_user_id,
-            'type' => 'Хуварьласан',
+            'type' => 'Шилжүүлсэн',
             'rid' => $this->id,
-            'title' => 'Танд ' . Auth::user()->name . '-ээс зөрчил хуварьласан байна. ',
-            'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
+            'title' =>  ' ' . Auth::user()->name . '/' . User::$rolesModel[Auth::user()->roles] . '/' . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
+            'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
+        ]);
+        Notification::create([
+            'user_id' =>   $this->reg_user_id,
+            'type' => 'Шилжүүлсэн',
+            'rid' => $this->id,
+            'title' => ' ' . Auth::user()->name . '/' . User::$rolesModel[Auth::user()->roles] . '/' . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
+            'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
         ]);
 
 
         if ($this->comf_user->push_token) {
             FCMService::send(
-                [$this->comf_user->push_token],
+                [$this->comf_user->push_token, $this->reg_user->push_token],
                 [
-                    'title' => 'Танд ' . Auth::user()->name . '-ээс зөрчил хуварьласан байна.',
+                    'title' => ' ' . Auth::user()->name . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
                     'body' =>   $this->reason->name . ' ' . $this->name,
                 ],
                 [

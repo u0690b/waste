@@ -36,6 +36,7 @@ return new class extends Migration
             $table->foreignId('comf_user_id')->nullable()->comment('Шийдвэрлэсэн хүн')->constrained('users');
             $table->foreignId('status_id')->comment('Төлөв')->constrained('statuses');
             $table->timestamp('reg_at')->nullable()->comment('Үүсгэсэн');
+            $table->foreignId('allocate_by')->nullable()->comment('Хуваарилсан хүн')->constrained('users');
             $table->timestamps();
         });
     }
