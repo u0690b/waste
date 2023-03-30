@@ -16,9 +16,9 @@ import 'package:waste_mobile/views/screens/splash_screen.dart';
 import 'package:waste_mobile/views/screens/waste_create.dart';
 import 'package:waste_mobile/views/screens/waste_list.dart';
 import 'package:waste_mobile/views/widgets/NotificationBadge.dart';
-import 'package:waste_mobile/views/widgets/active_project_card.dart';
 import 'package:waste_mobile/views/widgets/task_column.dart';
 import 'package:waste_mobile/views/widgets/top_container.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 class HomeViewWrapper extends StatelessWidget {
   const HomeViewWrapper({super.key});
@@ -212,7 +212,7 @@ class _HomeViewState extends State<HomeView> {
                                               ),
                                             ),
                                             Text(
-                                              AuthController.user?.address ??
+                                              AuthController.user?.position ??
                                                   '',
                                               softWrap: true,
                                               maxLines: 2,
@@ -323,34 +323,32 @@ class _HomeViewState extends State<HomeView> {
                                   color: Colors.transparent,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20.0, vertical: 10.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      subheading('Зөрчил шийдвэрлэсэн байдал'),
-                                      const SizedBox(height: 5.0),
-                                      Row(
-                                        children: <Widget>[
-                                          ActiveProjectsCard(
-                                            cardColor: LightColors.kGreen,
-                                            loadingPercent: Constants.za,
-                                            title:
-                                                'Улаанбаатар хотын Захирагчийн ажлын алба',
-                                            subtitle:
-                                                'Нийт бүртгэгдсэн ${Constants.totalAa}',
-                                          ),
-                                          const SizedBox(width: 20.0),
-                                          ActiveProjectsCard(
-                                            onTap: () {},
-                                            cardColor: LightColors.kRed,
-                                            loadingPercent: Constants.mh,
-                                            title: 'Мэргэжлийн хяналт',
-                                            subtitle:
-                                                'Нийт бүртгэгдсэн ${Constants.totalMh}',
-                                          ),
-                                        ],
+                                  constraints: BoxConstraints(
+                                      maxHeight: 500 +
+                                          (16 * Constants.statistic.keys.length)
+                                              .toDouble(),
+                                      maxWidth: Get.width - 60),
+                                  child: PieChart(
+                                    centerText: "Зөрчлийн төрлөөр",
+                                    chartRadius: Get.width / 1.5,
+                                    legendOptions: LegendOptions(
+                                      showLegendsInRow: false,
+                                      legendPosition: LegendPosition.bottom,
+                                      showLegends: true,
+                                      legendTextStyle: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        overflow: TextOverflow.clip,
                                       ),
-                                    ],
+                                    ),
+                                    dataMap: Constants.statistic.map(
+                                        (key, value) =>
+                                            MapEntry(key, value.toDouble())),
+                                    chartType: ChartType.ring,
+                                    baseChartColor:
+                                        Colors.grey[50]!.withOpacity(0.15),
+                                    chartValuesOptions: ChartValuesOptions(
+                                      showChartValuesInPercentage: true,
+                                    ),
                                   ),
                                 ),
                               ],

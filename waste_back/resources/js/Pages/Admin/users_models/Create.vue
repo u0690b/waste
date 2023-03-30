@@ -48,6 +48,8 @@
             <MySelect v-if="form.soum_district_id" :value="null" :error="errors.bag_horoo_id" label="Баг/хороо"
               :url="`/admin/bag_horoos?soum_district_id=${form.soum_district_id}`"
               @changeId="(id) => (form.bag_horoo_id = id)" />
+            <CustomSelect v-model="form.position" class="mb-0" clearable required valueKey="name" :options="positions"
+              label="Албан тушаал" />
             <MySelect v-model="form.roles" :modelKey="true" :storedOptions="roles" :error="errors.roles" label="Эрх"
               :filterable="true" />
           </div>
@@ -75,7 +77,8 @@ import NumberInput from "@/Components/MyInput.vue";
 import MyInput from "@/Components/MyInput.vue";
 import MySelect from "@/Components/MySelect.vue";
 import TextareaInput from "@/Components/TextareaInput.vue";
-
+import positions from "./positions.json";
+import CustomSelect from "@/Components/CustomSelect.vue";
 export default {
   metaInfo: { title: "Create Users Models" },
   components: {
@@ -84,6 +87,7 @@ export default {
     MyInput,
     MySelect,
     TextareaInput,
+    CustomSelect
   },
   layout: Layout,
   props: {
@@ -96,12 +100,14 @@ export default {
   },
   data() {
     return {
+      positions: positions,
       form: this.$inertia.form({
         id: null,
         phone: null,
         name: null,
         username: null,
         password: null,
+        position: null,
         password_confirmation: null,
         aimag_city_id: this.aimag_city.id,
         soum_district_id: this.aimag_city.id,
@@ -117,15 +123,15 @@ export default {
           { id: "zaa", name: "Захирагчийн ажлын алба" },
           { id: "mha", name: "МХ байцаагч" },
           { id: "da", name: "Дүүргийн админ" },
-          { id: "hd", name: "Хороон дарга" },
+          { id: "hd", name: "Хорооны засаг дарга" },
           { id: "onb", name: "Олон нийтийн байцаагч" },
           { id: "boajy", name: "Байгаль орчин, аялал жуулчлалын яам" },
           { id: "bhby", name: "Барилга, хот байгуулалтын яам " },
-          { id: "emy", name: "Эруул мэндийн яам" },
+          { id: "emy", name: "Эрүүл мэндийн яам" },
         ] :
         this.auth.user.roles == 'da' ? [
           { id: "mha", name: "МХ байцаагч" },
-          { id: "hd", name: "Хороон дарга" },
+          { id: "hd", name: "Хорооны засаг дарга" },
           { id: "onb", name: "Олон нийтийн байцаагч" },
         ] : []
       ,

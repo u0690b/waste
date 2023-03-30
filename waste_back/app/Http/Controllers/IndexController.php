@@ -39,17 +39,16 @@ class IndexController extends Controller
         }
 
         $chartData = DB::select(
-            "select r.name reason,p.name org,DATE(re.created_at) ognoo,st.name stat,CASE WHEN ac.name='Улаанбаатар' then sd.name else ac.name end region,count(*) niit "
+            "select r.name reason,p.position org,DATE(re.created_at) ognoo,st.name stat,CASE WHEN ac.name='Улаанбаатар' then sd.name else ac.name end region,count(*) niit "
                 . " from registers re"
                 .   " inner join reasons r on r.id = re.reason_id "
-                .   " inner join  places p on p.id = r.place_id"
+                .   " inner join  users p on p.id = re.reg_user_id "
                 .   " inner join aimag_cities ac on ac.id = re.aimag_city_id"
                 .   " inner join soum_districts sd on sd.id = re.soum_district_id"
                 .   " INNER JOIN statuses st ON st.id = re.status_id"
                 .   " where DATE(re.created_at) between ? and ? "
-                . " group by DATE(re.created_at),r.name, p.name,st.name,CASE WHEN ac.name='Улаанбаатар' then sd.name else ac.name end",
+                . " group by DATE(re.created_at),r.name, p.position,st.name,CASE WHEN ac.name='Улаанбаатар' then sd.name else ac.name end",
             [$start, $end]
-
         );
         $etgeed = DB::select(
             " select  concat(trim(register),' ',trim(name)) name,count(*) niit from registers"

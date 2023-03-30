@@ -143,13 +143,13 @@ class _WasteDetailsState extends State<WasteDetails> {
                       ListTile(
                         dense: true,
                         style: ListTileStyle.drawer,
-                        title: const Text("Гаргасан зөрчилийн байдал"),
+                        title: const Text("Гаргасан зөрчлийн байдал"),
                         subtitle: Text(waste.description),
                       ),
                       ListTile(
                         dense: true,
                         style: ListTileStyle.drawer,
-                        title: const Text("Зөрчилийн төрөл:"),
+                        title: const Text("Зөрчлийн төрөл:"),
                         subtitle: Text(waste.reason.name),
                       ),
                       ListTile(
@@ -175,14 +175,14 @@ class _WasteDetailsState extends State<WasteDetails> {
                         ListTile(
                           dense: true,
                           style: ListTileStyle.drawer,
-                          title: const Text("Үүсгэсэн онгоо:"),
+                          title: const Text("Үүсгэсэн огноо:"),
                           subtitle: Text(waste.reg_at!.toString()),
                         ),
                       if (waste.createdAt != null)
                         ListTile(
                           dense: true,
                           style: ListTileStyle.drawer,
-                          title: const Text("Илгээсэн онгоо:"),
+                          title: const Text("Илгээсэн огноо:"),
                           subtitle: Text(waste.createdAt!.toString()),
                         ),
                       const SizedBox(height: 20),

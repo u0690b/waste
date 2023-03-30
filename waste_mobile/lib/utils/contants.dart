@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:waste_mobile/models/model.dart';
@@ -150,43 +152,19 @@ class Constants {
     GetStorage().write('mh', value);
   }
 
-  static int? _totalMh;
-  static int get totalMh {
-    return _totalMh ??= GetStorage().read<int>('totalMh') ?? 0;
+  static Map<String, int>? _statistic;
+  static Map<String, int> get statistic {
+    return _statistic ??=
+        jsonDecode(GetStorage().read<String>('statistic') ?? '');
   }
 
-  static set totalMh(int? value) {
+  static set statistic(Map<String, int>? value) {
     if (value == null) {
       return;
     }
-    _totalMh = value;
-    GetStorage().write('totalMh', value);
-  }
+    _statistic = value;
 
-  static int? _totalAa;
-  static int get totalAa {
-    return _totalAa ??= GetStorage().read<int>('totalAa') ?? 0;
-  }
-
-  static set totalAa(int? value) {
-    if (value == null) {
-      return;
-    }
-    _totalAa = value;
-    GetStorage().write('totalAa', value);
-  }
-
-  static double? _za;
-  static double get za {
-    return _za ??= GetStorage().read<double>('za') ?? 0;
-  }
-
-  static set za(double? value) {
-    if (value == null) {
-      return;
-    }
-    _za = value;
-    GetStorage().write('za', value);
+    GetStorage().write('statistic', jsonEncode(value));
   }
 
   static List<NameModel>? _resolves;

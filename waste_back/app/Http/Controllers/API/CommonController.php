@@ -45,32 +45,22 @@ class CommonController extends Controller
         $soum_districts_date = $input['soum_districts_date'] ?? $initDate;
         $bag_horoos_date = $input['bag_horoos_date'] ?? $initDate;
         $resolves_date = $input['resolves_date'] ?? $initDate;
-        $haha = [[
-            "total_mh" => 0,
-            "total_za" => 0,
-            "mh" => 0,
-            "za" => 0,
-        ]];
+
 
         if ($user = auth()->guard('sanctum')->user()) {
             $where = '';
-            if (!($user->roles == 'admin' || $user->roles == 'zaa')) {
+            if ($user->roles == 'mha' || $user->roles == 'da') {
                 $where .= " soum_district_id=" . $user->soum_district_id . ' and ';
             }
             if ($user->roles == 'hd' || $user->roles == 'onb') {
+                $where .= " soum_district_id=" . $user->soum_district_id . ' and ';
                 $where .= " bag_horoo_id=" . $user->bag_horoo_id . ' and ';
             }
             if ($user->roles == 'onb') {
                 $where .= " reg_user_id=" . $user->id . ' and ';
             }
 
-            $haha = DB::select(
-                "SELECT 
-                (select COUNT(*) total FROM registers INNER JOIN reasons ON reasons.id = reason_id WHERE $where reasons.place_id = 2) total_mh,
-                (select COUNT(*) total FROM registers INNER JOIN reasons ON reasons.id = reason_id WHERE $where reasons.place_id = 1) total_za, 
-                (SELECT (COUNT(*) / (SELECT COUNT(*) FROM registers INNER JOIN reasons ON reasons.id = reason_id WHERE $where reasons.place_id = 2)) total FROM registers INNER JOIN reasons ON reasons.id = reason_id WHERE $where status_id = 4 AND reasons.place_id = 2) AS mh, 
-                (SELECT (COUNT(*) / (SELECT COUNT(*) FROM registers INNER JOIN reasons ON reasons.id = reason_id WHERE $where reasons.place_id = 1)) total FROM registers INNER JOIN reasons ON reasons.id = reason_id WHERE $where status_id = 4 AND reasons.place_id = 1) AS za"
-            );
+            $haha = collect(DB::select("select r.name reason,count(*) niit from registers re inner join reasons r on r.id = re.reason_id where 1=1 and $where  1=1 group by r.name "))->pluck('niit', 'reason');
         }
         return  [
             'places' => Place::where('updated_at', '>', $places_date)->orWhere('created_at', '>', $places_date)->count() ? Place::all() : [],

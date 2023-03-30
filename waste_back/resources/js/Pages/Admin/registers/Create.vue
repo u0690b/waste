@@ -21,8 +21,8 @@
             :url="`/admin/bag_horoos`" @changeId="id => form.bag_horoo_id = id" />
           <MyInput v-model="form.address" type="text" :error="errors.address" class="" label="Хаяг, Байршилд" />
           <MyInput v-model="form.description" type="text" :error="errors.description" class=""
-            label="Гаргасан Зөрчилийн Байдал" />
-          <MySelect :value="null" type="text" :error="errors.reason_id" class="" label="Зөрчилийн Төрөл"
+            label="Гаргасан зөрчлийн Байдал" />
+          <MySelect :value="null" type="text" :error="errors.reason_id" class="" label="зөрчлийн Төрөл"
             :url="`/admin/reasons`" @changeId="id => form.reason_id = id" />
           <MyInput v-model="form.zuil_zaalt" type="text" :error="errors.zuil_zaalt" class=""
             label="Зөрчсөн Хууль Тогтоомжийн Зүйл, Заалт" />

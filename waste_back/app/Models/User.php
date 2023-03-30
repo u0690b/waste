@@ -86,7 +86,8 @@ class User extends Model  implements
         'soum_district_id',
         'bag_horoo_id',
         'roles',
-        'push_token'
+        'push_token',
+        "position",
     ];
 
     /**
@@ -117,6 +118,7 @@ class User extends Model  implements
         'bag_horoo_id' => 'integer',
         'roles' => 'string',
         'push_token' => 'string',
+        "position" => 'string',
     ];
 
     /**
@@ -136,13 +138,14 @@ class User extends Model  implements
         'created_at' => 'nullable',
         'updated_at' => 'nullable',
         'push_token' => 'nullable',
+        "position" => 'required|string'
     ];
     public static $rolesModel = [
         "admin" => "Админ",
         "zaa" => "Захирагчийн ажлын алба",
         "mha" => "МХ байцаагч",
         "da" => "Дүүргийн админ",
-        "hd" => "Хороон дарга",
+        "hd" => "Хорооны засаг дарга",
         "onb" => "Олон нийтийн байцаагч",
         "boajy" => "Байгаль орчин, аялал жуулчлалын яам",
         "bhby" => "Барилга, хот байгуулалтын яам ",

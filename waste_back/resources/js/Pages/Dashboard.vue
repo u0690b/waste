@@ -319,7 +319,7 @@ const rangeDay = computed(() => {
       </div>
       <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-3 sm:px-8">
         <div class="px-4 py-2 bg-white border rounded-md shadow">
-          <h3 class="text-xl text-gray-600 mb-4">Нийт зөрчил төлвөөр</h3>
+          <h3 class="text-xl text-gray-600 mb-4">Нийт зөрчил төлөв</h3>
           <VueApexCharts class="bg-white p-4" type="pie" :options="statDonut.chartOptions" :series="statDonut.series">
           </VueApexCharts>
         </div>
@@ -359,5 +359,5 @@ const rangeDay = computed(() => {
         </div>
       </div>
     </div>
-</Admin>
+  </Admin>
 </template>

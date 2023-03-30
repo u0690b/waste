@@ -56,8 +56,9 @@ class AuthController extends GetxController with CacheManager, Api {
     required String name,
     required String phone,
     required String password,
-    required int soum_district_id,
-    required int bag_horoo_id,
+    required int? soum_district_id,
+    required int? bag_horoo_id,
+    required String position,
   }) async {
     final res = await fetch(
       '/signup',
@@ -69,6 +70,7 @@ class AuthController extends GetxController with CacheManager, Api {
         'password': password,
         'soum_district_id': soum_district_id,
         'bag_horoo_id': bag_horoo_id,
+        'position': position,
       },
       headers: {"Accept": "application/json"},
     );

@@ -75,7 +75,7 @@ export default {
       },
 
       types: {
-        reason_name: 'Зөрчилийн төрөл',
+        reason_name: 'Зөрчлийн төрөл',
         ac_name: 'Аймаг нийслэл',
         sd_name: 'Сум дүүрэг',
         bh_name: 'Баг хороо',
@@ -83,7 +83,7 @@ export default {
         org: 'Байгууллага',
         status_name: 'Төлөв',
         reg_user: 'Бүртгэсэн хүн',
-        comf_user: 'Шийдвэрлсэн, Хуваарьлагдсан',
+        comf_user: 'Шийдвэрлэсэн, Хуваарилагдсан',
         resolve_name: 'Шийдвэрийн төрөл',
       },
     }
@@ -141,8 +141,6 @@ export default {
       return list
     },
     save() {
-
-
       let csv = [];
       let rowText = [];
       const rows = this.datas;

@@ -79,19 +79,22 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin',
             'name' => 'Админ',
             'phone' => '9999-9999',
-            'roles' => 'admin'
+            'roles' => 'admin',
+            'position' => \App\Models\User::$rolesModel['admin'],
         ]);
         \App\Models\User::factory()->create([
             'username' => 'zaa',
             'name' => 'Захирагчийн ажлын алба',
             'phone' => '8888-8888',
-            'roles' => 'zaa'
+            'roles' => 'zaa',
+            'position' => \App\Models\User::$rolesModel['zaa'],
         ]);
         \App\Models\User::factory()->create([
             'username' => 'mha',
             'name' => 'МХ байцаагч',
             'phone' => '8888-8888',
-            'roles' => 'mha'
+            'roles' => 'mha',
+            'position' => \App\Models\User::$rolesModel['mha'],
         ]);
 
 
@@ -99,38 +102,44 @@ class DatabaseSeeder extends Seeder
             'username' => 'da',
             'name' => 'Дүүргийн админ',
             'phone' => '8888-8888',
-            'roles' => 'da'
+            'roles' => 'da',
+            'position' => \App\Models\User::$rolesModel['da'],
         ]);
         \App\Models\User::factory()->create([
             'username' => 'hd',
-            'name' => 'Хороон дарга',
+            'name' => 'Хорооны засаг дарга',
             'phone' => '8888-8888',
-            'roles' => 'hd'
+            'roles' => 'hd',
+            'position' => \App\Models\User::$rolesModel['hd'],
         ]);
         \App\Models\User::factory()->create([
             'username' => 'onb',
             'name' => 'Олон нийтийн байцаагч',
             'phone' => '8888-8888',
-            'roles' => 'onb'
+            'roles' => 'onb',
+            'position' => \App\Models\User::$rolesModel['onb'],
         ]);
 
         \App\Models\User::factory()->create([
             'username' => 'boajy',
             'name' => 'Sandag',
             'phone' => '8888-8888',
-            'roles' => 'boajy'
+            'roles' => 'boajy',
+            'position' => \App\Models\User::$rolesModel['boajy'],
         ]);
         \App\Models\User::factory()->create([
             'username' => 'bhby',
             'name' => 'brigad',
             'phone' => '8888-8888',
-            'roles' => 'bhby'
+            'roles' => 'bhby',
+            'position' => \App\Models\User::$rolesModel['bhby'],
         ]);
         \App\Models\User::factory()->create([
             'username' => 'emy',
             'name' => 'Эмч',
             'phone' => '8888-8888',
-            'roles' => 'emy'
+            'roles' => 'emy',
+            'position' => \App\Models\User::$rolesModel['emy']
         ]);
 
 

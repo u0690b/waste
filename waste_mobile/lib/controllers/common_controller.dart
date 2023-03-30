@@ -38,10 +38,9 @@ class CommonController extends GetxController with Api {
     Constants.soumDistricts = decode(res['soum_districts']);
     Constants.bagHoroos = decode(res['bag_horoos']);
     Constants.resolves = decode(res['resolves']);
-    Constants.za = double.tryParse((res['statistic'][0]['za'] ?? 0).toString());
-    Constants.mh = double.tryParse((res['statistic'][0]['mh'] ?? 0).toString());
-    Constants.totalAa = res['statistic'][0]['total_za'] ?? 0;
-    Constants.totalMh = res['statistic'][0]['total_mh'] ?? 0;
+    Constants.statistic =
+        (res['statistic'] as Map<String, dynamic>).cast<String, int>();
+
     return datas;
   }
 }

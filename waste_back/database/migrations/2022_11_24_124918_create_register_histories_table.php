@@ -24,8 +24,8 @@ return new class extends Migration
             $table->foreignId('soum_district_id')->comment('Сум,Дүүрэг')->constrained('soum_districts');
             $table->foreignId('bag_horoo_id')->comment('Баг,Хороо')->constrained('bag_horoos');
             $table->string('address', 500)->nullable()->comment('Хаяг, байршилд');
-            $table->string('description', 2000)->comment('Гаргасан зөрчилийн байдал');
-            $table->foreignId('reason_id')->comment('Зөрчилийн төрөл')->constrained('reasons');
+            $table->string('description', 2000)->comment('Гаргасан зөрчлийн байдал');
+            $table->foreignId('reason_id')->comment('Зөрчлийн төрөл')->constrained('reasons');
             $table->string('zuil_zaalt', 1000)->nullable()->comment('Зөрчсөн хууль тогтоомжийн зүйл, заалт');
             $table->double('long')->comment('Уртраг');
             $table->double('lat')->comment('Өргөрөг');

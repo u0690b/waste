@@ -1,5 +1,4 @@
 <template>
-
   <Head title="Зөрчлийн бүртгэл" />
 
   <!-- <SharedState></SharedState> -->
@@ -8,8 +7,7 @@
       <div class=" mb-6 flex justify-center items-center">
         <div class="relative text-gray-400">
           <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
@@ -81,9 +79,9 @@ export default {
         'bag_horoo.name': 'Баг,Хороо',
         bag_horoo_id: 'Баг,Хороо',
         address: 'Хаяг, байршилд',
-        description: 'Гаргасан зөрчилийн байдал',
-        'reason.name': 'Зөрчилийн төрөл',
-        reason_id: 'Зөрчилийн төрөл',
+        description: 'Гаргасан зөрчлийн байдал',
+        'reason.name': 'Зөрчлийн төрөл',
+        reason_id: 'Зөрчлийн төрөл',
         zuil_zaalt: 'Зөрчсөн хууль тогтоомжийн зүйл, заалт',
         resolve_desc: 'Зөрчлийг шийдвэрлэсэн байдал',
         long: 'Уртраг',

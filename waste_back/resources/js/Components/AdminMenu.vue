@@ -151,8 +151,9 @@ const zurchil = [
   <aside class="hidden w-64 bg-gray-800 sm:block">
     <div class="py-3 uppercase text-center tracking-widest bg-gray-900 border-b-1 border-gray-800 mb-8">
       <img src="../../../public/img/logo.png" class="object-contain w-12 ... float-left" />
-
-      <inertia-link href="/" class="text-white sm:w-2/3 lg:w-3/4 p-4">WASTE INSPECTION</inertia-link>
+      <div class="py-2">
+        <inertia-link href="/" class="text-white sm:w-2/3 lg:w-3/4 p-4 ">ХОГ ХЯНАЛТ</inertia-link>
+      </div>
     </div>
 
     <!-- menu -->

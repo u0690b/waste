@@ -20,16 +20,16 @@ function setIsOpen(value) {
 <template>
     <div class="relative bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
         <!-- <Carousel>
-            <Slide v-for="slide in item.attached_images" :key="slide">
-                <div class="carousel__item">
-                    <img :src="slide.path" alt="" @click="emit('select', slide.path)">
-                </div>
-            </Slide>
+                    <Slide v-for="slide in item.attached_images" :key="slide">
+                        <div class="carousel__item">
+                            <img :src="slide.path" alt="" @click="emit('select', slide.path)">
+                        </div>
+                    </Slide>
 
-            <template #addons>
-                <Pagination />
-            </template>
-        </Carousel> -->
+                    <template #addons>
+                        <Pagination />
+                    </template>
+                </Carousel> -->
         <div :class="item.status_id == 2 ? 'bg-green-500' : 'bg-yellow-500'"
             class=" inline-flex items-center px-3 rounded-full text-[10px] font-light text-center  text-white absolute top-1 left-1">
             {{ item.status.name }}</div>
@@ -47,7 +47,7 @@ function setIsOpen(value) {
                 {{ item.created_at }}
             </p>
             <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">
-                <span class="font-bold text-black">#Зөрчилийн төрөл:</span>
+                <span class="font-bold text-black">#Зөрчлийн төрөл:</span>
             </p>
             <p class="mb-3 text-xs text-gray-900 dark:text-gray-400 italic">
                 {{ item.reason.name }}
@@ -58,11 +58,11 @@ function setIsOpen(value) {
 
             <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 italic">
                 {{ item.aimag_city.name }}, {{ item.soum_district.name }},
-                {{ item.bag_horoo.name }} {{ hideMoreButton? item.bag_horoo.name : "" }}
+                {{ item.bag_horoo.name }} {{ hideMoreButton ? item.bag_horoo.name : "" }}
             </p>
             <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">
                 <span class="font-bold text-black">
-                    #Гаргасан зөрчилийн байдал:</span>
+                    #Гаргасан зөрчлийн байдал:</span>
             </p>
             <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 italic">{{ item.description }}</p>
             <slot></slot>

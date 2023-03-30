@@ -311,7 +311,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
 
                         const SizedBox(height: 20),
                         //  Сум,Дүүрэг
-                        if (!['admin', 'zaa']
+                        if (['da', 'hd', 'onb', 'mha']
                             .contains(AuthController.user!.roles))
                           TextFormField(
                             validator: (p0) =>
@@ -412,7 +412,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                           maxLength: 1000,
                           validator: (value) {
                             return (value == null || value.isEmpty)
-                                ? 'Гаргасан зөрчилийн байдал'
+                                ? 'Гаргасан зөрчлийн байдал'
                                 : null;
                           },
                           initialValue: description,
@@ -420,7 +420,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 20.0, vertical: 15.0),
-                            labelText: 'Гаргасан зөрчилийн байдал:',
+                            labelText: 'Гаргасан зөрчлийн байдал:',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),
@@ -517,7 +517,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                             if (latitude == null || longitude == null) {
                               await Get.defaultDialog(
                                 middleText:
-                                    'Газрын зуграг дээрх байршил сонгоогүй байна',
+                                    'Газрын зураг дээрх байршил сонгоогүй байна',
                               );
                               return;
                             }

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:waste_mobile/controllers/auth_controller.dart';
 import 'package:waste_mobile/controllers/common_controller.dart';
 import 'package:waste_mobile/models/model.dart';
+import 'package:waste_mobile/models/user.dart';
 import 'package:waste_mobile/utils/contants.dart';
 import 'package:waste_mobile/views/screens/splash_screen.dart';
 import 'package:waste_mobile/views/widgets/future_alert_dialog.dart';
@@ -55,6 +56,7 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
+  String? position;
   int? soumDistrict;
   int? bagHoroo;
   Form loginForm() {
@@ -83,45 +85,74 @@ class _SignUpState extends State<SignUp> {
           decoration: inputDecoration('Утасны дугаар', Icons.phone),
         ),
         const SizedBox(height: 8),
-        DropdownButtonFormField(
-          validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
-          decoration: inputDecoration("Сум,Дүүрэг", Icons.location_on),
-          items: Constants.soumDistricts
+        DropdownButtonFormField<String>(
+          isExpanded: true,
+          validator: (p0) => p0 == null ? 'Оролцогч' : null,
+          decoration: inputDecoration("Оролцогч", Icons.location_on),
+          items: User.positions
               .map((e) => DropdownMenuItem(
-                    value: e.id,
-                    child: Text(e.name),
+                    value: e,
+                    child: Text(e),
                   ))
               .toList(),
-          value: soumDistrict,
-          onChanged: (int? value) {
+          value: position,
+          onChanged: (String? value) {
             setState(() {
-              soumDistrict = value;
-              bagHoroo = null;
+              position = value;
             });
           },
         ),
-        const SizedBox(height: 8),
-        // Баг,Хороо:
-        DropdownButtonFormField(
-          validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
-          decoration: inputDecoration('Баг,Хороо', Icons.location_on),
-          enableFeedback: soumDistrict != null,
-          items: Constants.bagHoroos
-              .where(
-                  (element) => element.soum_district_id == (soumDistrict ?? -1))
-              .map((e) => DropdownMenuItem(
-                    value: e.id,
-                    child: Text(e.name),
-                  ))
-              .toList(),
-          value: bagHoroo,
-          onChanged: (int? value) {
-            setState(() {
-              bagHoroo = value;
-            });
-          },
-        ),
-
+        if (position != null &&
+            (position == 'Хорооны засаг дарга' ||
+                position == 'Олон нийтийн байцаагч' ||
+                position == 'МХ байцаагч' ||
+                position == 'Дүүргийн админ' ||
+                position == 'Хэсгийн ахлах')) ...[
+          const SizedBox(height: 8),
+          DropdownButtonFormField(
+            validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
+            decoration: inputDecoration("Сум,Дүүрэг", Icons.location_on),
+            items: Constants.soumDistricts
+                .map((e) => DropdownMenuItem(
+                      value: e.id,
+                      child: Text(e.name),
+                    ))
+                .toList(),
+            value: soumDistrict,
+            onChanged: (int? value) {
+              setState(() {
+                soumDistrict = value;
+                bagHoroo = null;
+              });
+            },
+          ),
+        ],
+        if (position != null &&
+            (position == 'Хорооны засаг дарга' ||
+                position == 'Олон нийтийн байцаагч' ||
+                position == 'Хэсгийн ахлах')) ...[
+          const SizedBox(height: 8),
+          // Баг,Хороо:
+          DropdownButtonFormField(
+            validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
+            decoration: inputDecoration('Баг,Хороо', Icons.location_on),
+            enableFeedback: soumDistrict != null,
+            items: Constants.bagHoroos
+                .where((element) =>
+                    element.soum_district_id == (soumDistrict ?? -1))
+                .map((e) => DropdownMenuItem(
+                      value: e.id,
+                      child: Text(e.name),
+                    ))
+                .toList(),
+            value: bagHoroo,
+            onChanged: (int? value) {
+              setState(() {
+                bagHoroo = value;
+              });
+            },
+          ),
+        ],
         const SizedBox(height: 8),
         TextFormField(
           validator: (value) {
@@ -144,8 +175,9 @@ class _SignUpState extends State<SignUp> {
                     name: nameCtr.text,
                     phone: phoneCtr.text,
                     password: passwordCtr.text,
-                    soum_district_id: soumDistrict!,
-                    bag_horoo_id: bagHoroo!),
+                    soum_district_id: soumDistrict,
+                    bag_horoo_id: bagHoroo,
+                    position: position!),
                 onError: (context, err) {
                   print(err.toString());
                   if (err is ValidationException) {

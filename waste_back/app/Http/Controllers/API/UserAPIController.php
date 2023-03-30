@@ -107,8 +107,10 @@ class UserAPIController extends AppBaseController
         $statuses = $query->get()->map(function ($v) use ($roles) {
             if ($v->roles == 'hd') {
                 $name = $v->soum_district->short . ' ' . $v->bag_horoo->name;
-            } else {
+            } else if ($v->roles == 'da') {
                 $name = $v->name . ' /' . $v->soum_district->short . ' ' . $roles[$v->roles] . '/';
+            } else {
+                $name = $v->name . ' /' . $roles[$v->roles] . '/';
             }
             return array_merge($v->toArray(), ["name" =>  $name]);
         });
@@ -133,7 +135,7 @@ class UserAPIController extends AppBaseController
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
-                'username' => 'Нэвтрэх нэр нууц үг буруу байна',
+                'username' => 'Нэвтрэх нэр нууц үг буруу, Эсвэл идэвхгүй байна',
             ]);
         }
 
@@ -152,12 +154,21 @@ class UserAPIController extends AppBaseController
         $rules = User::$rules;
         $rules['username'] = 'required|string|max:255|unique:' . User::class;
         $rules['password'] = ['required',  \Illuminate\Validation\Rules\Password::defaults()];
+        $rules['soum_district_id'] = 'nullable';
         $rules['bag_horoo_id'] = 'nullable';
         $rules['aimag_city_id'] = 'nullable';
+        $rules['position'] = 'required';
         unset($rules['roles']);
 
         $input =  $request->validate($rules);
         $input['aimag_city_id'] = 7;
+        if (!$input['soum_district_id']) {
+            $input['soum_district_id'] = 154;
+        }
+        if (!$input['bag_horoo_id']) {
+            $input['bag_horoo_id'] = 389;
+        }
+
         $input['roles'] = 'none';
 
         $input['password'] = Hash::make($input['password']);

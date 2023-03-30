@@ -12,7 +12,7 @@ import { Link } from '@inertiajs/inertia-vue3';
                 <div class="w-full flex items-center justify-between">
                     <a class="flex items-center text-gray-600 no-underline hover:no-underline font-bold text-2xl lg:text-xl"
                         :href="route('dashboard')">
-                        <img src="../assets/logo.png" class="w-12 mr-4" />Waste Inspection
+                        <img src="../assets/logo.png" class="w-12 mr-4" />ХОГ ХЯНАЛТ
                     </a>
 
                     <div class="flex justify-center">

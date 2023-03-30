@@ -13,6 +13,7 @@ class User {
   final int bag_horoo_id;
   final NameModel? bag_horoo;
   final String roles;
+  final String position;
   final DateTime? created_at;
   final DateTime? updated_at;
   final String token;
@@ -31,6 +32,7 @@ class User {
     this.created_at,
     this.updated_at,
     required this.token,
+    required this.position,
   });
   String get address {
     return "${aimag_city?.name ?? ''} ${soum_district?.name ?? ''} ${bag_horoo?.name ?? ''} ";
@@ -50,11 +52,22 @@ class User {
         "bag_horoo_id": bag_horoo_id,
         "bag_horoo": bag_horoo?.toJson(),
         "roles": roles,
+        "position": position,
         "created_at": created_at?.toIso8601String(),
         "updated_at": updated_at?.toIso8601String(),
         "token": token,
       };
-
+  static List<String> positions = [
+    "Захирагчийн ажлын алба",
+    "МХ байцаагч",
+    "Дүүргийн админ",
+    "Хорооны засаг дарга",
+    "Олон нийтийн байцаагч",
+    "Хэсгийн ахлах",
+    "Байгаль орчин, аялал жуулчлалын яам",
+    "Барилга, хот байгуулалтын яам ",
+    "Эрүүл мэндийн яам",
+  ];
   static User fromJson(Map<String, dynamic> snap) {
     return User(
       id: snap['id'],
@@ -73,6 +86,7 @@ class User {
           ? null
           : NameModel.fromJson(snap['bag_horoo']),
       roles: snap['roles'],
+      position: snap['position'],
       created_at: DateTime.tryParse(snap['created_at']),
       updated_at: DateTime.tryParse(snap['updated_at']),
       token: snap['token'] ?? '',
