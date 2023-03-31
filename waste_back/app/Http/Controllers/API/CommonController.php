@@ -45,7 +45,7 @@ class CommonController extends Controller
         $soum_districts_date = $input['soum_districts_date'] ?? $initDate;
         $bag_horoos_date = $input['bag_horoos_date'] ?? $initDate;
         $resolves_date = $input['resolves_date'] ?? $initDate;
-
+        $haha = collect([['name' => 'Хоосон', 'niit' => 1]])->pluck('niit', 'reason');
 
         if ($user = auth()->guard('sanctum')->user()) {
             $where = '';

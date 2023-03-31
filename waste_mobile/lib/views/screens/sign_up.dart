@@ -87,8 +87,8 @@ class _SignUpState extends State<SignUp> {
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
           isExpanded: true,
-          validator: (p0) => p0 == null ? 'Оролцогч' : null,
-          decoration: inputDecoration("Оролцогч", Icons.location_on),
+          validator: (p0) => p0 == null ? 'Байгууллага' : null,
+          decoration: inputDecoration("Байгууллага", Icons.location_on),
           items: User.positions
               .map((e) => DropdownMenuItem(
                     value: e,
@@ -106,7 +106,7 @@ class _SignUpState extends State<SignUp> {
             (position == 'Хорооны засаг дарга' ||
                 position == 'Олон нийтийн байцаагч' ||
                 position == 'МХ байцаагч' ||
-                position == 'Дүүргийн админ' ||
+                position == 'Дүүргийн ЗДТГ' ||
                 position == 'Хэсгийн ахлах')) ...[
           const SizedBox(height: 8),
           DropdownButtonFormField(

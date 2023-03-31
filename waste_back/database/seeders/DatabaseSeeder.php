@@ -100,7 +100,7 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory()->create([
             'username' => 'da',
-            'name' => 'Дүүргийн админ',
+            'name' => 'Дүүргийн ЗДТГ',
             'phone' => '8888-8888',
             'roles' => 'da',
             'position' => \App\Models\User::$rolesModel['da'],
