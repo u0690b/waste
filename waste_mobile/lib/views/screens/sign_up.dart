@@ -170,7 +170,7 @@ class _SignUpState extends State<SignUp> {
                 autoCloseSec: -1,
                 context: context,
                 successMessage:
-                    'Таны бүртгүүлэх хүсэл хүлээн авлаа. \nТа админд мэдэгдэж эрх сэргээтэл хүлээнэ үү',
+                    'Таны бүртгүүлэх хүсэлтийг хүлээн авлаа. \nТа админд мэдэгдэж эрх сэргээтэл хүлээнэ үү',
                 futureStream: _auth.signUp(
                     name: nameCtr.text,
                     phone: phoneCtr.text,

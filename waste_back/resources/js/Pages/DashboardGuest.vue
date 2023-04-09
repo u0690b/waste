@@ -310,80 +310,86 @@ const rangeDay = computed(() => {
   <Head title="Үндсэн хуудас" />
   <GuestLayout>
     <div class="container">
-      <div class="grid px-4 gap-4 mt-8 sm:px-8 border">
+      <div class="grid px-4 gap-4 mt-8 sm:px-8 ">
+
         <div class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="about" role="tabpanel"
           aria-labelledby="about-tab">
           <h2 class="mb-5 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white slide-in-bottom">
-            Системийн зорилго
-            хүрэх үр дүн:
+            Системийн зорилго хүрэх үр дүн:
           </h2>
+
           <!-- List -->
-          <ul role="list" class="space-y-4 text-gray-500 dark:text-gray-400">
-            <li class="flex space-x-2">
-              <!-- Icon -->
-              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
-                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
-              </svg>
-              <span class="font-light leading-tight slide-in-bottom">Хог хаягдлын олон нийтийн байцаагч /ОНБ/-ийн
-                зөрчлийн тэмдэглэл
-                хөтлөх үйлдэл цахимжин хялбар болж, зөрчлийн
-                мэдээллийн цахим сан бий болно</span>
-            </li>
-            <li class="flex space-x-2">
-              <!-- Icon -->
-              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
-                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
-              </svg>
-              <span class="font-light leading-tight slide-in-bottom">Аливаа зөрчлийн мэдээллийг хариуцсан эрх бүхий
-                байгууллага, албан
-                тушаалтанд шуурхай хүргэн, шийдвэрлүүлнэ</span>
-            </li>
-            <li class="flex space-x-2">
-              <!-- Icon -->
-              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
-                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
-              </svg>
-              <span class="font-light leading-tight slide-in-bottom">Зөрчил үүсгэж байгаа иргэн, аж ахуй нэгж,
-                байгууллагын нэрс,
-                зөрчлийн мэдээлэл, зөрчлийн шийдвэрлэлтийн явц,
-                үр дүн олон нийтэд нээлттэй ил тод болно</span>
-            </li>
-            <li class="flex space-x-2">
-              <!-- Icon -->
-              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
-                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
-              </svg>
-              <span class="font-light leading-tight slide-in-bottom">Нийслэл, дүүргийн асуудал хариуцсан холбогдох нэгж,
-                хэлтсүүд хот,
-                дүүргийн хэмжээнд гарч байгаа зөрчлийн тоо
-                хэмжээ, төрөл, түүний шийдвэрлэлтийг тухай бүр хянах, шаардлагатай тайланг гаргах, дээд шатны удирдлагыг
-                мэдээллээр шуурхай хангана</span>
-            </li>
-            <li class="flex space-x-2">
-              <!-- Icon -->
-              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
-                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
-              </svg>
-              <span class="font-light leading-tight slide-in-bottom">Монгол Улсын Үндсэн хуульд заасан иргэний эрүүл,
-                аюулгүй орчинд
-                амьдрах нөхцөл бүрдэнэ</span>
-            </li>
-          </ul>
+          <div class="md:flex gap-4">
+            <ul role="list" class="flex-1 space-y-4 text-gray-500 dark:text-gray-400">
+              <li class="flex space-x-2">
+                <!-- Icon -->
+                <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
+                  viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="font-light leading-tight slide-in-bottom">Хог хаягдлын олон нийтийн байцаагч /ОНБ/-ийн
+                  зөрчлийн тэмдэглэл
+                  хөтлөх үйлдэл цахимжин хялбар болж, зөрчлийн
+                  мэдээллийн цахим сан бий болно</span>
+              </li>
+              <li class="flex space-x-2">
+                <!-- Icon -->
+                <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
+                  viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="font-light leading-tight slide-in-bottom">Аливаа зөрчлийн мэдээллийг хариуцсан эрх бүхий
+                  байгууллага, албан
+                  тушаалтанд шуурхай хүргэн, шийдвэрлүүлнэ</span>
+              </li>
+              <li class="flex space-x-2">
+                <!-- Icon -->
+                <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
+                  viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="font-light leading-tight slide-in-bottom">Зөрчил үүсгэж байгаа иргэн, аж ахуй нэгж,
+                  байгууллагын нэрс,
+                  зөрчлийн мэдээлэл, зөрчлийн шийдвэрлэлтийн явц,
+                  үр дүн олон нийтэд нээлттэй ил тод болно</span>
+              </li>
+            </ul>
+            <ul role="list" class="flex-1 space-y-4 text-gray-500 dark:text-gray-400">
+              <li class="flex space-x-2">
+                <!-- Icon -->
+                <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
+                  viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="font-light leading-tight slide-in-bottom">Нийслэл, дүүргийн асуудал хариуцсан холбогдох нэгж,
+                  хэлтсүүд хот,
+                  дүүргийн хэмжээнд гарч байгаа зөрчлийн тоо
+                  хэмжээ, төрөл, түүний шийдвэрлэлтийг тухай бүр хянах, шаардлагатай тайланг гаргах, дээд шатны удирдлагыг
+                  мэдээллээр шуурхай хангана</span>
+              </li>
+              <li class="flex space-x-2">
+                <!-- Icon -->
+                <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
+                  viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span class="font-light leading-tight slide-in-bottom">Монгол Улсын Үндсэн хуульд заасан иргэний эрүүл,
+                  аюулгүй орчинд
+                  амьдрах нөхцөл бүрдэнэ</span>
+              </li>
+            </ul>
+          </div>
+
         </div>
 
       </div>
@@ -463,17 +469,35 @@ const rangeDay = computed(() => {
       </div>
 
     </div>
-
+    <p class="mt-8 mx-10  border-blue-400  rounded-lg p-4 text-gray-500 dark:text-gray-400 ">Швейцарын хөгжлийн
+      агентлагийн санхүүжилтээр
+      хэрэгжсэн Улаанбаатар хотын ахуйн хог хаягдлын цуглуулалт, тээвэрлэлтийн менежмент (УБАХХЦТМ) төслийн
+      хүрээнд энэхүү цахим системийг хөгжүүлэв.</p>
     <!--Footer-->
-    <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-4 sm:px-8">
-      <a href="http://www.ubservice.mn/?fbclid=IwAR0DRdfuer1AfiIURNjUTtXk4-XIjHP3H2dRBMwLw-dcMwQ1WA11mxS0fMc"
-        target="_blank"><img src="../../../public/img/zaa1.jpg"
-          class="object-contain w-48 ... px-4 slide-in-bottom" /></a>
-      <a href="http://inspection.gov.mn/new/" target="_blank"><img src="../../../public/img/mergejil.jpg"
-          class="object-contain w-48 ... slide-in-bottom" /></a>
-      <a href="https://www.eda.admin.ch/countries/mongolia/mn/home/chegzhlijn.html" target="_blank"><img
-          src="../../../public/img/sha.png" class="object-contain w-48 ... px-4 slide-in-bottom" /></a>
+    <div class="grid lg:flex justify-evenly items-start gap-5 mt-10 ">
+
+      <a href="http://www.ubservice.mn/" target="_blank">
+        <img src="../../../public/img/logo5.png" class="object-contain h-[100px] px-4 slide-in-bottom" />
+      </a>
+      <a href="https://met.gov.mn/" target="_blank">
+        <img src="../../../public/img/logo6.png" class="object-contain h-[70px] slide-in-bottom" />
+      </a>
+      <a href="https://www.cowi.com/" target="_blank">
+        <img src="../../../public/img/logo1.png" class="object-contain h-[70px] slide-in-bottom" />
+      </a>
+      <a href="https://www.ebp.ch/en" target="_blank">
+        <img src="../../../public/img/logo3.png" class="object-contain h-[70px] px-4 slide-in-bottom" />
+      </a>
+      <a href="http://www.icon.mn/" target="_blank">
+        <img src="../../../public/img/logo2.png" class="object-contain h-[70px] px-4 slide-in-bottom" />
+      </a>
+      <a href="https://www.eda.admin.ch/countries/mongolia/mn/home.html" target="_blank">
+        <img src="../../../public/img/logo4.png" class="object-contain h-[90px] px-4 slide-in-bottom" />
+      </a>
+
+
     </div>
+
     <div class="w-full pt-5 pb-5 my-20 text-sm text-center md:text-left fade-in bg-gray-100">
       Developed by Лансерс ХХК /Хуулбарлахыг хориглоно
       <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; {{ (new
