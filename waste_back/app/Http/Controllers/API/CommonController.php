@@ -61,6 +61,9 @@ class CommonController extends Controller
             }
 
             $haha = collect(DB::select("select r.name reason,count(*) niit from registers re inner join reasons r on r.id = re.reason_id where 1=1 and $where  1=1 group by r.name "))->pluck('niit', 'reason');
+            if ($haha->count() == 0) {
+                $haha = collect([['name' => 'Хоосон', 'niit' => 1]])->pluck('niit', 'reason');
+            }
         }
         return  [
             'places' => Place::where('updated_at', '>', $places_date)->orWhere('created_at', '>', $places_date)->count() ? Place::all() : [],

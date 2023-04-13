@@ -20,14 +20,10 @@ class SplashScreen extends StatelessWidget {
     return FutureBuilder(
       future: initializeSettings(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState != ConnectionState.done) {
           return waitingView();
         } else {
-          if (snapshot.hasError) {
-            return errorView(snapshot);
-          } else {
-            return const OnBoard();
-          }
+          return const OnBoard();
         }
       },
     );

@@ -63,7 +63,7 @@ class User {
     "Дүүргийн ЗДТГ",
     "Хорооны засаг дарга",
     "Олон нийтийн байцаагч",
-    "Хэсгийн ахлах",
+    "Хэсгийн ахлагч",
     "Байгаль орчин, аялал жуулчлалын яам",
     "Барилга, хот байгуулалтын яам",
     "Эрүүл мэндийн яам",
@@ -71,8 +71,8 @@ class User {
   static User fromJson(Map<String, dynamic> snap) {
     return User(
       id: snap['id'],
-      name: snap['name'],
-      username: snap['username'],
+      name: snap['name'].toString(),
+      username: snap['username'].toString(),
       aimag_city_id: snap['aimag_city_id'],
       aimag_city: snap['aimag_city'] == null
           ? null
@@ -85,8 +85,8 @@ class User {
       bag_horoo: snap['bag_horoo'] == null
           ? null
           : NameModel.fromJson(snap['bag_horoo']),
-      roles: snap['roles'],
-      position: snap['position'],
+      roles: snap['roles'].toString(),
+      position: snap['position'].toString(),
       created_at: DateTime.tryParse(snap['created_at']),
       updated_at: DateTime.tryParse(snap['updated_at']),
       token: snap['token'] ?? '',

@@ -427,7 +427,7 @@ const rangeDay = computed(() => {
               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round"
                 d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
-            </svg>Харъяалагдах нутаг дэвсгэрээр</h3>
+            </svg>Харьяалагдах нутаг дэвсгэрээр</h3>
           <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="regionOptions.chartOptions"
             :series="regionOptions.series">
           </VueApexCharts>
@@ -474,7 +474,7 @@ const rangeDay = computed(() => {
       хэрэгжсэн Улаанбаатар хотын ахуйн хог хаягдлын цуглуулалт, тээвэрлэлтийн менежмент (УБАХХЦТМ) төслийн
       хүрээнд энэхүү цахим системийг хөгжүүлэв.</p>
     <!--Footer-->
-    <div class="grid lg:flex justify-evenly items-start gap-5 mt-10 ">
+    <div class="grid lg:flex justify-evenly items-center gap-5 mt-10 ">
 
       <a href="http://www.ubservice.mn/" target="_blank">
         <img src="../../../public/img/logo5.png" class="object-contain h-[100px] px-4 slide-in-bottom" />
@@ -483,10 +483,10 @@ const rangeDay = computed(() => {
         <img src="../../../public/img/logo6.png" class="object-contain h-[70px] slide-in-bottom" />
       </a>
       <a href="https://www.cowi.com/" target="_blank">
-        <img src="../../../public/img/logo1.png" class="object-contain h-[70px] slide-in-bottom" />
+        <img src="../../../public/img/logo1.png" class="object-contain h-[40px] slide-in-bottom" />
       </a>
       <a href="https://www.ebp.ch/en" target="_blank">
-        <img src="../../../public/img/logo3.png" class="object-contain h-[70px] px-4 slide-in-bottom" />
+        <img src="../../../public/img/logo3.png" class="object-contain h-[40px] px-4 slide-in-bottom" />
       </a>
       <a href="http://www.icon.mn/" target="_blank">
         <img src="../../../public/img/logo2.png" class="object-contain h-[70px] px-4 slide-in-bottom" />
@@ -501,8 +501,8 @@ const rangeDay = computed(() => {
     <div class="w-full pt-5 pb-5 my-20 text-sm text-center md:text-left fade-in bg-gray-100">
       Developed by Лансерс ХХК /Хуулбарлахыг хориглоно
       <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; {{ (new
-        Date()).getFullYear()
-      }} он</a>
+              Date()).getFullYear()
+              }} он</a>
     </div>
   </GuestLayout>
 </template>

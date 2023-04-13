@@ -107,7 +107,7 @@ class _SignUpState extends State<SignUp> {
                 position == 'Олон нийтийн байцаагч' ||
                 position == 'МХ байцаагч' ||
                 position == 'Дүүргийн ЗДТГ' ||
-                position == 'Хэсгийн ахлах')) ...[
+                position == 'Хэсгийн ахлагч')) ...[
           const SizedBox(height: 8),
           DropdownButtonFormField(
             validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
@@ -130,7 +130,7 @@ class _SignUpState extends State<SignUp> {
         if (position != null &&
             (position == 'Хорооны засаг дарга' ||
                 position == 'Олон нийтийн байцаагч' ||
-                position == 'Хэсгийн ахлах')) ...[
+                position == 'Хэсгийн ахлагч')) ...[
           const SizedBox(height: 8),
           // Баг,Хороо:
           DropdownButtonFormField(

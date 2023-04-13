@@ -51,17 +51,17 @@ class IndexController extends Controller
             [$start, $end]
         );
         $etgeed = DB::select(
-            " select  concat(trim(register),' ',trim(name)) name,count(*) niit from registers"
+            " select  trim(name) name,count(*) niit from registers"
                 .   " where whois='Хуулийн этгээд' and DATE(created_at) between ? and ? "
-                . " group by concat(trim(register),' ',trim(name)) "
+                . " group by trim(name)"
                 . " order by niit desc "
                 . " limit 10  ",
             [$start, $end]
         );
         $irgen = DB::select(
-            " select  concat(trim(register),' ',trim(name)) name,count(*) niit from registers"
+            " select  trim(name) name,count(*) niit from registers"
                 .   " where whois='Иргэн' and DATE(created_at) between ? and ? "
-                . " group by concat(trim(register),' ',trim(name)) "
+                . " group by trim(name) "
                 . " order by niit desc "
                 . " limit 10  ",
             [$start, $end]

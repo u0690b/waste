@@ -333,7 +333,7 @@ const rangeDay = computed(() => {
       <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-3 sm:px-8">
 
         <div class="px-4 py-2 bg-white border rounded-md shadow col-span-2">
-          <h3 class="text-xl text-gray-600 mb-4">Харъяалагдах нутаг дэвсгэрээр</h3>
+          <h3 class="text-xl text-gray-600 mb-4">Харьяалагдах нутаг дэвсгэрээр</h3>
           <VueApexCharts class="bg-white mb-8 p-4" type="bar" height="350" :options="regionOptions.chartOptions"
             :series="regionOptions.series">
           </VueApexCharts>

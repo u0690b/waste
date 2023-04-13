@@ -6,7 +6,7 @@ import 'package:waste_mobile/models/model.dart';
 
 class Constants {
   static String host =
-      kReleaseMode ? 'http://khog-khyanalt.mn' : 'http://khog-khyanalt.mn';
+      kReleaseMode ? 'http://khog-khyanalt.mn' : 'http://192.168.10.36:8000';
   static NameModel Function(NameModel, NameModel) combine = (element, value) =>
       element.updated_at != null &&
               value.updated_at != null &&
