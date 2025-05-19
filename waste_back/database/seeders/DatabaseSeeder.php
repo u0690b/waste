@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
 
         // \App\Models\User::create();
 
-
+        ini_set('memory_limit', '-1');
 
 
         $this->call([

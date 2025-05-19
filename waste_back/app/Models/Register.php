@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Services\FCMService;
+use App\Services\FirebaseMessagingService;
 use Auth;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -303,16 +303,16 @@ class Register extends Model
         }
 
         if (count($tokens)) {
-            FCMService::send(
-                $tokens,
-                [
-                    'title' => 'Шинэ зөрчил бүртгэгдлээ',
-                    'body' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
-                ],
-                [
+            $messagingService = new FirebaseMessagingService();
+            foreach ($tokens as $key => $token) {
+                $title = 'Шинэ зөрчил бүртгэгдлээ';
+                $body =  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил';
+                $customData = [
                     'id' => $this->id,
-                ]
-            );
+                    'type' => 'register',
+                ];
+                $messagingService->sendNotificationToDevice($token, $title, $body, $customData);
+            }
         }
     }
 
@@ -360,16 +360,19 @@ class Register extends Model
 
 
         if ($this->reg_user->push_token || $tokens) {
-            FCMService::send(
-                [$this->reg_user->push_token, ...$tokens],
-                [
-                    'title' => 'Зөрчил ' . $this->resolve->name . '-аар шийдвэрлэгдлээ',
-                    'body' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
-                ],
-                [
-                    'id' => $this->id,
-                ]
-            );
+            if ($this->comf_user->push_token) {
+                $tokens = [$this->reg_user->push_token, ...$tokens];
+                $messagingService = new FirebaseMessagingService();
+                foreach ($tokens as $key => $token) {
+                    $title = 'Зөрчил ' . $this->resolve->name . '-аар шийдвэрлэгдлээ';
+                    $body =  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил';
+                    $customData = [
+                        'id' => $this->id,
+                        'type' => 'register',
+                    ];
+                    $messagingService->sendNotificationToDevice($token, $title, $body, $customData);
+                }
+            }
         }
     }
 
@@ -404,16 +407,16 @@ class Register extends Model
 
 
         if ($this->comf_user->push_token) {
-            FCMService::send(
-                [$this->comf_user->push_token, $this->reg_user->push_token],
-                [
-                    'title' => ' ' . Auth::user()->name . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
-                    'body' =>   $this->reason->name . ' ' . $this->name,
-                ],
-                [
-                    'id' => $this->id,
-                ]
-            );
+
+            $messagingService = new FirebaseMessagingService();
+            $title = ' ' . Auth::user()->name . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ';
+            $body =   $this->reason->name . ' ' . $this->name;
+            $customData = [
+                'id' => $this->id,
+                'type' => 'register',
+            ];
+            $messagingService->sendNotificationToDevice($this->comf_user->push_token, $title, $body, $customData);
+            $messagingService->sendNotificationToDevice($this->reg_user->push_token, $title, $body, $customData);
         }
     }
 }

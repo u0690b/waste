@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('save_token', [UserAPIController::class, 'save_token'])->name('api.save_token');
     Route::resource('industries', App\Http\Controllers\API\IndustryAPIController::class);
 
-    Route::post('/registers/{register}/resolve', [App\Http\Controllers\API\RegisterAPIController::class, 'resolve'])->name('commons.index');
+    Route::post('/registers/{register}/resolve', [App\Http\Controllers\API\RegisterAPIController::class, 'resolve'])->name('resolve.index');
     Route::put('/registers/{register}/allocation', [App\Http\Controllers\API\RegisterAPIController::class, 'allocation_store'])->name('register.allocation_store');
     Route::resource('notifications', App\Http\Controllers\API\NotificationAPIController::class);
 });
@@ -45,31 +45,20 @@ Route::get('/commons', [CommonController::class, 'index'])->name('commons.index'
 Route::post('/login', [UserAPIController::class, 'login'])->name('api.login');
 Route::post('/signup', [UserAPIController::class, 'store'])->name('api.signup');
 
-Route::group(['prefix' => 'admin'], function () {
-    Route::resource('registers', App\Http\Controllers\API\RegisterAPIController::class);
-});
+// Route::group(['prefix' => 'admin'], function () {
+//     Route::resource('registers', App\Http\Controllers\API\RegisterAPIController::class);
+// });
 
 
-Route::group(['prefix' => 'admin'], function () {
-    Route::resource('attached_files', App\Http\Controllers\API\AttachedFileAPIController::class);
-});
+// Route::group(['prefix' => 'admin'], function () {
+//     Route::resource('attached_files', App\Http\Controllers\API\AttachedFileAPIController::class);
+// });
 
-Route::group(['prefix' => 'admin'], function () {
-    Route::resource('resolves', App\Http\Controllers\API\ResolveAPIController::class);
-});
-
-
-Route::group(['prefix' => 'admin'], function () {
-});
+// Route::group(['prefix' => 'admin'], function () {
+//     Route::resource('resolves', App\Http\Controllers\API\ResolveAPIController::class);
+// });
 
 
-
-
-Route::group(['prefix' => 'admin'], function () {
-    Route::resource('legal_entities', App\Http\Controllers\API\LegalEntityAPIController::class);
-});
-
-
-Route::group(['prefix' => 'admin'], function () {
-    Route::resource('legal_entities', App\Http\Controllers\API\LegalEntityAPIController::class);
-});
+// Route::group(['prefix' => 'admin'], function () {
+//     Route::resource('legal_entities', App\Http\Controllers\API\LegalEntityAPIController::class);
+// });
