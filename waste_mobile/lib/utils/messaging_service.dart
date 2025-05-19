@@ -40,13 +40,15 @@ class MessagingService {
       _handleMessage(initialMessage);
     }
     FirebaseMessaging.instance.getToken().then(setToken);
-    _onTokenRefreshSub =
-        FirebaseMessaging.instance.onTokenRefresh.listen(setToken);
+    _onTokenRefreshSub = FirebaseMessaging.instance.onTokenRefresh.listen(
+      setToken,
+    );
     // Also handle any interaction when the app is in the background via a
     // Stream listener
     _onMessageSub = FirebaseMessaging.onMessage.listen(_recieveMessage);
-    _onMessageOpenedAppSub =
-        FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+    _onMessageOpenedAppSub = FirebaseMessaging.onMessageOpenedApp.listen(
+      _handleMessage,
+    );
   }
 
   void _recieveMessage(RemoteMessage message) {

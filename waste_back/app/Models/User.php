@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Services\FCMService;
+use App\Services\FirebaseMessagingService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -255,16 +255,16 @@ class User extends Model  implements
 
 
         if (count($tokens)) {
-            FCMService::send(
-                $tokens,
-                [
-                    'title' => 'Зөрчил шийдвэрлэгдлээ',
-                    'body' =>   $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч',
-                ],
-                [
+            $messagingService = new FirebaseMessagingService();
+            foreach ($tokens as $key => $token) {
+                $title = 'Зөрчил шийдвэрлэгдлээ';
+                $body =   $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч';
+                $customData = [
                     'id' => $this->id,
-                ]
-            );
+                    'type' => 'register',
+                ];
+                $messagingService->sendNotificationToDevice($token, $title, $body, $customData);
+            }
         }
     }
 

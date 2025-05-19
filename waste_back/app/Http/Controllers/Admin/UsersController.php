@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\BagHoroo;
 use App\Models\User;
+use Artisan;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Response;
@@ -158,5 +159,31 @@ class UsersController extends Controller
     {
         $user->delete();
         return Redirect::back()->with('success', 'Хэрэглэгчийг идэвхигүй болголоо.');
+    }
+
+    /**
+     * Update the specified User in storage.
+     *
+     * @param User $user
+     *
+     * @return Response
+     */
+    public function mklink()
+    {
+        $user = Auth::user();
+        if ($user->roles !== 'admin') {
+            abort(403);
+        }
+        Artisan::call('optimize:clear');
+        Artisan::call('optimize');
+        Artisan::call('config:cache');
+        Artisan::call('event:cache');
+        Artisan::call('route:cache');
+        Artisan::call('view:cache');
+        Artisan::call('storage:link');
+
+        // Optionally, get the output
+        $output = Artisan::output();
+        echo $output;
     }
 }

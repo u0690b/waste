@@ -1,6 +1,4 @@
 {
     "java.configuration.updateBuildConfiguration": "disabled",
-    "[dart]": {
-        "editor.rulers": [110],
-    }
+    "liveServer.settings.multiRootWorkspaceName": "waste_mobile"
 }

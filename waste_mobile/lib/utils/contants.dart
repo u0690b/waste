@@ -6,17 +6,19 @@ import 'package:waste_mobile/models/model.dart';
 
 class Constants {
   static String host =
-      kReleaseMode ? 'http://khog-khyanalt.mn' : 'http://192.168.10.36:8000';
-  static NameModel Function(NameModel, NameModel) combine = (element, value) =>
-      element.updated_at != null &&
-              value.updated_at != null &&
-              element.updated_at!.compareTo(value.updated_at!) > 0
-          ? element
-          : value;
+      kReleaseMode ? 'https://waste.mecc.gov.mn' : 'https://waste.mecc.gov.mn';
+  static NameModel Function(NameModel, NameModel) combine =
+      (element, value) =>
+          element.updated_at != null &&
+                  value.updated_at != null &&
+                  element.updated_at!.compareTo(value.updated_at!) > 0
+              ? element
+              : value;
 
   static List<NameModel>? _places;
   static List<NameModel> get places {
-    return _places ??= GetStorage()
+    return _places ??=
+        GetStorage()
             .read<List<dynamic>>('places')
             ?.map((e) => NameModel.fromJson(e))
             .toList() ??
@@ -31,12 +33,15 @@ class Constants {
     GetStorage().write('places', value.map((e) => e.toJson()).toList());
 
     GetStorage().write(
-        'places_date', value.reduce(combine).updated_at?.toIso8601String());
+      'places_date',
+      value.reduce(combine).updated_at?.toIso8601String(),
+    );
   }
 
   static List<NameModel>? _reasons;
   static List<NameModel> get reasons {
-    return _reasons ??= GetStorage()
+    return _reasons ??=
+        GetStorage()
             .read<List<dynamic>>('reasons')
             ?.map((e) => NameModel.fromJson(e))
             .toList() ??
@@ -57,7 +62,8 @@ class Constants {
 
   static List<NameModel>? _status;
   static List<NameModel> get status {
-    return _status ??= GetStorage()
+    return _status ??=
+        GetStorage()
             .read<List<dynamic>>('status')
             ?.map((e) => NameModel.fromJson(e))
             .toList() ??
@@ -78,7 +84,8 @@ class Constants {
 
   static List<NameModel>? _aimagCities;
   static List<NameModel> get aimagCities {
-    return _aimagCities ??= GetStorage()
+    return _aimagCities ??=
+        GetStorage()
             .read<List<dynamic>>('aimagCities')
             ?.map((e) => NameModel.fromJson(e))
             .toList() ??
@@ -99,7 +106,8 @@ class Constants {
 
   static List<NameModel>? _soumDistricts;
   static List<NameModel> get soumDistricts {
-    return _soumDistricts ??= GetStorage()
+    return _soumDistricts ??=
+        GetStorage()
             .read<List<dynamic>>('soumDistricts')
             ?.map((e) => NameModel.fromJson(e))
             .toList() ??
@@ -120,7 +128,8 @@ class Constants {
 
   static List<NameModel>? _bagHoroos;
   static List<NameModel> get bagHoroos {
-    return _bagHoroos ??= GetStorage()
+    return _bagHoroos ??=
+        GetStorage()
             .read<List<dynamic>>('bagHoroos')
             ?.map((e) => NameModel.fromJson(e))
             .toList() ??
@@ -154,8 +163,9 @@ class Constants {
 
   static Map<String, int>? _statistic;
   static Map<String, int> get statistic {
-    return _statistic ??=
-        jsonDecode(GetStorage().read<String>('statistic') ?? '');
+    return _statistic ??= jsonDecode(
+      GetStorage().read<String>('statistic') ?? '{}',
+    );
   }
 
   static set statistic(Map<String, int>? value) {
@@ -169,7 +179,8 @@ class Constants {
 
   static List<NameModel>? _resolves;
   static List<NameModel> get resolves {
-    return _resolves ??= GetStorage()
+    return _resolves ??=
+        GetStorage()
             .read<List<dynamic>>('resolves')
             ?.map((e) => NameModel.fromJson(e))
             .toList() ??

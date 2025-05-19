@@ -14,11 +14,12 @@ class CompanyNameFormField extends StatefulWidget {
   final void Function(String val) changeCompanyName;
   final void Function(String val, String industry) changeRegister;
   final String initText;
-  const CompanyNameFormField(
-      {super.key,
-      required this.changeCompanyName,
-      required this.changeRegister,
-      required this.initText});
+  const CompanyNameFormField({
+    super.key,
+    required this.changeCompanyName,
+    required this.changeRegister,
+    required this.initText,
+  });
 
   @override
   State<CompanyNameFormField> createState() => _CompanyNameFormField();
@@ -38,20 +39,19 @@ class _CompanyNameFormField extends State<CompanyNameFormField> {
     if (token == null) {
       return {};
     }
-    return {'Authorization': "Bearer $token"};
+    return {'Authorization': "Bearer $token", 'X-Auth-Token': "Bearer $token"};
   }
 
   Future<List<Map<String, String>>> _getOptions(String searchTerm) async {
     final response = await http.get(
-        Uri.parse(
-          '${Constants.host}/api/entities?search=$searchTerm',
-        ),
-        headers: {
-          'User-Agent': 'waste_mobile',
-          'Accept': 'application/json',
-          HttpHeaders.contentTypeHeader: 'application/json',
-          ..._hasToken()
-        });
+      Uri.parse('${Constants.host}/api/entities?search=$searchTerm'),
+      headers: {
+        'User-Agent': 'waste_mobile',
+        'Accept': 'application/json',
+        HttpHeaders.contentTypeHeader: 'application/json',
+        ..._hasToken(),
+      },
+    );
     final ret = json.decode(response.body) as List;
     print(ret);
     return ret.map((v) {
@@ -69,12 +69,12 @@ class _CompanyNameFormField extends State<CompanyNameFormField> {
       textFieldConfiguration: TextFieldConfiguration(
         controller: this._typeAheadController,
         decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-          labelText: 'Албан байгууллага нэр',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5.0),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20.0,
+            vertical: 15.0,
           ),
+          labelText: 'Албан байгууллага нэр',
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
         ),
       ),
       suggestionsCallback: (pattern) {
@@ -82,9 +82,7 @@ class _CompanyNameFormField extends State<CompanyNameFormField> {
         return _getOptions(pattern);
       },
       itemBuilder: (context, suggestion) {
-        return ListTile(
-          title: Text(suggestion['name'] ?? ''),
-        );
+        return ListTile(title: Text(suggestion['name'] ?? ''));
       },
       transitionBuilder: (context, suggestionsBox, controller) {
         return suggestionsBox;
@@ -95,7 +93,9 @@ class _CompanyNameFormField extends State<CompanyNameFormField> {
           widget.changeCompanyName(suggestion['name']!);
         if (suggestion['id'] != null)
           widget.changeRegister(
-              suggestion['id']!, suggestion['industry'] ?? '');
+            suggestion['id']!,
+            suggestion['industry'] ?? '',
+          );
       },
       validator: (value) {
         if (value != null && value.isEmpty) {

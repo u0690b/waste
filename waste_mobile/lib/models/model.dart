@@ -30,39 +30,45 @@ class NameModel {
     this.created_at,
   });
 
-  NameModel? get aimag_city => aimag_city_id == null
-      ? soum_district?.aimag_city
-      : Constants.aimagCities.firstWhere(
-          (element) => element.id == aimag_city_id,
-          orElse: () => NameModel(name: '', id: -1));
+  NameModel? get aimag_city =>
+      aimag_city_id == null
+          ? soum_district?.aimag_city
+          : Constants.aimagCities.firstWhere(
+            (element) => element.id == aimag_city_id,
+            orElse: () => NameModel(name: '', id: -1),
+          );
 
-  NameModel? get soum_district => soum_district_id == null
-      ? null
-      : Constants.soumDistricts.firstWhere(
-          (element) => element.id == soum_district_id,
-          orElse: () => NameModel(name: '', id: -1));
+  NameModel? get soum_district =>
+      soum_district_id == null
+          ? null
+          : Constants.soumDistricts.firstWhere(
+            (element) => element.id == soum_district_id,
+            orElse: () => NameModel(name: '', id: -1),
+          );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        'soum_district_id': soum_district_id,
-        'aimag_city_id': aimag_city_id,
-        'updated_at': updated_at?.toIso8601String(),
-        'created_at': created_at?.toIso8601String(),
-      };
+    "id": id,
+    "name": name,
+    'soum_district_id': soum_district_id,
+    'aimag_city_id': aimag_city_id,
+    'updated_at': updated_at?.toIso8601String(),
+    'created_at': created_at?.toIso8601String(),
+  };
 
   factory NameModel.fromJson(Map<String, dynamic> snap) => NameModel(
-        id: snap['id'],
-        name: snap['name'],
-        aimag_city_id: snap['aimag_city_id'],
-        soum_district_id: snap['soum_district_id'],
-        updated_at: snap['updated_at'] == null
+    id: snap['id'],
+    name: snap['name'],
+    aimag_city_id: snap['aimag_city_id'],
+    soum_district_id: snap['soum_district_id'],
+    updated_at:
+        snap['updated_at'] == null
             ? null
             : DateTime.tryParse(snap['updated_at']),
-        created_at: snap['created_at'] == null
+    created_at:
+        snap['created_at'] == null
             ? null
             : DateTime.tryParse(snap['created_at']),
-      );
+  );
 }
 
 class ValidationException implements Exception {
@@ -87,14 +93,29 @@ mixin Api {
       'User-Agent': 'waste_mobile',
       'Accept': 'application/json',
       HttpHeaders.contentTypeHeader: 'application/json',
-      ..._hasToken()
+      ..._hasToken(),
     };
     var url = Uri.parse('${Constants.host}/api$path');
-
+    if (method.toLowerCase() == 'get') {
+      if (body is Map) {
+        Map<String, String> body1 = Map<String, String>.from(
+          url.queryParameters,
+        );
+        body.forEach((key, value) {
+          if (value != null) {
+            body1[key] = value.toString();
+          }
+        });
+        url = url.replace(queryParameters: body1);
+      }
+      body = null;
+    }
     var req = http.Request(method, url);
     req.headers.addAll(headersList);
+    if (body != null) {
+      req.body = jsonEncode(body);
+    }
 
-    req.body = body == null ? '' : jsonEncode(body);
     var res = await req.send();
     final resBytes = await res.stream.toBytes();
 
@@ -115,13 +136,14 @@ mixin Api {
       }
 
       await Get.defaultDialog(
-          middleText: text,
-          textConfirm: 'OK',
-          confirmTextColor: Colors.white,
-          onConfirm: () {
-            Get.back(closeOverlays: true);
-            Get.find<AuthController>().logOut();
-          });
+        middleText: text,
+        textConfirm: 'OK',
+        confirmTextColor: Colors.white,
+        onConfirm: () {
+          Get.back(closeOverlays: true);
+          Get.find<AuthController>().logOut();
+        },
+      );
     } else if (res.statusCode == 422) {
       final body = jsonDecode(resBody);
       text = res.reasonPhrase ?? text;
@@ -167,7 +189,7 @@ mixin Api {
       'User-Agent': 'waste_mobile',
       'Accept': 'application/json',
       HttpHeaders.contentTypeHeader: 'application/json',
-      ..._hasToken()
+      ..._hasToken(),
     };
     var url = Uri.parse('${Constants.host}/api$path');
 
@@ -188,12 +210,18 @@ mixin Api {
       }
     });
     for (int i = 0; i < images.length; i++) {
-      req.files.add(http.MultipartFile.fromBytes('images[$i]', images[i],
-          filename: "images$i.jpg"));
+      req.files.add(
+        http.MultipartFile.fromBytes(
+          'images[$i]',
+          images[i],
+          filename: "images$i.jpg",
+        ),
+      );
     }
     if (video != null) {
       req.files.add(
-          http.MultipartFile.fromBytes('video', video, filename: 'video.mpeg'));
+        http.MultipartFile.fromBytes('video', video, filename: 'video.mpeg'),
+      );
     }
     if (image != null) {
       req.files.add(await http.MultipartFile.fromPath('image', image.path));
@@ -217,13 +245,14 @@ mixin Api {
       }
 
       Get.defaultDialog(
-          middleText: text,
-          textConfirm: 'OK',
-          confirmTextColor: Colors.white,
-          onConfirm: () {
-            Get.back();
-            Get.find<AuthController>().logOut();
-          });
+        middleText: text,
+        textConfirm: 'OK',
+        confirmTextColor: Colors.white,
+        onConfirm: () {
+          Get.back();
+          Get.find<AuthController>().logOut();
+        },
+      );
     } else {
       print(res.reasonPhrase);
       final body = jsonDecode(resBody);
@@ -235,10 +264,11 @@ mixin Api {
         onError(text);
       } else {
         Get.defaultDialog(
-            middleText: text,
-            textConfirm: 'OK',
-            confirmTextColor: Colors.white,
-            onConfirm: Get.back);
+          middleText: text,
+          textConfirm: 'OK',
+          confirmTextColor: Colors.white,
+          onConfirm: Get.back,
+        );
       }
       return null;
     }
@@ -253,6 +283,6 @@ mixin Api {
     if (token == null) {
       return {};
     }
-    return {'Authorization': "Bearer $token"};
+    return {'Authorization': "Bearer $token", 'X-Auth-Token': "Bearer $token"};
   }
 }

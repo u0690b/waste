@@ -99,12 +99,13 @@ class AuthController extends GetxController with CacheManager, Api {
       }
       if (res.statusCode == HttpStatus.unauthorized) removeToken();
       Get.defaultDialog(
-          middleText: text,
-          textConfirm: 'OK',
-          confirmTextColor: Colors.white,
-          onConfirm: () {
-            Get.back();
-          });
+        middleText: text,
+        textConfirm: 'OK',
+        confirmTextColor: Colors.white,
+        onConfirm: () {
+          Get.back();
+        },
+      );
     }
   }
 
@@ -113,7 +114,7 @@ class AuthController extends GetxController with CacheManager, Api {
     if (token == null) {
       return {};
     }
-    return {'Authorization': "Bearer $token"};
+    return {'Authorization': "Bearer $token", 'X-Auth-Token': "Bearer $token"};
   }
 
   Future<void> savePushToken(String pushToken) async {

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Register;
-use App\Services\FCMService;
+
+use App\Services\FirebaseMessagingService;
 use Auth;
 use Date;
 use DB;
@@ -12,9 +13,18 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 use Response;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class IndexController extends Controller
 {
+    protected $messagingService;
+
+    public function __construct(FirebaseMessagingService $messagingService)
+    {
+        $this->messagingService = $messagingService;
+    }
+
     /**
      * Display a listing of the Register.
      *
@@ -165,21 +175,65 @@ class IndexController extends Controller
         ]);
     }
 
-    public function sendNotificationrToUser()
+    public function storage($filename)
     {
-        // get a user to get the fcm_token that already sent.               from mobile apps 
-        // $user = User::findOrFail($id);
+        $path = 'public/' . $filename;
 
-        return FCMService::send(
-            // 'cQ2U5OIzTMqnvzXvFGdKXH:APA91bEQDPO-wKgTjDfme8kn8rHg4sbZNYqtF644aZQbl4--8sFHnpopp5p0KzFOgdIkuNePxL6vEfdsg3tWVEcgRsLQup60x9aBMn1y2f_X9xiXG898CXLjBDdCA74wmUzzl-Eq7xx8',
-            'eqbd6FFjTlSqD4VsmkMOYV:APA91bG6ucMv6aLraf5EWdd8L2Kq6YCGkUnDsweK9AER_Xb55BJ9hD9cZfTveWe3ZyzXPxntLSTsAKLSBN8WGdqypX5AW4IBTM4iIPabpA8p4dI_rohp8HhvN-HPh36z7ToLJdePd1wx',
-            [
-                'title' => 'your title',
-                'body' => 'your body',
-            ],
-            [
-                'chat' => 'your body',
-            ]
-        );
+        if (!Storage::exists($path)) {
+            abort(404, 'File not found.');
+        }
+
+        $fullPath = Storage::path($path);
+        $mime = Storage::mimeType($path);
+        $size = filesize($fullPath);
+
+        $start = 0;
+        $end = $size - 1;
+
+        if ($range = Request::header('Range')) {
+            preg_match('/bytes=(\d+)-(\d*)/', $range, $matches);
+            $start = intval($matches[1]);
+            if (!empty($matches[2])) {
+                $end = intval($matches[2]);
+            }
+        } else {
+            $file = Storage::get($path);
+            return response($file, 200)
+                ->header('Content-Type', $mime);
+        }
+
+        $length = $end - $start + 1;
+        $headers = [
+            'Content-Type' => $mime,
+            'Content-Length' => $length,
+            'Content-Range' => "bytes $start-$end/$size",
+            'Accept-Ranges' => 'bytes',
+            'Cache-Control' => 'public, max-age=86400',
+        ];
+
+        $response = new StreamedResponse(function () use ($fullPath, $start, $length) {
+            $handle = fopen($fullPath, 'rb');
+            fseek($handle, $start);
+            echo fread($handle, $length);
+            fclose($handle);
+        }, 206, $headers);
+
+        return $response;
+    }
+
+    public function sendNotificationrToUser($token)
+    {
+        $deviceToken = $token ?? 'clQ0Ey4SS7HK_KAq1w1ANY:APA91bFxm6ybOPm1uTNIcLKcmX6lz-nrhkHw27BQ4I2UqTnkSdtnVAs5APJtNZUSbpXqYh3bkdiMRdaW-S__cXA49mQK4vV1p7YJc_A1eZUPZeQ-0CjtOqk';
+        $title = 'Hello from Laravel!';
+        $body = 'This is a test push notification.';
+        $customData = ['key' => 'value', 'another_key' => 'another_value']; // Optional data
+
+        $result = $this->messagingService->sendNotificationToDevice($deviceToken, $title, $body, $customData);
+
+        if ($result && $result['success']) {
+            return response()->json(['message' => 'Notification sent successfully!', 'messageId' => $result['messageId']]);
+        } else {
+            return response()->json(['error' => 'Failed to send notification', 'details' => $result['error'] ?? 'Unknown error'], 500);
+        }
     }
 }

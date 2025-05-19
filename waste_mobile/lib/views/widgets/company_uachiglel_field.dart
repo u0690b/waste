@@ -14,11 +14,12 @@ class CompanyUAChiglelFormField extends StatefulWidget {
   final void Function(String val)? onChange;
   final String initText;
   final TextEditingController? textEditingController;
-  const CompanyUAChiglelFormField(
-      {super.key,
-      this.onChange,
-      required this.initText,
-      this.textEditingController});
+  const CompanyUAChiglelFormField({
+    super.key,
+    this.onChange,
+    required this.initText,
+    this.textEditingController,
+  });
 
   @override
   State<CompanyUAChiglelFormField> createState() =>
@@ -31,9 +32,10 @@ class _CompanyUAChiglelFormField extends State<CompanyUAChiglelFormField> {
   @override
   void initState() {
     super.initState();
-    _typeAheadController = widget.textEditingController != null
-        ? widget.textEditingController!
-        : TextEditingController(text: widget.initText);
+    _typeAheadController =
+        widget.textEditingController != null
+            ? widget.textEditingController!
+            : TextEditingController(text: widget.initText);
   }
 
   Map<String, String> _hasToken() {
@@ -41,20 +43,19 @@ class _CompanyUAChiglelFormField extends State<CompanyUAChiglelFormField> {
     if (token == null) {
       return {};
     }
-    return {'Authorization': "Bearer $token"};
+    return {'Authorization': "Bearer $token", 'X-Auth-Token': "Bearer $token"};
   }
 
   Future<List<Map<String, String>>> _getOptions(String searchTerm) async {
     final response = await http.get(
-        Uri.parse(
-          '${Constants.host}/api/industries?search=$searchTerm',
-        ),
-        headers: {
-          'User-Agent': 'waste_mobile',
-          'Accept': 'application/json',
-          HttpHeaders.contentTypeHeader: 'application/json',
-          ..._hasToken()
-        });
+      Uri.parse('${Constants.host}/api/industries?search=$searchTerm'),
+      headers: {
+        'User-Agent': 'waste_mobile',
+        'Accept': 'application/json',
+        HttpHeaders.contentTypeHeader: 'application/json',
+        ..._hasToken(),
+      },
+    );
     final ret = json.decode(response.body) as List;
     print(ret);
     return ret.map((v) {
@@ -68,12 +69,12 @@ class _CompanyUAChiglelFormField extends State<CompanyUAChiglelFormField> {
       textFieldConfiguration: TextFieldConfiguration(
         controller: this._typeAheadController,
         decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-          labelText: 'Үйл Ажиллагааны чиглэл:',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(5.0),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20.0,
+            vertical: 15.0,
           ),
+          labelText: 'Үйл Ажиллагааны чиглэл:',
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
         ),
       ),
       suggestionsCallback: (pattern) {
@@ -81,9 +82,7 @@ class _CompanyUAChiglelFormField extends State<CompanyUAChiglelFormField> {
         return _getOptions(pattern);
       },
       itemBuilder: (context, suggestion) {
-        return ListTile(
-          title: Text(suggestion['name'] ?? ''),
-        );
+        return ListTile(title: Text(suggestion['name'] ?? ''));
       },
       transitionBuilder: (context, suggestionsBox, controller) {
         return suggestionsBox;
