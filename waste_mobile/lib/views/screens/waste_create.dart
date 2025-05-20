@@ -18,7 +18,7 @@ import 'package:waste_mobile/views/widgets/location_map.dart';
 class WasteCreate extends StatefulWidget {
   final WasteController wasteController;
   const WasteCreate({Key? key, required this.wasteController})
-      : super(key: key);
+    : super(key: key);
 
   @override
   State<WasteCreate> createState() => _WasteCreateState();
@@ -28,37 +28,37 @@ class _WasteCreateState extends State<WasteCreate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: MyBackButton(),
-          ),
-          backgroundColor: LightColors.kDarkYellow,
-          foregroundColor: LightColors.kDarkBlue,
-          title: const Text(
-            'Бүртгэх',
-            style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w700),
-          ),
+      appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: MyBackButton(),
         ),
-        body: SafeArea(
-          child: WasteRegisterForm(
-            onSave: (value) => futureAlertDialog(
+        backgroundColor: LightColors.kDarkYellow,
+        foregroundColor: LightColors.kDarkBlue,
+        title: const Text(
+          'Бүртгэх',
+          style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w700),
+        ),
+      ),
+      body: SafeArea(
+        child: WasteRegisterForm(
+          onSave:
+              (value) => futureAlertDialog(
                 context: context,
                 futureStream: widget.wasteController.addLocalModels(value),
-                autoCloseSec: 1),
-          ),
-        ));
+                autoCloseSec: 1,
+              ),
+        ),
+      ),
+    );
   }
 }
 
 class WasteRegisterForm extends StatefulWidget {
   final WasteModel? model;
   final Future<void> Function(WasteModel value) onSave;
-  const WasteRegisterForm({
-    Key? key,
-    this.model,
-    required this.onSave,
-  }) : super(key: key);
+  const WasteRegisterForm({Key? key, this.model, required this.onSave})
+    : super(key: key);
 
   @override
   State<WasteRegisterForm> createState() => WasteRegisterFormState();
@@ -116,9 +116,10 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
   Widget build(BuildContext context) {
     var textButton = TextButton(
       style: TextButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor:
-              _videoFile == null ? Colors.orangeAccent : Colors.redAccent),
+        foregroundColor: Colors.white,
+        backgroundColor:
+            _videoFile == null ? Colors.orangeAccent : Colors.redAccent,
+      ),
       onPressed: () {
         if (_videoFile != null) {
           setState(() {
@@ -139,33 +140,35 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         TextButton(
-                            onPressed: () async {
-                              final video = await ImagePicker().pickVideo(
-                                source: ImageSource.camera,
-                              );
+                          onPressed: () async {
+                            final video = await ImagePicker().pickVideo(
+                              source: ImageSource.camera,
+                            );
 
-                              _videoFile =
-                                  (await video?.readAsBytes())?.toList();
-                              setState(() {});
-                              Get.back();
-                            },
-                            child: const Text('Камер нээх')),
+                            _videoFile = (await video?.readAsBytes())?.toList();
+                            setState(() {});
+                            Get.back();
+                          },
+                          child: const Text('Камер нээх'),
+                        ),
                         const Divider(),
                         TextButton(
-                            onPressed: () async {
-                              final video = await ImagePicker().pickVideo(
-                                source: ImageSource.gallery,
-                                maxDuration: const Duration(minutes: 3),
-                              );
-                              _videoFile =
-                                  (await video?.readAsBytes())?.toList();
-                              setState(() {});
-                              Get.back();
-                            },
-                            child: const Text('Зургийн сан нээх')),
+                          onPressed: () async {
+                            final video = await ImagePicker().pickVideo(
+                              source: ImageSource.gallery,
+                              maxDuration: const Duration(minutes: 3),
+                            );
+                            _videoFile = (await video?.readAsBytes())?.toList();
+                            setState(() {});
+                            Get.back();
+                          },
+                          child: const Text('Зургийн сан нээх'),
+                        ),
                         const Divider(),
                         TextButton(
-                            onPressed: Get.back, child: const Text('Хаах'))
+                          onPressed: Get.back,
+                          child: const Text('Хаах'),
+                        ),
                       ],
                     ),
                   ),
@@ -176,10 +179,11 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
         }
       },
       child: Text(
-          textAlign: TextAlign.center,
-          _videoFile == null
-              ? 'Дүрс бичлэг хавсаргах'
-              : 'Сонгосон дүрс бичлэг устгах'),
+        textAlign: TextAlign.center,
+        _videoFile == null
+            ? 'Дүрс бичлэг хавсаргах'
+            : 'Сонгосон дүрс бичлэг устгах',
+      ),
     );
     Key industryKey = Key('industryKey');
     return Form(
@@ -209,23 +213,28 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                             Text(
                               'Иргэн',
                               style: TextStyle(
-                                  fontWeight: whois == 'Иргэн'
-                                      ? FontWeight.bold
-                                      : FontWeight.normal),
+                                fontWeight:
+                                    whois == 'Иргэн'
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                              ),
                             ),
                             Switch(
-                                value: whois != 'Иргэн',
-                                onChanged: (val) {
-                                  setState(() {
-                                    whois = val ? 'Хуулийн этгээд' : 'Иргэн';
-                                  });
-                                }),
+                              value: whois != 'Иргэн',
+                              onChanged: (val) {
+                                setState(() {
+                                  whois = val ? 'Хуулийн этгээд' : 'Иргэн';
+                                });
+                              },
+                            ),
                             Text(
                               'Хуулийн этгээд',
                               style: TextStyle(
-                                  fontWeight: whois == 'Хуулийн этгээд'
-                                      ? FontWeight.bold
-                                      : FontWeight.normal),
+                                fontWeight:
+                                    whois == 'Хуулийн этгээд'
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                              ),
                             ),
                             Expanded(child: SizedBox()),
                             Checkbox(
@@ -264,10 +273,13 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                               },
                               decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 15.0),
-                                labelText: whois == 'Хуулийн этгээд'
-                                    ? 'Албан байгууллага нэр'
-                                    : 'Иргэний овог нэр:',
+                                  horizontal: 20.0,
+                                  vertical: 15.0,
+                                ),
+                                labelText:
+                                    whois == 'Хуулийн этгээд'
+                                        ? 'Албан байгууллага нэр'
+                                        : 'Иргэний овог нэр:',
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(5.0),
                                 ),
@@ -276,12 +288,13 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                           else
                             CompanyNameFormField(
                               changeCompanyName: (val) => ner.text = val,
-                              changeRegister: (val, industy) => setState(() {
-                                register.text = val;
-                                registerController.text = val;
-                                chiglel.text = industy;
-                                industryKey = Key(industy);
-                              }),
+                              changeRegister:
+                                  (val, industy) => setState(() {
+                                    register.text = val;
+                                    registerController.text = val;
+                                    chiglel.text = industy;
+                                    industryKey = Key(industy);
+                                  }),
                               initText: ner.text,
                             ),
                           const SizedBox(height: 20),
@@ -292,10 +305,13 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                             onChanged: (value) => register.text = value,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 15.0),
-                              labelText: whois == 'Хуулийн этгээд'
-                                  ? 'Албан байгууллага регистр'
-                                  : 'Иргэний овог регистр:',
+                                horizontal: 20.0,
+                                vertical: 15.0,
+                              ),
+                              labelText:
+                                  whois == 'Хуулийн этгээд'
+                                      ? 'Албан байгууллага регистр'
+                                      : 'Иргэний овог регистр:',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0),
                               ),
@@ -311,44 +327,61 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
 
                         const SizedBox(height: 20),
                         //  Сум,Дүүрэг
-                        if (['da', 'hd', 'onb', 'mha']
-                            .contains(AuthController.user!.roles))
+                        if ([
+                          'da',
+                          'hd',
+                          'onb',
+                          'mha',
+                        ].contains(AuthController.user!.roles))
                           TextFormField(
-                            validator: (p0) =>
-                                p0 == null ? 'Заавал бөглөх' : null,
-                            initialValue: Constants.soumDistricts
-                                .firstWhere(
-                                    (element) => element.id == soumDistrict)
-                                .name,
+                            validator:
+                                (p0) => p0 == null ? 'Заавал бөглөх' : null,
+                            initialValue:
+                                Constants.soumDistricts
+                                    .firstWhere(
+                                      (element) => element.id == soumDistrict,
+                                    )
+                                    .name,
                             enabled: false,
                             decoration: InputDecoration(
                               labelText: "Сум,Дүүрэг:",
                               contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 15.0),
+                                horizontal: 20.0,
+                                vertical: 15.0,
+                              ),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
                             ),
                           )
                         else
                           DropdownButtonFormField(
-                            validator: (p0) =>
-                                p0 == null ? 'Заавал бөглөх' : null,
+                            validator:
+                                (p0) => p0 == null ? 'Заавал бөглөх' : null,
                             decoration: InputDecoration(
                               labelText: "Сум,Дүүрэг",
                               contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 15.0),
+                                horizontal: 20.0,
+                                vertical: 15.0,
+                              ),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
                             ),
                             enableFeedback: aimagCity == null,
-                            items: Constants.soumDistricts
-                                .where((el) =>
-                                    el.aimag_city_id == (aimagCity ?? -1))
-                                .map((e) => DropdownMenuItem(
-                                      value: e.id,
-                                      child: Text(e.name),
-                                    ))
-                                .toList(),
+                            items:
+                                Constants.soumDistricts
+                                    .where(
+                                      (el) =>
+                                          el.aimag_city_id == (aimagCity ?? -1),
+                                    )
+                                    .map(
+                                      (e) => DropdownMenuItem(
+                                        value: e.id,
+                                        child: Text(e.name),
+                                      ),
+                                    )
+                                    .toList(),
                             value: soumDistrict,
                             onChanged: (int? value) {
                               setState(() {
@@ -360,25 +393,33 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                         const SizedBox(height: 20),
                         // Баг,Хороо:
                         DropdownButtonFormField(
-                          validator: (p0) =>
-                              p0 == null ? 'Заавал бөглөх' : null,
+                          validator:
+                              (p0) => p0 == null ? 'Заавал бөглөх' : null,
                           decoration: InputDecoration(
                             labelText: "Баг,Хороо:",
                             contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 15.0),
+                              horizontal: 20.0,
+                              vertical: 15.0,
+                            ),
                             border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0)),
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
                           ),
                           enableFeedback: soumDistrict != null,
-                          items: Constants.bagHoroos
-                              .where((element) =>
-                                  element.soum_district_id ==
-                                  (soumDistrict ?? -1))
-                              .map((e) => DropdownMenuItem(
-                                    value: e.id,
-                                    child: Text(e.name),
-                                  ))
-                              .toList(),
+                          items:
+                              Constants.bagHoroos
+                                  .where(
+                                    (element) =>
+                                        element.soum_district_id ==
+                                        (soumDistrict ?? -1),
+                                  )
+                                  .map(
+                                    (e) => DropdownMenuItem(
+                                      value: e.id,
+                                      child: Text(e.name),
+                                    ),
+                                  )
+                                  .toList(),
                           value: bagHoroo,
                           onChanged: (int? value) {
                             setState(() {
@@ -399,7 +440,9 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                           onChanged: (value) => address = value,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 15.0),
+                              horizontal: 20.0,
+                              vertical: 15.0,
+                            ),
                             labelText: 'Хаяг тоот, утас:',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -419,7 +462,9 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                           onChanged: (value) => description = value,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 15.0),
+                              horizontal: 20.0,
+                              vertical: 15.0,
+                            ),
                             labelText: 'Гаргасан зөрчлийн байдал:',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -431,40 +476,47 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                         const SizedBox(height: 20),
                         // Зөрчлийн төрөл:
                         DropdownButtonFormField(
-                            validator: (p0) =>
-                                p0 == null ? 'Заавал бөглөх' : null,
-                            value: reason,
-                            decoration: InputDecoration(
-                              labelText: "Зөрчлийн төрөл:",
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 15.0),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
+                          validator:
+                              (p0) => p0 == null ? 'Заавал бөглөх' : null,
+                          value: reason,
+                          decoration: InputDecoration(
+                            labelText: "Зөрчлийн төрөл:",
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                              vertical: 15.0,
                             ),
-                            selectedItemBuilder: (context) {
-                              return Constants.reasons
-                                  .map(
-                                    (e) => Container(
-                                      width: Get.width - 105,
-                                      child: Text(
-                                        e.name,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          selectedItemBuilder: (context) {
+                            return Constants.reasons
+                                .map(
+                                  (e) => Container(
+                                    width: Get.width - 105,
+                                    child: Text(
+                                      e.name,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  )
-                                  .toList();
-                            },
-                            items: Constants.reasons
-                                .map((e) => DropdownMenuItem(
+                                  ),
+                                )
+                                .toList();
+                          },
+                          items:
+                              Constants.reasons
+                                  .map(
+                                    (e) => DropdownMenuItem(
                                       value: e.id,
                                       child: Text(e.name),
-                                    ))
-                                .toList(),
-                            onChanged: (int? value) {
-                              setState(() {
-                                reason = value;
-                              });
-                            }),
+                                    ),
+                                  )
+                                  .toList(),
+                          onChanged: (int? value) {
+                            setState(() {
+                              reason = value;
+                            });
+                          },
+                        ),
                         const SizedBox(height: 20),
                         // Зөрчсөн хууль тогтоомжийн зүйл, заалт
                         TextFormField(
@@ -473,7 +525,9 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                           onChanged: (value) => zuil_zaalt = value,
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 15.0),
+                              horizontal: 20.0,
+                              vertical: 15.0,
+                            ),
                             labelText: 'Зөрчсөн хууль тогтоомжийн зүйл, заалт:',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
@@ -496,12 +550,14 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                             });
                           },
                           videoButton: textButton,
-                          onPlay: _videoFile == null
-                              ? null
-                              : () {
-                                  Get.dialog(
-                                      MyVideoPlayerFile(file: _videoFile!));
-                                },
+                          onPlay:
+                              _videoFile == null
+                                  ? null
+                                  : () {
+                                    Get.dialog(
+                                      MyVideoPlayerFile(file: _videoFile!),
+                                    );
+                                  },
                         ),
                         const SizedBox(height: 20),
                       ],
@@ -553,9 +609,10 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                         child: const Text(
                           'Хадгалах',
                           style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
@@ -564,7 +621,7 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

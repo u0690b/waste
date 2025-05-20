@@ -18,36 +18,37 @@ class _ImageScreenState extends State<ImageScreen> {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        primary: false,
-        padding: const EdgeInsets.all(20),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        crossAxisCount: 2,
-        children: [
-          for (var i = 0; i < widget.galleryItems.length; i++)
-            ImageItemThumbnail(
-              galleryExampleItem: widget.galleryItems[i],
-              onTap: () {
-                open(context, i);
-              },
-            ),
-        ]);
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      primary: false,
+      padding: const EdgeInsets.all(20),
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+      crossAxisCount: 2,
+      children: [
+        for (var i = 0; i < widget.galleryItems.length; i++)
+          ImageItemThumbnail(
+            galleryExampleItem: widget.galleryItems[i],
+            onTap: () {
+              open(context, i);
+            },
+          ),
+      ],
+    );
   }
 
   void open(BuildContext context, final int index) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => GalleryPhotoViewWrapper(
-          galleryItems: widget.galleryItems,
-          backgroundDecoration: const BoxDecoration(
-            color: Colors.black,
-          ),
-          initialIndex: index,
-          scrollDirection: verticalGallery ? Axis.vertical : Axis.horizontal,
-        ),
+        builder:
+            (context) => GalleryPhotoViewWrapper(
+              galleryItems: widget.galleryItems,
+              backgroundDecoration: const BoxDecoration(color: Colors.black),
+              initialIndex: index,
+              scrollDirection:
+                  verticalGallery ? Axis.vertical : Axis.horizontal,
+            ),
       ),
     );
   }
@@ -92,7 +93,16 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.black),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('Зураг', style: TextStyle(color: Colors.white)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Container(
         decoration: widget.backgroundDecoration,
         constraints: BoxConstraints.expand(
@@ -121,7 +131,7 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
                   decoration: null,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -131,7 +141,8 @@ class _GalleryPhotoViewWrapperState extends State<GalleryPhotoViewWrapper> {
   PhotoViewGalleryPageOptions _buildItem(BuildContext context, int index) {
     final AttachedFile item = widget.galleryItems[index];
     RegExp exp = RegExp(
-        r'^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$');
+      r'^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$',
+    );
     String url =
         exp.hasMatch(item.path) ? item.path : '${Constants.host}${item.path}';
     return PhotoViewGalleryPageOptions(
@@ -158,10 +169,12 @@ class ImageItemThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RegExp exp = RegExp(
-        r'^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$');
-    String url = exp.hasMatch(galleryExampleItem.path)
-        ? galleryExampleItem.path
-        : '${Constants.host}${galleryExampleItem.path}';
+      r'^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$',
+    );
+    String url =
+        exp.hasMatch(galleryExampleItem.path)
+            ? galleryExampleItem.path
+            : '${Constants.host}${galleryExampleItem.path}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: GestureDetector(

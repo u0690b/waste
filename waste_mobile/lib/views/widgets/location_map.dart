@@ -8,18 +8,18 @@ class LocationMap extends StatefulWidget {
   final double? latitude;
   final double? longitude;
   const LocationMap({
-    Key? key,
+    super.key,
     required this.onChangeLocation,
     this.latitude,
     this.longitude,
-  }) : super(key: key);
+  });
 
   @override
   State<LocationMap> createState() => _LocationMapState();
 }
 
 class _LocationMapState extends State<LocationMap> {
-  late final GoogleMapController? controller;
+  GoogleMapController? controller;
   late LatLng latlong;
 
   MapType _mapType = MapType.normal;
@@ -39,6 +39,11 @@ class _LocationMapState extends State<LocationMap> {
 
   void _onMapCreated(GoogleMapController controller) {
     this.controller = controller;
+    this.controller?.moveCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: latlong, zoom: 14.0),
+      ),
+    );
   }
 
   Widget _mapTypeCycler() {
@@ -46,15 +51,13 @@ class _LocationMapState extends State<LocationMap> {
         MapType.values[(_mapType.index + 1) % MapType.values.length];
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          elevation: 2,
-          backgroundColor: Colors.white70,
-          minimumSize: Size(36, 36),
-          fixedSize: Size(36, 36),
-          padding: EdgeInsets.all(0)),
-      child: Icon(
-        Icons.map,
-        color: Colors.black,
+        elevation: 2,
+        backgroundColor: Colors.white70,
+        minimumSize: Size(36, 36),
+        fixedSize: Size(36, 36),
+        padding: EdgeInsets.all(0),
       ),
+      child: Icon(Icons.map, color: Colors.black),
       onPressed: () {
         setState(() {
           _mapType =
@@ -93,15 +96,21 @@ class _LocationMapState extends State<LocationMap> {
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
       return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+        'Location permissions are permanently denied, we cannot request permissions.',
+      );
     }
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
+    final LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 100,
+    );
     final ss = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.medium);
+      locationSettings: locationSettings,
+    );
     setState(() {
-      final latlong = LatLng(ss.latitude, ss.longitude);
+      latlong = LatLng(ss.latitude, ss.longitude);
       widget.onChangeLocation(latlong);
       controller?.moveCamera(
         CameraUpdate.newCameraPosition(
@@ -140,35 +149,19 @@ class _LocationMapState extends State<LocationMap> {
           Positioned(
             top: 100 - 9,
             left: width / 2 - 9,
-            child: Icon(
-              Icons.crop_free,
-              size: 18,
-              color: Colors.white,
-            ),
+            child: Icon(Icons.crop_free, size: 18, color: Colors.white),
           ),
           Positioned(
             top: 100 - 7,
             left: width / 2 - 7,
-            child: Icon(
-              Icons.crop_free,
-              size: 14,
-              color: Colors.white,
-            ),
+            child: Icon(Icons.crop_free, size: 14, color: Colors.white),
           ),
           Positioned(
             top: 100 - 8,
             left: width / 2 - 8,
-            child: Icon(
-              Icons.crop_free,
-              size: 16,
-              color: Colors.red,
-            ),
+            child: Icon(Icons.crop_free, size: 16, color: Colors.red),
           ),
-          Positioned(
-            top: 0,
-            left: 0,
-            child: _mapTypeCycler(),
-          )
+          Positioned(top: 0, left: 0, child: _mapTypeCycler()),
         ],
       ),
     );

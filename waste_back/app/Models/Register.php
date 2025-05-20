@@ -405,17 +405,17 @@ class Register extends Model
             'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
         ]);
 
-
+        $messagingService = new FirebaseMessagingService();
+        $title = ' ' . Auth::user()->name . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ';
+        $body =   $this->reason->name . ' ' . $this->name;
+        $customData = [
+            'id' => $this->id,
+            'type' => 'register',
+        ];
         if ($this->comf_user->push_token) {
-
-            $messagingService = new FirebaseMessagingService();
-            $title = ' ' . Auth::user()->name . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ';
-            $body =   $this->reason->name . ' ' . $this->name;
-            $customData = [
-                'id' => $this->id,
-                'type' => 'register',
-            ];
             $messagingService->sendNotificationToDevice($this->comf_user->push_token, $title, $body, $customData);
+        }
+        if ($this->reg_user->push_token) {
             $messagingService->sendNotificationToDevice($this->reg_user->push_token, $title, $body, $customData);
         }
     }

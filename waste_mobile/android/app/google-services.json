@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:759328300749:android:6209f07f7fc303787b1384",
         "android_client_info": {
-          "package_name": "mn.lancers.waste_mobile"
+          "package_name": "com.example.waste_mobile"
         }
       },
       "oauth_client": [],
@@ -37,6 +37,33 @@
         "mobilesdk_app_id": "1:759328300749:android:142121800c6b92047b1384",
         "android_client_info": {
           "package_name": "mn.lancers.waste_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkylGaklNKJARA5ATwP3LWzOuucYMszcA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "759328300749-85d6ufc7n8qadqeojujpds1gb050k027.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mn.lancers.wasteMobile"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759328300749:android:16b36a6b26a643ea7b1384",
+        "android_client_info": {
+          "package_name": "waste.mecc.gov.mn"
         }
       },
       "oauth_client": [],

@@ -22,7 +22,8 @@ class _MyVideoPlayerFileState extends State<MyVideoPlayerFile> {
   }
 
   initController() async {
-    final path = (await getTemporaryDirectory()).path +
+    final path =
+        (await getTemporaryDirectory()).path +
         '/${DateTime.now().toIso8601String()}.mp4';
     final _file = File(path);
     _file.writeAsBytes(widget.file);
@@ -37,30 +38,43 @@ class _MyVideoPlayerFileState extends State<MyVideoPlayerFile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.black),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('Бичлэг', style: TextStyle(color: Colors.white)),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
       backgroundColor: Colors.black,
       body: Center(
-        child: _controller != null && _controller!.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller!.value.aspectRatio,
-                child: VideoPlayer(_controller!),
-              )
-            : CircularProgressIndicator(),
+        child:
+            _controller != null && _controller!.value.isInitialized
+                ? AspectRatio(
+                  aspectRatio: _controller!.value.aspectRatio,
+                  child: VideoPlayer(_controller!),
+                )
+                : CircularProgressIndicator(),
       ),
-      floatingActionButton: _controller == null
-          ? null
-          : FloatingActionButton(
-              onPressed: () {
-                setState(() {
-                  _controller != null && _controller!.value.isPlaying
-                      ? _controller!.pause()
-                      : _controller!.play();
-                });
-              },
-              child: Icon(
-                _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
+      floatingActionButton:
+          _controller == null
+              ? null
+              : FloatingActionButton(
+                onPressed: () {
+                  setState(() {
+                    _controller != null && _controller!.value.isPlaying
+                        ? _controller!.pause()
+                        : _controller!.play();
+                  });
+                },
+                child: Icon(
+                  _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                ),
               ),
-            ),
     );
   }
 

@@ -1,5 +1,5 @@
 name: waste_mobile
-description: "A new Flutter project."
+description: "Хог хаягдлын менежментийн систем. Хог хаягдлын менежментийн систем нь хог хаягдлыг цуглуулах, тээвэрлэх, боловсруулах, дахин боловсруулах, устгах үйл явцыг удирдах, зохион байгуулахад туслах програм хангамж юм. Энэ систем нь хог хаягдлын менежментийн үйл явцыг автоматжуулах, мэдээлэл цуглуулах, тайлагнах, хог хаягдлын менежментийн үйл ажиллагааг сайжруулахад туслах зорилготой юм."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.0+14
 
 environment:
   sdk: ^3.7.0

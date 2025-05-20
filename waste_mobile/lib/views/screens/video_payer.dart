@@ -17,13 +17,14 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
   void initState() {
     super.initState();
     RegExp exp = RegExp(
-        r'^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$');
-    String url = exp.hasMatch(widget.url)
-        ? widget.url
-        : '${Constants.host}${widget.url}';
-    _controller = VideoPlayerController.network(
-      url,
-    )..initialize().then((_) {
+      r'^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$',
+    );
+    String url =
+        exp.hasMatch(widget.url)
+            ? widget.url
+            : '${Constants.host}${widget.url}';
+    _controller = VideoPlayerController.network(url)
+      ..initialize().then((_) {
         _controller.play();
         setState(() {});
       });
@@ -33,15 +34,27 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.black),
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text('Бичлэг', style: TextStyle(color: Colors.white)),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
       backgroundColor: Colors.black,
       body: Center(
-        child: _controller.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              )
-            : Container(),
+        child:
+            _controller.value.isInitialized
+                ? AspectRatio(
+                  aspectRatio: _controller.value.aspectRatio,
+                  child: VideoPlayer(_controller),
+                )
+                : Container(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
