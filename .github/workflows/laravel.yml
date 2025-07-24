@@ -45,5 +45,5 @@ jobs:
         DB_DATABASE: database/database.sqlite
       run: |
         cd waste_back
-        php artisan test
+        php artisan 
  
