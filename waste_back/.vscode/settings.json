@@ -34,7 +34,7 @@
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
-  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.ignoreTrimWhitespace": true,
   "[sql]": {
     "editor.defaultFormatter": "cweijan.vscode-mysql-client2"
   },
