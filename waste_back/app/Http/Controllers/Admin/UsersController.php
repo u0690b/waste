@@ -174,13 +174,17 @@ class UsersController extends Controller
         if ($user->roles !== 'admin') {
             abort(403);
         }
-        Artisan::call('optimize:clear');
-        Artisan::call('optimize');
-        Artisan::call('config:cache');
-        Artisan::call('event:cache');
-        Artisan::call('route:cache');
-        Artisan::call('view:cache');
-        Artisan::call('storage:link');
+        echo Artisan::call('cache:clear');
+        echo Artisan::call('config:clear');
+        echo Artisan::call('route:clear');
+        echo Artisan::call('view:clear');
+        echo Artisan::call('optimize:clear');
+        echo Artisan::call('optimize');
+        echo Artisan::call('config:cache');
+        echo Artisan::call('event:cache');
+        echo Artisan::call('route:cache');
+        echo Artisan::call('view:cache');
+        echo Artisan::call('storage:link');
 
         // Optionally, get the output
         $output = Artisan::output();

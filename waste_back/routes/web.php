@@ -27,8 +27,7 @@ Route::get('/reg', [IndexController::class, 'register'])->name('reg.index');
 Route::get('/reg/{register}', [IndexController::class, 'show'])->name('reg.show');
 Route::get('/', [IndexController::class, 'index'])->name('home');
 Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard');
-Route::get('/storage', [IndexController::class, 'storage'])->name('storage');
-
+Route::get('/storage/{filename}', [IndexController::class, 'storage'])->where('filename', '.*')->name('storage');
 // Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

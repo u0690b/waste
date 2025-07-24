@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Services\FirebaseMessagingService;
 use Auth;
 use Illuminate\Database\Eloquent\Builder;
-
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -405,6 +405,7 @@ class Register extends Model
             'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
         ]);
 
+
         $messagingService = new FirebaseMessagingService();
         $title = ' ' . Auth::user()->name . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ';
         $body =   $this->reason->name . ' ' . $this->name;
@@ -412,11 +413,15 @@ class Register extends Model
             'id' => $this->id,
             'type' => 'register',
         ];
+        
+        
+ 
+ 
         if ($this->comf_user->push_token) {
-            $messagingService->sendNotificationToDevice($this->comf_user->push_token, $title, $body, $customData);
+            Log::info( $messagingService->sendNotificationToDevice($this->comf_user->push_token, $title, $body, $customData));
         }
         if ($this->reg_user->push_token) {
-            $messagingService->sendNotificationToDevice($this->reg_user->push_token, $title, $body, $customData);
+             Log::info( $messagingService->sendNotificationToDevice($this->reg_user->push_token, $title, $body, $customData));
         }
     }
 }

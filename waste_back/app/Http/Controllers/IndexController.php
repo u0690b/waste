@@ -178,12 +178,13 @@ class IndexController extends Controller
     public function storage($filename)
     {
         $path = 'public/' . $filename;
-
+         
         if (!Storage::exists($path)) {
             abort(404, 'File not found.');
         }
 
         $fullPath = Storage::path($path);
+        
         $mime = Storage::mimeType($path);
         $size = filesize($fullPath);
 
@@ -226,7 +227,7 @@ class IndexController extends Controller
         $deviceToken = $token ?? 'clQ0Ey4SS7HK_KAq1w1ANY:APA91bFxm6ybOPm1uTNIcLKcmX6lz-nrhkHw27BQ4I2UqTnkSdtnVAs5APJtNZUSbpXqYh3bkdiMRdaW-S__cXA49mQK4vV1p7YJc_A1eZUPZeQ-0CjtOqk';
         $title = 'Hello from Laravel!';
         $body = 'This is a test push notification.';
-        $customData = ['key' => 'value', 'another_key' => 'another_value']; // Optional data
+        $customData = ['id' => '101', 'type' => 'register']; // Optional data
 
         $result = $this->messagingService->sendNotificationToDevice($deviceToken, $title, $body, $customData);
 
