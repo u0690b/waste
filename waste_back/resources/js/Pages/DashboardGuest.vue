@@ -1,6 +1,6 @@
 <script setup>
   import MyInput from "@/Components/MyInput.vue";
-  import { Inertia } from "@inertiajs/inertia";
+  import { router as Inertia } from "@inertiajs/vue3";
   import { Head } from "@inertiajs/vue3";
   import debounce from "lodash/debounce";
   import mapValues from "lodash/mapValues";

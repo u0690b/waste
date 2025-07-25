@@ -1,9 +1,9 @@
 <template>
 
 
-  <div class="p-4 bg-gray flex">
+  <div class="flex p-4 bg-gray">
     <MySelect v-model="form.soum_district_id" class="w-52" label="Дүүрэг сонгох" :url="`/admin/soum_districts`" />
-    <MySelect v-model="form.status_id" class="w-52 px-3" label="Төлөв сонгох" :url="`/admin/statuses`" />
+    <MySelect v-model="form.status_id" class="px-3 w-52" label="Төлөв сонгох" :url="`/admin/statuses`" />
   </div>
 
   <GoogleMap api-key="AIzaSyBX2h1XKlleDEXJCKTekPVDk2lI2LNDFNc" style="width: 100%; " class="h-[calc(100vh-200px)]"
@@ -29,7 +29,7 @@ import debounce from "lodash/debounce";
 import AdminTable from "@/Components/AdminTable.vue";
 import { ref } from "vue";
 import { GoogleMap, Marker, MarkerCluster } from "vue3-google-map";
-import { Inertia } from "@inertiajs/inertia";
+import { router as Inertia } from "@inertiajs/vue3";
 import MySelect from "@/Components/MySelect.vue";
 export default {
   metaInfo: { title: "Places" },
