@@ -174,6 +174,7 @@ class UsersController extends Controller
         if ($user->roles !== 'admin') {
             abort(403);
         }
+
         echo Artisan::call('cache:clear');
         echo Artisan::call('config:clear');
         echo Artisan::call('route:clear');
