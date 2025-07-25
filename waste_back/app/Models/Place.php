@@ -9,33 +9,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Place
- *
  * @package App\Models
- * @version November 24, 2022, 7:41 pm UTC
+ * @version July 26, 2025, 6:46 am +08
+ *
  * @property \Illuminate\Database\Eloquent\Collection $reasons
- * @property string $name
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read int|null $reasons_count
- * @method static \Database\Factories\PlaceFactory factory(...$parameters)
- * @method static Builder|Place filter(array $filters)
- * @method static Builder|Place newModelQuery()
- * @method static Builder|Place newQuery()
- * @method static Builder|Place query()
- * @method static Builder|Place whereCreatedAt($value)
- * @method static Builder|Place whereId($value)
- * @method static Builder|Place whereName($value)
- * @method static Builder|Place whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property string $name Газрын нэр
  */
 class Place extends Model
 {
 
     use HasFactory;
 
-    public $table = 'places';
+    use HasFilter;
 
+    public $table = 'places';
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -63,8 +51,8 @@ class Place extends Model
      */
     public static $rules = [
         'name' => 'required|string|max:255',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+        'created_at' => 'nullable|string',
+        'updated_at' => 'nullable|string'
     ];
 
     /**
@@ -84,14 +72,11 @@ class Place extends Model
 
     /**
      * Filter Model
-     * @param Array $filters
-     * @return App\Models\Place
+     * 
+     * @return array
      */
-    public function scopeFilter(Builder $query, array $filters)
+    public function getSearchIn()
     {
-        if (count($filters)) {
-            $this->buildFilter($query, $filters, Place::$searchIn);
-        }
-        return $query;
+        return Place::$searchIn;
     }
 }

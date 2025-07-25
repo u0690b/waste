@@ -1,123 +1,47 @@
 <template>
-  <div class="flex justify-between px-4 mt-4 sm:px-8">
-    <h2 class="text-xl text-gray-600 font-bold flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
-        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
-      </svg>
-      Байгууллага жагсаалт</h2>
-    <div class="flex items-center space-x-1 text-xs">
-      <inertia-link href="/" class="font-bold text-indigo-700 text-sm">Нүүр хуудас</inertia-link>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-      </svg>
-      <span class="text-gray-600 text-sm">Байгууллага</span>
-    </div>
-  </div>
-  <!-- <SharedState></SharedState> -->
-  <div class="grid grid-cols-1 gap-2 px-6 mt-8 sm:grid-cols-3 sm:px-8">
-    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
-
-      <a href="http://inspection.gov.mn/new/" target="_blank"><img src="../../../../../public/img/mergejil.jpg"
-          class="object-contain w-48 ..." /></a>
-
-      <div class="px-4 text-gray-700">
-        <h3 class="text-sm tracking-wider">Мэргэжлийн хяналтын ерөнхий газар</h3>
-        <p class="text-3xl"></p>
+  <Layout :title="title">
+    <div class="p-4 mt-8 sm:px-8 sm:py-4">
+      <div class="p-4 bg-white rounded shadow">
+        <h1 class="pb-4 mb-6 text-xl font-bold border-b">{{ title }}</h1>
+        <PaginationFilter v-model="form.model.per_page" v-model:search="form.model.search" :total="datas.total" />
+        <AdminTable :headers="headers" :datas="datas" url="/admin/places" @order-by="(v) => orderBy(form, v)">
+          <template #filter>
+             <AdminTableFilter v-model:model="form.model" :headers="headers" />
+          </template>
+        </AdminTable>
+        <Pagination :links="datas.links" />
       </div>
     </div>
-    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
-      <a href="https://www.eda.admin.ch/countries/mongolia/mn/home/chegzhlijn.html" target="_blank"><img
-          src="../../../../../public/img/sha.png" class="object-contain w-48 ..." /></a>
-      <div class="px-4 text-gray-700">
-        <h3 class="text-sm tracking-wider">Швейцарын хөгжлийн агентлаг</h3>
-        <p class="text-3xl"></p>
-      </div>
-    </div>
-    <div class="flex items-center bg-white border rounded-sm overflow-hidden shadow">
-      <a href="http://www.ubservice.mn/?fbclid=IwAR0DRdfuer1AfiIURNjUTtXk4-XIjHP3H2dRBMwLw-dcMwQ1WA11mxS0fMc"
-        target="_blank"><img src="../../../../../public/img/zaa.png" class="object-contain w-20 ..." /></a>
-      <div class="px-4 text-gray-700">
-        <h3 class="text-sm tracking-wider">Улаанбаатар хотын Захирагчийн ажлын алба</h3>
-        <p class="text-3xl"></p>
-      </div>
-    </div>
-  </div>
-  <div class="p-4 mt-8 sm:px-8 sm:py-4">
-    <div class="p-4 bg-white rounded">
-      <div class="mb-6 flex justify-between items-center">
-        <div class="relative text-gray-400">
-          <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </span>
-          <input id="search" name="search" type="search" v-model="form.search"
-            class="w-full py-2 text-sm text-gray-900 rounded-md pl-10 border border-gray-300 focus:outline-none focus:ring-gray-500 focus:z-10"
-            placeholder="Байгууллага хайх" />
-        </div>
-      </div>
-
-      <admin-table :headers="{ name: 'Байгууллага нэр' }" :datas="datas" />
-      <div class="py-2 flex items-center justify-between border-t border-gray-200">
-        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between"></div>
-        <div class="hidden sm:flex-2 sm:flex sm:items-center sm:justify-between">
-          <pagination :links="datas.links" />
-        </div>
-      </div>
-    </div>
-  </div>
+  </Layout>
 </template>
 
-<script>
-import Layout from "@/Layouts/Admin.vue";
-import mapValues from "lodash/mapValues";
-import Pagination from "@/Components/Pagination.vue";
-import pickBy from "lodash/pickBy";
-import SearchFilter from "@/Components/SearchFilter.vue";
-import debounce from "lodash/debounce";
-import AdminTable from "@/Components/AdminTable.vue";
-import { DeviceTabletIcon } from "@heroicons/vue/24/outline";
-import SharedState from "@/Components/SharedState.vue";
+<script setup>
+import Layout from '@/Layouts/Admin.vue'
+import Pagination from '@/Components/Pagination.vue'
+import AdminTable from '@/Components/AdminTable1.vue'
+import AdminTableFilter from '@/Components/AdminTableFilter.vue'
+import { useForm } from '@inertiajs/vue3'
+import { watch } from 'vue'
+import PaginationFilter from '@/Components/PaginationFilter.vue'
+import { debounce } from '@/utils/useDebouncedRef'
+import orderBy from '@/utils/orderBy'
+import MySelect from '@/Components/MySelect.vue'
+import MyInput from '@/Components/MyInput.vue'
 
-export default {
-  metaInfo: { title: "Places" },
-  components: {
-    Pagination,
-    SearchFilter,
-    AdminTable,
-    DeviceTabletIcon,
-    SharedState,
-  },
-  layout: Layout,
-  props: {
-    datas: Object,
-    filters: [Object, Array],
-    host: String,
-  },
-  data() {
-    return {
-      form: {
-        ...(this.filters ? this.filters : {}),
-      },
-    };
-  },
-  watch: {
-    form: {
-      handler: debounce(function () {
-        this.$inertia.get(this.route("admin.places.index"), pickBy(this.form), {
-          preserveState: true,
-        });
-      }, 150),
-      deep: true,
-    },
-  },
-  methods: {
-    reset() {
-      this.form = mapValues(this.form, () => null);
-    },
-  },
-};
+const props = defineProps({
+  datas: Object,
+  filters: { type: Object, default: () => ({ search: '' }) },
+});
+
+const title = 'Хог хаягдлын бүлэг жагсаалт'
+
+const headers = [
+  { key: 'name', name: 'Газрын нэр', order: 'name' }
+]
+
+const form = useForm({ model: { ...props.filters, per_page: props.datas.per_page } })
+  .transform(data => data.model)
+
+watch(() => form.model, debounce(() => form.get('', { preserveState: true }), 150), { deep: true })
+
 </script>

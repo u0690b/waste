@@ -6,8 +6,7 @@
           <div class="flex items-baseline justify-center ">
             <span class="hidden text-gray-700 md:inline">Filter</span>
             <svg class="w-2 h-2 fill-gray-700 md:ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 961.243 599.998">
-              <path
-                d="M239.998 239.999L0 0h961.243L721.246 240c-131.999 132-240.28 240-240.624 239.999-.345-.001-108.625-108.001-240.624-240z" />
+              <path d="M239.998 239.999L0 0h961.243L721.246 240c-131.999 132-240.28 240-240.624 239.999-.345-.001-108.625-108.001-240.624-240z" />
             </svg>
           </div>
         </template>
@@ -18,43 +17,41 @@
         </template>
       </Dropdown>
 
-      <input v-model="searchRef" class="relative w-full px-6 py-3 rounded-r focus:outline-none focus:ring"
-        autocomplete="off" type="text" name="search" placeholder="Search…" />
+      <input v-model="searchRef" class="relative w-full px-6 py-3 rounded-r focus:outline-none focus:ring" autocomplete="off" type="text" name="search" placeholder="Search…" />
     </div>
-    <button class="ml-3 text-sm text-gray-500 hover:text-gray-700 focus:text-indigo-500" type="button"
-      @click="reset">Reset</button>
+    <button class="ml-3 text-sm text-gray-500 hover:text-gray-700 focus:text-indigo-500" type="button" @click="reset">Reset</button>
   </div>
 </template>
 
 <script>
 
-import useDebouncedRef from '@/utils/useDebouncedRef'
-import { watch } from '@vue/runtime-core'
-import Dropdown from './Dropdown.vue'
+  import useDebouncedRef from '@/utils/useDebouncedRef'
+  import { watch } from '@vue/runtime-core'
+  import Dropdown from './Dropdown.vue'
 
-export default {
-  components: {
-    Dropdown
-  },
-  props: {
-    search: String,
-    maxWidth: {
-      type: Number,
-      default: 300,
+  export default {
+    components: {
+      Dropdown
     },
-  },
-  emits: ['reset', 'update:modelValue'],
-  setup(props, { emit }) {
-    //search text
-    const searchRef = useDebouncedRef(props.search, 400)
-    watch(searchRef, val => emit('update:modelValue', val))
-    //reset
-    const reset = () => {
-      searchRef.value = ''
-      emit('reset')
-    }
+    props: {
+      search: String,
+      maxWidth: {
+        type: Number,
+        default: 300,
+      },
+    },
+    emits: ['reset', 'update:modelValue'],
+    setup(props, { emit }) {
+      //search text
+      const searchRef = useDebouncedRef(props.search, 400)
+      watch(searchRef, val => emit('update:modelValue', val))
+      //reset
+      const reset = () => {
+        searchRef.value = ''
+        emit('reset')
+      }
 
-    return { searchRef, reset }
-  },
-}
+      return { searchRef, reset }
+    },
+  }
 </script>

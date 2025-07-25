@@ -14,28 +14,29 @@ class ReasonController extends Controller
     /**
      * Display a listing of the Reason.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index()
     {
-        $reasons = Reason::filter(Request::all(["search", ...Reason::$searchIn]))->with('place:id,name');
+        $reasons = Reason::filter(Request::all(["search", ...Reason::$searchIn]))->with('place:id,name')
+            ->orderBy(Request::input('orderBy') ?? 'id', Request::input('dir') ?? 'asc');
+        
         if (Request::has('only')) {
-            return json_encode($reasons->paginate(Request::input('per_page'),['id', 'name']));
+            return json_encode($reasons->cursorPaginate(Request::input('per_page'),['id', 'name']));
         }
+
         return Inertia::render('Admin/reasons/Index', [
-            'filters' => Request::only(["search", ...Reason::$searchIn]),
+            'filters' => Request::only(["search", ...Reason::$searchIn, 'orderBy', 'dir']),
             'datas' => $reasons
                 ->paginate(Request::input('per_page'))
-                ->withQueryString()
-                ->through(fn ($row) => $row->only('id','name','place','place_id')),
-            'host' => config('app.url'),
+                ->withQueryString(),
         ]);
     }
 
     /**
      * Show the form for creating a new Reason.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function create()
     {
@@ -45,12 +46,29 @@ class ReasonController extends Controller
     /**
      * Store a newly created Reason in storage.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store()
     {
-        Reason::create(Request::validate(Reason::$rules));
-        return Redirect::route('admin.reasons.index')->with('success', 'Reason created.');
+        $rule = Reason::$rules;
+        $input =  Request::validate($rule);
+        $reason = Reason::create($input);
+        return redirect(Request::header('back') ?? route('admin.reasons.show', $reason->getKey()))->with('success', 'Амжилттай үүсгэлээ.');
+    }
+
+    /**
+     * Show the form for editing the specified UserModel.
+     *
+     * @param Reason $reason
+     *
+     * @return \Inertia\Response|Response|string|bool
+     */
+    public function show(Reason $reason)
+    {
+        $reason->load('place:id,name');
+        return Inertia::render('Admin/reasons/Show', [
+            'data' =>  $reason,
+        ]);
     }
 
     /**
@@ -58,13 +76,13 @@ class ReasonController extends Controller
      *
      * @param Reason $reason
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function edit(Reason $reason)
     {
+        $reason->load('place:id,name');
         return Inertia::render('Admin/reasons/Edit', [
             'data' =>  $reason,
-            'host' => config('app.url'),
         ]);
     }
 
@@ -73,12 +91,15 @@ class ReasonController extends Controller
      *
      * @param Reason $reason
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update(Reason $reason)
     {
-        $reason->update(Request::validate(Reason::$rules));
-        return Redirect::route('admin.reasons.index')->with('success', 'Reason updated.');
+        $rule = Reason::$rules;
+        $input =  Request::validate($rule);
+        $reason->update($input);
+        
+        return redirect(Request::header('back') ?? route('admin.reasons.show', $reason->getKey()))->with('success', 'Ажилттай хадгаллаа.');
     }
 
     /**
@@ -88,11 +109,11 @@ class ReasonController extends Controller
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy(Reason $reason)
     {
         $reason->delete();
-        return Redirect::route('admin.reasons.index')->with('success', 'Reason deleted.');
+        return redirect(Request::header('back') ?? route('admin.reasons.index'))->with('success', 'Мэдээлэл устгагдлаа.');
     }
 }

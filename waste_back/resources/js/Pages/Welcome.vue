@@ -1,14 +1,14 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline';
-import { Head, Link } from '@inertiajs/inertia-vue3';
+  import GuestLayout from '@/Layouts/GuestLayout.vue';
+  import { ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline';
+  import { Head, Link } from '@inertiajs/vue3';
 
-defineProps({
-  canLogin: Boolean,
-  canRegister: Boolean,
-  laravelVersion: String,
-  phpVersion: String,
-});
+  defineProps({
+    canLogin: Boolean,
+    canRegister: Boolean,
+    laravelVersion: String,
+    phpVersion: String,
+  });
 </script>
 
 <template>
@@ -22,8 +22,7 @@ defineProps({
 
       <!--Left Col-->
       <div class="flex flex-col w-full xl:w-2/5 justify-center lg:items-start overflow-y-hidden">
-        <h1
-          class="my-4 text-3xl md:text-5xl text-purple-800 font-bold leading-tight text-center md:text-left slide-in-bottom-h1">
+        <h1 class="my-4 text-3xl md:text-5xl text-purple-800 font-bold leading-tight text-center md:text-left slide-in-bottom-h1">
           ХОГ ХАЯГДЛЫН ОЛОН НИЙТИЙН </h1>
         <p class="leading-normal text-base md:text-2xl mb-8 text-center md:text-left slide-in-bottom-subtitle">
           БАЙЦААГЧИЙН ХЯНАЛТ, УДИРДЛАГА, МЭДЭЭЛЛИЙН НЭГДСЭН БҮРТГЭЛ</p>
@@ -32,8 +31,7 @@ defineProps({
       <!--Right Col-->
       <div class="w-full xl:w-3/5 py-6 overflow-y-hidden">
         <!-- <img class="w-5/6 mx-auto lg:mr-0 slide-in-bottom" src="@/assets/devices.svg"> -->
-        <div class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="about" role="tabpanel"
-          aria-labelledby="about-tab">
+        <div class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="about" role="tabpanel" aria-labelledby="about-tab">
           <h2 class="mb-5 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white slide-in-bottom"> Зорилго
             хүрэх үр дүн:
           </h2>
@@ -41,11 +39,8 @@ defineProps({
           <ul role="list" class="space-y-4 text-gray-500 dark:text-gray-400">
             <li class="flex space-x-2">
               <!-- Icon -->
-              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
-                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
+              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
               <span class="font-light leading-tight slide-in-bottom">Хог хаягдлын олон нийтийн байцаагч /ОНБ/-ийн
                 зөрчлийн тэмдэглэл
@@ -54,11 +49,8 @@ defineProps({
             </li>
             <li class="flex space-x-2">
               <!-- Icon -->
-              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
-                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
+              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
               <span class="font-light leading-tight slide-in-bottom">Аливаа зөрчлийн мэдээллийг хариуцсан эрх бүхий
                 байгууллага, албан
@@ -66,11 +58,8 @@ defineProps({
             </li>
             <li class="flex space-x-2">
               <!-- Icon -->
-              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
-                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
+              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
               <span class="font-light leading-tight slide-in-bottom">Зөрчил үүсгэж байгаа иргэн, аж ахуй нэгж,
                 байгууллагын нэрс,
@@ -79,11 +68,8 @@ defineProps({
             </li>
             <li class="flex space-x-2">
               <!-- Icon -->
-              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
-                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
+              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
               <span class="font-light leading-tight slide-in-bottom">Нийслэл, дүүргийн асуудал хариуцсан холбогдох нэгж,
                 хэлтсүүд хот,
@@ -93,11 +79,8 @@ defineProps({
             </li>
             <li class="flex space-x-2">
               <!-- Icon -->
-              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor"
-                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"></path>
+              <svg class="flex-shrink-0 w-4 h-4 text-blue-600 dark:text-blue-500 slide-in-bottom" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
               </svg>
               <span class="font-light leading-tight slide-in-bottom">Монгол Улсын Үндсэн хуульд заасан иргэний эрүүл,
                 аюулгүй орчинд
@@ -107,19 +90,15 @@ defineProps({
         </div>
 
       </div>
-      <a href="http://www.ubservice.mn/?fbclid=IwAR0DRdfuer1AfiIURNjUTtXk4-XIjHP3H2dRBMwLw-dcMwQ1WA11mxS0fMc"
-        target="_blank"><img src="../../../public/img/zaa1.jpg"
-          class="object-contain w-48 ... px-4 slide-in-bottom" /></a>
-      <a href="http://inspection.gov.mn/new/" target="_blank"><img src="../../../public/img/mergejil.jpg"
-          class="object-contain w-48 ... slide-in-bottom" /></a>
-      <a href="https://www.eda.admin.ch/countries/mongolia/mn/home/chegzhlijn.html" target="_blank"><img
-          src="../../../public/img/sha.png" class="object-contain w-48 ... px-4 slide-in-bottom" /></a>
+      <a href="http://www.ubservice.mn/?fbclid=IwAR0DRdfuer1AfiIURNjUTtXk4-XIjHP3H2dRBMwLw-dcMwQ1WA11mxS0fMc" target="_blank"><img src="../../../public/img/zaa1.jpg" class="object-contain w-48 ... px-4 slide-in-bottom" /></a>
+      <a href="http://inspection.gov.mn/new/" target="_blank"><img src="../../../public/img/mergejil.jpg" class="object-contain w-48 ... slide-in-bottom" /></a>
+      <a href="https://www.eda.admin.ch/countries/mongolia/mn/home/chegzhlijn.html" target="_blank"><img src="../../../public/img/sha.png" class="object-contain w-48 ... px-4 slide-in-bottom" /></a>
 
       <!--Footer-->
       <div class="w-full pt-5 pb-5 my-20 text-sm text-center md:text-left fade-in bg-gray-100">
         Developed by Лансерс ХХК /Хуулбарлахыг хориглоно
         <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; {{ (new
-    Date()).getFullYear()
+          Date()).getFullYear()
           }} он</a>
       </div>
     </div>
@@ -127,7 +106,7 @@ defineProps({
 
 
 </template>
-	<!-- Animation CSS-->
+<!-- Animation CSS-->
 <style>
 /* ----------------------------------------------
 		 * Generated by Animista

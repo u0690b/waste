@@ -2,7 +2,7 @@
     <div class="flex justify-between px-4 mt-4 sm:px-8">
         <h2 class="text-xl text-gray-600  font-bold">Зөрчлийн дэлгэрэнгүй бүртгэл </h2>
         <div class="flex items-center space-x-1 text-xs">
-            <inertia-link href="/" class="font-bold text-indigo-700 text-sm">Нүүр хуудас</inertia-link>
+            <ILink href="/" class="font-bold text-indigo-700 text-sm">Нүүр хуудас</ILink>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
@@ -23,8 +23,7 @@
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="who_is">Иргэн/Аж
                         ахуй
                         нэгж</label>
-                    <input :value="data.whois" type="text" :error="errors.name"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 " />
+                    <input :value="data.whois" type="text" :error="errors.name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 " />
                 </div>
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="register">Регистрийн
@@ -97,8 +96,7 @@
                                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                 </div>
                 <div>
-                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        for="address">Өргөрөг</label>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="address">Өргөрөг</label>
                     <input :value="data.lat" type="text" :error="errors.name" class="bg-gray-50 border
                                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
@@ -139,28 +137,21 @@
         <div class="px-4 py-2 bg-white  rounded-md overflow-hidden shadow">
             <TabGroup>
                 <div class="bg-white  rounded-lg shadow sm:col-span-2">
-                    <div
-                        class="flex flex-col space-y-2 items-center px-4 mb-2 py-2  text-gray-600 sm:flex-row sm:justify-between">
+                    <div class="flex flex-col space-y-2 items-center px-4 mb-2 py-2  text-gray-600 sm:flex-row sm:justify-between">
                         <h3 class="tracking-wider">Нотлох баримт</h3>
                         <TabList class="flex space-x-1">
                             <Tab v-slot="{ selected }" key="tab_1">
-                                <button class="px-4 py-2 text-xs rounded-md hover:bg-blue-400 hover:text-white"
-                                    :class="selected ? 'bg-blue-400 text-white' : ''">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                        stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                                <button class="px-4 py-2 text-xs rounded-md hover:bg-blue-400 hover:text-white" :class="selected ? 'bg-blue-400 text-white' : ''">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                                     </svg>
 
                                 </button>
                             </Tab>
                             <Tab v-slot="{ selected }" key="tab_2">
-                                <button class="px-4 py-2 text-xs rounded-md hover:bg-blue-400 hover:text-white"
-                                    :class="selected ? 'bg-blue-400 text-white' : ''">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                        stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round"
-                                            d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+                                <button class="px-4 py-2 text-xs rounded-md hover:bg-blue-400 hover:text-white" :class="selected ? 'bg-blue-400 text-white' : ''">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
                                     </svg>
 
                                 </button>
@@ -307,75 +298,75 @@
 </style>
 
 <script>
-import Layout from "@/Layouts/Admin.vue";
-import LoadingButton from "@/Components/LoadingButton.vue";
-import NumberInput from "@/Components/MyInput.vue";
-import MyInput from "@/Components/MyInput.vue";
-import MySelect from "@/Components/MySelect.vue";
-import ShowMapPoint from "@/Components/ShowMapPoint.vue";
-import RegisterCard from "@/Components/RegisterCard.vue";
-import Modal from "@/Components/Modal.vue";
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
-import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { ref } from "vue";
+    import Layout from "@/Layouts/Admin.vue";
+    import LoadingButton from "@/Components/LoadingButton.vue";
+    import NumberInput from "@/Components/MyInput.vue";
+    import MyInput from "@/Components/MyInput.vue";
+    import MySelect from "@/Components/MySelect.vue";
+    import ShowMapPoint from "@/Components/ShowMapPoint.vue";
+    import RegisterCard from "@/Components/RegisterCard.vue";
+    import Modal from "@/Components/Modal.vue";
+    import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
+    import "vue3-carousel/dist/carousel.css";
+    import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+    import { ref } from "vue";
 
 
 
 
-export default {
-    metaInfo: { title: "Edit Registers" },
-    components: {
-        LoadingButton,
-        NumberInput,
-        MyInput,
-        MySelect,
-        ShowMapPoint,
-        RegisterCard,
-        Modal,
-        Carousel, Slide, Pagination,
-        TabGroup,
-        TabList,
-        Tab,
-        TabPanels,
-        TabPanel,
-    },
-    layout: Layout,
-    props: {
-        errors: Object,
-        data: Object,
-        host: String,
-        auth: Object,
-    },
-    setup(props) {
-
-        const isOpen = ref(false);
-
-        function setIsOpen(value) {
-            isOpen.value = value;
-        }
-        return {
-            isOpen,
-            setIsOpen
-
-        }
-    },
-    emit: ["select"],
-    remember: "form",
-    data() {
-        return {
-            selected: null,
-        };
-    },
-    computed: {
-        ss() {
-            return sss + this.selected;
-        }
-    },
-    methods: {
-        select(v) {
-            this.selected = v;
+    export default {
+        metaInfo: { title: "Edit Registers" },
+        components: {
+            LoadingButton,
+            NumberInput,
+            MyInput,
+            MySelect,
+            ShowMapPoint,
+            RegisterCard,
+            Modal,
+            Carousel, Slide, Pagination,
+            TabGroup,
+            TabList,
+            Tab,
+            TabPanels,
+            TabPanel,
         },
-    },
-};
+        layout: Layout,
+        props: {
+            errors: Object,
+            data: Object,
+            host: String,
+            auth: Object,
+        },
+        setup(props) {
+
+            const isOpen = ref(false);
+
+            function setIsOpen(value) {
+                isOpen.value = value;
+            }
+            return {
+                isOpen,
+                setIsOpen
+
+            }
+        },
+        emit: ["select"],
+        remember: "form",
+        data() {
+            return {
+                selected: null,
+            };
+        },
+        computed: {
+            ss() {
+                return sss + this.selected;
+            }
+        },
+        methods: {
+            select(v) {
+                this.selected = v;
+            },
+        },
+    };
 </script>

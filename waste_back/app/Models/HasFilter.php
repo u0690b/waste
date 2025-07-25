@@ -31,13 +31,22 @@ trait HasFilter
                 continue;
             }
             if ($key === 'search') {
-                $this->buildSearch($query, $filters['search'] ?? '', $searchIn);
+                $query = $this->buildSearch($query, $filters['search'] ?? '', $searchIn);
             } elseif (is_array($value)) {
                 $query = $query->whereIn($key, $value);
+            } elseif (str_contains($key, ':')) {
+                $has = explode(":", $key);
+                $query = $query->whereExists(function ($query) use ($has, $value) {
+                    $query->select(DB::raw(1))
+                        ->from($has[0])
+                        ->whereColumn($has[0] . '.' . $has[1], $has[2])
+                        ->where($has[3], $value);
+                });
             } else {
-                $query->where($key, $value);
+                $query = $query->where($key, $value);
             }
         }
+        return  $query;
     }
     /**
      * Build search query.
@@ -59,7 +68,8 @@ trait HasFilter
 
         $tokens = collect(explode(' ', $search));
 
-        $searchIn = collect($searchIn)->map(function ($column) {
+        $searchIn = collect($searchIn)->map(function ($column) use ($query) {
+
             return $this->parseFullColumnName($column);
         });
 
@@ -77,6 +87,7 @@ trait HasFilter
             });
         });
 
+
         return $query;
     }
 
@@ -85,7 +96,7 @@ trait HasFilter
      * @param $column
      * @param $token
      */
-    private function searchLike($query, $column, $token): void
+    private function searchLike(Builder $query, $column, $token): void
     {
         // MySQL and SQLite uses 'like' pattern matching operator that is case insensitive
         $likeOperator = 'like';
@@ -94,8 +105,19 @@ trait HasFilter
         if (DB::connection()->getDriverName() === 'pgsql') {
             $likeOperator = 'ilike';
         }
+        if (str_contains($column['column'], ':')) {
 
-        $query->orWhere($this->materializeColumnName($column), $likeOperator, '%' . $token . '%');
+            $has = explode(":", $column['column']);
+            $query = $query->orWhereExists(function ($query1) use ($has, $token, $likeOperator) {
+                $query1->select(DB::raw(1))
+                    ->from($has[0])
+                    ->whereColumn($has[0] . '.' . $has[1], $has[2])
+                    ->where($has[3], $likeOperator, '%' . $token . "%");
+            });
+        } else {
+
+            $query->orWhere($this->materializeColumnName($column), $likeOperator, '%' . $token . '%');
+        }
     }
 
     /**
@@ -123,14 +145,14 @@ trait HasFilter
 
     /**
      * Filter Model
-     * @param Array $filters
-     * @return $this
+     * @param array $filters
+     * @return mixed| Builder
      */
     public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
-            $this->buildFilter($query, $filters, $this->getSearchIn());
+            $query = $this->buildFilter($query, $filters, $this->getSearchIn());
         }
-        return $this;
+        return  $query;
     }
 }

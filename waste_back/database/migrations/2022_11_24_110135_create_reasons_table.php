@@ -15,8 +15,11 @@ return new class extends Migration
     {
         Schema::create('reasons', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique()->comment('Шалтгаан');
-            $table->foreignId('place_id')->comment('Харьялагдах газар')->constrained('places');
+            $table->string('code')->comment('Шалтгаан код');
+            $table->string('name', 1000)->comment('Шалтгаан');
+            $table->string('sub_group', 1000)->comment('Хог хаягдлын дэд бүлэг');
+            $table->string('stype')->comment('Төрөл');
+            $table->foreignId('place_id')->comment('Хог хаягдлын бүлэг')->constrained('places');
             $table->timestamps();
         });
     }

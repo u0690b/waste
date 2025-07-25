@@ -58,3 +58,10 @@ Route::resource('entities', App\Http\Controllers\Admin\LegalEntityController::cl
 
 // LegalEntities
 Route::resource('legal_entities', App\Http\Controllers\Admin\LegalEntityController::class);
+
+
+// Reasons
+Route::resource('reasons', App\Http\Controllers\Admin\ReasonController::class);
+
+// Places
+Route::resource('places', App\Http\Controllers\Admin\PlaceController::class);

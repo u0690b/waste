@@ -19,18 +19,11 @@ class PlaceAPIController extends AppBaseController
      * Display a listing of the Place.
      * GET|HEAD /places
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index(Request $request)
     {
-        $input = $request->validate(['date' => 'nullable|date']);
-        if (isset($input['date'])) {
-            $count =   Place::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
-            if ($count <= 0) {
-                return [];
-            }
-        }
-        $query = Place::filter($request->all(["search", ...Place::$searchIn]));
+        $query = Place::filter( $request->all(["search", ...Place::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -41,14 +34,14 @@ class PlaceAPIController extends AppBaseController
 
         $places = $query->get();
 
-        return   $places->toJson(JSON_UNESCAPED_UNICODE);
+        return $places->toJson();
     }
 
     /**
      * Store a newly created Place in storage.
      * POST /places
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store(Request $request)
     {
@@ -57,7 +50,7 @@ class PlaceAPIController extends AppBaseController
         /** @var Place $place */
         $place = Place::create($input);
 
-        return $place;
+        return $place->toJson();
     }
 
     /**
@@ -66,7 +59,7 @@ class PlaceAPIController extends AppBaseController
      *
      * @param Place $places
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function show($id)
     {
@@ -77,7 +70,7 @@ class PlaceAPIController extends AppBaseController
             return $this->sendError('Place not found');
         }
 
-        return $place;
+        return $place->toJson();
     }
 
     /**
@@ -86,7 +79,7 @@ class PlaceAPIController extends AppBaseController
      *
      * @param Place $places
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update($id, Request $request)
     {
@@ -101,7 +94,7 @@ class PlaceAPIController extends AppBaseController
         $place->fill($input);
         $place->save();
 
-        return $place;
+        return $place->toJson();
     }
 
     /**
@@ -112,7 +105,7 @@ class PlaceAPIController extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy($id)
     {

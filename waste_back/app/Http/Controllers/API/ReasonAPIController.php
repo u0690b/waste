@@ -19,18 +19,11 @@ class ReasonAPIController extends AppBaseController
      * Display a listing of the Reason.
      * GET|HEAD /reasons
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index(Request $request)
     {
-        $input = $request->validate(['date' => 'nullable|date']);
-        if (isset($input['date'])) {
-            $count =   Reason::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
-            if ($count <= 0) {
-                return [];
-            }
-        }
-        $query = Reason::filter($request->all(["search", ...Reason::$searchIn]))->with('place:id,name');
+        $query = Reason::filter( $request->all(["search", ...Reason::$searchIn]))->with('place:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -40,14 +33,15 @@ class ReasonAPIController extends AppBaseController
         }
 
         $reasons = $query->get();
-        return  $reasons->toJson(JSON_UNESCAPED_UNICODE);
+
+        return $reasons->toJson();
     }
 
     /**
      * Store a newly created Reason in storage.
      * POST /reasons
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store(Request $request)
     {
@@ -56,7 +50,7 @@ class ReasonAPIController extends AppBaseController
         /** @var Reason $reason */
         $reason = Reason::create($input);
 
-        return $reason;
+        return $reason->toJson();
     }
 
     /**
@@ -65,7 +59,7 @@ class ReasonAPIController extends AppBaseController
      *
      * @param Reason $reasons
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function show($id)
     {
@@ -76,7 +70,7 @@ class ReasonAPIController extends AppBaseController
             return $this->sendError('Reason not found');
         }
 
-        return $reason;
+        return $reason->toJson();
     }
 
     /**
@@ -85,7 +79,7 @@ class ReasonAPIController extends AppBaseController
      *
      * @param Reason $reasons
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update($id, Request $request)
     {
@@ -100,7 +94,7 @@ class ReasonAPIController extends AppBaseController
         $reason->fill($input);
         $reason->save();
 
-        return $reason;
+        return $reason->toJson();
     }
 
     /**
@@ -111,7 +105,7 @@ class ReasonAPIController extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy($id)
     {

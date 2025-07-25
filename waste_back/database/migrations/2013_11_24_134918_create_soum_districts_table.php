@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->comment('Код');
             $table->string('name')->comment('Аймаг нэр');
-            $table->string('short')->comment('товч');
+            $table->string('short')->nullable()->comment('товч');
             $table->foreignId('aimag_city_id')->comment('Аймаг/Нийслэл')->constrained('aimag_cities');;
             $table->timestamps();
         });

@@ -8,6 +8,7 @@ use App\Models\Reason;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Tighten\Ziggy\Ziggy as ZiggyZiggy;
 use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
@@ -50,7 +51,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'notifiCount' =>  $request->user() ? $request->user()->notifications()->whereReadAt(null)->count() : null,
             'ziggy' => function () use ($request) {
-                return array_merge((new Ziggy)->toArray(), [
+                return array_merge((new ZiggyZiggy)->toArray(), [
                     'location' => $request->url(),
                 ]);
             },

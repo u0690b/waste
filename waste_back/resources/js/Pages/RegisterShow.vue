@@ -1,8 +1,8 @@
 <template>
   <div class="flex justify-between px-4 mt-4 sm:px-8">
-    <inertia-link @click="back">
+    <ILink @click="back">
       <h2 class="text-2xl text-gray-600 underline font-bold">Буцах</h2>
-    </inertia-link>
+    </ILink>
   </div>
   <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-2 sm:px-8">
     <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
@@ -12,8 +12,7 @@
           <span class="font-bold text-black">#Бүртгэсэн хүн:</span>
         </p>
         <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 italic"> {{ data.reg_user.name }}</p>
-        <h5 v-if="data.resolve_desc" class="mb-3 text-sm text-gray-700 dark:text-gray-400"> <span
-            class="font-bold text-black">#Шийдвэрлэсэн хүн:</span></h5>
+        <h5 v-if="data.resolve_desc" class="mb-3 text-sm text-gray-700 dark:text-gray-400"> <span class="font-bold text-black">#Шийдвэрлэсэн хүн:</span></h5>
         <p v-if="data.resolve_desc" class="mb-3 font-normal text-gray-700 dark:text-gray-400">
           - {{ data.resolve_desc }}
         </p>
@@ -55,66 +54,66 @@
 </template>
 
 <script>
-import GuestLayout from "@/Layouts/GuestLayout.vue";
-import LoadingButton from "@/Components/LoadingButton.vue";
-import NumberInput from "@/Components/MyInput.vue";
-import MyInput from "@/Components/MyInput.vue";
-import MySelect from "@/Components/MySelect.vue";
-import ShowMapPoint from "@/Components/ShowMapPoint.vue";
-import RegisterCard from "@/Components/RegisterCard.vue";
-import Modal from "@/Components/Modal.vue";
-import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { ref } from "vue";
+  import GuestLayout from "@/Layouts/GuestLayout.vue";
+  import LoadingButton from "@/Components/LoadingButton.vue";
+  import NumberInput from "@/Components/MyInput.vue";
+  import MyInput from "@/Components/MyInput.vue";
+  import MySelect from "@/Components/MySelect.vue";
+  import ShowMapPoint from "@/Components/ShowMapPoint.vue";
+  import RegisterCard from "@/Components/RegisterCard.vue";
+  import Modal from "@/Components/Modal.vue";
+  import "vue3-carousel/dist/carousel.css";
+  import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+  import { ref } from "vue";
 
-export default {
-  metaInfo: { title: "Edit Registers" },
-  components: {
-    LoadingButton,
-    NumberInput,
-    MyInput,
-    MySelect,
-    ShowMapPoint,
-    RegisterCard,
-    Modal,
-    Carousel, Slide, Pagination
-  },
-  layout: GuestLayout,
-  props: {
-    errors: Object,
-    data: Object,
-    host: String,
-  },
-  setup(props) {
-
-
-    const isOpen = ref(false);
-
-    function setIsOpen(value) {
-      isOpen.value = value;
-    }
-    return {
-      isOpen,
-      setIsOpen
-    }
-  },
-  emit: ["select"],
-  remember: "form",
-  data() {
-    return {
-      selected: null,
-    };
-  },
-  computed: {},
-  methods: {
-    select(v) {
-      this.selected = v;
+  export default {
+    metaInfo: { title: "Edit Registers" },
+    components: {
+      LoadingButton,
+      NumberInput,
+      MyInput,
+      MySelect,
+      ShowMapPoint,
+      RegisterCard,
+      Modal,
+      Carousel, Slide, Pagination
     },
-    back() {
-      window.history.back()
-    }
-  },
-};
+    layout: GuestLayout,
+    props: {
+      errors: Object,
+      data: Object,
+      host: String,
+    },
+    setup(props) {
+
+
+      const isOpen = ref(false);
+
+      function setIsOpen(value) {
+        isOpen.value = value;
+      }
+      return {
+        isOpen,
+        setIsOpen
+      }
+    },
+    emit: ["select"],
+    remember: "form",
+    data() {
+      return {
+        selected: null,
+      };
+    },
+    computed: {},
+    methods: {
+      select(v) {
+        this.selected = v;
+      },
+      back() {
+        window.history.back()
+      }
+    },
+  };
 </script>
 
 

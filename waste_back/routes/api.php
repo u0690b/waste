@@ -62,3 +62,13 @@ Route::post('/signup', [UserAPIController::class, 'store'])->name('api.signup');
 // Route::group(['prefix' => 'admin'], function () {
 //     Route::resource('legal_entities', App\Http\Controllers\API\LegalEntityAPIController::class);
 // });
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('reasons', App\Http\Controllers\API\ReasonAPIController::class);
+});
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('places', App\Http\Controllers\API\PlaceAPIController::class);
+});

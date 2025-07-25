@@ -14,28 +14,29 @@ class PlaceController extends Controller
     /**
      * Display a listing of the Place.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index()
     {
-        $places = Place::filter(Request::all(["search", ...Place::$searchIn]));
+        $places = Place::filter(Request::all(["search", ...Place::$searchIn]))
+            ->orderBy(Request::input('orderBy') ?? 'id', Request::input('dir') ?? 'asc');
+        
         if (Request::has('only')) {
-            return json_encode($places->paginate(Request::input('per_page'),['id', 'name']));
+            return json_encode($places->cursorPaginate(Request::input('per_page'),['id', 'name']));
         }
+
         return Inertia::render('Admin/places/Index', [
-            'filters' => Request::only(["search", ...Place::$searchIn]),
+            'filters' => Request::only(["search", ...Place::$searchIn, 'orderBy', 'dir']),
             'datas' => $places
                 ->paginate(Request::input('per_page'))
-                ->withQueryString()
-                ->through(fn ($row) => $row->only('id','name')),
-            'host' => config('app.url'),
+                ->withQueryString(),
         ]);
     }
 
     /**
      * Show the form for creating a new Place.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function create()
     {
@@ -45,12 +46,29 @@ class PlaceController extends Controller
     /**
      * Store a newly created Place in storage.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store()
     {
-        Place::create(Request::validate(Place::$rules));
-        return Redirect::route('admin.places.index')->with('success', 'Place created.');
+        $rule = Place::$rules;
+        $input =  Request::validate($rule);
+        $place = Place::create($input);
+        return redirect(Request::header('back') ?? route('admin.places.show', $place->getKey()))->with('success', 'Амжилттай үүсгэлээ.');
+    }
+
+    /**
+     * Show the form for editing the specified UserModel.
+     *
+     * @param Place $place
+     *
+     * @return \Inertia\Response|Response|string|bool
+     */
+    public function show(Place $place)
+    {
+        $place;
+        return Inertia::render('Admin/places/Show', [
+            'data' =>  $place,
+        ]);
     }
 
     /**
@@ -58,13 +76,13 @@ class PlaceController extends Controller
      *
      * @param Place $place
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function edit(Place $place)
     {
+        $place;
         return Inertia::render('Admin/places/Edit', [
             'data' =>  $place,
-            'host' => config('app.url'),
         ]);
     }
 
@@ -73,12 +91,15 @@ class PlaceController extends Controller
      *
      * @param Place $place
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update(Place $place)
     {
-        $place->update(Request::validate(Place::$rules));
-        return Redirect::route('admin.places.index')->with('success', 'Place updated.');
+        $rule = Place::$rules;
+        $input =  Request::validate($rule);
+        $place->update($input);
+        
+        return redirect(Request::header('back') ?? route('admin.places.show', $place->getKey()))->with('success', 'Ажилттай хадгаллаа.');
     }
 
     /**
@@ -88,11 +109,11 @@ class PlaceController extends Controller
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy(Place $place)
     {
         $place->delete();
-        return Redirect::route('admin.places.index')->with('success', 'Place deleted.');
+        return redirect(Request::header('back') ?? route('admin.places.index'))->with('success', 'Мэдээлэл устгагдлаа.');
     }
 }

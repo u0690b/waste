@@ -9,38 +9,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Reason
- *
  * @package App\Models
- * @version November 24, 2022, 7:41 pm UTC
+ * @version July 26, 2025, 6:48 am +08
+ *
  * @property \App\Models\Place $place
- * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
- * @property string $name
- * @property integer $place_id
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read int|null $register_histories_count
- * @property-read int|null $registers_count
- * @method static \Database\Factories\ReasonFactory factory(...$parameters)
- * @method static Builder|Reason filter(array $filters)
- * @method static Builder|Reason newModelQuery()
- * @method static Builder|Reason newQuery()
- * @method static Builder|Reason query()
- * @method static Builder|Reason whereCreatedAt($value)
- * @method static Builder|Reason whereId($value)
- * @method static Builder|Reason whereName($value)
- * @method static Builder|Reason wherePlaceId($value)
- * @method static Builder|Reason whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property \Illuminate\Database\Eloquent\Collection $registers
+ * @property string $code Шалтгаан код
+ * @property string $name Шалтгаан
+ * @property string $sub_group Хог хаягдлын дэд бүлэг
+ * @property string $stype Төрөл
+ * @property integer $place_id Хог хаягдлын бүлэг
  */
 class Reason extends Model
 {
 
     use HasFactory;
 
-    public $table = 'reasons';
+    use HasFilter;
 
+    public $table = 'reasons';
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -48,7 +37,10 @@ class Reason extends Model
 
 
     public $fillable = [
+        'code',
         'name',
+        'sub_group',
+        'stype',
         'place_id'
     ];
 
@@ -59,7 +51,10 @@ class Reason extends Model
      */
     protected $casts = [
         'id' => 'integer',
+        'code' => 'string',
         'name' => 'string',
+        'sub_group' => 'string',
+        'stype' => 'string',
         'place_id' => 'integer'
     ];
 
@@ -69,10 +64,13 @@ class Reason extends Model
      * @var array
      */
     public static $rules = [
-        'name' => 'required|string|max:255',
+        'code' => 'required|string|max:255',
+        'name' => 'required|string|max:1000',
+        'sub_group' => 'required|string|max:1000',
+        'stype' => 'required|string|max:255',
         'place_id' => 'required',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+        'created_at' => 'nullable|string',
+        'updated_at' => 'nullable|string'
     ];
 
     /**
@@ -86,37 +84,37 @@ class Reason extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function registers()
-    {
-        return $this->hasMany(\App\Models\Register::class, 'reason_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
     public function registerHistories()
     {
         return $this->hasMany(\App\Models\RegisterHistory::class, 'reason_id');
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function registers()
+    {
+        return $this->hasMany(\App\Models\Register::class, 'reason_id');
+    }
+
+    /**
      * @var array
      */
     public static $searchIn = [
+        'code',
         'name',
+        'sub_group',
+        'stype',
         'place_id'
     ];
 
     /**
      * Filter Model
-     * @param Array $filters
-     * @return App\Models\Reason
+     * 
+     * @return array
      */
-    public function scopeFilter(Builder $query, array $filters)
+    public function getSearchIn()
     {
-        if (count($filters)) {
-            $this->buildFilter($query, $filters, Reason::$searchIn);
-        }
-        return $query;
+        return Reason::$searchIn;
     }
 }

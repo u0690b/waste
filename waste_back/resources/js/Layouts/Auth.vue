@@ -8,9 +8,9 @@
             <div class="flex">
               <!-- Logo -->
               <div class="flex-shrink-0 flex items-center">
-                <inertia-link :href="route('dashboard')">
+                <ILink :href="route('dashboard')">
                   <breeze-application-logo class="block h-9 w-auto" />
-                </inertia-link>
+                </ILink>
               </div>
 
               <!-- Navigation Links -->
@@ -89,25 +89,25 @@
 </template>
 
 <script>
-import BreezeApplicationLogo from '@/Components/ApplicationLogo'
-import BreezeDropdown from '@/Components/Dropdown'
-import BreezeDropdownLink from '@/Components/DropdownLink'
-import BreezeNavLink from '@/Components/NavLink'
-import BreezeResponsiveNavLink from '@/Components/ResponsiveNavLink'
+  import BreezeApplicationLogo from '@/Components/ApplicationLogo'
+  import BreezeDropdown from '@/Components/Dropdown'
+  import BreezeDropdownLink from '@/Components/DropdownLink'
+  import BreezeNavLink from '@/Components/NavLink'
+  import BreezeResponsiveNavLink from '@/Components/ResponsiveNavLink'
 
-export default {
-  components: {
-    BreezeApplicationLogo,
-    BreezeDropdown,
-    BreezeDropdownLink,
-    BreezeNavLink,
-    BreezeResponsiveNavLink,
-  },
+  export default {
+    components: {
+      BreezeApplicationLogo,
+      BreezeDropdown,
+      BreezeDropdownLink,
+      BreezeNavLink,
+      BreezeResponsiveNavLink,
+    },
 
-  data() {
-    return {
-      showingNavigationDropdown: false,
-    }
-  },
-}
+    data() {
+      return {
+        showingNavigationDropdown: false,
+      }
+    },
+  }
 </script>

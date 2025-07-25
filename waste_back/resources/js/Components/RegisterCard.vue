@@ -1,20 +1,20 @@
 <script setup>
-import "vue3-carousel/dist/carousel.css";
-import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-import { ref } from "vue";
-import Modal from "./Modal.vue";
+    import "vue3-carousel/dist/carousel.css";
+    import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+    import { ref } from "vue";
+    import Modal from "./Modal.vue";
 
-const props = defineProps({
-    item: { type: Object },
-    hideMoreButton: { type: Boolean, default: false },
-    showRoute: { type: String, default: 'admin.registers.show' }
-});
-const emit = defineEmits(["select"]);
-const isOpen = ref(false);
+    const props = defineProps({
+        item: { type: Object },
+        hideMoreButton: { type: Boolean, default: false },
+        showRoute: { type: String, default: 'admin.registers.show' }
+    });
+    const emit = defineEmits(["select"]);
+    const isOpen = ref(false);
 
-function setIsOpen(value) {
-    isOpen.value = value;
-}
+    function setIsOpen(value) {
+        isOpen.value = value;
+    }
 </script>
 
 <template>
@@ -29,9 +29,8 @@ function setIsOpen(value) {
                     <template #addons>
                         <Pagination />
                     </template>
-                </Carousel> -->
-        <div :class="item.status_id == 2 ? 'bg-green-500' : 'bg-yellow-500'"
-            class=" inline-flex items-center px-3 rounded-full text-[10px] font-light text-center  text-white absolute top-1 left-1">
+</Carousel> -->
+        <div :class="item.status_id == 2 ? 'bg-green-500' : 'bg-yellow-500'" class=" inline-flex items-center px-3 rounded-full text-[10px] font-light text-center  text-white absolute top-1 left-1">
             {{ item.status.name }}</div>
         <div class="p-5">
             <p class="mb-3 text-sm py-2">
@@ -68,15 +67,12 @@ function setIsOpen(value) {
             <slot></slot>
             <div v-if="!hideMoreButton" class="flex justify-between items-center">
 
-                <inertia-link :href="route(showRoute, item.id)"
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-900 dark:focus:ring-blue-800">
+                <ILink :href="route(showRoute, item.id)" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-900 dark:focus:ring-blue-800">
                     Дэлгэрэнгүй
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                     </svg>
-                </inertia-link>
+                </ILink>
 
             </div>
         </div>
