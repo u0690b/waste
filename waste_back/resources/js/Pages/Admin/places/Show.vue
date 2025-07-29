@@ -1,6 +1,6 @@
 <template>
   <Layout :title="title">
-   <div class="p-4 mt-8 sm:px-8 sm:py-4 ">
+    <div class="p-4 mt-8 sm:px-8 sm:py-4 ">
       <div class="p-4 bg-white rounded shadow">
         <h1>
           <BackButton href="/admin/places" />{{ title }}
@@ -16,22 +16,22 @@
 </template>
 
 <script setup>
-import Layout from '@/Layouts/Admin.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import BackButton from '@/Components/BackButton.vue';
-import DestroyButton from '@/Components/DestroyButton.vue';
+  import Layout from '@/Layouts/Admin.vue';
+  import InputLabel from '@/Components/InputLabel.vue';
+  import BackButton from '@/Components/BackButton.vue';
+  import DestroyButton from '@/Components/DestroyButton.vue';
 
-const props = defineProps({
-  data: [Object],
-});
+  const props = defineProps({
+    data: [Object],
+  });
 
-const title = 'Хог хаягдлын бүлэг дэлгэрэнгүй'
+  const title = 'Хог хаягдлын бүлэг дэлгэрэнгүй'
 
-const fields = [
-  { label: '', value: props.data.id },
-  { label: 'Газрын нэр', value: props.data.name },
-  { label: '', value: props.data.created_at },
-  { label: '', value: props.data.updated_at }
-]
+  const fields = [
+    { label: '', value: props.data.id },
+    { label: 'Нэр', value: props.data.name },
+    { label: '', value: props.data.created_at },
+    { label: '', value: props.data.updated_at }
+  ]
 
 </script>

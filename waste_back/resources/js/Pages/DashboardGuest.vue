@@ -91,10 +91,10 @@
             <div class="pt-6 card-body">
               <h3 class="text-lg font-semibold">Хог хаягдал олсон уу?</h3>
               <p class="mb-4 text-sm ">Хянан мэдээлэлж, эрүүл орчныг хамтдаа бүтээе.</p>
-              <ILink type="button" href="/mobile" variant="secondary" class="w-full btn btn-success">
+              <a type="button" href="/mobile" target="_blank" variant="secondary" class="w-full btn btn-success">
                 Мобайл аппликейшн суулгах
                 <ArrowRightIcon class="w-3 ml-2" />
-              </ILink>
+              </a>
             </div>
           </div>
         </div>
@@ -112,9 +112,9 @@
                 Ил задгай хаягдлыг багасгаж, хүний эрүүл мэнд, байгаль орчинд үзүүлэх сөрөг нөлөөг бууруулна. Хогийг эдийн засгийн эргэлтэд оруулж, Хог хаягдлыг хянан мэдээлж, эрүүл орчныг хамтдаа бүтээе.
               </div>
               <div class="mt-10">
-                <ILink class=" text-3xl  py-2 px-4 bg-[#dde9aa]  hover:border Text-[#406f47] rounded-full " type="button" href="/mobile">
+                <a class=" text-3xl  py-2 px-4 bg-[#dde9aa]  hover:border Text-[#406f47] rounded-full " type="button" target="_blank" href="/mobile">
                   Бидэнтэй нэгдэх
-                </ILink>
+                </a>
               </div>
             </div>
           </div>
