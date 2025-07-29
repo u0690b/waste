@@ -52,7 +52,7 @@
   const user = computed(() => usePage().props.auth.user);
   if (['admin', 'zaa'].includes(user.value.roles)) {
     menus.value.push(
-     
+
       {
         text: "Хэрэглэгч",
         icon: markRaw(UserGroupIcon),
@@ -66,11 +66,11 @@
         icon: markRaw(WrenchScrewdriverIcon),
         href: "#",
         children: [
-           {
-          text: "Хог хаягдлын бүлэг",
-          icon: markRaw(ChevronRightIcon),
-          href: route("admin.places.index"),
-         },
+          {
+            text: "Хог хаягдлын бүлэг",
+            icon: markRaw(ChevronRightIcon),
+            href: route("admin.places.index"),
+          },
           {
             text: "Шалтгаан",
             icon: markRaw(ChevronRightIcon),
@@ -149,9 +149,9 @@
 <template>
   <Backdrop v-if="isOpen" @click="isOpen = false" />
 
-  <aside class="hidden w-64 bg-gray-800 sm:block">
-    <div class="py-3 mb-8 tracking-widest text-center uppercase bg-gray-900 border-gray-800 border-b-1">
-      <img src="../../../public/img/logo.png" class="object-contain w-12 ... float-left" />
+  <aside class="hidden w-64 bg-[#406f47] sm:block">
+    <div class="py-3 pl-3 mb-8 tracking-widest text-center uppercase bg-[#406f47] border-gray-800 border-b-1">
+      <img src="@/assets/icon-512.png" class="object-contain w-12 ... float-left" />
       <div class="py-2">
         <ILink href="/" class="p-4 text-white sm:w-2/3 lg:w-3/4 ">ХОГ ХЯНАЛТ</ILink>
       </div>
@@ -160,11 +160,11 @@
     <!-- menu -->
     <nav class="text-sm text-gray-300">
       <ul class="flex flex-col">
-        <li class="px-4 py-2 text-xs font-bold tracking-wider text-gray-500 uppercase">Үндсэн цэс</li>
+        <li class="px-4 py-2 text-xs font-bold tracking-wider uppercase">Үндсэн цэс</li>
         <SidebarItem v-for="menu in menus" :key="menu.text" :menu="menu" class="px-4 py-2 text-xs font-bold tracking-wider text-white uppercase" />
-        <li class="px-4 py-2 text-xs font-bold tracking-wider text-gray-500 uppercase">Тохиргоо</li>
+        <li class="px-4 py-2 text-xs font-bold tracking-wider uppercase">Тохиргоо</li>
         <SidebarItem v-for="menu in settings" :key="menu.text" :menu="menu" class="px-4 py-2 text-xs font-bold tracking-wider text-white uppercase" />
-        <li class="px-4 py-2 text-xs font-bold tracking-wider text-gray-500 uppercase">Зөрчлийн мэдээлэл</li>
+        <li class="px-4 py-2 text-xs font-bold tracking-wider uppercase">Зөрчлийн мэдээлэл</li>
         <SidebarItem v-for="menu in zurchil" :key="menu.text" :menu="menu" class="px-4 py-2 text-xs font-bold tracking-wider text-white uppercase" />
       </ul>
     </nav>

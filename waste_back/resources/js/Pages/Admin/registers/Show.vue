@@ -1,18 +1,18 @@
 <template>
     <div class="flex justify-between px-4 mt-4 sm:px-8">
-        <h2 class="text-xl text-gray-600  font-bold">Зөрчлийн дэлгэрэнгүй бүртгэл </h2>
+        <h2 class="text-xl font-bold text-gray-600">Зөрчлийн дэлгэрэнгүй бүртгэл </h2>
         <div class="flex items-center space-x-1 text-xs">
-            <ILink href="/" class="font-bold text-indigo-700 text-sm">Нүүр хуудас</ILink>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <ILink href="/" class="text-sm font-bold text-indigo-700">Нүүр хуудас</ILink>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-2 h-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
-            <span class="text-gray-600 text-sm">Зөрчлийн бүртгэл</span>
+            <span class="text-sm text-gray-600">Зөрчлийн бүртгэл</span>
         </div>
     </div>
     <slot></slot>
-    <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-3 sm:px-8">
-        <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow sm:col-span-2">
-            <h3 class="text-lg text-gray-600 mb-4 tracking-wider">Илгээгдсэн мэдээлэл</h3>
+    <div class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-3 sm:px-8">
+        <div class="px-4 py-2 overflow-hidden bg-white border rounded-md shadow sm:col-span-2">
+            <h3 class="mb-4 text-lg tracking-wider text-gray-600">Илгээгдсэн мэдээлэл</h3>
             <div class="row">
                 <div class="col-md-5">
 
@@ -125,7 +125,7 @@
                 <p class="mb-3 text-sm text-gray-700 dark:text-gray-400">
                     <span class="font-bold text-black">#Бүртгэсэн хүн:</span>
                 </p>
-                <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 italic"> {{ data.reg_user.name }}</p>
+                <p class="mb-3 text-xs italic text-gray-700 dark:text-gray-400"> {{ data.reg_user.name }}</p>
                 <h5 v-if="data.resolve_desc" class="mb-3 text-sm text-gray-700 dark:text-gray-400"> <span
                         class="font-bold text-black">#Шийдвэрлэсэн хүн:</span></h5>
                 <p v-if="data.resolve_desc" class="mb-3 font-normal text-gray-700 dark:text-gray-400">
@@ -134,10 +134,10 @@
 
             </RegisterCard> -->
         </div>
-        <div class="px-4 py-2 bg-white  rounded-md overflow-hidden shadow">
+        <div class="px-4 py-2 overflow-hidden bg-white rounded-md shadow">
             <TabGroup>
-                <div class="bg-white  rounded-lg shadow sm:col-span-2">
-                    <div class="flex flex-col space-y-2 items-center px-4 mb-2 py-2  text-gray-600 sm:flex-row sm:justify-between">
+                <div class="bg-white rounded-lg shadow sm:col-span-2">
+                    <div class="flex flex-col items-center px-4 py-2 mb-2 space-y-2 text-gray-600 sm:flex-row sm:justify-between">
                         <h3 class="tracking-wider">Нотлох баримт</h3>
                         <TabList class="flex space-x-1">
                             <Tab v-slot="{ selected }" key="tab_1">
@@ -191,16 +191,16 @@
 
 
     </div>
-    <div class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-1 sm:px-8">
-        <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
-            <h3 class="text-lg text-gray-600 mb-4">Байрлал /Газрын зураг/</h3>
+    <div class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-1 sm:px-8">
+        <div class="px-4 py-2 overflow-hidden bg-white border rounded-md shadow">
+            <h3 class="mb-4 text-lg text-gray-600">Байрлал /Газрын зураг/</h3>
             <ShowMapPoint :key="'fucing' + data.id" :coordinate="[data.long, data.lat]"></ShowMapPoint>
         </div>
     </div>
 
-    <div v-if="data.comf_user" class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-1 sm:px-8">
-        <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow">
-            <h3 class="text-lg text-gray-600 mb-4">Хуваарилагдсан мэдээлэл</h3>
+    <div v-if="data.comf_user" class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-1 sm:px-8">
+        <div class="px-4 py-2 overflow-hidden bg-white border rounded-md shadow">
+            <h3 class="mb-4 text-lg text-gray-600">Хуваарилагдсан мэдээлэл</h3>
             <div class="grid grid-cols-2 gap-2 py-2">
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name">Хуваарилсан
@@ -223,9 +223,9 @@
 
         </div>
     </div>
-    <div v-if="data.status_id == 4" class="grid grid-cols-1 px-4 gap-4 mt-8 sm:grid-cols-3 sm:px-8">
-        <div class="px-4 py-2 bg-white border rounded-md overflow-hidden shadow sm:col-span-2">
-            <h3 class="text-lg text-gray-600 mb-4">Шийдвэрлэсэн мэдээлэл</h3>
+    <div v-if="data.status_id == 3" class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-3 sm:px-8">
+        <div class="px-4 py-2 overflow-hidden bg-white border rounded-md shadow sm:col-span-2">
+            <h3 class="mb-4 text-lg text-gray-600">Шийдвэрлэсэн мэдээлэл</h3>
             <div class="grid grid-cols-3 gap-3 py-2">
                 <div>
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name">Шийдвэрлэсэн
@@ -264,8 +264,8 @@
             </div>
 
         </div>
-        <div class="px-4 py-2 bg-white  rounded-md overflow-hidden shadow">
-            <h3 class="text-lg text-gray-600 mb-4">Шийдвэрлэсэн баримт</h3>
+        <div class="px-4 py-2 overflow-hidden bg-white rounded-md shadow">
+            <h3 class="mb-4 text-lg text-gray-600">Шийдвэрлэсэн баримт</h3>
             <img v-bind:src="data.resolve_image" class="w-full h-auto" alt="..." />
 
         </div>

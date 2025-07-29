@@ -7,6 +7,7 @@ use App\Models\Register;
 
 use App\Services\FirebaseMessagingService;
 use Auth;
+use Cache;
 use Date;
 use DB;
 use Illuminate\Support\Facades\Redirect;
@@ -28,67 +29,64 @@ class IndexController extends Controller
     /**
      * Display a listing of the Register.
      *
-     * @return Response
+     * @return  \Inertia\Response
      */
     public function index()
     {
-        Request::validate([
-            'start' => 'sometimes|date',
-            'end' => 'sometimes|date',
-        ]);
-        if (Request::has('start')) {
-            $start = Request::input('start');
-        } else {
-            $start = Date::now()->startOfMonth()->toDateString();
-        }
-        if (Request::has('end')) {
-            $end = Request::input('end');
-        } else {
 
-            $end = Date::now()->toDateString();
-        }
+        $totalReportStat = DB::scalar(
+            "SELECT COUNT(*) AS count FROM registers",
+        );
 
-        $chartData = DB::select(
-            "select r.name reason,p.position org,DATE(re.created_at) ognoo,st.name stat,CASE WHEN ac.name='Улаанбаатар' then sd.name else ac.name end region,count(*) niit "
-                . " from registers re"
-                .   " inner join reasons r on r.id = re.reason_id "
-                .   " inner join  users p on p.id = re.reg_user_id "
-                .   " inner join aimag_cities ac on ac.id = re.aimag_city_id"
-                .   " inner join soum_districts sd on sd.id = re.soum_district_id"
-                .   " INNER JOIN statuses st ON st.id = re.status_id"
-                .   " where DATE(re.created_at) between ? and ? "
-                . " group by DATE(re.created_at),r.name, p.position,st.name,CASE WHEN ac.name='Улаанбаатар' then sd.name else ac.name end",
-            [$start, $end]
+        $totalReportPrevMonthStat = $value = Cache::remember('totalReportPrevMonthStat', 43200, function () {
+            return DB::select(
+                "SELECT 
+                    current.count AS current_month,
+                    previous.count AS previous_month,
+                    ROUND((current.count - previous.count) / previous.count * 100, 2) AS percentage_change
+                FROM
+                    (SELECT COUNT(*) AS count FROM registers 
+                    WHERE created_at >= DATE_FORMAT(CURRENT_DATE(), '%Y-%m-01')) AS current,
+                    (SELECT COUNT(*) AS count FROM registers 
+                    WHERE created_at >= DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+                    AND created_at < DATE_FORMAT(CURRENT_DATE(), '%Y-%m-01')) AS previous;
+                    "
+            );
+        });
+        $totalClearStat = DB::scalar(
+            "SELECT COUNT(*) AS count FROM registers where status_id = 3",
         );
-        $etgeed = DB::select(
-            " select  trim(name) name,count(*) niit from registers"
-                .   " where whois='Хуулийн этгээд' and DATE(created_at) between ? and ? "
-                . " group by trim(name)"
-                . " order by niit desc "
-                . " limit 10  ",
-            [$start, $end]
+
+        $totalClearPrevMonthStat = Cache::remember('totalClearPrevMonthStat', 43200, function () {
+            return DB::scalar(
+                "SELECT COUNT(*) AS count FROM registers where status_id = 3 and created_at >= DATE_FORMAT(CURRENT_DATE(), '%Y-%m-01')"
+            );
+        });
+        $totalUsers = DB::scalar(
+            " SELECT COUNT(*) AS count FROM registers where status_id = 3 "
+
         );
-        $irgen = DB::select(
-            " select  trim(name) name,count(*) niit from registers"
-                .   " where whois='Иргэн' and DATE(created_at) between ? and ? "
-                . " group by trim(name) "
-                . " order by niit desc "
-                . " limit 10  ",
-            [$start, $end]
-        );
+        $lastMonth = Cache::remember('lastMonth', 43200, function () {
+            return  DB::select(
+                "SELECT DATE_FORMAT(created_at, '%Y-%m') AS ymonth, DATE_FORMAT(created_at, '%m') AS month, count(*) count from waste.registers
+                        where created_at >= DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 6 MONTH), '%Y-%m-01')
+                        group by DATE_FORMAT(created_at, '%Y-%m'),DATE_FORMAT(created_at, '%m') 
+                        order by ymonth ; "
+            );
+        });
+
         $view = 'DashboardGuest';
         if (Auth::user()) {
             $view = 'Dashboard';
         }
         return Inertia::render($view, [
-            'filters' => [
-                'start' => $start,
-                'end' => $end,
-            ],
-
-            'chart' =>  $chartData,
-            'etgeed' => $etgeed,
-            'irgen' => $irgen,
+            'filters' => [],
+            'totalReportStat' =>  $totalReportStat,
+            'totalReportPrevMonthStat' => $totalReportPrevMonthStat[0],
+            'totalClearStat' => $totalClearStat,
+            'totalClearPrevMonthStat' => $totalClearPrevMonthStat,
+            'totalUsers' => $totalUsers,
+            'lastMonth' => $lastMonth,
             'host' => config('app.url'),
         ]);
     }
@@ -96,7 +94,7 @@ class IndexController extends Controller
     /**
      * Display a listing of the Register.
      *
-     * @return Response
+     * @return  \Inertia\Response
      */
     public function map()
     {
@@ -125,7 +123,7 @@ class IndexController extends Controller
     /**
      * Display a listing of the Register.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|bool|string
      */
     public function register()
     {
@@ -155,7 +153,7 @@ class IndexController extends Controller
      *
      * @param Register $register
      *
-     * @return Response
+     * @return \Inertia\Response
      */
     public function show(Register $register)
     {
@@ -178,13 +176,13 @@ class IndexController extends Controller
     public function storage($filename)
     {
         $path = 'public/' . $filename;
-         
+
         if (!Storage::exists($path)) {
             abort(404, 'File not found.');
         }
 
         $fullPath = Storage::path($path);
-        
+
         $mime = Storage::mimeType($path);
         $size = filesize($fullPath);
 

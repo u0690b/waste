@@ -64,13 +64,6 @@ class RegisterController extends Controller
                         ->orWhere('reg_user_id', '=', $user->id);
                 });
             }
-        } elseif ($input['status_id'] == 4) {
-            if ($user->roles != 'mha') {
-                $registers = $registers->where(function ($registers) use ($user) {
-                    $registers->where('comf_user_id', '=', $user->id)
-                        ->orWhere('reg_user_id', '=', $user->id);
-                });
-            }
         }
         $registers = $registers->orderByDesc('updated_at')->orderByDesc('id');
         if (Request::has('only')) {
@@ -236,7 +229,7 @@ class RegisterController extends Controller
             DB::beginTransaction();
 
             $input['comf_user_id'] = Auth::user()->id;
-            $input['status_id'] = 4;
+            $input['status_id'] = 3;
             $input['resolved_at'] = Date::now();
 
 

@@ -32,7 +32,7 @@ class WasteController extends GetxController
       if (AuthController.user!.isMH && !AuthController.user!.isMHA)
         headers['comf_user_id'] = AuthController.user!.id;
     } else if (title == 'Шийдвэрлэгдсэн') {
-      ss = 'status_id=4';
+      ss = 'status_id=3';
       if (AuthController.user!.isMH && !AuthController.user!.isMHA)
         headers['comf_user_id'] = AuthController.user!.id;
     } else
@@ -48,9 +48,7 @@ class WasteController extends GetxController
           return (data['data'] as List<dynamic>).map((e) => Waste.fromJson(e));
         }
         // return [];
-        return (data as List<dynamic>).map(
-          (e) => Waste.fromJson(e),
-        );
+        return (data as List<dynamic>).map((e) => Waste.fromJson(e));
       },
     );
     return res;
@@ -107,7 +105,8 @@ class WasteController extends GetxController
   }
 
   List<WasteModel> getLocalModels() {
-    final ret = GetStorage('WasteModel')
+    final ret =
+        GetStorage('WasteModel')
             .read<List>('LocalWasteModel')
             ?.map((e) => WasteModel.fromJson(e))
             .toList() ??
@@ -152,10 +151,11 @@ class WasteController extends GetxController
         onError: (msg) async {
           _hasError = msg;
           await Get.defaultDialog(
-              middleText: msg,
-              textConfirm: 'OK',
-              confirmTextColor: Colors.white,
-              onConfirm: () => Get.back());
+            middleText: msg,
+            textConfirm: 'OK',
+            confirmTextColor: Colors.white,
+            onConfirm: () => Get.back(),
+          );
           throw Exception(msg);
         },
       );
@@ -193,10 +193,11 @@ class WasteController extends GetxController
         onError: (msg) async {
           _hasError = msg;
           await Get.defaultDialog(
-              middleText: msg,
-              textConfirm: 'OK',
-              confirmTextColor: Colors.white,
-              onConfirm: () => Get.back());
+            middleText: msg,
+            textConfirm: 'OK',
+            confirmTextColor: Colors.white,
+            onConfirm: () => Get.back(),
+          );
           throw Exception(msg);
         },
       );
@@ -225,18 +226,15 @@ class WasteController extends GetxController
       final res = await fetch(
         '/registers/$id/allocation',
         'PUT',
-        body: {
-          'id': id,
-          'comf_user_id': comf_user_id,
-          'note': note,
-        },
+        body: {'id': id, 'comf_user_id': comf_user_id, 'note': note},
         onError: (msg) async {
           _hasError = msg;
           await Get.defaultDialog(
-              middleText: msg,
-              textConfirm: 'OK',
-              confirmTextColor: Colors.white,
-              onConfirm: () => Get.back());
+            middleText: msg,
+            textConfirm: 'OK',
+            confirmTextColor: Colors.white,
+            onConfirm: () => Get.back(),
+          );
           throw Exception(msg);
         },
       );
@@ -264,10 +262,11 @@ class WasteController extends GetxController
         onError: (msg) async {
           _hasError = msg;
           await Get.defaultDialog(
-              middleText: msg,
-              textConfirm: 'OK',
-              confirmTextColor: Colors.white,
-              onConfirm: () => Get.back());
+            middleText: msg,
+            textConfirm: 'OK',
+            confirmTextColor: Colors.white,
+            onConfirm: () => Get.back(),
+          );
           throw Exception(msg);
         },
       );

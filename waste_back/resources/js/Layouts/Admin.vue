@@ -3,7 +3,7 @@
     <!-- <Sidebar v-model="sidebar" /> -->
     <AdminMenu></AdminMenu>
     <!-- <NavDrawer /> -->
-    <div class="flex flex-col flex-grow bg-gray-200">
+    <div class="flex flex-col flex-grow ">
       <TheHeader />
 
       <!-- main content -->
@@ -16,14 +16,14 @@
   </main>
 </template>
 <script setup>
-import AdminMenu from "@/Components/AdminMenu.vue";
-import FlashMessages from "@/Components/FlashMessages.vue";
-import Sidebar from "@/Components/Sidebar.vue";
-import TheFooter from "@/Components/TheFooter.vue";
-import TheHeader from "@/Components/TheHeader.vue";
-// import Header from '@/Components/Dashboard/Header.vue'
-import { ref } from "vue";
+  import AdminMenu from "@/Components/AdminMenu.vue";
+  import FlashMessages from "@/Components/FlashMessages.vue";
+  import Sidebar from "@/Components/Sidebar.vue";
+  import TheFooter from "@/Components/TheFooter.vue";
+  import TheHeader from "@/Components/TheHeader.vue";
+  // import Header from '@/Components/Dashboard/Header.vue'
+  import { ref } from "vue";
 
-const props = defineProps({ errors: { type: Object, default: () => ({}) } });
-const sidebar = ref(false);
+  const props = defineProps({ errors: { type: Object, default: () => ({}) } });
+  const sidebar = ref(false);
 </script>

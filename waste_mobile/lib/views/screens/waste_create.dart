@@ -324,6 +324,40 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                             textEditingController: chiglel,
                           ),
                         ],
+                        const SizedBox(height: 20),
+                        // Аймаг,Нийслэл:
+                        DropdownButtonFormField(
+                          validator:
+                              (p0) => p0 == null ? 'Заавал бөглөх' : null,
+                          decoration: InputDecoration(
+                            labelText: "Сум,Дүүрэг",
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                              vertical: 15.0,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          enableFeedback: aimagCity == null,
+                          items:
+                              Constants.aimagCities
+                                  .map(
+                                    (e) => DropdownMenuItem(
+                                      value: e.id,
+                                      child: Text(e.name),
+                                    ),
+                                  )
+                                  .toList(),
+                          value: aimagCity,
+                          onChanged: (int? value) {
+                            setState(() {
+                              aimagCity = value;
+                              soumDistrict = null;
+                              bagHoroo = null;
+                            });
+                          },
+                        ),
 
                         const SizedBox(height: 20),
                         //  Сум,Дүүрэг

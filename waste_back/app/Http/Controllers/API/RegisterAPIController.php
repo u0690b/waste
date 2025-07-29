@@ -57,15 +57,6 @@ class RegisterAPIController extends AppBaseController
             }
         } elseif ($input['status_id'] == 3) {
             if ($user->roles != 'mha') {
-                $query = $query->where('reg_user_id', $user->id);
-                $query = $query->orWhere(function ($query) use ($user) {
-
-                    $query->where('status_id', '=', 3)
-                        ->Where('comf_user_id', '=', $user->id);
-                });
-            }
-        } elseif ($input['status_id'] == 4) {
-            if ($user->roles != 'mha') {
                 $query = $query->where(function ($query) use ($user) {
                     $query->where('comf_user_id', '=', $user->id)
                         ->orWhere('reg_user_id', '=', $user->id);
@@ -208,7 +199,7 @@ class RegisterAPIController extends AppBaseController
 
             /** @var Register $register */
             $input['comf_user_id'] = $request->user()->id;
-            $input['status_id'] = 4;
+            $input['status_id'] = 3;
             $input['resolved_at'] = Date::now();
 
             $register->fill($input);

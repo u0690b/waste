@@ -10,100 +10,27 @@
   import SharedState from "@/Components/SharedState.vue";
   import { TabList } from "@headlessui/vue";
   import GuestLayout from "@/Layouts/GuestLayout.vue";
+  import { ArrowRightIcon, CameraIcon, CheckBadgeIcon, CheckCircleIcon, DocumentCheckIcon, DocumentIcon, UserGroupIcon, WifiIcon } from "@heroicons/vue/24/outline";
 
   const props = defineProps({
     datas: Object,
-    chart: [Array],
-    etgeed: [Array],
-    irgen: [Array],
+    totalReportStat: [Object, Array],
+    totalClearStat: [Object, Array],
+    totalClearPrevMonthStat: [Object, Array],
+    totalReportPrevMonthStat: [Object, Array],
+    totalUsers: [Object, Array],
+    lastMonth: [Object, Array],
     filters: [Object, Array],
     host: String,
   });
-  let form = reactive({
-    ...props.filters,
-  });
-  const reset = () => (form = mapValues(form, () => null));
 
-  watch(
-    () => form,
-    debounce(function () {
-      Inertia.get("/dashboard", pickBy(form), { preserveState: true });
-    }, 150),
-    { deep: true }
-  );
 
-  const dateOptions = computed(() => {
-    const ognooLabels = props.chart.reduce((r, a) => {
-      if (!r.includes(a.ognoo)) r.push(a.ognoo);
-      return r;
-    }, []);
 
-    return {
-      series: props.chart.reduce(function (r, a) {
-        let index = r.findIndex((v) => v.name == a.reason);
-
-        if (index < 0) {
-          let c = {
-            name: a.reason,
-            data: ognooLabels.map((x) => ({ x, y: 0 })),
-          };
-          index = r.length;
-          r.push(c);
-        }
-        let yIndex = r[index].data.findIndex((v) => v.x == a.ognoo);
-
-        if (yIndex < 0) {
-          r[index].data.push({ x: a.ognoo, y: a.niit });
-        } else {
-          r[index].data[yIndex].y = r[index].data[yIndex].y + a.niit;
-        }
-
-        return r;
-      }, []),
-      chartOptions: {
-        chart: {
-          type: "bar",
-          height: 350,
-        },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: "55%",
-            endingShape: "rounded",
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          show: true,
-          width: 2,
-          colors: ["transparent"],
-        },
-        xaxis: {},
-        yaxis: {
-          title: {
-            text: "Нийт",
-          },
-        },
-        fill: {
-          opacity: 1,
-        },
-        tooltip: {
-          y: {
-            formatter: function (val) {
-              return "Нийт: " + val;
-            },
-          },
-        },
-      },
-    };
-  });
 
   const regionOptions = computed(() => {
-    const regionChart = props.chart.reduce(function (r, a) {
-      r[a.region] = r[a.region] || 0;
-      r[a.region] = r[a.region] + a.niit;
+    const regionChart = props.lastMonth.reduce(function (r, a) {
+      r[a.month] = r[a.month] || 0;
+      r[a.month] = r[a.month] + a.count;
       return r;
     }, {});
     return {
@@ -121,270 +48,126 @@
     };
   });
 
-  const donut = computed(() => {
-    const orgChart = props.chart.reduce(function (r, a) {
-      r[a.org] = r[a.org] || 0;
-      r[a.org] = r[a.org] + a.niit;
-      return r;
-    }, {});
-    return {
-      series: Object.values(orgChart),
-      chartOptions: {
-        chart: {
-          type: "donut",
-        },
 
-        labels: Object.keys(orgChart),
-        legend: {
-          position: "top",
-        },
-      },
-    };
-  });
-
-  const statDonut = computed(() => {
-    const statChart = props.chart.reduce(function (r, a) {
-      r[a.stat] = r[a.stat] || 0;
-      r[a.stat] = r[a.stat] + a.niit;
-      return r;
-    }, {});
-    return {
-      series: Object.values(statChart),
-      chartOptions: {
-        chart: {
-          type: "donut",
-        },
-
-        labels: Object.keys(statChart),
-        plotOptions: {
-          legend: {
-            position: "top",
-          },
-        },
-        responsive: [
-          {
-            breakpoint: 480,
-            options: {
-              chart: {
-                width: 300,
-              },
-              legend: {
-                position: "left",
-              },
-            },
-          },
-        ],
-        legend: {
-          position: "top",
-        },
-      },
-    };
-  });
-  const etgeedOptions = computed(() => {
-    const regionChart = props.etgeed.reduce(function (r, a) {
-      r[a.name] = r[a.name] || 0;
-      r[a.name] = r[a.name] + a.niit;
-      return r;
-    }, {});
-    return {
-      chartOptions: {
-        xaxis: {
-          categories: Object.keys(regionChart),
-        },
-        yaxis: {
-          labels: {
-            show: false
-          }
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 4,
-            barHeight: '100%',
-            distributed: true,
-            horizontal: true,
-
-          }
-        },
-        dataLabels: {
-          enabled: true,
-          textAnchor: 'start',
-          style: {
-            colors: ['#fff']
-          },
-          formatter: function (val, opt) {
-            return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
-          },
-          offsetX: 0,
-          dropShadow: {
-            enabled: true
-          }
-        },
-        tooltip: {
-          theme: 'dark',
-          x: {
-            show: false
-          },
-          y: {
-            title: {
-              formatter: function () {
-                return ''
-              }
-            }
-          }
-        },
-        stroke: {
-          width: 1,
-          colors: ['#fff']
-        },
-        colors: ['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#2b908f', '#f9a3a4', '#90ee7e',
-          '#f48024', '#69d2e7'
-        ],
-      },
-
-      series: [
-        {
-
-          data: Object.values(regionChart),
-        },
-      ],
-    };
-  });
-
-
-  const irgenOptions = computed(() => {
-
-    return {
-      chartOptions: {
-        chart: {
-          type: 'bar'
-        },
-        xaxis: {
-          categories: props.irgen.map(v => v.name),
-        },
-        yaxis: {
-          labels: {
-            show: false
-          }
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 4,
-            distributed: true,
-            horizontal: true,
-
-          }
-        },
-        dataLabels: {
-          enabled: true,
-          textAnchor: 'start',
-          style: {
-            colors: ['#fff']
-          },
-          formatter: function (val, opt) {
-            return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
-          },
-          offsetX: 0,
-          dropShadow: {
-            enabled: true
-          }
-        },
-
-        colors: ['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#2b908f', '#f9a3a4', '#90ee7e',
-          '#f48024', '#69d2e7'
-        ],
-      },
-      series: [
-        {
-          data: props.irgen.map(v => v.niit),
-        },
-      ],
-    };
-  });
-  const rangeDay = computed(() => {
-
-    let difference = Date.parse(form.end) - Date.parse(form.start);
-    return (isNaN(difference) ? '~' : Math.ceil(difference / (1000 * 3600 * 24))) + ' өдрийн мэдээ';
-  });
 </script>
 <template>
 
   <Head title="Үндсэн хуудас" />
   <GuestLayout>
     <div class="container">
-      <div class="grid gap-4 px-4 mt-8 sm:px-8 ">
+      <section class="mb-8">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div class="hover:shadow-xl border-4 border-solid  rounded-2xl border-[#406f47]">
+            <div class="flex flex-row items-center justify-between pb-2 space-y-0 card-header">
+              <h3 class="text-sm font-medium">Нийт мэдэгдэл</h3>
+              <DocumentIcon class="w-6 h-6 text-muted-foreground" />
+            </div>
+            <div class="card-body">
+              <div class="text-3xl font-bold">{{ totalReportStat.toString().replace(/\D/g, "") }}</div>
+              <p class="text-xs text-muted-foreground">Өнгөрсөн сараас {{ totalReportPrevMonthStat.percentage_change }}%</p>
+            </div>
+          </div>
+          <div class="hover:shadow-xl border-4 border-solid  rounded-2xl border-[#406f47]">
+            <div class="flex flex-row items-center justify-between pb-2 space-y-0 card-header">
+              <h3 class="text-sm font-medium">Нийт шийдвэрлэсэн</h3>
+              <CheckCircleIcon class="w-6 h-6 text-muted-foreground" />
+            </div>
+            <div class="card-body">
+              <div class="text-3xl font-bold">{{ totalClearStat.toString().replace(/\D/g, "") }}</div>
+              <p class="text-xs text-muted-foreground">Энэ сар +{{ totalClearPrevMonthStat }} шийдвэрлэсэн</p>
+            </div>
+          </div>
+          <div class="hover:shadow-xl border-4 border-solid  rounded-2xl border-[#406f47]">
+            <div class="flex flex-row items-center justify-between pb-2 space-y-0 card-header">
+              <h3 class="text-sm font-medium">Бид олуулаа</h3>
+              <UserGroupIcon class="w-6 h-6 text-muted-foreground" />
+            </div>
+            <div class="card-body">
+              <div><Span class="text-3xl font-bold">{{ totalUsers }}</Span> Хүн</div>
+              <p class="text-xs text-muted-foreground">Бид нэмэгдсээр улам олуулаа болсоор</p>
+            </div>
+          </div>
+          <div class="hover:shadow-lg flex flex-col justify-center card bg-[#dde9aa] ">
+            <div class="pt-6 card-body">
+              <h3 class="text-lg font-semibold">Хог хаягдал олсон уу?</h3>
+              <p class="mb-4 text-sm ">хянан мэдээлж, эрүүл орчныг хамтдаа бүтээе.</p>
+              <Button variant="secondary" class="w-full btn btn-success">
+                Мэдэгдэл гаргах
+                <ArrowRightIcon class="w-3 ml-2" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="border-4 border-solid  rounded-2xl border-[#406f47]">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex items-center">
+            <div class="p-4 px-4  md:p-8 text-[#406f47]  sm:px-8 text-center" id="about" role="tabpanel" aria-labelledby="about-tab">
+              <h2 class="mb-5 text-4xl font-extrabold tracking-tight slide-in-bottom">
+                Хувийн хариуцлагаар эхлэх, нийтээр хамтрах!
+              </h2>
 
-        <div class="p-4 bg-white rounded-lg md:p-8 dark:bg-gray-800" id="about" role="tabpanel" aria-labelledby="about-tab">
-          <h2 class="mb-5 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white slide-in-bottom">
-            Системийн зорилго хүрэх үр дүн:
-          </h2>
+              <!-- List -->
+              <div class="gap-4 md:flex ">
+                Ил задгай хаягдлыг багасгаж, хүний эрүүл мэнд, байгаль орчинд үзүүлэх сөрөг нөлөөг бууруулна. Хогийг эдийн засгийн эргэлтэд оруулж, Хог хаягдлыг хянан мэдээлж, эрүүл орчныг хамтдаа бүтээе.
+              </div>
+              <div class="mt-10">
+                <ILink class=" text-3xl  py-2 px-4 bg-[#dde9aa]  hover:border Text-[#406f47] rounded-full " type="button" href="/login">
 
-          <!-- List -->
-          <div class="gap-4 md:flex">
-            Хог хаягдлаас хүний эрүүл мэнд, байгаль орчинд үзүүлэх сөрөг нөлөөллийг бууруулах, түүнээс урьдчилан сэргийлэх, хог хаягдлыг эдийн засгийн эргэлтэд оруулж, байгалийн нөөц баялгийг хэмнэх, иргэдийн хог хаягдлын талаархи боловсролыг дээшлүүлэх зорилгоор хог хаягдлыг ил задгай хаяхыг хянах мэдээлэх зорилготой
+                  Бидэнтэй нэгдэх
+                </ILink>
+              </div>
+            </div>
+          </div>
+          <div><img src="@/assets/herobg.png" class="rounded-r-xl"></div>
+        </div>
+      </div>
+      <section>
+        <h2 class="text-3xl font-bold text-center text-[#406f47]  mt-24 mb-6">Хэрхэн ажилладаг вэ?</h2>
+        <div class="grid grid-cols-3 gap-8 p-4 text-center">
+          <div class="p-4 border-[#406f47] border-4  hover:shadow-lg inset-2 shadow-[#31A95D22]  rounded-lg ">
+            <CameraIcon class="w-28 h-28 mb-4 text-[#406f47] mx-auto" />
+            <h3 class="font-bold">Зураг авч, байршлыг оруулна</h3>
+            <div class="card-body">
+              Ил задгай хаягдсан хогийг гар утсаараа зураг авч, байршлын хамт системд илгээнэ.
+            </div>
+          </div>
+          <div class="p-4 border-[#406f47] border-4 hover:shadow-lg inset-2 shadow-[#31A95D22]  rounded-lg ">
+            <WifiIcon class="w-28 h-28 mb-4 text-[#406f47] mx-auto" />
+            <h3 class="font-bold">Мэдээллийг дамжуулна</h3>
+            <div class="card-body">
+              Илгээсэн зураг, байршил нь хяналтын төвд очиж бүртгэгдэнэ. Холбогдох байгууллагууд мэдэгдэл авна.
+            </div>
+          </div>
+          <div class="p-4 border-[#406f47] border-4 hover:shadow-lg inset-2 shadow-[#31A95D22]  rounded-lg">
+            <CheckCircleIcon class="w-28 h-28 mb-4 text-[#406f47] mx-auto" />
+            <h3 class="font-bold">Шийдвэрлэх ба хянах</h3>
+            <div class="card-body">
+              Хог хаягдлыг цэвэрлэсний дараа тухайн мэдээллийг шинэчилж, олон нийт хянах боломжтой болно.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="flex flex-col gap-6 animate-in fade-in-0 duration-500">
+
+          <div class="grid gap-6 ">
+            <div class="col-span-2 px-4 py-2 overflow-hidden bg-white border rounded-md shadow">
+              <h3 class="flex mb-4 text-xl text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
+                </svg>хаг тайлан</h3>
+              <p>Сүүлийн 6 сар бүрийн бүртгэлийн тоо</p>
+
+              <VueApexCharts class="p-4 mb-8 bg-white" type="bar" height="350" :options="regionOptions.chartOptions" :series="regionOptions.series">
+              </VueApexCharts>
+            </div>
 
           </div>
+        </div>
+      </section>
 
-        </div>
 
-      </div>
-      <div class="flex items-center gap-2 py-6 ml-12">
-        <MyInput v-model="form.start" type="date" label="Эхлэх"></MyInput>
-        <MyInput v-model="form.end" type="date" label="Дуусах"></MyInput>
-        <span class="pt-6">
-          {{ rangeDay }}
-        </span>
-      </div>
-      <div class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-3 sm:px-8">
-        <div class="px-4 py-2 overflow-hidden bg-white border rounded-md shadow">
-          <h3 class="flex mb-4 text-xl text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
-            </svg>Зөрчлийн төлөв</h3>
-          <VueApexCharts class="p-4 bg-white" type="pie" :options="statDonut.chartOptions" :series="statDonut.series">
-          </VueApexCharts>
-        </div>
-        <div class="col-span-2 px-4 py-2 overflow-hidden bg-white border rounded-md shadow">
-          <h3 class="flex mb-4 text-xl text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
-            </svg>Зөрчлийн төрлөөр</h3>
-          <VueApexCharts class="p-4 mb-8 bg-white" type="bar" height="350" :options="dateOptions.chartOptions" :series="dateOptions.series">
-          </VueApexCharts>
-        </div>
-      </div>
-      <div class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-3 sm:px-8">
-        <div class="col-span-2 px-4 py-2 overflow-hidden bg-white border rounded-md shadow">
-          <h3 class="flex mb-4 text-xl text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
-            </svg>Харьяалагдах нутаг дэвсгэрээр</h3>
-          <VueApexCharts class="p-4 mb-8 bg-white" type="bar" height="350" :options="regionOptions.chartOptions" :series="regionOptions.series">
-          </VueApexCharts>
-        </div>
-        <div class="px-4 py-2 overflow-hidden bg-white border rounded-md shadow">
-          <h3 class="flex mb-4 text-xl text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
-            </svg>Зөрчил хуваарилалтаар</h3>
-          <VueApexCharts class="p-4 bg-white" type="pie" :options="donut.chartOptions" :series="donut.series">
-          </VueApexCharts>
-        </div>
-
-      </div>
-      <div class="grid grid-cols-2">
-        <div class="px-4 py-2 mx-4 mt-8 bg-white border rounded-md shadow sm:mx-8">
-          <h3 class="flex mb-4 text-xl text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
-            </svg>
-            Олон зөрчил гаргасан аж ахуйн нэгжүүд</h3>
-          <VueApexCharts class="p-4 mb-8 bg-white" type="bar" height="350" :options="etgeedOptions.chartOptions" :series="etgeedOptions.series">
-          </VueApexCharts>
-        </div>
-        <div class="px-4 py-2 mx-4 mt-8 bg-white border rounded-md shadow sm:mx-8">
-          <h3 class="flex mb-4 text-xl text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
-            </svg>
-            Олон зөрчил гаргасан иргэд</h3>
-          <VueApexCharts class="p-4 mb-8 bg-white" type="bar" height="350" :options="irgenOptions.chartOptions" :series="irgenOptions.series">
-          </VueApexCharts>
-        </div>
-      </div>
 
     </div>
 

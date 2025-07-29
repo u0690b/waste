@@ -21,7 +21,7 @@
         <div class="flex flex-wrap gap-2 pt-3 pb-4 mb-0">
 
           <div v-for="role in roles" class="">
-            <a class="block px-5 py-3 text-xs font-bold leading-normal text-orange-600 uppercase bg-white rounded shadow-lg" :class="{ '!text-white bg-orange-600': form.roles == role.id }" @click="form.roles = role.id">
+            <a class="block px-5 py-3 text-xs font-bold leading-normal text-[#406f47] uppercase bg-white rounded shadow-lg" :class="{ '!text-white !bg-[#406f47]': form.roles == role.id }" @click="form.roles = role.id">
               {{ role.name }}
             </a>
           </div>
@@ -45,7 +45,7 @@
           <input id="search" name="search" type="search" v-model="form.search" class="w-full py-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-500 focus:z-10" placeholder="Хэрэглэгч хайх" />
         </div>
       </div>
-      
+
       <admin-table :headers="{
         name: 'Хэрэглэгчийн нэр',
         username: 'Нэвтрэх нэр',

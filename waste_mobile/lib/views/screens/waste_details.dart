@@ -256,8 +256,12 @@ class _WasteDetailsState extends State<WasteDetails> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          if (widget.waste.statusId != 4 &&
-                              (['mha'].contains(AuthController.user!.roles) ||
+                          if (widget.waste.statusId != 3 &&
+                              (['admin'].contains(AuthController.user!.roles) ||
+                                  ['da'].contains(AuthController.user!.roles) ||
+                                  [
+                                    'mha',
+                                  ].contains(AuthController.user!.roles) ||
                                   widget.waste.comfUserId ==
                                       AuthController.user!.id))
                             ElevatedButton(
@@ -276,32 +280,6 @@ class _WasteDetailsState extends State<WasteDetails> {
                               },
                               child: Text('Шийдвэрлэх'),
                             ),
-                          if ((['mha'].contains(AuthController.user!.roles) ||
-                                  widget.waste.comfUserId ==
-                                      AuthController.user!.id) &&
-                              widget.waste.statusId != 4) ...[
-                            SizedBox(width: 10),
-                            ElevatedButton(
-                              onPressed: () async {
-                                final ret = await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return WasteAllocation(
-                                      waste: widget.waste,
-                                      wasteController:
-                                          widget.wasteController
-                                              as WasteController,
-                                    );
-                                  },
-                                );
-
-                                if (ret == true) {
-                                  Get.back();
-                                }
-                              },
-                              child: Text('Шилжүүлэх'),
-                            ),
-                          ],
                         ],
                       ),
                     ),
