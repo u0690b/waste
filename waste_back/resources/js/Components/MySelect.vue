@@ -1,36 +1,13 @@
 <template>
-  <div class="w-full" :class="{ 'form-group': formControl }">
+  <div class="w-full text-sm" :class="{ 'form-group': formControl }">
     <label v-if="label" class="form-label" :for="id">{{ label }}:</label>
-    <v-select
-      v-model="selected"
-      :loading="load"
-      :multiple="multiple"
-      v-bind="$attrs"
-      req
-      class="border form-input style-chooser"
-      :class="{ 'form-control': formControl, error: error }"
-      :label="selectLabel"
-      :filterable="filterable"
-      :options="options"
-      :placeholder="placeholder"
-      @open="onOpen"
-      @close="onClose"
-      @search="onSearch"
-    >
+    <v-select v-model="selected" :loading="load" :multiple="multiple" v-bind="$attrs" req class="border form-input style-chooser" :class="{ 'form-control': formControl, error: error }" :label="selectLabel" :filterable="filterable" :options="options" :placeholder="placeholder" @open="onOpen" @close="onClose" @search="onSearch">
       <template v-if="required" #search="{ attributes, events }">
-        <input
-          class="vs__search"
-          :required="!selected"
-          v-bind="attributes"
-          autocomplete="off"
-          v-on="events"
-        />
+        <input class="vs__search" :required="!selected" v-bind="attributes" autocomplete="off" v-on="events" />
       </template>
       <slot></slot>
       <template #no-options>
-        <div class="p-2 text-red-500 text-bold">
-          <span class="font-bold text-black">Мэдээлэл байхгүй байна</span>
-        </div>
+        <div class="p-2 text-red-500 text-bold"><span class="font-bold text-black">Мэдээлэл байхгүй байна</span></div>
       </template>
       <template v-if="$slots.option" #option="op">
         <slot name="option" v-bind="op"></slot>
@@ -43,151 +20,139 @@
 </template>
 
 <script>
-import vSelect from "vue-select";
-import debounce from "lodash/debounce";
-import "vue-select/dist/vue-select.css";
-import axios from "axios";
+  import vSelect from 'vue-select'
+  import debounce from 'lodash/debounce'
+  import 'vue-select/dist/vue-select.css'
+  import axios from 'axios'
 
-export default {
-  components: {
-    vSelect,
-  },
-  inheritAttrs: true,
-  props: {
-    id: {
-      type: String,
-      default() {
-        return `select-input-${Math.random() * 1000}`;
+  export default {
+    components: {
+      vSelect,
+    },
+    inheritAttrs: true,
+    props: {
+      id: {
+        type: String,
+        default() {
+          return `select-input-${Math.random() * 1000}`
+        },
+      },
+      storedOptions: { type: Array, default: () => [] },
+      value: [Object, String, Number, Array],
+      modelValue: [Object, String, Number, Array],
+      label: String,
+      url: String,
+      placeholder: { type: String, default: '' },
+      error: String,
+      selectLabel: {
+        type: String,
+        default: 'name',
+      },
+      selectedKey: {
+        type: String,
+        default: 'id',
+      },
+      modelKey: { type: Boolean, default: false },
+      formControl: { type: Boolean, default: true },
+      getAll: { type: Boolean, default: false },
+      perPage: { type: Number, default: 50 },
+      onOpenAutoCall: { type: Boolean, default: true },
+      required: { type: Boolean, default: false },
+      filterable: { type: Boolean, default: false },
+      multiple: { type: Boolean, default: false },
+    },
+    emits: ['input', 'changeId', 'onLoaded', 'update:modelValue', 'change'],
+    data() {
+      const tmpValue = this.modelValue ?? this.value
+      return {
+        observer: null,
+        limit: 10,
+        options: this.storedOptions ?? [],
+        selected: (typeof tmpValue == 'object') ? tmpValue : this.options?.find(v => tmpValue == v[this.selectedKey]) ?? this.storedOptions?.find(v => tmpValue == v[this.selectedKey]) ?? tmpValue,
+        collection: this.storedOptions ?? [],
+        load: false,
+      }
+    },
+    watch: {
+      modelValue(nv, ov) {
+        this.selected = (typeof nv == 'object') ? nv : this.options?.find(v => nv == v[this.selectedKey]) ?? nv
+      },
+      storedOptions() {
+        this.collection = this.options = this.storedOptions
+      },
+      selected() {
+        this.$emit('change', this.selected)
+        if (this.modelKey && this.selected) {
+          this.$emit('update:modelValue', this.selected[this.selectedKey] ?? null)
+        }
+        else {
+          this.$emit('update:modelValue', this.selected)
+        }
+        if (this.selected) {
+          this.$emit('changeId', this.selected[this.selectedKey] ?? null)
+        } else {
+          this.$emit('changeId', null)
+        }
       },
     },
-    storedOptions: { type: Array, default: () => [] },
-    value: [Object, String, Number, Array],
-    modelValue: [Object, String, Number, Array],
-    label: String,
-    url: String,
-    placeholder: { type: String, default: "" },
-    error: String,
-    selectLabel: {
-      type: String,
-      default: "name",
+    mounted() {
+      this.observer = new IntersectionObserver(this.infiniteScroll)
     },
-    selectedKey: {
-      type: String,
-      default: "id",
+    methods: {
+
+      onLoaded() {
+        this.$emit('onLoaded', this.collection)
+      },
+      onSearch(search, loading) {
+
+        loading(true)
+        this.search(loading, search, this)
+      },
+      async onOpen() {
+        if (!this.onOpenAutoCall) return
+        if (this.options.length == 0) {
+          this.load = true
+          this.search((load) => this.load = load, '', this)
+        }
+        if (this.hasNextPage) {
+          await this.$nextTick()
+          this.observer.observe(this.$refs.load)
+        }
+      },
+      onClose() {
+        this.observer.disconnect()
+      },
+      async infiniteScroll([{ isIntersecting, target }]) {
+        if (isIntersecting) {
+          const ul = target.offsetParent
+          const scrollTop = target.offsetParent.scrollTop
+          this.limit += 10
+          await this.$nextTick()
+          ul.scrollTop = scrollTop
+        }
+      },
+      search: debounce((loading, search, vm) => {
+        if (vm.filterable && vm.collection.length) {
+          vm.options = search == '' ?
+            vm.collection :
+            vm.collection.filter(option => option.name.toLowerCase().includes(search.toLowerCase()))
+          loading(false)
+        } else {
+          axios(`${vm.url}${vm.url.includes('?') ? '&' : '?'}search=${encodeURIComponent(search)}&only&per_page=${vm.perPage}${vm.getAll ? '&all' : ''}`)
+            .then((res) => res.data)
+            .then((json) => {
+              vm.options = json.data
+              if (vm.getAll) {
+                vm.collection = json.data
+                vm.$root.prefecturesCollection = [...vm.collection]
+                vm.onLoaded()
+              }
+              loading(false)
+            })
+        }
+      }, 350),
     },
-    modelKey: { type: Boolean, default: false },
-    formControl: { type: Boolean, default: true },
-    getAll: { type: Boolean, default: false },
-    perPage: { type: Number, default: 50 },
-    onOpenAutoCall: { type: Boolean, default: true },
-    required: { type: Boolean, default: false },
-    filterable: { type: Boolean, default: false },
-    multiple: { type: Boolean, default: false },
-  },
-  emits: ["input", "changeId", "onLoaded", "update:modelValue", "change"],
-  data() {
-    const tmpValue = this.modelValue ?? this.value;
-    return {
-      observer: null,
-      limit: 10,
-      options: this.storedOptions ?? [],
-      selected:
-        typeof tmpValue == "object"
-          ? tmpValue
-          : this.options?.find((v) => tmpValue == v[this.selectedKey]) ??
-            this.storedOptions?.find((v) => tmpValue == v[this.selectedKey]) ??
-            tmpValue,
-      collection: this.storedOptions ?? [],
-      load: false,
-    };
-  },
-  watch: {
-    modelValue(nv, ov) {
-      this.selected =
-        typeof nv == "object"
-          ? nv
-          : this.options?.find((v) => nv == v[this.selectedKey]) ?? nv;
-    },
-    storedOptions() {
-      this.collection = this.options = this.storedOptions;
-    },
-    selected() {
-      this.$emit("change", this.selected);
-      if (this.modelKey && this.selected) {
-        this.$emit("update:modelValue", this.selected[this.selectedKey] ?? null);
-      } else {
-        this.$emit("update:modelValue", this.selected);
-      }
-      if (this.selected) {
-        this.$emit("changeId", this.selected[this.selectedKey] ?? null);
-      } else {
-        this.$emit("changeId", null);
-      }
-    },
-  },
-  mounted() {
-    this.observer = new IntersectionObserver(this.infiniteScroll);
-  },
-  methods: {
-    onLoaded() {
-      this.$emit("onLoaded", this.collection);
-    },
-    onSearch(search, loading) {
-      loading(true);
-      this.search(loading, search, this);
-    },
-    async onOpen() {
-      if (!this.onOpenAutoCall) return;
-      if (this.options.length == 0) {
-        this.load = true;
-        this.search((load) => (this.load = load), "", this);
-      }
-      if (this.hasNextPage) {
-        await this.$nextTick();
-        this.observer.observe(this.$refs.load);
-      }
-    },
-    onClose() {
-      this.observer.disconnect();
-    },
-    async infiniteScroll([{ isIntersecting, target }]) {
-      if (isIntersecting) {
-        const ul = target.offsetParent;
-        const scrollTop = target.offsetParent.scrollTop;
-        this.limit += 10;
-        await this.$nextTick();
-        ul.scrollTop = scrollTop;
-      }
-    },
-    search: debounce((loading, search, vm) => {
-      if (vm.filterable && vm.collection.length) {
-        vm.options =
-          search == ""
-            ? vm.collection
-            : vm.collection.filter((option) =>
-                option.name.toLowerCase().includes(search.toLowerCase())
-              );
-        loading(false);
-      } else {
-        axios(
-          `${vm.url}${vm.url.includes("?") ? "&" : "?"}search=${encodeURIComponent(
-            search
-          )}&only&per_page=${vm.perPage}${vm.getAll ? "&all" : ""}`
-        )
-          .then((res) => res.data)
-          .then((json) => {
-            vm.options = json.data;
-            if (vm.getAll) {
-              vm.collection = json.data;
-              vm.$root.prefecturesCollection = [...vm.collection];
-              vm.onLoaded();
-            }
-            loading(false);
-          });
-      }
-    }, 350),
-  },
-};
+  }
 </script>
 <style>
 :root {
@@ -230,59 +195,59 @@ export default {
   --vs-dropdown-option--deselect-bg: #fb5858;
   --vs-dropdown-option--deselect-color: #fff;
   --vs-transition-timing-function: cubic-bezier(1, -0.115, 0.975, 0.855);
-  --vs-transition-duration: 150ms;
+  --vs-transition-duration: 150ms
 }
 
 .v-select {
   font-family: inherit;
-  position: relative;
+  position: relative
 }
 
 .v-select,
 .v-select * {
-  box-sizing: border-box;
+  box-sizing: border-box
 }
 
 :root {
   --vs-transition-timing-function: cubic-bezier(1, 0.5, 0.8, 1);
-  --vs-transition-duration: 0.15s;
+  --vs-transition-duration: 0.15s
 }
 
 @-webkit-keyframes vSelectSpinner {
   0% {
-    transform: rotate(0deg);
+    transform: rotate(0deg)
   }
 
   to {
-    transform: rotate(1turn);
+    transform: rotate(1turn)
   }
 }
 
 @keyframes vSelectSpinner {
   0% {
-    transform: rotate(0deg);
+    transform: rotate(0deg)
   }
 
   to {
-    transform: rotate(1turn);
+    transform: rotate(1turn)
   }
 }
 
 .vs__fade-enter-active,
 .vs__fade-leave-active {
   pointer-events: none;
-  transition: opacity var(--vs-transition-duration) var(--vs-transition-timing-function);
+  transition: opacity var(--vs-transition-duration) var(--vs-transition-timing-function)
 }
 
 .vs__fade-enter,
 .vs__fade-leave-to {
-  opacity: 0;
+  opacity: 0
 }
 
 :root {
   --vs-disabled-bg: var(--vs-state-disabled-bg);
   --vs-disabled-color: var(--vs-state-disabled-color);
-  --vs-disabled-cursor: var(--vs-state-disabled-cursor);
+  --vs-disabled-cursor: var(--vs-state-disabled-cursor)
 }
 
 .vs--disabled .vs__clear,
@@ -291,25 +256,25 @@ export default {
 .vs--disabled .vs__search,
 .vs--disabled .vs__selected {
   background-color: var(--vs-disabled-bg);
-  cursor: var(--vs-disabled-cursor);
+  cursor: var(--vs-disabled-cursor)
 }
 
-.v-select[dir="rtl"] .vs__actions {
-  padding: 0 3px 0 6px;
+.v-select[dir=rtl] .vs__actions {
+  padding: 0 3px 0 6px
 }
 
-.v-select[dir="rtl"] .vs__clear {
+.v-select[dir=rtl] .vs__clear {
   margin-left: 6px;
-  margin-right: 0;
+  margin-right: 0
 }
 
-.v-select[dir="rtl"] .vs__deselect {
+.v-select[dir=rtl] .vs__deselect {
   margin-left: 0;
-  margin-right: 2px;
+  margin-right: 2px
 }
 
-.v-select[dir="rtl"] .vs__dropdown-menu {
-  text-align: right;
+.v-select[dir=rtl] .vs__dropdown-menu {
+  text-align: right
 }
 
 .vs__dropdown-toggle {
@@ -321,7 +286,7 @@ export default {
   border-radius: var(--vs-border-radius);
   display: flex;
   padding: 0 0 4px;
-  white-space: normal;
+  white-space: normal
 }
 
 .vs__selected-options {
@@ -337,36 +302,36 @@ export default {
 .vs__actions {
   align-items: center;
   display: flex;
-  padding: var(--vs-actions-padding);
+  padding: var(--vs-actions-padding)
 }
 
 .vs--searchable .vs__dropdown-toggle {
-  cursor: text;
+  cursor: text
 }
 
 .vs--unsearchable .vs__dropdown-toggle {
-  cursor: pointer;
+  cursor: pointer
 }
 
 .vs--open .vs__dropdown-toggle {
   border-bottom-color: transparent;
   border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+  border-bottom-right-radius: 0
 }
 
 .vs__open-indicator {
   fill: var(--vs-controls-color);
   transform: scale(var(--vs-controls-size));
   transition: transform var(--vs-transition-duration) var(--vs-transition-timing-function);
-  transition-timing-function: var(--vs-transition-timing-function);
+  transition-timing-function: var(--vs-transition-timing-function)
 }
 
 .vs--open .vs__open-indicator {
-  transform: rotate(180deg) scale(var(--vs-controls-size));
+  transform: rotate(180deg) scale(var(--vs-controls-size))
 }
 
 .vs--loading .vs__open-indicator {
-  opacity: 0;
+  opacity: 0
 }
 
 .vs__clear {
@@ -375,7 +340,7 @@ export default {
   border: 0;
   cursor: pointer;
   margin-right: 8px;
-  padding: 0;
+  padding: 0
 }
 
 .vs__dropdown-menu {
@@ -398,11 +363,11 @@ export default {
   text-align: left;
   top: calc(100% - var(--vs-border-width));
   width: 100%;
-  z-index: var(--vs-dropdown-z-index);
+  z-index: var(--vs-dropdown-z-index)
 }
 
 .vs__no-options {
-  text-align: center;
+  text-align: center
 }
 
 .vs__dropdown-option {
@@ -412,37 +377,36 @@ export default {
   display: block;
   line-height: 1.42857143;
   padding: var(--vs-dropdown-option-padding);
-  white-space: nowrap;
+  white-space: nowrap
 }
 
 .vs__dropdown-option--highlight {
   background: var(--vs-dropdown-option--active-bg);
-  color: var(--vs-dropdown-option--active-color);
+  color: var(--vs-dropdown-option--active-color)
 }
 
 .vs__dropdown-option--deselect {
   background: var(--vs-dropdown-option--deselect-bg);
-  color: var(--vs-dropdown-option--deselect-color);
+  color: var(--vs-dropdown-option--deselect-color)
 }
 
 .vs__dropdown-option--disabled {
   background: var(--vs-state-disabled-bg);
   color: var(--vs-state-disabled-color);
-  cursor: var(--vs-state-disabled-cursor);
+  cursor: var(--vs-state-disabled-cursor)
 }
 
 .vs__selected {
   align-items: center;
   background-color: var(--vs-selected-bg);
-  border: var(--vs-selected-border-width) var(--vs-selected-border-style)
-    var(--vs-selected-border-color);
+  border: var(--vs-selected-border-width) var(--vs-selected-border-style) var(--vs-selected-border-color);
   border-radius: var(--vs-border-radius);
   color: var(--vs-selected-color);
   display: flex;
   line-height: var(--vs-line-height);
   margin: 4px 2px 0;
-  padding: 0 0.25em;
-  z-index: 0;
+  padding: 0 .25em;
+  z-index: 0
 }
 
 .vs__deselect {
@@ -456,33 +420,33 @@ export default {
   display: inline-flex;
   margin-left: 4px;
   padding: 0;
-  text-shadow: var(--vs-controls--deselect-text-shadow);
+  text-shadow: var(--vs-controls--deselect-text-shadow)
 }
 
 .vs--single .vs__selected {
   background-color: transparent;
-  border-color: transparent;
+  border-color: transparent
 }
 
 .vs--single.vs--loading .vs__selected,
 .vs--single.vs--open .vs__selected {
-  opacity: 0.4;
-  position: absolute;
+  opacity: .4;
+  position: absolute
 }
 
 .vs--single.vs--searching .vs__selected {
-  display: none;
+  display: none
 }
 
 .vs__search::-webkit-search-cancel-button {
-  display: none;
+  display: none
 }
 
 .vs__search::-ms-clear,
 .vs__search::-webkit-search-decoration,
 .vs__search::-webkit-search-results-button,
 .vs__search::-webkit-search-results-decoration {
-  display: none;
+  display: none
 }
 
 .vs__search,
@@ -503,46 +467,45 @@ export default {
   outline: none;
   padding: 0 7px;
   width: 0;
-  z-index: 1;
+  z-index: 1
 }
 
 .vs__search::-moz-placeholder {
-  color: var(--vs-search-input-placeholder-color);
+  color: var(--vs-search-input-placeholder-color)
 }
 
 .vs__search:-ms-input-placeholder {
-  color: var(--vs-search-input-placeholder-color);
+  color: var(--vs-search-input-placeholder-color)
 }
 
 .vs__search::placeholder {
-  color: var(--vs-search-input-placeholder-color);
+  color: var(--vs-search-input-placeholder-color)
 }
 
 .vs--unsearchable .vs__search {
-  opacity: 1;
+  opacity: 1
 }
 
 .vs--unsearchable:not(.vs--disabled) .vs__search {
-  cursor: pointer;
+  cursor: pointer
 }
 
 .vs--single.vs--searching:not(.vs--open):not(.vs--loading) .vs__search {
-  opacity: 0.2;
+  opacity: .2
 }
 
 .vs__spinner {
   align-self: center;
   -webkit-animation: vSelectSpinner 1.1s linear infinite;
   animation: vSelectSpinner 1.1s linear infinite;
-  border: 0.9em solid hsla(0, 0%, 39%, 0.1);
-  border-left-color: rgba(60, 60, 60, 0.45);
+  border: .9em solid hsla(0, 0%, 39%, .1);
+  border-left-color: rgba(60, 60, 60, .45);
   font-size: 5px;
   opacity: 0;
   overflow: hidden;
   text-indent: -9999em;
-  transform: translateZ(0)
-    scale(var(--vs-controls--spinner-size, var(--vs-controls-size)));
-  transition: opacity 0.1s;
+  transform: translateZ(0) scale(var(--vs-controls--spinner-size, var(--vs-controls-size)));
+  transition: opacity .1s
 }
 
 .vs__spinner,
@@ -550,18 +513,18 @@ export default {
   border-radius: 50%;
   height: 2em;
   transform: scale(var(--vs-controls--spinner-size, var(--vs-controls-size)));
-  width: 2em;
+  width: 2em
 }
 
 .vs--loading .vs__spinner {
-  opacity: 1;
+  opacity: 1
 }
 
 /*# sourceMappingURL=vue-select.css.map*/
 .style-chooser {
   display: flex;
   padding: 0;
-  min-height: 2.5rem; /*1.5*/
+  min-height: 1.5rem;
 }
 
 .style-chooser .vs--single .vs--searchable {
@@ -570,6 +533,7 @@ export default {
 
 .style-chooser .vs__search {
   margin: 0;
+
 }
 
 .style-chooser .vs__dropdown-toggle {
@@ -582,6 +546,7 @@ export default {
 }
 
 .style-chooser .vs__selected {
+
   display: flex;
   color: #555;
   text-overflow: clip;
@@ -600,7 +565,7 @@ export default {
 }
 
 .vs__selected-options {
-  font-size: 16px;
+  font-size: 12px;
   align-items: center;
 }
 

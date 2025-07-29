@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="bg-white rounded shadow overflow-hidden max-w-3xl p-6">
-      <h1 class="mb-8 font-bold text-3xl">
+    <div class="max-w-3xl p-6 overflow-hidden bg-white rounded shadow">
+      <h1 class="mb-8 text-3xl font-bold">
         <ILink class="text-indigo-400 hover:text-indigo-600" :href="route('admin.registers.index')">Registers</ILink>
-        <span class="text-indigo-400 font-medium">/</span> Edit
+        <span class="font-medium text-indigo-400">/</span> Edit
         {{ title }}
       </h1>
       <form @submit.prevent="submit">
@@ -11,9 +11,9 @@
           <MyInput v-model="form.name" type="text" :error="errors.name" class="" label="Байгууллага, Аж Ахуйн Нэгжийн Нэр, Иргэний Овог Нэр" />
           <MyInput v-model="form.register" type="text" :error="errors.register" class="" label="Регистрийн Дугаар" />
           <MyInput v-model="form.chiglel" type="text" :error="errors.chiglel" class="" label="Үйл Ажиллагааны Чиглэл" />
-          <MySelect :value="data.aimag_city" type="text" :error="errors.aimag_city_id" class="" label="Аймаг,Нийслэл" :url="`/admin/aimag_cities`" @changeId="(id) => (form.aimag_city_id = id)" />
-          <MySelect :value="data.soum_district" type="text" :error="errors.soum_district_id" class="" label="Сум,Дүүрэг" :url="`/admin/soum_districts`" @changeId="(id) => (form.soum_district_id = id)" />
-          <MySelect :value="data.bag_horoo" type="text" :error="errors.bag_horoo_id" class="" label="Баг,Хороо" :url="`/admin/bag_horoos`" @changeId="(id) => (form.bag_horoo_id = id)" />
+          <MySelect :value="data.aimag_city" type="text" :error="errors.aimag_city_id" class="" label="Аймаг,Нийслэл" :url="`/admin/aimag_cities`" @changeId="(id) => (form.aimag_city_id = id, form.bag_horoo_id = form.soum_district_id = null)" />
+          <MySelect :value="data.soum_district" type="text" :error="errors.soum_district_id" class="" label="Сум,Дүүрэг" :url="`/admin/soum_districts?aimag_city_id=` + form.aimag_city_id" :disabled="!form.aimag_city_id" @changeId="(id) => { form.soum_district_id = id, form.bag_horoo_id = null }" />
+          <MySelect :value="data.bag_horoo" type="text" :error="errors.bag_horoo_id" class="" label="Баг,Хороо" :url="`/admin/bag_horoos?aimag_city_id=` + form.aimag_city_id + `&soum_district_id=` + form.soum_district_id" :disabled="!form.soum_district_id" @changeId="(id) => (form.bag_horoo_id = id)" />
           <MyInput v-model="form.address" type="text" :error="errors.address" class="" label="Хаяг, Байршилд" />
           <MyInput v-model="form.description" type="text" :error="errors.description" class="" label="Гаргасан зөрчлийн Байдал" />
           <MySelect :value="data.reason" type="text" :error="errors.reason_id" class="" label="зөрчлийн Төрөл" :url="`/admin/reasons`" @changeId="(id) => (form.reason_id = id)" />
@@ -23,11 +23,11 @@
 
           <MySelect :value="data.status" :error="errors.status_id" class="" label="Төлөв" :url="`/admin/statuses`" @changeId="(id) => (form.status_id = id)" />
         </div>
-        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+        <div class="flex items-center px-8 py-4 bg-gray-100 border-t border-gray-200">
           <button class="text-red-600 hover:underline" tabindex="-1" type="button" @click="destroy">
             Delete Registers
           </button>
-          <loading-button :loading="form.processing" class="btn-indigo ml-auto" type="submit">Edit
+          <loading-button :loading="form.processing" class="ml-auto btn-indigo" type="submit">Edit
             Registers</loading-button>
         </div>
       </form>
