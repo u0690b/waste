@@ -91,10 +91,10 @@
             <div class="pt-6 card-body">
               <h3 class="text-lg font-semibold">Хог хаягдал олсон уу?</h3>
               <p class="mb-4 text-sm ">хянан мэдээлж, эрүүл орчныг хамтдаа бүтээе.</p>
-              <Button variant="secondary" class="w-full btn btn-success">
+              <ILink type="button" href="admin/registers" variant="secondary" class="w-full btn btn-success">
                 Мэдэгдэл гаргах
                 <ArrowRightIcon class="w-3 ml-2" />
-              </Button>
+              </ILink>
             </div>
           </div>
         </div>
