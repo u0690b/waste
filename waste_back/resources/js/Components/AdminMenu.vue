@@ -153,7 +153,7 @@
     <div class="py-3 pl-3 mb-8 tracking-widest text-center uppercase bg-[#406f47] border-gray-800 border-b-1">
       <img src="@/assets/icon-512.png" class="object-contain w-12 ... float-left" />
       <div class="py-2">
-        <ILink href="/" class="p-4 text-white sm:w-2/3 lg:w-3/4 ">ХОГ ХЯНАЛТ</ILink>
+        <ILink href="/" class="p-4 text-white sm:w-2/3 lg:w-3/4 ">Dashboard</ILink>
       </div>
     </div>
 

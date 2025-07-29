@@ -149,7 +149,7 @@
         <div class="grid grid-cols-3 gap-8 p-4 text-center">
           <div class="p-4 border-[#406f47] border-4  hover:shadow-lg inset-2 shadow-[#31A95D22]  rounded-lg ">
             <CameraIcon class="w-28 h-28 mb-4 text-[#406f47] mx-auto" />
-            <h3 class="font-bold">Зураг авч, байршлыг оруулна</h3>
+            <h3 class="font-bold">Зураг, байршлыг оруулна</h3>
             <div class="card-body">
               Ил задгай хаягдсан хогийг гар утсаараа зураг авч, байршлын хамт системд илгээнэ.
             </div>
@@ -158,14 +158,14 @@
             <WifiIcon class="w-28 h-28 mb-4 text-[#406f47] mx-auto" />
             <h3 class="font-bold">Мэдээллийг дамжуулна</h3>
             <div class="card-body">
-              Илгээсэн зураг, байршил нь хяналтын төвд очиж бүртгэгдэнэ. Холбогдох байгууллагууд мэдэгдэл авна.
+              Илгээсэн зураг, байршил нь зөрчлийн мэдээллийн санд бүртгэгдэнэ. Харьяа байгаль орчны хяналтын байцаагч мэдэгдэл хүлээн авна.
             </div>
           </div>
           <div class="p-4 border-[#406f47] border-4 hover:shadow-lg inset-2 shadow-[#31A95D22]  rounded-lg">
             <CheckCircleIcon class="w-28 h-28 mb-4 text-[#406f47] mx-auto" />
             <h3 class="font-bold">Шийдвэрлэх ба хянах</h3>
             <div class="card-body">
-              Хог хаягдлыг цэвэрлэсний дараа тухайн мэдээллийг шинэчилж, олон нийт хянах боломжтой болно.
+              Зөрчлийг шийдвэрлэсний дараа тухайн мэдээллийг шинэчилж, олон нийт хянах боломжтой болно.
             </div>
           </div>
         </div>
@@ -178,7 +178,7 @@
             <div class="col-span-2 px-4 py-2 overflow-hidden bg-white border rounded-md shadow">
               <h3 class="flex mb-4 text-xl text-gray-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
-                </svg>хаг тайлан</h3>
+                </svg>Статистик</h3>
               <p>Сүүлийн 6 сар бүрийн бүртгэлийн тоо</p>
 
               <VueApexCharts class="p-4 mb-8 bg-white" type="bar" height="350" :options="regionOptions.chartOptions" :series="regionOptions.series">
