@@ -1,10 +1,16 @@
 name: Laravel
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      appEnv:
+        type: choice
+        required: true
+        description: 'App env'
+        options:
+          - staging
+          - production
+
 
 jobs:
   laravel-tests:
