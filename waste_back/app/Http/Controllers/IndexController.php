@@ -68,7 +68,7 @@ class IndexController extends Controller
         );
         $lastMonth = Cache::remember('lastMonth', 43200, function () {
             return  DB::select(
-                "SELECT DATE_FORMAT(created_at, '%Y-%m') AS ymonth, DATE_FORMAT(created_at, '%m') AS month, count(*) count from waste.registers
+                "SELECT DATE_FORMAT(created_at, '%Y-%m') AS ymonth, DATE_FORMAT(created_at, '%m') AS month, count(*) count from registers
                         where created_at >= DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 6 MONTH), '%Y-%m-01')
                         group by DATE_FORMAT(created_at, '%Y-%m'),DATE_FORMAT(created_at, '%m') 
                         order by ymonth ; "
