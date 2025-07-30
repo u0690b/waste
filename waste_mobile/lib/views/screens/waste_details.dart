@@ -64,7 +64,7 @@ class _WasteDetailsState extends State<WasteDetails> {
         backgroundColor: LightColors.kDarkYellow,
         foregroundColor: LightColors.kDarkBlue,
         title: const Text(
-          'Хог хаягдал',
+          'Зөрчлийн мэдээлэл',
           style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w700),
         ),
       ),

@@ -32,7 +32,7 @@ class RegisterController extends Controller
             $input['status_id'] = 2;
         }
 
-        if (!($user->roles == 'admin' || $user->roles == 'zaa')) {
+        if (!($user->roles == 'admin')) {
             $input['soum_district_id'] = $user->soum_district_id;
         }
         if ($user->roles == 'onb' || $user->roles == 'hd') {
