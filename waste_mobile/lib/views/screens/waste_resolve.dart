@@ -14,7 +14,7 @@ class WasteResolve extends StatefulWidget {
   final Waste waste;
   final WasteController? wasteController;
   const WasteResolve({Key? key, required this.waste, this.wasteController})
-      : super(key: key);
+    : super(key: key);
 
   @override
   State<WasteResolve> createState() => _WasteResolveState();
@@ -51,7 +51,7 @@ class _WasteResolveState extends State<WasteResolve> {
         backgroundColor: LightColors.kDarkYellow,
         foregroundColor: LightColors.kDarkBlue,
         title: const Text(
-          'Хог хаягдал',
+          'Зөрчлийн мэдээлэл',
           style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w700),
         ),
       ),
@@ -61,114 +61,129 @@ class _WasteResolveState extends State<WasteResolve> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: SingleChildScrollView(
             child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  children: [
-                    DropdownButtonFormField(
-                        validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
-                        value: resolve_id,
-                        decoration: InputDecoration(
-                          labelText: "Шийдвэрийн төрөл:",
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 15.0),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0)),
-                        ),
-                        items: Constants.resolves
-                            .map((e) => DropdownMenuItem(
-                                  value: e.id,
-                                  child: Text(e.name),
-                                ))
-                            .toList(),
-                        onChanged: (int? value) => resolve_id = value),
-                    const SizedBox(height: 20),
-                    //Шийдвэрлэсэн байдал
-                    TextFormField(
-                      maxLength: 1000,
-                      maxLines: 5,
-                      validator: (p0) =>
-                          p0 == null || p0.isEmpty ? 'Заавал бөглөх' : null,
-                      initialValue: resolve_desc,
-                      onChanged: (value) => resolve_desc = value,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 15.0),
-                        labelText: 'Шийдвэрлэсэн байдал',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                children: [
+                  DropdownButtonFormField(
+                    validator: (p0) => p0 == null ? 'Заавал бөглөх' : null,
+                    value: resolve_id,
+                    decoration: InputDecoration(
+                      labelText: "Шийдвэрийн төрөл:",
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0,
+                        vertical: 15.0,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    if (pickedFile != null) Image.file(File(pickedFile!.path)),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Get.defaultDialog(
-                                  title: "",
-                                  middleText: "Зураг сонгох",
-                                  actions: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        ImagePicker()
-                                            .pickImage(
-                                                source: ImageSource.camera,
-                                                maxWidth: 1500,
-                                                maxHeight: 1500,
-                                                imageQuality: 80)
-                                            .then((value) {
-                                          setState(() {
-                                            pickedFile = value;
-                                          });
-                                          Get.back();
+                    items:
+                        Constants.resolves
+                            .map(
+                              (e) => DropdownMenuItem(
+                                value: e.id,
+                                child: Text(e.name),
+                              ),
+                            )
+                            .toList(),
+                    onChanged: (int? value) => resolve_id = value,
+                  ),
+                  const SizedBox(height: 20),
+                  //Шийдвэрлэсэн байдал
+                  TextFormField(
+                    maxLength: 1000,
+                    maxLines: 5,
+                    validator:
+                        (p0) =>
+                            p0 == null || p0.isEmpty ? 'Заавал бөглөх' : null,
+                    initialValue: resolve_desc,
+                    onChanged: (value) => resolve_desc = value,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20.0,
+                        vertical: 15.0,
+                      ),
+                      labelText: 'Шийдвэрлэсэн байдал',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
+                  ),
+                  if (pickedFile != null) Image.file(File(pickedFile!.path)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.defaultDialog(
+                            title: "",
+                            middleText: "Зураг сонгох",
+                            actions: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  ImagePicker()
+                                      .pickImage(
+                                        source: ImageSource.camera,
+                                        maxWidth: 1500,
+                                        maxHeight: 1500,
+                                        imageQuality: 80,
+                                      )
+                                      .then((value) {
+                                        setState(() {
+                                          pickedFile = value;
                                         });
-                                      },
-                                      child: Text('Камер'),
-                                    ),
-                                    ElevatedButton(
-                                        onPressed: () {
-                                          ImagePicker()
-                                              .pickImage(
-                                                  source: ImageSource.gallery,
-                                                  maxWidth: 1500,
-                                                  maxHeight: 1500,
-                                                  imageQuality: 80)
-                                              .then((value) {
-                                            setState(() {
-                                              pickedFile = value;
-                                            });
-                                            Get.back();
-                                          });
-                                        },
-                                        child: Text('Зургийн сан'))
-                                  ]);
-                            },
-                            child: Text('Зураг хавсаргах'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState?.validate() ?? false) {
-                                await futureAlertDialog(
-                                  context: context,
-                                  futureStream:
-                                      widget.wasteController!.solveWaste(
-                                    id: widget.waste.id,
-                                    resolve_desc: resolve_desc!,
-                                    resolve_id: resolve_id!,
-                                    pickedFile: pickedFile,
-                                  ),
-                                  autoCloseSec: 1,
-                                );
+                                        Get.back();
+                                      });
+                                },
+                                child: Text('Камер'),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  ImagePicker()
+                                      .pickImage(
+                                        source: ImageSource.gallery,
+                                        maxWidth: 1500,
+                                        maxHeight: 1500,
+                                        imageQuality: 80,
+                                      )
+                                      .then((value) {
+                                        setState(() {
+                                          pickedFile = value;
+                                        });
+                                        Get.back();
+                                      });
+                                },
+                                child: Text('Зургийн сан'),
+                              ),
+                            ],
+                          );
+                        },
+                        child: Text('Зураг хавсаргах'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState?.validate() ?? false) {
+                            await futureAlertDialog(
+                              context: context,
+                              futureStream: widget.wasteController!.solveWaste(
+                                id: widget.waste.id,
+                                resolve_desc: resolve_desc!,
+                                resolve_id: resolve_id!,
+                                pickedFile: pickedFile,
+                              ),
+                              autoCloseSec: 1,
+                            );
 
-                                Get.back(result: true);
-                              }
-                            },
-                            child: Text('Хадгалах'),
-                          )
-                        ]),
-                  ],
-                )),
+                            Get.back(result: true);
+                          }
+                        },
+                        child: Text('Хадгалах'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
