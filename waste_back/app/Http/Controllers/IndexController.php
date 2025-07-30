@@ -38,6 +38,20 @@ class IndexController extends Controller
             "SELECT COUNT(*) AS count FROM registers",
         );
 
+        $totalReportRegionStat = $value = Cache::remember('totalReportRegionStat', 43200, function () {
+            return DB::select(
+                "  select p.position org,st.name stat,CASE WHEN ac.name='Улаанбаатар' then concat(sd.name,' дүүрэг') else  concat(ac.name,' аймаг') end region,count(*) niit 
+                    from registers re
+                    inner join reasons r on r.id = re.reason_id 
+                    inner join  users p on p.id = re.reg_user_id 
+                    inner join aimag_cities ac on ac.id = re.aimag_city_id
+                    inner join soum_districts sd on sd.id = re.soum_district_id
+                    INNER JOIN statuses st ON st.id = re.status_id
+                    group by  p.position,st.name,CASE WHEN ac.name='Улаанбаатар' then concat(sd.name,' дүүрэг') else concat(ac.name,' аймаг') end
+                    "
+            );
+        });
+
         $totalReportPrevMonthStat = $value = Cache::remember('totalReportPrevMonthStat', 43200, function () {
             return DB::select(
                 "SELECT 
@@ -81,6 +95,7 @@ class IndexController extends Controller
         }
         return Inertia::render($view, [
             'filters' => [],
+            'chart' => $totalReportRegionStat,
             'totalReportStat' =>  $totalReportStat,
             'totalReportPrevMonthStat' => $totalReportPrevMonthStat[0],
             'totalClearStat' => $totalClearStat,

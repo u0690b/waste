@@ -14,6 +14,7 @@
 
   const props = defineProps({
     datas: Object,
+    chart: [Object, Array],
     totalReportStat: [Object, Array],
     totalClearStat: [Object, Array],
     totalClearPrevMonthStat: [Object, Array],
@@ -47,7 +48,26 @@
       ],
     };
   });
-
+  const regionOptions1 = computed(() => {
+    const regionChart = props.chart.reduce(function (r, a) {
+      r[a.region] = r[a.region] || 0;
+      r[a.region] = r[a.region] + a.niit;
+      return r;
+    }, {});
+    return {
+      chartOptions: {
+        xaxis: {
+          categories: Object.keys(regionChart),
+        },
+      },
+      series: [
+        {
+          name: "series-1",
+          data: Object.values(regionChart),
+        },
+      ],
+    };
+  });
 
 </script>
 <template>
@@ -90,7 +110,7 @@
           <div class="hover:shadow-lg flex flex-col justify-center card bg-[#dde9aa] ">
             <div class="pt-6 card-body">
               <h3 class="text-lg font-semibold">Хог хаягдал олсон уу?</h3>
-              <p class="mb-4 text-sm ">Хянан мэдээлэлж, эрүүл орчныг хамтдаа бүтээе.</p>
+              <p class="mb-4 text-sm ">Хянан мэдээлж, эрүүл орчныг хамтдаа бүтээе.</p>
               <a type="button" href="/mobile" target="_blank" variant="secondary" class="w-full btn btn-success">
                 Мобайл аппликейшн суулгах
                 <ArrowRightIcon class="w-3 ml-2" />
@@ -100,7 +120,7 @@
         </div>
       </section>
       <div class="border-4 border-solid  rounded-2xl border-[#406f47]">
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid gap-4 lg:grid-cols-2">
           <div class="flex items-center">
             <div class="p-4 px-4  md:p-8 text-[#406f47]  sm:px-8 text-center" id="about" role="tabpanel" aria-labelledby="about-tab">
               <h2 class="mb-5 text-4xl font-extrabold tracking-tight slide-in-bottom">
@@ -123,7 +143,7 @@
       </div>
       <section>
         <h2 class="text-3xl font-bold text-center text-[#406f47]  mt-24 mb-6">Хэрхэн ажилладаг вэ?</h2>
-        <div class="grid grid-cols-3 gap-8 p-4 text-center">
+        <div class="grid gap-8 p-4 text-center md:grid-cols-3">
           <div class="p-4 border-[#406f47] border-4  hover:shadow-lg inset-2 shadow-[#31A95D22]  rounded-lg ">
             <CameraIcon class="w-28 h-28 mb-4 text-[#406f47] mx-auto" />
             <h3 class="font-bold">Зураг, байршлыг оруулна</h3>
@@ -149,7 +169,7 @@
       </section>
 
       <section>
-        <div className="flex flex-col gap-6 animate-in fade-in-0 duration-500">
+        <div className="flex flex-col gap-6 animate-in fade-in-0 duration-500 border-[#406f47] border-4  hover:shadow-lg inset-2 shadow-[#31A95D22]  rounded-lg">
 
           <div class="grid gap-6 ">
             <div class="col-span-2 px-4 py-2 overflow-hidden bg-white border rounded-md shadow">
@@ -159,6 +179,11 @@
               <p>Сүүлийн 6 сар бүрийн бүртгэлийн тоо</p>
 
               <VueApexCharts class="p-4 mb-8 bg-white" type="bar" height="350" :options="regionOptions.chartOptions" :series="regionOptions.series">
+              </VueApexCharts>
+
+              <p class="mt-12">Аймаг нийслэлээр</p>
+
+              <VueApexCharts class="p-4 mb-8 bg-white" type="bar" height="350" :options="regionOptions1.chartOptions" :series="regionOptions1.series">
               </VueApexCharts>
             </div>
 

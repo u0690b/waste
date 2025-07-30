@@ -1,1 +1,0 @@
-import{r as n,h as t,o as a,k as s}from"./app-DRuYYwNn.js";const _={__name:"BackButton",props:{href:{type:[String],required:!0}},setup(e){const r=e,c=new URLSearchParams(window.location.search).get("callback")??r.href;return(l,p)=>{const o=n("ILink");return a(),t(o,{href:s(c),class:"mr-2 ti-arrow-circle-left"},null,8,["href"])}}};export{_};
