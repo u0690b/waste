@@ -51,7 +51,7 @@
   const regionOptions1 = computed(() => {
     const regionChart = props.chart.reduce(function (r, a) {
       r[a.region] = r[a.region] || 0;
-      r[a.region] = r[a.region] + a.niit;
+      r[a.region] = r[a.region] + parseInt(a.niit);
       return r;
     }, {});
     return {
