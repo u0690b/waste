@@ -15,11 +15,7 @@ use Response;
 
 class ReportController extends Controller
 {
-    /**
-     * Display a listing of the Document.
-     *
-     * @return Response
-     */
+
     public function index()
     {
         $input = Request::validate(['start_at' => 'nullable|date', 'end_at' => 'nullable|date', 'sh_type' => 'nullable|array']);
@@ -52,7 +48,7 @@ class ReportController extends Controller
 
         $status_infos = DB::select("select $cols,  count(*) niit
             from (
-                select 
+                select
                     r.whois whois,
                     ac.name ac_name,
                     sd.name sd_name,
@@ -62,7 +58,7 @@ class ReportController extends Controller
                     rsl.name resolve_name,
                     st.name status_name,
                     r_user.name reg_user,
-                    c_user.name comf_user                   
+                    c_user.name comf_user
                 from registers r
                     inner JOIN aimag_cities ac on r.aimag_city_id = ac.id
                     inner JOIN soum_districts sd on r.soum_district_id = sd.id

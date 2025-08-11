@@ -70,7 +70,7 @@ abstract class Model extends Eloquent
                 $searchIn->each(function ($column) use ($token, $query) {
                     if ($this->getKeyName() === $column['column'] && $this->getTable() === $column['table']) {
                         if (is_numeric($token) && $token === strval(intval($token))) {
-                            $query->orWhere($this->materializeColumnName($column, true), intval($token));
+                            $query->orWhere($this->materializeColumnName($column), intval($token));
                         }
                     } else {
                         $this->searchLike($query, $column, $token);

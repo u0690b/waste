@@ -11,11 +11,7 @@ use Response;
 
 class AimagCityController extends Controller
 {
-    /**
-     * Display a listing of the AimagCity.
-     *
-     * @return Response
-     */
+
     public function index()
     {
         $aimagCities = AimagCity::filter(Request::all(["search", ...AimagCity::$searchIn]));
@@ -32,34 +28,20 @@ class AimagCityController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new AimagCity.
-     *
-     * @return Response
-     */
+
     public function create()
     {
         return Inertia::render('Admin/aimag_cities/Create', ['host' => config('app.url')]);
     }
 
-    /**
-     * Store a newly created AimagCity in storage.
-     *
-     * @return Response
-     */
+
     public function store()
     {
         AimagCity::create(Request::validate(AimagCity::$rules));
         return Redirect::route('admin.aimag_cities.index')->with('success', 'AimagCity created.');
     }
 
-    /**
-     * Show the form for editing the specified AimagCity.
-     *
-     * @param AimagCity $aimagCity
-     *
-     * @return Response
-     */
+
     public function edit(AimagCity $aimagCity)
     {
         return Inertia::render('Admin/aimag_cities/Edit', [
@@ -68,28 +50,14 @@ class AimagCityController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified AimagCity in storage.
-     *
-     * @param AimagCity $aimagCity
-     *
-     * @return Response
-     */
+
     public function update(AimagCity $aimagCity)
     {
         $aimagCity->update(Request::validate(AimagCity::$rules));
         return Redirect::route('admin.aimag_cities.index')->with('success', 'AimagCity updated.');
     }
 
-    /**
-     * Remove the specified AimagCity from storage.
-     *
-     * @param AimagCity $aimagCity
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
+
     public function destroy(AimagCity $aimagCity)
     {
         $aimagCity->delete();

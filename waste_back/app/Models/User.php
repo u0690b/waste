@@ -61,7 +61,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
  * @property-read \App\Models\SoumDistrict $soum_district
  * @method static \Illuminate\Database\Eloquent\Builder|User filter(array $filters)
  */
-class User extends Model  implements
+class User extends Model implements
     AuthenticatableContract,
     AuthorizableContract,
     CanResetPasswordContract
@@ -215,7 +215,7 @@ class User extends Model  implements
 
     /**
      * Filter Model
-     * 
+     *
      * @return array
      */
     public function getSearchIn()
@@ -225,7 +225,7 @@ class User extends Model  implements
 
     /**
      * Filter Model
-     * 
+     *
      * @return array
      */
     public function sendUserCreated()
@@ -234,7 +234,7 @@ class User extends Model  implements
             'user_id' => $this->id,
             'type' => 'user',
             'title' => 'Тавтай морил',
-            'content' =>  'Шинэ хэрэглэгч бүртгэгдсэн',
+            'content' => 'Шинэ хэрэглэгч бүртгэгдсэн',
         ]);
 
         $users = User::whereSoumDistrictId($this->soum_district_id)
@@ -249,7 +249,7 @@ class User extends Model  implements
                 'user_id' => $user->id,
                 'type' => 'user',
                 'title' => 'Шинэ хэрэглэгч бүртгэгдсэн',
-                'content' =>   $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч',
+                'content' => $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч',
             ]);
         }
 
@@ -258,7 +258,7 @@ class User extends Model  implements
             $messagingService = new FirebaseMessagingService();
             foreach ($tokens as $key => $token) {
                 $title = 'Зөрчил шийдвэрлэгдлээ';
-                $body =   $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч';
+                $body = $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч';
                 $customData = [
                     'id' => $this->id,
                     'type' => 'register',

@@ -1,33 +1,20 @@
-import './bootstrap';
 import '../css/app.css';
 
-import { createApp, h } from 'vue';
-import { createInertiaApp, Head, Link } from '@inertiajs/vue3';
+import { createInertiaApp , Head, Link} from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { createPinia } from 'pinia'
-import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/index';
-const appName = import.meta.env.APP_NAME || 'Laravel';
-const r = (url, data) => {
-    const ret = [];
-    for (let d in data)
-        ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
-    console.log(url + '?' + ret.join('&'));
-    return url + '?' + ret.join('&');
-}
-const pinia = createPinia()
+
+import { createApp, h } from 'vue';
+import { ZiggyVue } from 'ziggy-js';
+
+const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
-    // title: (title) => `${title} - ${appName}`,
+    title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
-
-
-        return createApp({ render: () => h(App, props) })
-            .use(pinia)
+        createApp({ render: () => h(App, props) })
             .use(plugin)
-            .use(ZiggyVue, Ziggy)
-
-
+            .use(ZiggyVue)
             .component('IHead', Head)
             .component('ILink', Link)
             .mount(el);
@@ -36,3 +23,5 @@ createInertiaApp({
         color: '#4B5563',
     },
 });
+
+// This will set light / dark mode on page load...

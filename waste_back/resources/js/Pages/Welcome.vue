@@ -1,7 +1,6 @@
 <script setup>
   import GuestLayout from '@/Layouts/GuestLayout.vue';
-  import { ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline';
-  import { Head, Link } from '@inertiajs/vue3';
+  import { Head } from '@inertiajs/vue3';
 
   defineProps({
     canLogin: Boolean,

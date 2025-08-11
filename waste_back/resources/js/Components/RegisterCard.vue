@@ -1,20 +1,20 @@
 <script setup>
     import "vue3-carousel/dist/carousel.css";
-    import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
-    import { ref } from "vue";
-    import Modal from "./Modal.vue";
 
-    const props = defineProps({
-        item: { type: Object },
+    // import { ref } from "vue";
+
+
+     defineProps({
+        item: { type: Object, required: true },
         hideMoreButton: { type: Boolean, default: false },
         showRoute: { type: String, default: 'admin.registers.show' }
     });
-    const emit = defineEmits(["select"]);
-    const isOpen = ref(false);
+    // const emit = defineEmits(["select"]);
+    // const isOpen = ref(false);
 
-    function setIsOpen(value) {
-        isOpen.value = value;
-    }
+    // function setIsOpen(value) {
+    //     isOpen.value = value;
+    // }
 </script>
 
 <template>

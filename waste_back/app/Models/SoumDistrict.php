@@ -144,6 +144,6 @@ class SoumDistrict extends Model
         if (count($filters)) {
             $this->buildFilter($query, $filters, SoumDistrict::$searchIn);
         }
-        return $query;
+
     }
 }

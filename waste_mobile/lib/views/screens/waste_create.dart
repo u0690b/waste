@@ -237,27 +237,27 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                               ),
                             ),
                             Expanded(child: SizedBox()),
-                            Checkbox(
-                              onChanged: (value) {
-                                setState(() {
-                                  isChecked = value!;
-                                  if (isChecked) {
-                                    register.text = 'Эзэнгүй';
-                                    registerController.text = 'Эзэнгүй';
-                                    ner.text = 'Эзэнгүй';
-                                  } else {
-                                    register.text = '';
-                                    registerController.text = '';
-                                    ner.text = '';
-                                  }
-                                });
-                              },
-                              value: isChecked,
-                            ),
-                            Text(
-                              'Эзэнгүй',
-                              style: TextStyle(fontWeight: FontWeight.normal),
-                            ),
+                            // Checkbox(
+                            //   onChanged: (value) {
+                            //     setState(() {
+                            //       isChecked = value!;
+                            //       if (isChecked) {
+                            //         register.text = 'Эзэнгүй';
+                            //         registerController.text = 'Эзэнгүй';
+                            //         ner.text = 'Эзэнгүй';
+                            //       } else {
+                            //         register.text = '';
+                            //         registerController.text = '';
+                            //         ner.text = '';
+                            //       }
+                            //     });
+                            //   },
+                            //   value: isChecked,
+                            // ),
+                            // Text(
+                            //   'Эзэнгүй',
+                            //   style: TextStyle(fontWeight: FontWeight.normal),
+                            // ),
                           ],
                         ),
                         if (!isChecked) ...[

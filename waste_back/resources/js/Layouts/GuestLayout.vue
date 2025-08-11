@@ -6,16 +6,16 @@
 
 <template>
     <div class="leading-normal tracking-normal text-gray-900">
-        <div class="h-screen bg-right bg-cover pb-14 bg-[#f7f2ee]">
+        <div class=" bg-right bg-cover pb-14 bg-[#f7f2ee]">
             <!--Nav-->
-            <div class="mx-auto container py-2 px-4 rounded-2xl mt-6 bg-[#dde9aa] mb-8">
+            <div class="mx-auto container py-2 px-4 sm:rounded-2xl sm:mt-6 bg-[#dde9aa] mb-8">
                 <div class="container flex items-center justify-between w-full mx-auto">
-                    <a class="flex items-center text-2xl font-bold text-gray-600 no-underline hover:no-underline lg:text-xl" :href="route('dashboard')">
+                    <a class="flex items-center text-xs font-bold text-gray-600 no-underline sm:text-2xl hover:no-underline lg:text-xl" href="/">
                         <img src="../assets/icon-512.png" class="w-12 mr-4" />ХҮРЭЭЛЭН БУЙ ОРЧНЫ ОЛОН НИЙТИЙН ХЯНАЛТ
                     </a>
 
 
-                    <div class="flex content-center justify-end w-1/4">
+                    <div class="flex content-center justify-end ">
 
                         <ILink class="inline-grid grid-flow-col p-2 text-center text-white no-underline bg-[#406f47]  hover:border border-[#406f47] rounded-lg hover:font-extrabold hover:shadow-lg hover:shadow-[#406f47]" href="/login">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -35,7 +35,7 @@
                 Developed by Лансерс ХХК /Хуулбарлахыг хориглоно
                 <a class="text-gray-500 no-underline hover:no-underline" href="#">&copy; {{ (new
                     Date()).getFullYear()
-                }} он</a>
+                    }} он</a>
             </div>
         </div>
     </div>

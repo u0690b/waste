@@ -134,7 +134,7 @@
       text: "Зөрчлийн жагсаалт",
       icon: markRaw(ClipboardDocumentCheckIcon),
       href: route("admin.registers.index"),
-      counter: totalStat.value.register
+      counter: totalStat.value
     },
 
     {

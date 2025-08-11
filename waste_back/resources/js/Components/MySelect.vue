@@ -520,7 +520,7 @@
   opacity: 1
 }
 
-/*# sourceMappingURL=vue-select.css.map*/
+
 .style-chooser {
   display: flex;
   padding: 0;

@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
+
+use App\Http\Requests\Settings\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,12 +12,7 @@ use Inertia\Inertia;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Inertia\Response
-     */
+
     public function edit(Request $request)
     {
         return Inertia::render('Profile/Edit', [
@@ -25,12 +21,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     *
-     * @param  \App\Http\Requests\ProfileUpdateRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
+
     public function update(ProfileUpdateRequest $request)
     {
         $request->user()->fill($request->validated());
