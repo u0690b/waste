@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('aimag_cities', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique()->comment('Код');
+            $table->string('code')->comment('Код');
             $table->string('name')->unique()->comment('Аймаг нэр');
             $table->timestamps();
         });

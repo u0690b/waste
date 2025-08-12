@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\BagHoroo;
+use DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,6 +16,7 @@ class BagHorooSeeder extends Seeder
      */
     public function run()
     {
+        DB::beginTransaction();
         BagHoroo::create(['id' => 1332, 'code' => '51', 'name' => '1-р баг, Номгон', 'soum_district_id' => 1]);
         BagHoroo::create(['id' => 1333, 'code' => '53', 'name' => '2-р баг, Гавилууд', 'soum_district_id' => 1]);
         BagHoroo::create(['id' => 1334, 'code' => '55', 'name' => '3-р баг, Жавхлант', 'soum_district_id' => 1]);
@@ -1857,5 +1859,6 @@ class BagHorooSeeder extends Seeder
         BagHoroo::create(['id' => 1760, 'code' => '57', 'name' => '4-р баг, Уурхайчин', 'soum_district_id' => 341]);
         BagHoroo::create(['id' => 1761, 'code' => '59', 'name' => '5-р баг, Хүйх', 'soum_district_id' => 341]);
         BagHoroo::create(['id' => 1762, 'code' => '61', 'name' => '6-р баг, Өлгий', 'soum_district_id' => 341]);
+        DB::commit();
     }
 }

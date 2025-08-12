@@ -29,6 +29,7 @@ class UserFactory extends Factory
             'soum_district_id' => $bagHoroo->soum_district_id,
             'bag_horoo_id' => $bagHoroo,
             'roles' => $this->faker->text,
+            'place_id' => random_int(1, 9),
             'created_at' => $this->faker->date('Y-m-d H:i:s'),
             'updated_at' => $this->faker->date('Y-m-d H:i:s'),
             'remember_token' => Str::random(10),
@@ -42,7 +43,7 @@ class UserFactory extends Factory
      */
     public function unverified()
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }

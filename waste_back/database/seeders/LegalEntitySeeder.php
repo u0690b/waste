@@ -17,17 +17,20 @@ class LegalEntitySeeder extends Seeder
   public function run()
   {
     $this->command->info('load json');
-    $json =  json_decode(file_get_contents(__DIR__ . '/legacy.json'));
+    $json =  json_decode(file_get_contents(__DIR__ . '/legacy.json'), true);
 
 
     $this->command->info('begin transaciton');
 
-    $datas = $json;
+    $rec = 0;
 
-    $chunks = array_chunk($datas, 1000);
-    foreach ($chunks  as $chunk) {
+    $chunked = array_chunk($json, 5000);
+    foreach ($chunked  as $chunk) {
       DB::beginTransaction();
-      LegalEntity::insert($chunk);
+      foreach ($chunk  as $legacy) {
+        LegalEntity::insert($legacy);
+      }
+      $this->command->info(($rec + 5000) + ' records inserted');
       DB::commit();
     }
   }
