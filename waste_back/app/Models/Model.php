@@ -12,7 +12,7 @@ abstract class Model extends Eloquent
 {
     protected $guarded = [];
 
-    protected $perPage = 10;
+    protected $perPage = 30;
 
     public function resolveRouteBinding($value, $field = null)
     {
@@ -32,11 +32,11 @@ abstract class Model extends Eloquent
                 continue;
             }
             if ($key === 'search') {
-                $query =  $this->buildSearch($query, $filters['search'] ?? '', $searchIn);
+                $query = $this->buildSearch($query, $filters['search'] ?? '', $searchIn);
             } elseif (is_array($value)) {
                 $query = $query->whereIn($key, $value);
             } else {
-                $query =  $query->where($key, $value);
+                $query = $query->where($key, $value);
             }
         }
         return $query;

@@ -3,8 +3,8 @@
         <div class="p-4 mt-8 sm:px-8 sm:py-4">
             <div class="p-4 bg-white rounded shadow">
                 <h1 class="pb-4 mb-6 text-xl font-bold border-b">{{ title }}</h1>
-                <PaginationFilter v-model="form.model.per_page" v-model:search="form.model.search"
-                    :total="datas.total" />
+                <PaginationFilter v-model="form.model.per_page" @update="() => form.model.page = 1"
+                    v-model:search="form.model.search" :total="datas.total" />
                 <AdminTable :headers="headers" :datas="datas" @order-by="(v) => orderBy(form, v)">
 
                 </AdminTable>

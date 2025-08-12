@@ -159,8 +159,7 @@
                                                                         Хуваарилах
                                                                     </ILink>
                                                                     </MenuItem>
-                                                                    <MenuItem
-                                                                        v-if="data.status_id == 4 || ['da'].includes(auth.user.roles) || ['admin'].includes(auth.user.roles)"
+                                                                    <MenuItem v-if="data.status_id != 4"
                                                                         v-slot="{ active }">
                                                                     <ILink
                                                                         :href="route('admin.registers.show_resolve', data.id)"

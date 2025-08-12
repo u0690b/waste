@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Log;
 
@@ -28,8 +29,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        if ($this->app->environment('dev')) {
+            // URL::forceScheme('https');
+        }
         //
-        if (config('app.env') === 'local') {
+        if (config('app.env') === 'dev') {
             DB::listen(function ($query) {
                 Log::info(
                     $query->sql,

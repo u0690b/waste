@@ -33,7 +33,10 @@ class RegisterController extends Controller
         }
 
         if (!($user->roles == 'admin')) {
-            $input['soum_district_id'] = $user->soum_district_id;
+            $input['aimag_city_id'] = $user->aimag_city_id;
+            if ($user->aimag_city_id == 7) {
+                $input['soum_district_id'] = $user->soum_district_id;
+            }
         }
 
 

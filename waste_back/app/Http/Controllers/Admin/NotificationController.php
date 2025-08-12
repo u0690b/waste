@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
+use Auth;
+use Date;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
@@ -18,11 +20,17 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $notifications = Notification::filter(Request::all(["search", ...Notification::$searchIn]))->with('user:id,name')
+
+        $input = Request::all(["search", ...Notification::$searchIn]);
+        $input['user_id'] = Auth::user()->id;
+
+        Notification::whereReadAt(null)->update(['read_at' => Date::now()]);
+
+        $notifications = Notification::filter($input)->with('user:id,name')
             ->orderBy(Request::input('orderBy') ?? 'id', Request::input('dir') ?? 'asc');
-        
+
         if (Request::has('only')) {
-            return json_encode($notifications->cursorPaginate(Request::input('per_page'),['id', 'name']));
+            return json_encode($notifications->cursorPaginate(Request::input('per_page'), ['id', 'name']));
         }
 
         return Inertia::render('Admin/notifications/Index', [
@@ -51,7 +59,7 @@ class NotificationController extends Controller
     public function store()
     {
         $rule = Notification::$rules;
-        $input =  Request::validate($rule);
+        $input = Request::validate($rule);
         $notification = Notification::create($input);
         return redirect(Request::header('back') ?? route('admin.notifications.show', $notification->getKey()))->with('success', 'Амжилттай үүсгэлээ.');
     }
@@ -67,7 +75,7 @@ class NotificationController extends Controller
     {
         $notification->load('user:id,name');
         return Inertia::render('Admin/notifications/Show', [
-            'data' =>  $notification,
+            'data' => $notification,
         ]);
     }
 
@@ -82,7 +90,7 @@ class NotificationController extends Controller
     {
         $notification->load('user:id,name');
         return Inertia::render('Admin/notifications/Edit', [
-            'data' =>  $notification,
+            'data' => $notification,
         ]);
     }
 
@@ -96,9 +104,9 @@ class NotificationController extends Controller
     public function update(Notification $notification)
     {
         $rule = Notification::$rules;
-        $input =  Request::validate($rule);
+        $input = Request::validate($rule);
         $notification->update($input);
-        
+
         return redirect(Request::header('back') ?? route('admin.notifications.show', $notification->getKey()))->with('success', 'Ажилттай хадгаллаа.');
     }
 

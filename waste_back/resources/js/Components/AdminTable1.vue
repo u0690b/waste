@@ -19,7 +19,7 @@
             <tbody>
                 <tr v-for="(row, index) in datas.data" :key="row.id"
                     class="border-t hover:bg-gray-100 focus-within:bg-gray-100">
-                    <td class="pl-2 ">{{ index + 1 }}</td>
+                    <td class="pl-2 ">{{ (index + 1) + (datas.per_page * (datas.current_page - 1)) }}</td>
                     <td v-for="(header, i) in headers" :key="i" class="px-2 py-1 ">
                         <template v-if="header.type == 'img'">
                             <img :src="row[header.key]" :class="header.class" />

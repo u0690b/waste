@@ -43,9 +43,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'totalStat' => [
-                'register' => Register::count(),
-            ],
+
             'notifiCount' => $request->user() ? $request->user()->mynotifications()->whereReadAt(null)->count() : null,
             'ziggy' => function () use ($request) {
                 return array_merge((new ZiggyZiggy)->toArray(), [

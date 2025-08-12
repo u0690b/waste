@@ -92,28 +92,18 @@ class DatabaseSeeder extends Seeder
         Resolve::create(['name' => 'Албан даалгавар, албан шаардлага']);
         Resolve::create(['name' => 'Бусад']);
         Resolve::create(['name' => 'Харьяаллын дагуу шилжүүлсэн']);
-
-
         \App\Models\User::factory()->create([
             'username' => 'admin',
             'name' => 'Админ',
             'phone' => '9999-9999',
             'roles' => 'admin',
         ]);
+        $this->call([
 
-        \App\Models\User::factory()->create([
-            'username' => 'da',
-            'name' => 'name Aimag duurgiin admin',
-            'phone' => '8888-8888',
-            'roles' => 'da',
+            UserSeeder::class,
         ]);
 
-        \App\Models\User::factory()->create([
-            'username' => 'mha',
-            'name' => 'name Байгаль орчны хяналтын улсын ахлах байцаагч',
-            'phone' => '8888-8888',
-            'roles' => 'mha',
-        ]);
+
 
         Register::factory(100)->create();
         AttachedFile::factory(150)->create();
