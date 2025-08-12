@@ -1,18 +1,25 @@
-<script setup  >
+<script setup>
+  import MyInput from "@/Components/MyInput.vue";
+  import { router as Inertia } from "@inertiajs/vue3";
   import { Head } from "@inertiajs/vue3";
-  import { computed } from "vue";
+  import debounce from "lodash/debounce";
+  import mapValues from "lodash/mapValues";
+  import pickBy from "lodash/pickBy";
+  import { reactive, watch, computed } from "vue";
   import VueApexCharts from "vue3-apexcharts";
+  import SharedState from "@/Components/SharedState.vue";
+  import { TabList } from "@headlessui/vue";
   import GuestLayout from "@/Layouts/GuestLayout.vue";
-  import { ArrowRightIcon, CameraIcon,  CheckCircleIcon,  DocumentIcon, UserGroupIcon, WifiIcon } from "@heroicons/vue/24/outline";
+  import { ArrowRightIcon, CameraIcon, CheckBadgeIcon, CheckCircleIcon, DocumentCheckIcon, DocumentIcon, UserGroupIcon, WifiIcon } from "@heroicons/vue/24/outline";
 
   const props = defineProps({
     datas: Object,
     chart: [Object, Array],
-    totalReportStat: [Object, Array,Number],
-    totalClearStat: [Object,Number],
-    totalClearPrevMonthStat: [Object,Number],
-    totalReportPrevMonthStat: [Object,Number],
-    totalUsers: [Object, Array,Number],
+    totalReportStat: [Object, Array],
+    totalClearStat: [Object, Array],
+    totalClearPrevMonthStat: [Object, Array],
+    totalReportPrevMonthStat: [Object, Array],
+    totalUsers: [Object, Array],
     lastMonth: [Object, Array],
     filters: [Object, Array],
     host: String,
@@ -22,7 +29,7 @@
 
 
   const regionOptions = computed(() => {
-    const regionChart = props.lastMonth?.reduce(function (r, a) {
+    const regionChart = props.lastMonth.reduce(function (r, a) {
       r[a.month] = r[a.month] || 0;
       r[a.month] = r[a.month] + a.count;
       return r;
@@ -32,7 +39,9 @@
         legend: {
           show: false
         },
-
+        theme: {
+          palette: 'palette1'
+        },
         theme: {
           palette: 'palette1'
         },
@@ -54,7 +63,7 @@
     };
   });
   const regionOptions1 = computed(() => {
-    const regionChart = props.chart?.reduce(function (r, a) {
+    const regionChart = props.chart.reduce(function (r, a) {
       r[a.region] = r[a.region] || 0;
       r[a.region] = r[a.region] + parseInt(a.niit);
       return r;
@@ -101,8 +110,8 @@
               <DocumentIcon class="w-6 h-6 text-muted-foreground" />
             </div>
             <div class="card-body">
-              <div class="text-3xl font-bold">{{ totalReportStat?.toString().replace(/\D/g, "") }}</div>
-              <p class="text-xs text-muted-foreground">Өнгөрсөн сараас {{ totalReportPrevMonthStat?.percentage_change??'' }}%</p>
+              <div class="text-3xl font-bold">{{ totalReportStat.toString().replace(/\D/g, "") }}</div>
+              <p class="text-xs text-muted-foreground">Өнгөрсөн сараас {{ totalReportPrevMonthStat.percentage_change }}%</p>
             </div>
           </div>
           <div class="hover:shadow-xl border-4 border-solid  rounded-2xl border-[#406f47]">
@@ -111,7 +120,7 @@
               <CheckCircleIcon class="w-6 h-6 text-muted-foreground" />
             </div>
             <div class="card-body">
-              <div class="text-3xl font-bold">{{ totalClearStat?.toString().replace(/\D/g, "") }}</div>
+              <div class="text-3xl font-bold">{{ totalClearStat.toString().replace(/\D/g, "") }}</div>
               <p class="text-xs text-muted-foreground">Энэ сар +{{ totalClearPrevMonthStat }} шийдвэрлэсэн</p>
             </div>
           </div>
@@ -121,7 +130,7 @@
               <UserGroupIcon class="w-6 h-6 text-muted-foreground" />
             </div>
             <div class="card-body">
-              <div><span class="text-3xl font-bold">{{ totalUsers }}</span> Хүн</div>
+              <div><Span class="text-3xl font-bold">{{ totalUsers }}</Span> Хүн</div>
               <p class="text-xs text-muted-foreground">Бид нэмэгдсээр улам олуулаа болсоор</p>
             </div>
           </div>

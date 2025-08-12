@@ -40,10 +40,10 @@ class IndexController extends Controller
 
         $totalReportRegionStat = $value = Cache::remember('totalReportRegionStat', 43200, function () {
             return DB::select(
-                "  select p.position org,st.name stat,CASE WHEN ac.name='Улаанбаатар' then concat(sd.name,' дүүрэг') else  concat(ac.name,' аймаг') end region,count(*) niit
+                "  select p.position org,st.name stat,CASE WHEN ac.name='Улаанбаатар' then concat(sd.name,' дүүрэг') else  concat(ac.name,' аймаг') end region,count(*) niit 
                     from registers re
-                    inner join reasons r on r.id = re.reason_id
-                    inner join  users p on p.id = re.reg_user_id
+                    inner join reasons r on r.id = re.reason_id 
+                    inner join  users p on p.id = re.reg_user_id 
                     inner join aimag_cities ac on ac.id = re.aimag_city_id
                     inner join soum_districts sd on sd.id = re.soum_district_id
                     INNER JOIN statuses st ON st.id = re.status_id
@@ -54,14 +54,14 @@ class IndexController extends Controller
 
         $totalReportPrevMonthStat = $value = Cache::remember('totalReportPrevMonthStat', 43200, function () {
             return DB::select(
-                "SELECT
+                "SELECT 
                     current.count AS current_month,
                     previous.count AS previous_month,
                     ROUND((current.count - previous.count) / previous.count * 100, 2) AS percentage_change
                 FROM
-                    (SELECT COUNT(*) AS count FROM registers
+                    (SELECT COUNT(*) AS count FROM registers 
                     WHERE created_at >= DATE_FORMAT(CURRENT_DATE(), '%Y-%m-01')) AS current,
-                    (SELECT COUNT(*) AS count FROM registers
+                    (SELECT COUNT(*) AS count FROM registers 
                     WHERE created_at >= DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH), '%Y-%m-01')
                     AND created_at < DATE_FORMAT(CURRENT_DATE(), '%Y-%m-01')) AS previous;
                     "
@@ -84,7 +84,7 @@ class IndexController extends Controller
             return  DB::select(
                 "SELECT DATE_FORMAT(created_at, '%Y-%m') AS ymonth, DATE_FORMAT(created_at, '%m') AS month, count(*) count from registers
                         where created_at >= DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL 6 MONTH), '%Y-%m-01')
-                        group by DATE_FORMAT(created_at, '%Y-%m'),DATE_FORMAT(created_at, '%m')
+                        group by DATE_FORMAT(created_at, '%Y-%m'),DATE_FORMAT(created_at, '%m') 
                         order by ymonth ; "
             );
         });
@@ -114,7 +114,9 @@ class IndexController extends Controller
     public function map()
     {
         $input = Request::all(Register::$searchIn);
-
+        if (!$input['soum_district_id']) {
+            $input['soum_district_id'] = Auth::user()->soum_district->toArray();
+        }
         $registers = Register::filter($input);
 
 

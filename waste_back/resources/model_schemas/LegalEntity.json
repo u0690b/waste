@@ -1,0 +1,54 @@
+[
+    {
+        "name": "id",
+        "dbType": "bigInteger,true,true",
+        "htmlType": null,
+        "validations": null,
+        "searchable": false,
+        "fillable": false,
+        "primary": true,
+        "inForm": false,
+        "inIndex": false,
+        "inView": false
+    },
+    {
+        "name": "register",
+        "dbType": "string,255",
+        "htmlType": "text",
+        "validations": "required|string|max:255",
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
+    },
+    {
+        "name": "name",
+        "dbType": "string,2000",
+        "htmlType": "text",
+        "validations": "required|string|max:2000",
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
+    },
+    {
+        "name": "industry_id",
+        "dbType": "bigInteger,false,true",
+        "htmlType": null,
+        "validations": "required",
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true,
+        "inView": true
+    },
+    {
+        "type": "relation",
+        "relation": "mt1,Industry,industry_id"
+    }
+]

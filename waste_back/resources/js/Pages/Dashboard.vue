@@ -14,11 +14,11 @@
 
   const props = defineProps({
     datas: Object,
-    totalReportStat: [Object, Array,Number],
-    totalClearStat: [Object,Number],
-    totalClearPrevMonthStat: [Object,Number],
-    totalReportPrevMonthStat: [Object,Number],
-    totalUsers: [Object, Array,Number],
+    totalReportStat: [Object, Array],
+    totalClearStat: [Object, Array],
+    totalClearPrevMonthStat: [Object, Array],
+    totalReportPrevMonthStat: [Object, Array],
+    totalUsers: [Object, Array],
     lastMonth: [Object, Array],
     filters: [Object, Array],
     host: String,
@@ -66,7 +66,9 @@
 
       <div class="flex items-center gap-2 py-6 ml-12">
 
-
+        <span class="pt-6">
+          {{ rangeDay }}
+        </span>
 
         <div class="flex justify-end flex-1 w-full gap-4 mr-8 fade-in">
           <!-- <img src="@/assets/App_Store.svg" class="h-12 pr-4 bounce-top-icons"> -->

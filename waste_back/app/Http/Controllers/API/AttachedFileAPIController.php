@@ -15,7 +15,12 @@ use Response;
 
 class AttachedFileAPIController extends AppBaseController
 {
-
+    /**
+     * Display a listing of the AttachedFile.
+     * GET|HEAD /attachedFiles
+     *
+     * @return Response
+     */
     public function index(Request $request)
     {
         $query = AttachedFile::filter( $request->all(["search", ...AttachedFile::$searchIn]))->with('register:id,name');

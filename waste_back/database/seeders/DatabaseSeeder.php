@@ -2,28 +2,38 @@
 
 namespace Database\Seeders;
 
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
 use App\Models\AttachedFile;
-use App\Models\Industry;
 use App\Models\Place;
 use App\Models\Reason;
+use App\Models\SoumDistrict;
+use App\Models\LegalEntity;
 use App\Models\Register;
 use App\Models\Resolve;
 use App\Models\Status;
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Industry;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
 
+
+        // \App\Models\User::create();
+
         ini_set('memory_limit', '-1');
+
+
         $this->call([
             AimagSoumDistictSeeder::class,
+            BagHorooSeeder::class,
             LegalEntitySeeder::class,
         ]);
 

@@ -21,10 +21,13 @@ class UsersController extends Controller
 
     function __construct()
     {
-        $user = Auth::user();
-        if (!($user->roles == 'admin' || $user->roles == 'mha' || $user->roles == 'da' || $user->roles == 'zaa')) {
-            abort(403);
-        }
+        $this->middleware(function ($request, $next) {
+            $user = Auth::user();
+            if (!($user->roles == 'admin' || $user->roles == 'mha' || $user->roles == 'da' || $user->roles == 'zaa')) {
+                abort(403);
+            }
+            return $next($request);
+        });
     }
     /**
      * Display a listing of the User.

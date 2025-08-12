@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 
 
@@ -69,15 +68,14 @@ class Industry extends Model
 
     /**
      * Filter Model
-     * @param array $filters
+     * @param Array $filters
      * @return App\Models\Industry
      */
-    #[Scope]
-    public function Filter(Builder $query, array $filters): void
+    public function scopeFilter(Builder $query, array $filters)
     {
         if (count($filters)) {
             $query =  $this->buildFilter($query, $filters, Industry::$searchIn);
         }
-
+        return $query;
     }
 }

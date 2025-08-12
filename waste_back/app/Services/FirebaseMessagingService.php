@@ -81,7 +81,7 @@ class FirebaseMessagingService
             return ['success' => true, 'messageId' => $sendReport];
         } catch (Exception $e) {
             // Handle exceptions (e.g., invalid token, network issues)
-            // In a real app, you'd log the error:
+            // In a real app, you'd log the error: 
             Log::error('FCM Send Error', ['error' => $e->getMessage(), 'token' => $deviceToken]);
             echo "Error sending FCM message: " . $e->getMessage(); // For demonstration
 

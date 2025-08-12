@@ -53,17 +53,17 @@
             </div>
             <div class="px-4 text-gray-700">
                 <h3 class="text-sm tracking-wider">Шалтгаан</h3>
-                <p class="text-3xl">{{ totalStat?.reason }}</p>
+                <p class="text-3xl">{{ totalStat.reason }}</p>
             </div>
         </div>
     </div>
 </template>
 
-<script setup >
+<script setup>
     import { usePage } from '@inertiajs/vue3';
     import { computed } from 'vue';
 
-    const totalStat = computed<any>(() => usePage().props.totalStat);
+    const totalStat = computed(() => usePage().props.totalStat)
 </script>
 
 <style lang="scss" scoped></style>
