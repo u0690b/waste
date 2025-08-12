@@ -68,16 +68,16 @@ class IndexController extends Controller
             );
         });
         $totalClearStat = DB::scalar(
-            "SELECT COUNT(*) AS count FROM registers where status_id = 3",
+            "SELECT COUNT(*) AS count FROM registers where status_id = 4",
         );
 
         $totalClearPrevMonthStat = Cache::remember('totalClearPrevMonthStat', 43200, function () {
             return DB::scalar(
-                "SELECT COUNT(*) AS count FROM registers where status_id = 3 and created_at >= DATE_FORMAT(CURRENT_DATE(), '%Y-%m-01')"
+                "SELECT COUNT(*) AS count FROM registers where status_id = 4 and created_at >= DATE_FORMAT(CURRENT_DATE(), '%Y-%m-01')"
             );
         });
         $totalUsers = DB::scalar(
-            " SELECT COUNT(*) AS count FROM registers where status_id = 3 "
+            " SELECT COUNT(*) AS count FROM users  "
 
         );
         $lastMonth = Cache::remember('lastMonth', 43200, function () {
