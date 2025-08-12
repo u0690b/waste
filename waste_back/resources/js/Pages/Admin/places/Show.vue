@@ -25,7 +25,7 @@
     data: [Object],
   });
 
-  const title = 'Хог хаягдлын бүлэг дэлгэрэнгүй'
+  const title = 'Хариуцах нэгж'
 
   const fields = [
     { label: '', value: props.data.id },

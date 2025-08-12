@@ -67,7 +67,7 @@
         href: "#",
         children: [
           {
-            text: "Хог хаягдлын бүлэг",
+            text: "Хариуцах нэгж",
             icon: markRaw(ChevronRightIcon),
             href: route("admin.places.index"),
           },

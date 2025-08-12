@@ -136,10 +136,10 @@
           </div>
           <div class="hover:shadow-lg flex flex-col justify-center card bg-[#dde9aa] ">
             <div class="pt-6 card-body">
-              <h3 class="text-sm font-semibold sm:text-lg">Хог хаягдал олсон уу?</h3>
-              <p class="mb-4 text-xs sm:text-sm ">Хянан мэдээлж, эрүүл орчныг хамтдаа бүтээе.</p>
+              <h3 class="text-sm font-semibold sm:text-base">Хариуцлагатай байцгаая.</h3>
+              <p class="mb-4 text-xs sm:text-sm ">Байгалиа хайрлаж, бохирдлыг багасгах нь хүн бүрийн үүрэг.</p>
               <a type="button" href="/mobile" target="_blank" variant="secondary" class="w-full text-xs btn btn-success sm:text-sm">
-                Мобайл аппликейшн суулгах
+                Мобайл хувилбар
                 <ArrowRightIcon class="w-3 ml-2" />
               </a>
             </div>
@@ -151,15 +151,15 @@
           <div class="flex items-center max-sm:text-xs">
             <div class="p-4 px-4  md:p-8 text-[#406f47]  sm:px-8 text-center" id="about" role="tabpanel" aria-labelledby="about-tab">
               <h2 class="mb-5 font-extrabold tracking-tight ms:text-2xl md:text-4xl slide-in-bottom">
-                Хувийн хариуцлагаар эхлэх, нийтээр хамтрах!
+                <!-- БОХИРДОЛ БАГАСАХАД БҮГДИЙН ОРОЛЦОО ЧУХАЛ" , "ОРЧНОО ЦЭВЭРЛЭ, ИРЭЭДҮЙГЭЭ ГЭРЭЛТҮҮЛ -->
               </h2>
 
               <!-- List -->
-              <div class="gap-4 md:flex ">
-                Ил задгай хаягдлыг багасгаж, хүний эрүүл мэнд, байгаль орчинд үзүүлэх сөрөг нөлөөг бууруулна. Хогийг эдийн засгийн эргэлтэд оруулж, Хог хаягдлыг хянан мэдээлж, эрүүл орчныг хамтдаа бүтээе.
+              <div class="gap-4 font-bold md:flex ">
+                БОХИРДОЛ БАГАСАХАД БҮГДИЙН ОРОЛЦОО ЧУХАЛ , ОРЧНОО ЦЭВЭРЛЭ, ИРЭЭДҮЙГЭЭ ГЭРЭЛТҮҮЛ, ЦЭВЭР ОРЧИН — ЦЭГЦЭРСЭН АМЬДРАЛ
               </div>
               <div class="mt-10">
-                <a class=" sm:text-3xl  py-2 px-4 bg-[#dde9aa]  hover:border Text-[#406f47] rounded-full " type="button" target="_blank" href="/mobile">
+                <a class=" sm:text-xl  py-2 px-4 bg-[#dde9aa]  hover:border Text-[#406f47] rounded-full " type="button" target="_blank" href="/mobile">
                   Бидэнтэй нэгдэх
                 </a>
               </div>

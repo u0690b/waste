@@ -33,7 +33,7 @@
     filters: { type: Object, default: () => ({ search: '' }) },
   });
 
-  const title = 'Хог хаягдлын бүлэг жагсаалт'
+  const title = 'Хариуцах нэгж'
 
   const headers = [
     { key: 'name', name: 'Нэр', order: 'name' }

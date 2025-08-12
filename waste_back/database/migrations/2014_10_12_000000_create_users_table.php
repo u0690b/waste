@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->foreignId('aimag_city_id')->constrained('aimag_cities');
-            $table->foreignId('soum_district_id')->constrained('soum_districts');
-            $table->foreignId('bag_horoo_id')->constrained('bag_horoos');
+            $table->foreignId('soum_district_id')->nullable()->constrained('soum_districts');
+            $table->foreignId('bag_horoo_id')->nullable()->constrained('bag_horoos');
             $table->string('phone');
-            $table->string('position');
+            $table->string('place_id');
             $table->string('roles');
             $table->rememberToken();
             $table->string('push_token')->nullable();
