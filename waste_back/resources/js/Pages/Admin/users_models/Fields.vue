@@ -5,14 +5,38 @@
             <MyInput v-model="form.model.username" :error="form.errors.username" class="" label="Нэвтрэх нэр" />
             <MyInput v-model="form.model.password" type="password" autocomplete="new-password"
                 :error="form.errors.password" class="" label="Нууц үг" />
-            <MySelect :value="form.model.aimag_city" :error="form.errors.aimag_city_id" class="" label="Айман/Нийслэл"
-                :url="`/admin/aimag_cities`" @changeId="id => form.model.aimag_city_id = id" />
-            <MySelect :value="form.model.soum_district" :error="form.errors.soum_district_id" class=""
-                label="Сум/Дүүрэг" :url="`/admin/soum_districts`" @changeId="id => form.model.soum_district_id = id" />
-            <MySelect :value="form.model.bag_horoo" :error="form.errors.bag_horoo_id" class="" label="Баг хороо"
-                :url="`/admin/bag_horoos`" @changeId="id => form.model.bag_horoo_id = id" />
+
+
+
+            <MySelect v-model="form.model.aimag_city" :error="form.errors.aimag_city_id" :disabled="user.roles == 'da'"
+                label="Аймаг/нийслэл" :url="`/admin/aimag_cities`" @changeId="
+                    (id) => {
+                        if (user.roles != 'da') {
+                            form.model.aimag_city_id = id;
+                            form.model.soum_district_id = null;
+                            form.model.bag_horoo_id = null;
+                            form.model.soum_district = null;
+                            form.model.bag_horoo = null;
+                        }
+                    }
+                " />
+
+            <MySelect v-if="form.model.aimag_city_id && form.model.aimag_city_id < 23"
+                :disabled="user.roles == 'da' && user.aimag_city_id == 7" v-model="form.model.soum_district"
+                :error="form.errors.soum_district_id" label="Сум/дүүрэг" :required="form.model.aimag_city_id < 23"
+                :url="`/admin/soum_districts?aimag_city_id=${form.model.aimag_city_id}`" @changeId="
+                    (id) => ((form.model.soum_district_id = id), (form.model.bag_horoo_id = null))
+                " />
+
+            <MySelect v-if="form.model.soum_district_id" v-model="form.model.bag_horoo"
+                :error="form.errors.bag_horoo_id" label="Баг/хороо"
+                :url="`/admin/bag_horoos?soum_district_id=${form.model.soum_district_id}`"
+                @changeId="(id) => (form.model.bag_horoo_id = id)" />
+
+
+
             <MyInput v-model="form.model.phone" :error="form.errors.phone" class="" label="Утас" />
-            <MySelect :value="form.model.place" :error="form.errors.place_id" class="" label="Харьялах нэгж"
+            <MySelect v-model="form.model.place" :error="form.errors.place_id" class="" label="Харьялах нэгж"
                 :url="`/admin/places`" @changeId="id => form.model.place_id = id" />
 
             <MySelect v-model="form.model.roles" :modelKey="true" :storedOptions="roles" :error="form.errors.roles"
@@ -31,6 +55,7 @@ import { useForm, usePage } from '@inertiajs/vue3'
 import ButtonPrimary from "@/Components/ButtonPrimary.vue";
 import MyInput from '@/Components/MyInput.vue'
 import MySelect from '@/Components/MySelect.vue'
+import { onMounted } from 'vue';
 
 const props = defineProps({
     data: { type: Object, default: () => ({}) },
@@ -39,14 +64,20 @@ const props = defineProps({
 
 const emit = defineEmits(['save'])
 const form = useForm({ model: { ...props.data } }).transform((data) => data.model);
-const auth = usePage().props.auth;
-const roles = auth.user.roles == 'admin' ?
+const user = usePage().props.auth.user;
+onMounted(() => {
+    form.model.aimag_city = user.aimag_city;
+    form.model.soum_district = user.soum_district;
+    form.model.aimag_city_id = user.aimag_city.id;
+    form.model.soum_district_id = user.soum_district.id;
+});
+const roles = user.roles == 'admin' ?
     [
         { id: "admin", name: "Админ" },
         { id: "da", name: "Аймаг, дүүрэг админ" },
         { id: "mha", name: "БОХУБ" },
     ] :
-    this.auth.user.roles == 'da' ? [
+    user.roles == 'da' ? [
         { id: "mha", name: "БОХУБ" },
     ] : []
 

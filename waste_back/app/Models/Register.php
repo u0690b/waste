@@ -102,9 +102,9 @@ class Register extends Model
         'reg_user_id' => 'integer',
         'comf_user_id' => 'integer',
         'status_id' => 'integer',
-        'created_at' => 'datetime:Y-m-d h:mi',
-        'reg_at' => 'datetime:Y-m-d h:mi',
-        'resolved_at' => 'datetime:Y-m-d h:mi',
+        'created_at' => 'date:Y-m-d h:i',
+        'reg_at' => 'date:Y-m-d h:i',
+        'resolved_at' => 'date:Y-m-d h:i',
         'allocate_by' => 'integer',
     ];
 
@@ -271,7 +271,7 @@ class Register extends Model
 
     /**
      * Filter Model
-     * 
+     *
      * @return array
      */
     public function sendCreatedWasteNotify()
@@ -296,9 +296,9 @@ class Register extends Model
             Notification::create([
                 'user_id' => $user->id,
                 'type' => 'Шинэ зөрчил бүртгэсэн',
-                'title' =>  $this->reg_user->name . "-аас танд шинэ зөрчил бүртгэгдлээ ",
+                'title' => $this->reg_user->name . "-аас танд шинэ зөрчил бүртгэгдлээ ",
                 'rid' => $this->id,
-                'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
+                'content' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
             ]);
         }
 
@@ -306,7 +306,7 @@ class Register extends Model
             $messagingService = new FirebaseMessagingService();
             foreach ($tokens as $key => $token) {
                 $title = 'Шинэ зөрчил бүртгэгдлээ';
-                $body =  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил';
+                $body = $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил';
                 $customData = [
                     'id' => $this->id,
                     'type' => 'register',
@@ -318,7 +318,7 @@ class Register extends Model
 
     /**
      * Filter Model
-     * 
+     *
      * @return array
      */
     public function sendResolvedWasteNotify()
@@ -327,8 +327,8 @@ class Register extends Model
             'user_id' => $this->reg_user_id,
             'type' => 'Шийдвэрлэгдсэн',
             'rid' => $this->id,
-            'title' => $this->comf_user->name  . '/' . User::$rolesModel[$this->comf_user->roles] . '/' . ' зөрчил ' . $this->resolve->name . '-аар шийдвэрлэсэн',
-            'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
+            'title' => $this->comf_user->name . '/' . User::$rolesModel[$this->comf_user->roles] . '/' . ' зөрчил ' . $this->resolve->name . '-аар шийдвэрлэсэн',
+            'content' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
         ]);
         $regUser = $this->reg_user;
         $users = User::whereSoumDistrictId($this->soum_district_id)
@@ -354,7 +354,7 @@ class Register extends Model
                 'type' => 'Шийдвэрлэгдсэн',
                 'rid' => $this->id,
                 'title' => $this->comf_user->name . '/' . User::$rolesModel[$this->comf_user->roles] . '/' . ' зөрчил ' . $this->resolve->name . '-аар шийдвэрлэсэн',
-                'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
+                'content' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
             ]);
         }
 
@@ -365,7 +365,7 @@ class Register extends Model
                 $messagingService = new FirebaseMessagingService();
                 foreach ($tokens as $key => $token) {
                     $title = 'Зөрчил ' . $this->resolve->name . '-аар шийдвэрлэгдлээ';
-                    $body =  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил';
+                    $body = $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил';
                     $customData = [
                         'id' => $this->id,
                         'type' => 'register',
@@ -378,7 +378,7 @@ class Register extends Model
 
     /**
      * Filter Model
-     * 
+     *
      * @return array
      */
     public function sendAllocationWasteNotify($note = '')
@@ -387,41 +387,41 @@ class Register extends Model
             'user_id' => Auth::user()->id,
             'type' => 'Шилжүүлсэн',
             'rid' => $this->id,
-            'title' =>  ' ' . Auth::user()->name . '/' . User::$rolesModel[Auth::user()->roles] . '/' . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
-            'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
+            'title' => ' ' . Auth::user()->name . '/' . User::$rolesModel[Auth::user()->roles] . '/' . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
+            'content' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
         ]);
         Notification::create([
             'user_id' => $this->comf_user_id,
             'type' => 'Шилжүүлсэн',
             'rid' => $this->id,
-            'title' =>  ' ' . Auth::user()->name . '/' . User::$rolesModel[Auth::user()->roles] . '/' . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
-            'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
+            'title' => ' ' . Auth::user()->name . '/' . User::$rolesModel[Auth::user()->roles] . '/' . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
+            'content' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
         ]);
         Notification::create([
-            'user_id' =>   $this->reg_user_id,
+            'user_id' => $this->reg_user_id,
             'type' => 'Шилжүүлсэн',
             'rid' => $this->id,
             'title' => ' ' . Auth::user()->name . '/' . User::$rolesModel[Auth::user()->roles] . '/' . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
-            'content' =>  $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
+            'content' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
         ]);
 
 
         $messagingService = new FirebaseMessagingService();
         $title = ' ' . Auth::user()->name . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ';
-        $body =   $this->reason->name . ' ' . $this->name;
+        $body = $this->reason->name . ' ' . $this->name;
         $customData = [
             'id' => $this->id,
             'type' => 'register',
         ];
-        
-        
- 
- 
+
+
+
+
         if ($this->comf_user->push_token) {
-            Log::info( $messagingService->sendNotificationToDevice($this->comf_user->push_token, $title, $body, $customData));
+            Log::info($messagingService->sendNotificationToDevice($this->comf_user->push_token, $title, $body, $customData));
         }
         if ($this->reg_user->push_token) {
-             Log::info( $messagingService->sendNotificationToDevice($this->reg_user->push_token, $title, $body, $customData));
+            Log::info($messagingService->sendNotificationToDevice($this->reg_user->push_token, $title, $body, $customData));
         }
     }
 }

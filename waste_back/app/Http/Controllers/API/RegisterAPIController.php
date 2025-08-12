@@ -56,7 +56,16 @@ class RegisterAPIController extends AppBaseController
                 $query = $query->where('reg_user_id', $user->id);
             }
         } elseif ($input['status_id'] == 3) {
-            if ($user->roles != 'mha') {
+            if ($user->roles != 'da') {
+                $query = $query->where('reg_user_id', $user->id);
+                $query = $query->orWhere(function ($query) use ($user) {
+
+                    $query->where('status_id', '=', 3)
+                        ->Where('comf_user_id', '=', $user->id);
+                });
+            }
+        } elseif ($input['status_id'] == 4) {
+            if ($user->roles != 'da') {
                 $query = $query->where(function ($query) use ($user) {
                     $query->where('comf_user_id', '=', $user->id)
                         ->orWhere('reg_user_id', '=', $user->id);
@@ -83,11 +92,11 @@ class RegisterAPIController extends AppBaseController
         foreach ($files as $key => $value) {
             if ($value instanceof UploadedFile) {
                 $hashName = $value->hashName();
-                if ($file =  $value->storeAs('/public/uploads/hyanalt', $hashName, [])) {
-                    $url =  Storage::url($file);
+                if ($file = $value->storeAs('/public/uploads/hyanalt', $hashName, [])) {
+                    $url = Storage::url($file);
                     AttachedFile::create([
                         'register_id' => $model->id,
-                        'path' =>  $url,
+                        'path' => $url,
                         'type' => $type,
                     ]);
                 }
@@ -140,7 +149,8 @@ class RegisterAPIController extends AppBaseController
         $register->load('reg_user:id,name');
         $register->load('comf_user:id,name');
         $register->load('attached_images:id,register_id,path');
-        $register->load('attached_video:id,register_id,path');;
+        $register->load('attached_video:id,register_id,path');
+        ;
         if (empty($register)) {
             return $this->sendError('Register not found');
         }
@@ -205,8 +215,8 @@ class RegisterAPIController extends AppBaseController
             $register->fill($input);
             if ($request->image instanceof UploadedFile) {
 
-                if ($file =  $input['image']->store('/public/uploads/hyanalt')) {
-                    $register->resolve_image =  Storage::url($file);
+                if ($file = $input['image']->store('/public/uploads/hyanalt')) {
+                    $register->resolve_image = Storage::url($file);
                 }
             }
 

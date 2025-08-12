@@ -72,7 +72,7 @@ const roles = auth.user.roles == 'admin' ?
         { id: "da", name: "Аймаг, дүүрэг" },
         { id: "mha", name: "БОХУБ" },
     ] :
-    this.auth.user.roles == 'da' ? [
+    auth.user.roles == 'da' ? [
         { id: "mha", name: "БОХУБ" },
     ] : []
 

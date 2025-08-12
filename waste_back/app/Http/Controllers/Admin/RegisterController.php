@@ -35,10 +35,6 @@ class RegisterController extends Controller
         if (!($user->roles == 'admin')) {
             $input['soum_district_id'] = $user->soum_district_id;
         }
-        if ($user->roles == 'onb' || $user->roles == 'hd') {
-            $input['bag_horoo_id'] = $user->bag_horoo_id;
-        }
-
 
 
         $registers = Register::filter($input)
@@ -54,23 +50,32 @@ class RegisterController extends Controller
 
 
         if (!$input['status_id'] || $input['status_id'] == 2) {
-            if ($user->roles == 'onb') {
+            if ($user->roles == 'mha') {
                 $registers = $registers->where('reg_user_id', $user->id);
             }
         } elseif ($input['status_id'] == 3) {
-            if ($user->roles != 'mha') {
+            if ($user->roles != 'da') {
                 $registers = $registers->where(function ($registers) use ($user) {
                     $registers->where('comf_user_id', '=', $user->id)
                         ->orWhere('reg_user_id', '=', $user->id);
                 });
             }
+        } elseif ($input['status_id'] == 4) {
+            if ($user->roles != 'da') {
+                $registers = $registers->where(function ($registers) use ($user) {
+                    $registers->where('comf_user_id', '=', $user->id)
+                        ->orWhere('reg_user_id', '=', $user->id);
+                });
+            }
+
         }
+
         $registers = $registers->orderByDesc('updated_at')->orderByDesc('id');
         if (Request::has('only')) {
             return json_encode($registers->paginate(Request::input('per_page'), ['id', 'name']));
         }
         return Inertia::render('Admin/registers/Index', [
-            'filters' =>   $input,
+            'filters' => $input,
             'datas' => $registers
                 ->paginate(Request::input('per_page'))
                 ->withQueryString(),
@@ -110,7 +115,7 @@ class RegisterController extends Controller
     public function edit(Register $register)
     {
         return Inertia::render('Admin/registers/Edit', [
-            'data' =>  $register,
+            'data' => $register,
             'host' => config('app.url'),
         ]);
     }
@@ -135,7 +140,7 @@ class RegisterController extends Controller
             ->load('attached_images:id,register_id,path')
             ->load('attached_video:id,register_id,path');
         return Inertia::render('Admin/registers/Allocation', [
-            'data' =>  $register,
+            'data' => $register,
             'host' => config('app.url'),
         ]);
     }
@@ -151,7 +156,8 @@ class RegisterController extends Controller
     {
         $input = Request::validate(['comf_user_id' => 'required']);
         $input['status_id'] = 3;
-        $register->update($input);;
+        $register->update($input);
+        ;
         $register->sendAllocationWasteNotify();
 
         return Redirect::route('admin.registers.index')->with('success', 'Register updated.');
@@ -178,7 +184,7 @@ class RegisterController extends Controller
             ->load('attached_images:id,register_id,path')
             ->load('attached_video:id,register_id,path');
         return Inertia::render('Admin/registers/Show', [
-            'data' =>  $register,
+            'data' => $register,
             'host' => config('app.url'),
         ]);
     }
@@ -203,7 +209,7 @@ class RegisterController extends Controller
             ->load('attached_images:id,register_id,path')
             ->load('attached_video:id,register_id,path');
         return Inertia::render('Admin/registers/Resolve', [
-            'data' =>  $register,
+            'data' => $register,
             'host' => config('app.url'),
         ]);
     }
@@ -229,15 +235,15 @@ class RegisterController extends Controller
             DB::beginTransaction();
 
             $input['comf_user_id'] = Auth::user()->id;
-            $input['status_id'] = 3;
+            $input['status_id'] = 4;
             $input['resolved_at'] = Date::now();
 
 
             $register->fill($input);
             if ($input['image'] instanceof UploadedFile) {
 
-                if ($file =  $input['image']->store('/public/uploads/hyanalt')) {
-                    $register->resolve_image =  Storage::url($file);
+                if ($file = $input['image']->store('/public/uploads/hyanalt')) {
+                    $register->resolve_image = Storage::url($file);
                 }
             }
 
