@@ -19,7 +19,7 @@ class IndustryAPIController extends AppBaseController
      * Display a listing of the Industry.
      * GET|HEAD /industries
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index(Request $request)
     {
@@ -41,7 +41,7 @@ class IndustryAPIController extends AppBaseController
      * Store a newly created Industry in storage.
      * POST /industries
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store(Request $request)
     {
@@ -59,7 +59,7 @@ class IndustryAPIController extends AppBaseController
      *
      * @param Industry $industries
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function show($id)
     {
@@ -79,7 +79,7 @@ class IndustryAPIController extends AppBaseController
      *
      * @param Industry $industries
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update($id, Request $request)
     {
@@ -105,7 +105,7 @@ class IndustryAPIController extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy($id)
     {

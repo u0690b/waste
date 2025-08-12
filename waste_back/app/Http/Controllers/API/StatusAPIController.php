@@ -19,18 +19,11 @@ class StatusAPIController extends AppBaseController
      * Display a listing of the Status.
      * GET|HEAD /statuses
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index(Request $request)
     {
-        $input = $request->validate(['date' => 'nullable|date']);
-        if (isset($input['date'])) {
-            $count =   Status::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
-            if ($count <= 0) {
-                return [];
-            }
-        }
-        $query = Status::filter($request->all(["search", ...Status::$searchIn]));
+        $query = Status::filter( $request->all(["search", ...Status::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -41,14 +34,14 @@ class StatusAPIController extends AppBaseController
 
         $statuses = $query->get();
 
-        return   $statuses->toJson(JSON_UNESCAPED_UNICODE);
+        return $statuses->toJson();
     }
 
     /**
      * Store a newly created Status in storage.
      * POST /statuses
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store(Request $request)
     {
@@ -57,7 +50,7 @@ class StatusAPIController extends AppBaseController
         /** @var Status $status */
         $status = Status::create($input);
 
-        return $status;
+        return $status->toJson();
     }
 
     /**
@@ -66,7 +59,7 @@ class StatusAPIController extends AppBaseController
      *
      * @param Status $statuses
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function show($id)
     {
@@ -77,7 +70,7 @@ class StatusAPIController extends AppBaseController
             return $this->sendError('Status not found');
         }
 
-        return $status;
+        return $status->toJson();
     }
 
     /**
@@ -86,7 +79,7 @@ class StatusAPIController extends AppBaseController
      *
      * @param Status $statuses
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update($id, Request $request)
     {
@@ -101,7 +94,7 @@ class StatusAPIController extends AppBaseController
         $status->fill($input);
         $status->save();
 
-        return $status;
+        return $status->toJson();
     }
 
     /**
@@ -112,7 +105,7 @@ class StatusAPIController extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy($id)
     {

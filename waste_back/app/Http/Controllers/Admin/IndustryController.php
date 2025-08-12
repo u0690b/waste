@@ -14,28 +14,29 @@ class IndustryController extends Controller
     /**
      * Display a listing of the Industry.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index()
     {
-        $industries = Industry::filter(Request::all(["search", ...Industry::$searchIn]));
+        $industries = Industry::filter(Request::all(["search", ...Industry::$searchIn]))
+            ->orderBy(Request::input('orderBy') ?? 'id', Request::input('dir') ?? 'asc');
+        
         if (Request::has('only')) {
-            return json_encode($industries->paginate(Request::input('per_page'),['id', 'name']));
+            return json_encode($industries->cursorPaginate(Request::input('per_page'),['id', 'name']));
         }
+
         return Inertia::render('Admin/industries/Index', [
-            'filters' => Request::only(["search", ...Industry::$searchIn]),
+            'filters' => Request::only(["search", ...Industry::$searchIn, 'orderBy', 'dir']),
             'datas' => $industries
                 ->paginate(Request::input('per_page'))
-                ->withQueryString()
-                ->through(fn ($row) => $row->only('id','name')),
-            'host' => config('app.url'),
+                ->withQueryString(),
         ]);
     }
 
     /**
      * Show the form for creating a new Industry.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function create()
     {
@@ -45,12 +46,29 @@ class IndustryController extends Controller
     /**
      * Store a newly created Industry in storage.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store()
     {
-        Industry::create(Request::validate(Industry::$rules));
-        return Redirect::route('admin.industries.index')->with('success', 'Industry created.');
+        $rule = Industry::$rules;
+        $input =  Request::validate($rule);
+        $industry = Industry::create($input);
+        return redirect(Request::header('back') ?? route('admin.industries.show', $industry->getKey()))->with('success', 'Амжилттай үүсгэлээ.');
+    }
+
+    /**
+     * Show the form for editing the specified UserModel.
+     *
+     * @param Industry $industry
+     *
+     * @return \Inertia\Response|Response|string|bool
+     */
+    public function show(Industry $industry)
+    {
+        $industry;
+        return Inertia::render('Admin/industries/Show', [
+            'data' =>  $industry,
+        ]);
     }
 
     /**
@@ -58,13 +76,13 @@ class IndustryController extends Controller
      *
      * @param Industry $industry
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function edit(Industry $industry)
     {
+        $industry;
         return Inertia::render('Admin/industries/Edit', [
             'data' =>  $industry,
-            'host' => config('app.url'),
         ]);
     }
 
@@ -73,12 +91,15 @@ class IndustryController extends Controller
      *
      * @param Industry $industry
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update(Industry $industry)
     {
-        $industry->update(Request::validate(Industry::$rules));
-        return Redirect::route('admin.industries.index')->with('success', 'Industry updated.');
+        $rule = Industry::$rules;
+        $input =  Request::validate($rule);
+        $industry->update($input);
+        
+        return redirect(Request::header('back') ?? route('admin.industries.show', $industry->getKey()))->with('success', 'Ажилттай хадгаллаа.');
     }
 
     /**
@@ -88,11 +109,11 @@ class IndustryController extends Controller
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy(Industry $industry)
     {
         $industry->delete();
-        return Redirect::route('admin.industries.index')->with('success', 'Industry deleted.');
+        return redirect(Request::header('back') ?? route('admin.industries.index'))->with('success', 'Мэдээлэл устгагдлаа.');
     }
 }

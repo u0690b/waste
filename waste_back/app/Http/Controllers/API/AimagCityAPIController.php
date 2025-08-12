@@ -19,19 +19,11 @@ class AimagCityAPIController extends AppBaseController
      * Display a listing of the AimagCity.
      * GET|HEAD /aimagCities
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index(Request $request)
     {
-        $input = $request->validate(['date' => 'nullable|date']);
-        if (isset($input['date'])) {
-            $count =   AimagCity::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
-            if ($count <= 0) {
-                return [];
-            }
-        }
-        $query = AimagCity::filter($request->all(["search", ...AimagCity::$searchIn]));
-
+        $query = AimagCity::filter( $request->all(["search", ...AimagCity::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -42,14 +34,14 @@ class AimagCityAPIController extends AppBaseController
 
         $aimagCities = $query->get();
 
-        return  $aimagCities->toJson(JSON_UNESCAPED_UNICODE);
+        return $aimagCities->toJson();
     }
 
     /**
      * Store a newly created AimagCity in storage.
      * POST /aimagCities
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store(Request $request)
     {
@@ -58,7 +50,7 @@ class AimagCityAPIController extends AppBaseController
         /** @var AimagCity $aimagCity */
         $aimagCity = AimagCity::create($input);
 
-        return $aimagCity;
+        return $aimagCity->toJson();
     }
 
     /**
@@ -67,7 +59,7 @@ class AimagCityAPIController extends AppBaseController
      *
      * @param AimagCity $aimagCities
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function show($id)
     {
@@ -78,7 +70,7 @@ class AimagCityAPIController extends AppBaseController
             return $this->sendError('Aimag City not found');
         }
 
-        return $aimagCity;
+        return $aimagCity->toJson();
     }
 
     /**
@@ -87,7 +79,7 @@ class AimagCityAPIController extends AppBaseController
      *
      * @param AimagCity $aimagCities
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update($id, Request $request)
     {
@@ -102,7 +94,7 @@ class AimagCityAPIController extends AppBaseController
         $aimagCity->fill($input);
         $aimagCity->save();
 
-        return $aimagCity;
+        return $aimagCity->toJson();
     }
 
     /**
@@ -113,7 +105,7 @@ class AimagCityAPIController extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy($id)
     {

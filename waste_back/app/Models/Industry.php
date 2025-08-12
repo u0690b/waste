@@ -10,18 +10,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Industry
  * @package App\Models
- * @version January 18, 2023, 2:50 am +08
+ * @version August 12, 2025, 8:52 pm +08
  *
- * @property \Illuminate\Database\Eloquent\Collection $legalEntities
- * @property string $name
+ * @property string $name Үйл ажиллагааны чиглэл
  */
 class Industry extends Model
 {
 
     use HasFactory;
 
+    use HasFilter;
+
     public $table = 'industries';
-    public $timestamps = false;
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -51,13 +52,7 @@ class Industry extends Model
         'name' => 'required|string|max:255'
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function legalEntities()
-    {
-        return $this->hasMany(\App\Models\LegalEntity::class, 'industry_id');
-    }
+    
 
     /**
      * @var array
@@ -68,14 +63,11 @@ class Industry extends Model
 
     /**
      * Filter Model
-     * @param Array $filters
-     * @return App\Models\Industry
+     * 
+     * @return array
      */
-    public function scopeFilter(Builder $query, array $filters)
+    public function getSearchIn()
     {
-        if (count($filters)) {
-            $query =  $this->buildFilter($query, $filters, Industry::$searchIn);
-        }
-        return $query;
+        return Industry::$searchIn;
     }
 }

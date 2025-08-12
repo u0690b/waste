@@ -23,9 +23,9 @@ class AimagCityFactory extends Factory
     {
         return [
             'code' => $this->faker->word,
-            'name' => $this->faker->word,
-            'created_at' => $this->faker->date('Y-m-d H:i:s'),
-            'updated_at' => $this->faker->date('Y-m-d H:i:s')
+        'name' => $this->faker->word,
+        'created_at' => $this->faker->word,
+        'updated_at' => $this->faker->word
         ];
     }
 }

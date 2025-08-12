@@ -19,7 +19,7 @@ class LegalEntityAPIController extends AppBaseController
      * Display a listing of the LegalEntity.
      * GET|HEAD /legalEntities
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index(Request $request)
     {
@@ -30,31 +30,18 @@ class LegalEntityAPIController extends AppBaseController
         }
         if ($request->get('limit')) {
             $query->limit($request->get('limit'));
-        } else {
-            if (count((array)$request->input('search')) < 5)
-                $query->limit(20);
-            else
-                $query->limit(50);
         }
 
-        $statuses = $query->get()->transform(
-            function ($item, $key) {
-                return [
-                    'name' => $item->name,
-                    'id' => $item->register,
-                    'industry' => $item->industry,
-                ];
-            }
-        );
+        $legalEntities = $query->get();
 
-        return  $statuses->toJson(JSON_UNESCAPED_UNICODE);
+        return $legalEntities->toJson();
     }
 
     /**
      * Store a newly created LegalEntity in storage.
      * POST /legalEntities
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store(Request $request)
     {
@@ -72,7 +59,7 @@ class LegalEntityAPIController extends AppBaseController
      *
      * @param LegalEntity $legalEntities
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function show($id)
     {
@@ -92,7 +79,7 @@ class LegalEntityAPIController extends AppBaseController
      *
      * @param LegalEntity $legalEntities
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update($id, Request $request)
     {
@@ -118,7 +105,7 @@ class LegalEntityAPIController extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy($id)
     {

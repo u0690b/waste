@@ -10,22 +10,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Notification
  * @package App\Models
- * @version January 4, 2023, 12:36 am +08
+ * @version August 12, 2025, 8:37 pm +08
  *
  * @property \App\Models\User $user
- * @property integer $user_id
- * @property string $type
- * @property string $title
- * @property string $content
- * @property string|\Carbon\Carbon $read_at
+ * @property integer $user_id Хэнээс
+ * @property string $type Төрөл
+ * @property string $title Гарчиг
+ * @property string $content Агуулга
+ * @property integer $rid Холоотой айди
+ * @property string $read_at Уншсан
  */
 class Notification extends Model
 {
 
     use HasFactory;
 
-    public $table = 'notifications';
+    use HasFilter;
 
+    public $table = 'notifications';
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -53,10 +56,8 @@ class Notification extends Model
         'title' => 'string',
         'content' => 'string',
         'rid' => 'integer',
-        'read_at' => 'datetime:Y-m-d h:mi',
-        // 'created_at' => 'datetime:Y-m-d h:mi',
+        'read_at' => 'string'
     ];
-
 
     /**
      * Validation rules
@@ -68,8 +69,10 @@ class Notification extends Model
         'type' => 'required|string|max:100',
         'title' => 'required|string|max:500',
         'content' => 'nullable|string',
-        'rid' => 'nullable|integer',
-        'read_at' => 'nullable'
+        'rid' => 'nullable',
+        'read_at' => 'nullable|string',
+        'created_at' => 'nullable|string',
+        'updated_at' => 'nullable|string'
     ];
 
     /**
@@ -88,19 +91,17 @@ class Notification extends Model
         'type',
         'title',
         'content',
+        'rid',
         'read_at'
     ];
 
     /**
      * Filter Model
-     * @param Array $filters
-     * @return App\Models\Notification
+     * 
+     * @return array
      */
-    public function scopeFilter(Builder $query, array $filters)
+    public function getSearchIn()
     {
-        if (count($filters)) {
-            $query =  $this->buildFilter($query, $filters, Notification::$searchIn);
-        }
-        return $query;
+        return Notification::$searchIn;
     }
 }

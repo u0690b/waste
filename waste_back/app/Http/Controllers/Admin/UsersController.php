@@ -43,10 +43,10 @@ class UsersController extends Controller
             $input['soum_district_id'] = $user->soum_district_id;
         }
         if (!$input['roles']) {
-            $input['roles'] = 'none';
+            //$input['roles'] = 'none';
         }
         if ($user->roles == 'mha') {
-            $input['roles'] = ['mha',  'zaa', 'da'];
+            $input['roles'] = ['mha', 'zaa', 'da'];
         }
         $users = User::filter($input)->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name');
 
@@ -54,7 +54,7 @@ class UsersController extends Controller
             return json_encode($users->paginate(Request::input('per_page'), ['id', 'name']));
         }
         return Inertia::render('Admin/users_models/Index', [
-            'filters' =>  $input,
+            'filters' => $input,
             'datas' => $users
                 ->paginate(Request::input('per_page'))
                 ->withQueryString()
@@ -120,7 +120,7 @@ class UsersController extends Controller
     {
         $user->load('aimag_city:id,name')->load('bag_horoo:id,name')->load('soum_district:id,name');
         return Inertia::render('Admin/users_models/Edit', [
-            'data' =>  $user,
+            'data' => $user,
             'host' => config('app.url'),
             'aimag_city' => Auth::user()->aimag_city,
             'soum_district' => Auth::user()->soum_district,

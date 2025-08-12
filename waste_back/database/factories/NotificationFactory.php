@@ -26,7 +26,10 @@ class NotificationFactory extends Factory
         'type' => $this->faker->word,
         'title' => $this->faker->word,
         'content' => $this->faker->text,
-        'read_at' => $this->faker->date('Y-m-d H:i:s')
+        'rid' => $this->faker->word,
+        'read_at' => $this->faker->word,
+        'created_at' => $this->faker->word,
+        'updated_at' => $this->faker->word
         ];
     }
 }

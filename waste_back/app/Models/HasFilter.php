@@ -46,7 +46,7 @@ trait HasFilter
                 $query = $query->where($key, $value);
             }
         }
-        return  $query;
+        return $query;
     }
     /**
      * Build search query.
@@ -74,8 +74,10 @@ trait HasFilter
         });
 
         $tokens->each(function ($token) use ($searchIn, $query) {
+
             $query->where(function (Builder $query) use ($token, $searchIn) {
                 $searchIn->each(function ($column) use ($token, $query) {
+
                     if ($this->getKeyName() === $column['column'] && $this->getTable() === $column['table']) {
                         if (is_numeric($token) && $token === strval(intval($token))) {
                             $query->orWhere($this->materializeColumnName($column, true), intval($token));
@@ -83,6 +85,7 @@ trait HasFilter
                     } else {
                         $this->searchLike($query, $column, $token);
                     }
+
                 });
             });
         });
@@ -95,6 +98,7 @@ trait HasFilter
      * @param $query
      * @param $column
      * @param $token
+     *
      */
     private function searchLike(Builder $query, $column, $token): void
     {
@@ -153,6 +157,6 @@ trait HasFilter
         if (count($filters)) {
             $query = $this->buildFilter($query, $filters, $this->getSearchIn());
         }
-        return  $query;
+        return $query;
     }
 }

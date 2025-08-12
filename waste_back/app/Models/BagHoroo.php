@@ -9,40 +9,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class BagHoroo
- *
  * @package App\Models
- * @version November 24, 2022, 7:40 pm UTC
+ * @version August 12, 2025, 7:26 pm +08
+ *
  * @property \App\Models\SoumDistrict $soumDistrict
- * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
+ * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $users
- * @property string $code
- * @property string $name
- * @property integer $soum_district_id
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read int|null $register_histories_count
- * @property-read int|null $registers_count
- * @property-read \App\Models\SoumDistrict $soum_district
- * @property-read int|null $users_count
- * @method static \Database\Factories\BagHorooFactory factory(...$parameters)
- * @method static Builder|BagHoroo filter(array $filters)
- * @method static Builder|BagHoroo newModelQuery()
- * @method static Builder|BagHoroo newQuery()
- * @method static Builder|BagHoroo query()
- * @method static Builder|BagHoroo whereCode($value)
- * @method static Builder|BagHoroo whereCreatedAt($value)
- * @method static Builder|BagHoroo whereId($value)
- * @method static Builder|BagHoroo whereName($value)
- * @method static Builder|BagHoroo whereSoumDistrictId($value)
- * @method static Builder|BagHoroo whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property string $code Код
+ * @property string $name Баг,Хороо
+ * @property integer $soum_district_id Сум,Дүүрэг
  */
 class BagHoroo extends Model
 {
 
     use HasFactory;
+
+    use HasFilter;
 
     public $table = 'bag_horoos';
 
@@ -79,8 +62,8 @@ class BagHoroo extends Model
         'code' => 'required|string|max:255',
         'name' => 'required|string|max:255',
         'soum_district_id' => 'required',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+        'created_at' => 'nullable|string',
+        'updated_at' => 'nullable|string'
     ];
 
     /**
@@ -94,17 +77,17 @@ class BagHoroo extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function registers()
+    public function registerHistories()
     {
-        return $this->hasMany(\App\Models\Register::class, 'bag_horoo_id');
+        return $this->hasMany(\App\Models\RegisterHistory::class, 'bag_horoo_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function registerHistories()
+    public function registers()
     {
-        return $this->hasMany(\App\Models\RegisterHistory::class, 'bag_horoo_id');
+        return $this->hasMany(\App\Models\Register::class, 'bag_horoo_id');
     }
 
     /**
@@ -121,19 +104,17 @@ class BagHoroo extends Model
     public static $searchIn = [
         'code',
         'name',
-        'soum_district_id'
+        'soum_district_id',
+        'soum_districts:id:soum_district_id:name',
     ];
 
     /**
      * Filter Model
-     * @param Array $filters
-     * @return App\Models\BagHoroo
+     *
+     * @return array
      */
-    public function scopeFilter(Builder $query, array $filters)
+    public function getSearchIn()
     {
-        if (count($filters)) {
-            $this->buildFilter($query, $filters, BagHoroo::$searchIn);
-        }
-        return $query;
+        return BagHoroo::$searchIn;
     }
 }

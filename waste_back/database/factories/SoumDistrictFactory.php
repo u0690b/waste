@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\AimagCity;
 use App\Models\SoumDistrict;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,10 +23,11 @@ class SoumDistrictFactory extends Factory
     {
         return [
             'code' => $this->faker->word,
-            'name' => $this->faker->word,
-            'aimag_city_id' => AimagCity::factory(),
-            'created_at' => $this->faker->date('Y-m-d H:i:s'),
-            'updated_at' => $this->faker->date('Y-m-d H:i:s')
+        'name' => $this->faker->word,
+        'short' => $this->faker->word,
+        'aimag_city_id' => $this->faker->word,
+        'created_at' => $this->faker->word,
+        'updated_at' => $this->faker->word
         ];
     }
 }

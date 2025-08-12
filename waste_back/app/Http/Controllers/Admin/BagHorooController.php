@@ -14,28 +14,29 @@ class BagHorooController extends Controller
     /**
      * Display a listing of the BagHoroo.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index()
     {
-        $bagHoroos = BagHoroo::filter(Request::all(["search", ...BagHoroo::$searchIn]))->with('soum_district:id,name');
+        $bagHoroos = BagHoroo::filter(Request::all(["search", ...BagHoroo::$searchIn]))->with('soum_district:id,name')
+            ->orderBy(Request::input('orderBy') ?? 'id', Request::input('dir') ?? 'asc');
+        
         if (Request::has('only')) {
-            return json_encode($bagHoroos->paginate(Request::input('per_page'),['id', 'name']));
+            return json_encode($bagHoroos->cursorPaginate(Request::input('per_page'),['id', 'name']));
         }
+
         return Inertia::render('Admin/bag_horoos/Index', [
-            'filters' => Request::only(["search", ...BagHoroo::$searchIn]),
+            'filters' => Request::only(["search", ...BagHoroo::$searchIn, 'orderBy', 'dir']),
             'datas' => $bagHoroos
                 ->paginate(Request::input('per_page'))
-                ->withQueryString()
-                ->through(fn ($row) => $row->only('id','code','name','soum_district','soum_district_id')),
-            'host' => config('app.url'),
+                ->withQueryString(),
         ]);
     }
 
     /**
      * Show the form for creating a new BagHoroo.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function create()
     {
@@ -45,12 +46,29 @@ class BagHorooController extends Controller
     /**
      * Store a newly created BagHoroo in storage.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store()
     {
-        BagHoroo::create(Request::validate(BagHoroo::$rules));
-        return Redirect::route('admin.bag_horoos.index')->with('success', 'BagHoroo created.');
+        $rule = BagHoroo::$rules;
+        $input =  Request::validate($rule);
+        $bagHoroo = BagHoroo::create($input);
+        return redirect(Request::header('back') ?? route('admin.bag_horoos.show', $bagHoroo->getKey()))->with('success', 'Амжилттай үүсгэлээ.');
+    }
+
+    /**
+     * Show the form for editing the specified UserModel.
+     *
+     * @param BagHoroo $bagHoroo
+     *
+     * @return \Inertia\Response|Response|string|bool
+     */
+    public function show(BagHoroo $bagHoroo)
+    {
+        $bagHoroo->load('soum_district:id,name');
+        return Inertia::render('Admin/bag_horoos/Show', [
+            'data' =>  $bagHoroo,
+        ]);
     }
 
     /**
@@ -58,13 +76,13 @@ class BagHorooController extends Controller
      *
      * @param BagHoroo $bagHoroo
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function edit(BagHoroo $bagHoroo)
     {
+        $bagHoroo->load('soum_district:id,name');
         return Inertia::render('Admin/bag_horoos/Edit', [
             'data' =>  $bagHoroo,
-            'host' => config('app.url'),
         ]);
     }
 
@@ -73,12 +91,15 @@ class BagHorooController extends Controller
      *
      * @param BagHoroo $bagHoroo
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update(BagHoroo $bagHoroo)
     {
-        $bagHoroo->update(Request::validate(BagHoroo::$rules));
-        return Redirect::route('admin.bag_horoos.index')->with('success', 'BagHoroo updated.');
+        $rule = BagHoroo::$rules;
+        $input =  Request::validate($rule);
+        $bagHoroo->update($input);
+        
+        return redirect(Request::header('back') ?? route('admin.bag_horoos.show', $bagHoroo->getKey()))->with('success', 'Ажилттай хадгаллаа.');
     }
 
     /**
@@ -88,11 +109,11 @@ class BagHorooController extends Controller
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy(BagHoroo $bagHoroo)
     {
         $bagHoroo->delete();
-        return Redirect::route('admin.bag_horoos.index')->with('success', 'BagHoroo deleted.');
+        return redirect(Request::header('back') ?? route('admin.bag_horoos.index'))->with('success', 'Мэдээлэл устгагдлаа.');
     }
 }

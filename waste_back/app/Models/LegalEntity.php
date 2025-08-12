@@ -10,17 +10,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class LegalEntity
  * @package App\Models
- * @version January 18, 2023, 5:16 am +08
+ * @version August 12, 2025, 9:05 pm +08
  *
- * @property string $register
- * @property string $name
- * @property string $industry
+ * @property string $register Хуулийн этгээдийн регистр
+ * @property string $name Хуулийн этгээдийн нэр
+ * @property string $industry Үйл ажиллагааны чиглэл
  */
 class LegalEntity extends Model
 {
 
     use HasFactory;
-    public $timestamps = false;
+
+    use HasFilter;
+
     public $table = 'legal_entity';
     
     const CREATED_AT = 'created_at';
@@ -64,19 +66,18 @@ class LegalEntity extends Model
      * @var array
      */
     public static $searchIn = [
+        'register',
         'name',
+        'industry'
     ];
 
     /**
-    * Filter Model
-    * @param Array $filters
-    * @return App\Models\LegalEntity
-    */
-    public function scopeFilter(Builder $query, array $filters)
+     * Filter Model
+     * 
+     * @return array
+     */
+    public function getSearchIn()
     {
-        if (count($filters)) {
-            $query =  $this->buildFilter($query, $filters, LegalEntity::$searchIn);
-        }
-        return $query;
+        return LegalEntity::$searchIn;
     }
 }

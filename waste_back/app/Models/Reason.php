@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Reason
  * @package App\Models
- * @version July 26, 2025, 6:48 am +08
+ * @version August 12, 2025, 8:00 pm +08
  *
  * @property \App\Models\Place $place
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories

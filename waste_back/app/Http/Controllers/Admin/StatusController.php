@@ -14,28 +14,29 @@ class StatusController extends Controller
     /**
      * Display a listing of the Status.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index()
     {
-        $statuses = Status::filter(Request::all(["search", ...Status::$searchIn]));
+        $statuses = Status::filter(Request::all(["search", ...Status::$searchIn]))
+            ->orderBy(Request::input('orderBy') ?? 'id', Request::input('dir') ?? 'asc');
+        
         if (Request::has('only')) {
-            return json_encode($statuses->paginate(Request::input('per_page'),['id', 'name']));
+            return json_encode($statuses->cursorPaginate(Request::input('per_page'),['id', 'name']));
         }
+
         return Inertia::render('Admin/statuses/Index', [
-            'filters' => Request::only(["search", ...Status::$searchIn]),
+            'filters' => Request::only(["search", ...Status::$searchIn, 'orderBy', 'dir']),
             'datas' => $statuses
                 ->paginate(Request::input('per_page'))
-                ->withQueryString()
-                ->through(fn ($row) => $row->only('id','name')),
-            'host' => config('app.url'),
+                ->withQueryString(),
         ]);
     }
 
     /**
      * Show the form for creating a new Status.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function create()
     {
@@ -45,12 +46,29 @@ class StatusController extends Controller
     /**
      * Store a newly created Status in storage.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store()
     {
-        Status::create(Request::validate(Status::$rules));
-        return Redirect::route('admin.statuses.index')->with('success', 'Status created.');
+        $rule = Status::$rules;
+        $input =  Request::validate($rule);
+        $status = Status::create($input);
+        return redirect(Request::header('back') ?? route('admin.statuses.show', $status->getKey()))->with('success', 'Амжилттай үүсгэлээ.');
+    }
+
+    /**
+     * Show the form for editing the specified UserModel.
+     *
+     * @param Status $status
+     *
+     * @return \Inertia\Response|Response|string|bool
+     */
+    public function show(Status $status)
+    {
+        $status;
+        return Inertia::render('Admin/statuses/Show', [
+            'data' =>  $status,
+        ]);
     }
 
     /**
@@ -58,13 +76,13 @@ class StatusController extends Controller
      *
      * @param Status $status
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function edit(Status $status)
     {
+        $status;
         return Inertia::render('Admin/statuses/Edit', [
             'data' =>  $status,
-            'host' => config('app.url'),
         ]);
     }
 
@@ -73,12 +91,15 @@ class StatusController extends Controller
      *
      * @param Status $status
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update(Status $status)
     {
-        $status->update(Request::validate(Status::$rules));
-        return Redirect::route('admin.statuses.index')->with('success', 'Status updated.');
+        $rule = Status::$rules;
+        $input =  Request::validate($rule);
+        $status->update($input);
+        
+        return redirect(Request::header('back') ?? route('admin.statuses.show', $status->getKey()))->with('success', 'Ажилттай хадгаллаа.');
     }
 
     /**
@@ -88,11 +109,11 @@ class StatusController extends Controller
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy(Status $status)
     {
         $status->delete();
-        return Redirect::route('admin.statuses.index')->with('success', 'Status deleted.');
+        return redirect(Request::header('back') ?? route('admin.statuses.index'))->with('success', 'Мэдээлэл устгагдлаа.');
     }
 }

@@ -19,7 +19,7 @@ class ResolveAPIController extends AppBaseController
      * Display a listing of the Resolve.
      * GET|HEAD /resolves
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index(Request $request)
     {
@@ -41,7 +41,7 @@ class ResolveAPIController extends AppBaseController
      * Store a newly created Resolve in storage.
      * POST /resolves
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store(Request $request)
     {
@@ -59,7 +59,7 @@ class ResolveAPIController extends AppBaseController
      *
      * @param Resolve $resolves
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function show($id)
     {
@@ -79,7 +79,7 @@ class ResolveAPIController extends AppBaseController
      *
      * @param Resolve $resolves
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update($id, Request $request)
     {
@@ -105,7 +105,7 @@ class ResolveAPIController extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy($id)
     {

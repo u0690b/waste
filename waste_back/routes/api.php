@@ -72,3 +72,43 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'admin'], function () {
     Route::resource('places', App\Http\Controllers\API\PlaceAPIController::class);
 });
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('aimag_cities', App\Http\Controllers\API\AimagCityAPIController::class);
+});
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('soum_districts', App\Http\Controllers\API\SoumDistrictAPIController::class);
+});
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('bag_horoos', App\Http\Controllers\API\BagHorooAPIController::class);
+});
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('statuses', App\Http\Controllers\API\StatusAPIController::class);
+});
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('resolves', App\Http\Controllers\API\ResolveAPIController::class);
+});
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('notifications', App\Http\Controllers\API\NotificationAPIController::class);
+});
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('industries', App\Http\Controllers\API\IndustryAPIController::class);
+});
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('legal_entities', App\Http\Controllers\API\LegalEntityAPIController::class);
+});

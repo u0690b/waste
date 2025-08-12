@@ -1,37 +1,38 @@
 <template>
-  <Layout :title="title">
-    <div class="p-4 mt-8 sm:px-8 sm:py-4 ">
-      <div class="p-4 bg-white rounded shadow">
-        <h1>
-          <BackButton href="/admin/places" />{{ title }}
-          <ILink class="float-right ml-4 btn btn-warning" :href="`/admin/places/${data.id}/edit`">Засах</ILink>
-          <DestroyButton :href="'/admin/places/' + props.data.id" class="float-right">Устгах</DestroyButton>
-        </h1>
-        <div class="show-grid">
-          <InputLabel v-for="item in fields" :key="item.label" v-bind="item" class="border-b border-dashed" />
+    <Layout :title="title">
+        <div class="p-4 mt-8 sm:px-8 sm:py-4 ">
+            <div class="p-4 bg-white rounded shadow">
+                <h1>
+                    <BackButton href="/admin/places" />{{ title }}
+                    <ILink class="float-right ml-4 btn btn-warning" :href="`/admin/places/${data.id}/edit`">Засах
+                    </ILink>
+                    <DestroyButton :href="'/admin/places/' + props.data.id" class="float-right">Устгах</DestroyButton>
+                </h1>
+                <div class="show-grid">
+                    <InputLabel v-for="item in fields" :key="item.label" v-bind="item" class="border-b border-dashed" />
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </Layout>
+    </Layout>
 </template>
 
 <script setup>
-  import Layout from '@/Layouts/Admin.vue';
-  import InputLabel from '@/Components/InputLabel.vue';
-  import BackButton from '@/Components/BackButton.vue';
-  import DestroyButton from '@/Components/DestroyButton.vue';
+import Layout from '@/Layouts/Admin.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import BackButton from '@/Components/BackButton.vue';
+import DestroyButton from '@/Components/DestroyButton.vue';
 
-  const props = defineProps({
+const props = defineProps({
     data: [Object],
-  });
+});
 
-  const title = 'Хариуцах нэгж'
+const title = 'Хариуцах нэгж дэлгэрэнгүй'
 
-  const fields = [
+const fields = [
     { label: '', value: props.data.id },
-    { label: 'Нэр', value: props.data.name },
+    { label: 'Газрын нэр', value: props.data.name },
     { label: '', value: props.data.created_at },
     { label: '', value: props.data.updated_at }
-  ]
+]
 
 </script>

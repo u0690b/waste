@@ -29,7 +29,7 @@
   },
   "git.autofetch": true,
   "[php]": {
-    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    "editor.defaultFormatter": "DEVSENSE.phptools-vscode"
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"

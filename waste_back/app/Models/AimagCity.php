@@ -9,41 +9,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class AimagCity
- *
  * @package App\Models
- * @version November 24, 2022, 7:40 pm UTC
- * @property \Illuminate\Database\Eloquent\Collection $registers
+ * @version August 12, 2025, 7:19 pm +08
+ *
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
- * @property \Illuminate\Database\Eloquent\Collection $users
+ * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $soumDistricts
- * @property string $code
- * @property string $name
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read int|null $register_histories_count
- * @property-read int|null $registers_count
- * @property-read int|null $soum_districts_count
- * @property-read int|null $users_count
- * @method static \Database\Factories\AimagCityFactory factory(...$parameters)
- * @method static Builder|AimagCity filter(array $filters)
- * @method static Builder|AimagCity newModelQuery()
- * @method static Builder|AimagCity newQuery()
- * @method static Builder|AimagCity query()
- * @method static Builder|AimagCity whereCode($value)
- * @method static Builder|AimagCity whereCreatedAt($value)
- * @method static Builder|AimagCity whereId($value)
- * @method static Builder|AimagCity whereName($value)
- * @method static Builder|AimagCity whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property \Illuminate\Database\Eloquent\Collection $users
+ * @property string $code Код
+ * @property string $name Аймаг нэр
  */
 class AimagCity extends Model
 {
 
     use HasFactory;
 
-    public $table = 'aimag_cities';
+    use HasFilter;
 
+    public $table = 'aimag_cities';
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -74,17 +58,9 @@ class AimagCity extends Model
     public static $rules = [
         'code' => 'required|string|max:255',
         'name' => 'required|string|max:255',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+        'created_at' => 'nullable|string',
+        'updated_at' => 'nullable|string'
     ];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function registers()
-    {
-        return $this->hasMany(\App\Models\Register::class, 'aimag_city_id');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -97,9 +73,9 @@ class AimagCity extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function users()
+    public function registers()
     {
-        return $this->hasMany(\App\Models\User::class, 'aimag_city_id');
+        return $this->hasMany(\App\Models\Register::class, 'aimag_city_id');
     }
 
     /**
@@ -108,6 +84,14 @@ class AimagCity extends Model
     public function soumDistricts()
     {
         return $this->hasMany(\App\Models\SoumDistrict::class, 'aimag_city_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function users()
+    {
+        return $this->hasMany(\App\Models\User::class, 'aimag_city_id');
     }
 
     /**
@@ -120,14 +104,11 @@ class AimagCity extends Model
 
     /**
      * Filter Model
-     * @param Array $filters
-     * @return App\Models\AimagCity
+     * 
+     * @return array
      */
-    public function scopeFilter(Builder $query, array $filters)
+    public function getSearchIn()
     {
-        if (count($filters)) {
-            $this->buildFilter($query, $filters, AimagCity::$searchIn);
-        }
-        return $query;
+        return AimagCity::$searchIn;
     }
 }

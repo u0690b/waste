@@ -9,37 +9,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class Status
- *
  * @package App\Models
- * @version November 24, 2022, 7:41 pm UTC
- * @property \Illuminate\Database\Eloquent\Collection $registers
+ * @version August 12, 2025, 8:07 pm +08
+ *
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
- * @property string $name
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read int|null $register_histories_count
- * @property-read int|null $registers_count
- * @method static \Database\Factories\StatusFactory factory(...$parameters)
- * @method static Builder|Status filter(array $filters)
- * @method static Builder|Status newModelQuery()
- * @method static Builder|Status newQuery()
- * @method static Builder|Status query()
- * @method static Builder|Status whereCreatedAt($value)
- * @method static Builder|Status whereId($value)
- * @method static Builder|Status whereName($value)
- * @method static Builder|Status whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property \Illuminate\Database\Eloquent\Collection $registers
+ * @property string $name Төлөв
  */
-
-
 class Status extends Model
 {
 
     use HasFactory;
 
-    public $table = 'statuses';
+    use HasFilter;
 
+    public $table = 'statuses';
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -67,17 +52,9 @@ class Status extends Model
      */
     public static $rules = [
         'name' => 'required|string|max:255',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+        'created_at' => 'nullable|string',
+        'updated_at' => 'nullable|string'
     ];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function registers()
-    {
-        return $this->hasMany(\App\Models\Register::class, 'status_id');
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -85,6 +62,14 @@ class Status extends Model
     public function registerHistories()
     {
         return $this->hasMany(\App\Models\RegisterHistory::class, 'status_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function registers()
+    {
+        return $this->hasMany(\App\Models\Register::class, 'status_id');
     }
 
     /**
@@ -96,14 +81,11 @@ class Status extends Model
 
     /**
      * Filter Model
-     * @param Array $filters
-     * @return App\Models\Status
+     * 
+     * @return array
      */
-    public function scopeFilter(Builder $query, array $filters)
+    public function getSearchIn()
     {
-        if (count($filters)) {
-            $this->buildFilter($query, $filters, Status::$searchIn);
-        }
-        return $query;
+        return Status::$searchIn;
     }
 }

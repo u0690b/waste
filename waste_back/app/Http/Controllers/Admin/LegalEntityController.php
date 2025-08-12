@@ -14,28 +14,29 @@ class LegalEntityController extends Controller
     /**
      * Display a listing of the LegalEntity.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index()
     {
-        $legalEntities = LegalEntity::filter(Request::all(["search", ...LegalEntity::$searchIn]));
+        $legalEntities = LegalEntity::filter(Request::all(["search", ...LegalEntity::$searchIn]))
+            ->orderBy(Request::input('orderBy') ?? 'id', Request::input('dir') ?? 'asc');
+        
         if (Request::has('only')) {
-            return json_encode($legalEntities->paginate(Request::input('per_page'),['id', 'name']));
+            return json_encode($legalEntities->cursorPaginate(Request::input('per_page'),['id', 'name']));
         }
+
         return Inertia::render('Admin/legal_entities/Index', [
-            'filters' => Request::only(["search", ...LegalEntity::$searchIn]),
+            'filters' => Request::only(["search", ...LegalEntity::$searchIn, 'orderBy', 'dir']),
             'datas' => $legalEntities
                 ->paginate(Request::input('per_page'))
-                ->withQueryString()
-                ->through(fn ($row) => $row->only('id','register','name','industry')),
-            'host' => config('app.url'),
+                ->withQueryString(),
         ]);
     }
 
     /**
      * Show the form for creating a new LegalEntity.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function create()
     {
@@ -45,12 +46,29 @@ class LegalEntityController extends Controller
     /**
      * Store a newly created LegalEntity in storage.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store()
     {
-        LegalEntity::create(Request::validate(LegalEntity::$rules));
-        return Redirect::route('admin.legal_entities.index')->with('success', 'LegalEntity created.');
+        $rule = LegalEntity::$rules;
+        $input =  Request::validate($rule);
+        $legalEntity = LegalEntity::create($input);
+        return redirect(Request::header('back') ?? route('admin.legal_entities.show', $legalEntity->getKey()))->with('success', 'Амжилттай үүсгэлээ.');
+    }
+
+    /**
+     * Show the form for editing the specified UserModel.
+     *
+     * @param LegalEntity $legalEntity
+     *
+     * @return \Inertia\Response|Response|string|bool
+     */
+    public function show(LegalEntity $legalEntity)
+    {
+        $legalEntity;
+        return Inertia::render('Admin/legal_entities/Show', [
+            'data' =>  $legalEntity,
+        ]);
     }
 
     /**
@@ -58,13 +76,13 @@ class LegalEntityController extends Controller
      *
      * @param LegalEntity $legalEntity
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function edit(LegalEntity $legalEntity)
     {
+        $legalEntity;
         return Inertia::render('Admin/legal_entities/Edit', [
             'data' =>  $legalEntity,
-            'host' => config('app.url'),
         ]);
     }
 
@@ -73,12 +91,15 @@ class LegalEntityController extends Controller
      *
      * @param LegalEntity $legalEntity
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update(LegalEntity $legalEntity)
     {
-        $legalEntity->update(Request::validate(LegalEntity::$rules));
-        return Redirect::route('admin.legal_entities.index')->with('success', 'LegalEntity updated.');
+        $rule = LegalEntity::$rules;
+        $input =  Request::validate($rule);
+        $legalEntity->update($input);
+        
+        return redirect(Request::header('back') ?? route('admin.legal_entities.show', $legalEntity->getKey()))->with('success', 'Ажилттай хадгаллаа.');
     }
 
     /**
@@ -88,11 +109,11 @@ class LegalEntityController extends Controller
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy(LegalEntity $legalEntity)
     {
         $legalEntity->delete();
-        return Redirect::route('admin.legal_entities.index')->with('success', 'LegalEntity deleted.');
+        return redirect(Request::header('back') ?? route('admin.legal_entities.index'))->with('success', 'Мэдээлэл устгагдлаа.');
     }
 }

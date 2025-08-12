@@ -8,17 +8,6 @@ use Inertia\Inertia;
 // AttachedFiles
 Route::resource('attached_files', App\Http\Controllers\Admin\AttachedFileController::class);
 
-// BagHoroos
-Route::resource('bag_horoos', App\Http\Controllers\Admin\BagHorooController::class);
-
-// Places
-Route::resource('places', App\Http\Controllers\Admin\PlaceController::class);
-
-// Reasons
-Route::resource('reasons', App\Http\Controllers\Admin\ReasonController::class);
-
-// Statuses
-Route::resource('statuses', App\Http\Controllers\Admin\StatusController::class);
 
 
 
@@ -33,18 +22,12 @@ Route::put('/registers/{register}/allocation', [App\Http\Controllers\Admin\Regis
 // RegisterHistories
 Route::resource('register_histories', App\Http\Controllers\Admin\RegisterHistoryController::class);
 
-// AimagCities
-Route::resource('aimag_cities', App\Http\Controllers\Admin\AimagCityController::class);
-
 // SoumDistricts
 Route::resource('soum_districts', App\Http\Controllers\Admin\SoumDistrictController::class);
 
 // UsersModels
 Route::resource('users', App\Http\Controllers\Admin\UsersController::class);
 Route::get('mklink', [App\Http\Controllers\Admin\UsersController::class, 'mklink']);
-// Resolves
-Route::resource('resolves', App\Http\Controllers\Admin\ResolvesController::class);
-
 
 // Notifications
 Route::resource('notifications', App\Http\Controllers\Admin\NotificationController::class);
@@ -65,3 +48,18 @@ Route::resource('reasons', App\Http\Controllers\Admin\ReasonController::class);
 
 // Places
 Route::resource('places', App\Http\Controllers\Admin\PlaceController::class);
+
+// AimagCities
+Route::resource('aimag_cities', App\Http\Controllers\Admin\AimagCityController::class);
+
+// SoumDistricts
+Route::resource('soum_districts', App\Http\Controllers\Admin\SoumDistrictController::class);
+
+// BagHoroos
+Route::resource('bag_horoos', App\Http\Controllers\Admin\BagHorooController::class);
+
+// Statuses
+Route::resource('statuses', App\Http\Controllers\Admin\StatusController::class);
+
+// Resolves
+Route::resource('resolves', App\Http\Controllers\Admin\ResolveController::class);

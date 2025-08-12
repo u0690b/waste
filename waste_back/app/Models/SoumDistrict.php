@@ -9,45 +9,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * Class SoumDistrict
- *
  * @package App\Models
- * @version November 24, 2022, 7:40 pm UTC
+ * @version August 12, 2025, 7:23 pm +08
+ *
  * @property \App\Models\AimagCity $aimagCity
- * @property \Illuminate\Database\Eloquent\Collection $registers
- * @property \Illuminate\Database\Eloquent\Collection $registerHistories
  * @property \Illuminate\Database\Eloquent\Collection $bagHoroos
+ * @property \Illuminate\Database\Eloquent\Collection $registerHistories
+ * @property \Illuminate\Database\Eloquent\Collection $registers
  * @property \Illuminate\Database\Eloquent\Collection $users
- * @property string $code
- * @property string $name
- * @property integer $aimag_city_id
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\AimagCity $aimag_city
- * @property-read int|null $bag_horoos_count
- * @property-read int|null $register_histories_count
- * @property-read int|null $registers_count
- * @property-read int|null $users_count
- * @method static \Database\Factories\SoumDistrictFactory factory(...$parameters)
- * @method static Builder|SoumDistrict filter(array $filters)
- * @method static Builder|SoumDistrict newModelQuery()
- * @method static Builder|SoumDistrict newQuery()
- * @method static Builder|SoumDistrict query()
- * @method static Builder|SoumDistrict whereAimagCityId($value)
- * @method static Builder|SoumDistrict whereCode($value)
- * @method static Builder|SoumDistrict whereCreatedAt($value)
- * @method static Builder|SoumDistrict whereId($value)
- * @method static Builder|SoumDistrict whereName($value)
- * @method static Builder|SoumDistrict whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property string $code Код
+ * @property string $name Аймаг нэр
+ * @property string $short товч
+ * @property integer $aimag_city_id Аймаг/Нийслэл
  */
 class SoumDistrict extends Model
 {
 
     use HasFactory;
 
-    public $table = 'soum_districts';
+    use HasFilter;
 
+    public $table = 'soum_districts';
+    
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -57,6 +40,7 @@ class SoumDistrict extends Model
     public $fillable = [
         'code',
         'name',
+        'short',
         'aimag_city_id'
     ];
 
@@ -69,6 +53,7 @@ class SoumDistrict extends Model
         'id' => 'integer',
         'code' => 'string',
         'name' => 'string',
+        'short' => 'string',
         'aimag_city_id' => 'integer'
     ];
 
@@ -80,9 +65,10 @@ class SoumDistrict extends Model
     public static $rules = [
         'code' => 'required|string|max:255',
         'name' => 'required|string|max:255',
+        'short' => 'nullable|string|max:255',
         'aimag_city_id' => 'required',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+        'created_at' => 'nullable|string',
+        'updated_at' => 'nullable|string'
     ];
 
     /**
@@ -96,9 +82,9 @@ class SoumDistrict extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function registers()
+    public function bagHoroos()
     {
-        return $this->hasMany(\App\Models\Register::class, 'soum_district_id');
+        return $this->hasMany(\App\Models\BagHoroo::class, 'soum_district_id');
     }
 
     /**
@@ -112,9 +98,9 @@ class SoumDistrict extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function bagHoroos()
+    public function registers()
     {
-        return $this->hasMany(\App\Models\BagHoroo::class, 'soum_district_id');
+        return $this->hasMany(\App\Models\Register::class, 'soum_district_id');
     }
 
     /**
@@ -131,19 +117,17 @@ class SoumDistrict extends Model
     public static $searchIn = [
         'code',
         'name',
+        'short',
         'aimag_city_id'
     ];
 
     /**
      * Filter Model
-     * @param Array $filters
-     * @return App\Models\SoumDistrict
+     * 
+     * @return array
      */
-    public function scopeFilter(Builder $query, array $filters)
+    public function getSearchIn()
     {
-        if (count($filters)) {
-            $this->buildFilter($query, $filters, SoumDistrict::$searchIn);
-        }
-        return $query;
+        return SoumDistrict::$searchIn;
     }
 }

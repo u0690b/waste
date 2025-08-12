@@ -6,8 +6,6 @@ namespace App\Http\Controllers\API;
 use App\Models\BagHoroo;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\JsonResponse;
-use Log;
 use Response;
 
 /**
@@ -21,18 +19,11 @@ class BagHorooAPIController extends AppBaseController
      * Display a listing of the BagHoroo.
      * GET|HEAD /bagHoroos
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index(Request $request)
     {
-        $input = $request->validate(['date' => 'nullable|date']);
-        if (isset($input['date'])) {
-            $count =   BagHoroo::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
-            if ($count <= 0) {
-                return [];
-            }
-        }
-        $query = BagHoroo::filter($request->all(["search", ...BagHoroo::$searchIn]));
+        $query = BagHoroo::filter( $request->all(["search", ...BagHoroo::$searchIn]))->with('soum_district:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -42,16 +33,15 @@ class BagHorooAPIController extends AppBaseController
         }
 
         $bagHoroos = $query->get();
-        $json = $bagHoroos->toJson(JSON_UNESCAPED_UNICODE);
-        Log::info($json);
-        return  $json;
+
+        return $bagHoroos->toJson();
     }
 
     /**
      * Store a newly created BagHoroo in storage.
      * POST /bagHoroos
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store(Request $request)
     {
@@ -60,7 +50,7 @@ class BagHorooAPIController extends AppBaseController
         /** @var BagHoroo $bagHoroo */
         $bagHoroo = BagHoroo::create($input);
 
-        return $bagHoroo;
+        return $bagHoroo->toJson();
     }
 
     /**
@@ -69,7 +59,7 @@ class BagHorooAPIController extends AppBaseController
      *
      * @param BagHoroo $bagHoroos
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function show($id)
     {
@@ -80,7 +70,7 @@ class BagHorooAPIController extends AppBaseController
             return $this->sendError('Bag Horoo not found');
         }
 
-        return $bagHoroo;
+        return $bagHoroo->toJson();
     }
 
     /**
@@ -89,7 +79,7 @@ class BagHorooAPIController extends AppBaseController
      *
      * @param BagHoroo $bagHoroos
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update($id, Request $request)
     {
@@ -104,7 +94,7 @@ class BagHorooAPIController extends AppBaseController
         $bagHoroo->fill($input);
         $bagHoroo->save();
 
-        return $bagHoroo;
+        return $bagHoroo->toJson();
     }
 
     /**
@@ -115,7 +105,7 @@ class BagHorooAPIController extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy($id)
     {

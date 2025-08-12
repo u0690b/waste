@@ -14,28 +14,29 @@ class AimagCityController extends Controller
     /**
      * Display a listing of the AimagCity.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index()
     {
-        $aimagCities = AimagCity::filter(Request::all(["search", ...AimagCity::$searchIn]));
+        $aimagCities = AimagCity::filter(Request::all(["search", ...AimagCity::$searchIn]))
+            ->orderBy(Request::input('orderBy') ?? 'id', Request::input('dir') ?? 'asc');
+        
         if (Request::has('only')) {
-            return json_encode($aimagCities->paginate(Request::input('per_page'),['id', 'name']));
+            return json_encode($aimagCities->cursorPaginate(Request::input('per_page'),['id', 'name']));
         }
+
         return Inertia::render('Admin/aimag_cities/Index', [
-            'filters' => Request::only(["search", ...AimagCity::$searchIn]),
+            'filters' => Request::only(["search", ...AimagCity::$searchIn, 'orderBy', 'dir']),
             'datas' => $aimagCities
                 ->paginate(Request::input('per_page'))
-                ->withQueryString()
-                ->through(fn ($row) => $row->only('id','code','name')),
-            'host' => config('app.url'),
+                ->withQueryString(),
         ]);
     }
 
     /**
      * Show the form for creating a new AimagCity.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function create()
     {
@@ -45,12 +46,29 @@ class AimagCityController extends Controller
     /**
      * Store a newly created AimagCity in storage.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store()
     {
-        AimagCity::create(Request::validate(AimagCity::$rules));
-        return Redirect::route('admin.aimag_cities.index')->with('success', 'AimagCity created.');
+        $rule = AimagCity::$rules;
+        $input =  Request::validate($rule);
+        $aimagCity = AimagCity::create($input);
+        return redirect(Request::header('back') ?? route('admin.aimag_cities.show', $aimagCity->getKey()))->with('success', 'Амжилттай үүсгэлээ.');
+    }
+
+    /**
+     * Show the form for editing the specified UserModel.
+     *
+     * @param AimagCity $aimagCity
+     *
+     * @return \Inertia\Response|Response|string|bool
+     */
+    public function show(AimagCity $aimagCity)
+    {
+        $aimagCity;
+        return Inertia::render('Admin/aimag_cities/Show', [
+            'data' =>  $aimagCity,
+        ]);
     }
 
     /**
@@ -58,13 +76,13 @@ class AimagCityController extends Controller
      *
      * @param AimagCity $aimagCity
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function edit(AimagCity $aimagCity)
     {
+        $aimagCity;
         return Inertia::render('Admin/aimag_cities/Edit', [
             'data' =>  $aimagCity,
-            'host' => config('app.url'),
         ]);
     }
 
@@ -73,12 +91,15 @@ class AimagCityController extends Controller
      *
      * @param AimagCity $aimagCity
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update(AimagCity $aimagCity)
     {
-        $aimagCity->update(Request::validate(AimagCity::$rules));
-        return Redirect::route('admin.aimag_cities.index')->with('success', 'AimagCity updated.');
+        $rule = AimagCity::$rules;
+        $input =  Request::validate($rule);
+        $aimagCity->update($input);
+        
+        return redirect(Request::header('back') ?? route('admin.aimag_cities.show', $aimagCity->getKey()))->with('success', 'Ажилттай хадгаллаа.');
     }
 
     /**
@@ -88,11 +109,11 @@ class AimagCityController extends Controller
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy(AimagCity $aimagCity)
     {
         $aimagCity->delete();
-        return Redirect::route('admin.aimag_cities.index')->with('success', 'AimagCity deleted.');
+        return redirect(Request::header('back') ?? route('admin.aimag_cities.index'))->with('success', 'Мэдээлэл устгагдлаа.');
     }
 }

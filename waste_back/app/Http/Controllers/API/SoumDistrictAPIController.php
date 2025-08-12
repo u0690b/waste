@@ -6,7 +6,6 @@ namespace App\Http\Controllers\API;
 use App\Models\SoumDistrict;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
-use Log;
 use Response;
 
 /**
@@ -20,18 +19,11 @@ class SoumDistrictAPIController extends AppBaseController
      * Display a listing of the SoumDistrict.
      * GET|HEAD /soumDistricts
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index(Request $request)
     {
-        $input = $request->validate(['date' => 'nullable|date']);
-        if (isset($input['date'])) {
-            $count =   SoumDistrict::where('updated_at', '>', $input['date'])->orWhere('created_at', '>', $input['date'])->count();
-            if ($count <= 0) {
-                return [];
-            }
-        }
-        $query = SoumDistrict::filter($request->all(["search", ...SoumDistrict::$searchIn]));
+        $query = SoumDistrict::filter( $request->all(["search", ...SoumDistrict::$searchIn]))->with('aimag_city:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -41,16 +33,15 @@ class SoumDistrictAPIController extends AppBaseController
         }
 
         $soumDistricts = $query->get();
-        $json = $soumDistricts->toJson(JSON_UNESCAPED_UNICODE);
-        Log::info($json);
-        return  $json;
+
+        return $soumDistricts->toJson();
     }
 
     /**
      * Store a newly created SoumDistrict in storage.
      * POST /soumDistricts
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store(Request $request)
     {
@@ -59,7 +50,7 @@ class SoumDistrictAPIController extends AppBaseController
         /** @var SoumDistrict $soumDistrict */
         $soumDistrict = SoumDistrict::create($input);
 
-        return $soumDistrict;
+        return $soumDistrict->toJson();
     }
 
     /**
@@ -68,7 +59,7 @@ class SoumDistrictAPIController extends AppBaseController
      *
      * @param SoumDistrict $soumDistricts
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function show($id)
     {
@@ -79,7 +70,7 @@ class SoumDistrictAPIController extends AppBaseController
             return $this->sendError('Soum District not found');
         }
 
-        return $soumDistrict;
+        return $soumDistrict->toJson();
     }
 
     /**
@@ -88,7 +79,7 @@ class SoumDistrictAPIController extends AppBaseController
      *
      * @param SoumDistrict $soumDistricts
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update($id, Request $request)
     {
@@ -103,7 +94,7 @@ class SoumDistrictAPIController extends AppBaseController
         $soumDistrict->fill($input);
         $soumDistrict->save();
 
-        return $soumDistrict;
+        return $soumDistrict->toJson();
     }
 
     /**
@@ -114,7 +105,7 @@ class SoumDistrictAPIController extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy($id)
     {

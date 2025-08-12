@@ -14,28 +14,29 @@ class SoumDistrictController extends Controller
     /**
      * Display a listing of the SoumDistrict.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index()
     {
-        $soumDistricts = SoumDistrict::filter(Request::all(["search", ...SoumDistrict::$searchIn]))->with('aimag_city:id,name');
+        $soumDistricts = SoumDistrict::filter(Request::all(["search", ...SoumDistrict::$searchIn]))->with('aimag_city:id,name')
+            ->orderBy(Request::input('orderBy') ?? 'id', Request::input('dir') ?? 'asc');
+        
         if (Request::has('only')) {
-            return json_encode($soumDistricts->paginate(Request::input('per_page'),['id', 'name']));
+            return json_encode($soumDistricts->cursorPaginate(Request::input('per_page'),['id', 'name']));
         }
+
         return Inertia::render('Admin/soum_districts/Index', [
-            'filters' => Request::only(["search", ...SoumDistrict::$searchIn]),
+            'filters' => Request::only(["search", ...SoumDistrict::$searchIn, 'orderBy', 'dir']),
             'datas' => $soumDistricts
                 ->paginate(Request::input('per_page'))
-                ->withQueryString()
-                ->through(fn ($row) => $row->only('id','code','name','aimag_city','aimag_city_id')),
-            'host' => config('app.url'),
+                ->withQueryString(),
         ]);
     }
 
     /**
      * Show the form for creating a new SoumDistrict.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function create()
     {
@@ -45,12 +46,29 @@ class SoumDistrictController extends Controller
     /**
      * Store a newly created SoumDistrict in storage.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store()
     {
-        SoumDistrict::create(Request::validate(SoumDistrict::$rules));
-        return Redirect::route('admin.soum_districts.index')->with('success', 'SoumDistrict created.');
+        $rule = SoumDistrict::$rules;
+        $input =  Request::validate($rule);
+        $soumDistrict = SoumDistrict::create($input);
+        return redirect(Request::header('back') ?? route('admin.soum_districts.show', $soumDistrict->getKey()))->with('success', 'Амжилттай үүсгэлээ.');
+    }
+
+    /**
+     * Show the form for editing the specified UserModel.
+     *
+     * @param SoumDistrict $soumDistrict
+     *
+     * @return \Inertia\Response|Response|string|bool
+     */
+    public function show(SoumDistrict $soumDistrict)
+    {
+        $soumDistrict->load('aimag_city:id,name');
+        return Inertia::render('Admin/soum_districts/Show', [
+            'data' =>  $soumDistrict,
+        ]);
     }
 
     /**
@@ -58,13 +76,13 @@ class SoumDistrictController extends Controller
      *
      * @param SoumDistrict $soumDistrict
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function edit(SoumDistrict $soumDistrict)
     {
+        $soumDistrict->load('aimag_city:id,name');
         return Inertia::render('Admin/soum_districts/Edit', [
             'data' =>  $soumDistrict,
-            'host' => config('app.url'),
         ]);
     }
 
@@ -73,12 +91,15 @@ class SoumDistrictController extends Controller
      *
      * @param SoumDistrict $soumDistrict
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function update(SoumDistrict $soumDistrict)
     {
-        $soumDistrict->update(Request::validate(SoumDistrict::$rules));
-        return Redirect::route('admin.soum_districts.index')->with('success', 'SoumDistrict updated.');
+        $rule = SoumDistrict::$rules;
+        $input =  Request::validate($rule);
+        $soumDistrict->update($input);
+        
+        return redirect(Request::header('back') ?? route('admin.soum_districts.show', $soumDistrict->getKey()))->with('success', 'Ажилттай хадгаллаа.');
     }
 
     /**
@@ -88,11 +109,11 @@ class SoumDistrictController extends Controller
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function destroy(SoumDistrict $soumDistrict)
     {
         $soumDistrict->delete();
-        return Redirect::route('admin.soum_districts.index')->with('success', 'SoumDistrict deleted.');
+        return redirect(Request::header('back') ?? route('admin.soum_districts.index'))->with('success', 'Мэдээлэл устгагдлаа.');
     }
 }

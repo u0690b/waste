@@ -81,13 +81,16 @@ class DatabaseSeeder extends Seeder
         Status::create(['name' => 'Илгээсэн']);
         Status::create(['name' => 'Шийдвэрлэсэн']);
 
+
+
         Resolve::create(['name' => 'Зөрчлийг арилгуулсан']);
         Resolve::create(['name' => 'Торгууль']);
         Resolve::create(['name' => 'Татгалзсан']);
         Resolve::create(['name' => 'Сануулга']);
         Resolve::create(['name' => 'Мэдэгдэх хуудас']);
-        Resolve::create(['name' => 'Албан даалгавар']);
+        Resolve::create(['name' => 'Албан даалгавар, албан шаардлага']);
         Resolve::create(['name' => 'Бусад']);
+        Resolve::create(['name' => 'Харьяаллын дагуу шилжүүлсэн']);
 
 
         \App\Models\User::factory()->create([

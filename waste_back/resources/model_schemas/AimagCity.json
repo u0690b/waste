@@ -13,7 +13,7 @@
     },
     {
         "name": "code",
-        "dbType": "string,255",
+        "dbType": "string",
         "htmlType": "text",
         "validations": "required|string|max:255",
         "searchable": true,
@@ -25,7 +25,7 @@
     },
     {
         "name": "name",
-        "dbType": "string,255",
+        "dbType": "string",
         "htmlType": "text",
         "validations": "required|string|max:255",
         "searchable": true,
@@ -37,9 +37,9 @@
     },
     {
         "name": "created_at",
-        "dbType": "datetime:nullable",
-        "htmlType": "date",
-        "validations": "nullable",
+        "dbType": "string",
+        "htmlType": "text",
+        "validations": "nullable|string",
         "searchable": false,
         "fillable": false,
         "primary": false,
@@ -49,9 +49,9 @@
     },
     {
         "name": "updated_at",
-        "dbType": "datetime:nullable",
-        "htmlType": "date",
-        "validations": "nullable",
+        "dbType": "string",
+        "htmlType": "text",
+        "validations": "nullable|string",
         "searchable": false,
         "fillable": false,
         "primary": false,
@@ -61,18 +61,18 @@
     },
     {
         "type": "relation",
-        "relation": "1tm,Register,aimag_city_id"
-    },
-    {
-        "type": "relation",
         "relation": "1tm,RegisterHistory,aimag_city_id"
     },
     {
         "type": "relation",
-        "relation": "1tm,User,aimag_city_id"
+        "relation": "1tm,Register,aimag_city_id"
     },
     {
         "type": "relation",
         "relation": "1tm,SoumDistrict,aimag_city_id"
+    },
+    {
+        "type": "relation",
+        "relation": "1tm,User,aimag_city_id"
     }
 ]

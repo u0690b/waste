@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Place
  * @package App\Models
- * @version July 26, 2025, 6:46 am +08
+ * @version August 12, 2025, 7:56 pm +08
  *
  * @property \Illuminate\Database\Eloquent\Collection $reasons
  * @property string $name Газрын нэр

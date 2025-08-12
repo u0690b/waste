@@ -10,15 +10,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * Class Resolve
  * @package App\Models
- * @version January 1, 2023, 3:15 pm +08
+ * @version August 12, 2025, 8:21 pm +08
  *
+ * @property \Illuminate\Database\Eloquent\Collection $registerHistories
  * @property \Illuminate\Database\Eloquent\Collection $registers
- * @property string $name
+ * @property string $name Шийдвэрийн төрөл
  */
 class Resolve extends Model
 {
 
     use HasFactory;
+
+    use HasFilter;
 
     public $table = 'resolves';
     
@@ -49,9 +52,17 @@ class Resolve extends Model
      */
     public static $rules = [
         'name' => 'required|string|max:255',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+        'created_at' => 'nullable|string',
+        'updated_at' => 'nullable|string'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function registerHistories()
+    {
+        return $this->hasMany(\App\Models\RegisterHistory::class, 'resolve_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -69,15 +80,12 @@ class Resolve extends Model
     ];
 
     /**
-    * Filter Model
-    * @param Array $filters
-    * @return App\Models\Resolve
-    */
-    public function scopeFilter(Builder $query, array $filters)
+     * Filter Model
+     * 
+     * @return array
+     */
+    public function getSearchIn()
     {
-        if (count($filters)) {
-            $query =  $this->buildFilter($query, $filters, Resolve::$searchIn);
-        }
-        return $query;
+        return Resolve::$searchIn;
     }
 }
