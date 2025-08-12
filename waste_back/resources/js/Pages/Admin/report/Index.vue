@@ -100,16 +100,24 @@ const tableData = computed(() => {
     return combineCell([...props.datas])
 })
 
-function combineCell(list) {
-    if (!list.length) return []
+function combineCell(data) {
+    if (!data.length) return []
+    // Deep clone to avoid mutating props.datas
+    const list = data.map(row => ({ ...row }))
     const fields = typesList.value
+
     for (const field of fields) {
         let k = 0
         while (k < list.length) {
             list[k][field + 'span'] = 1
             list[k][field + 'dis'] = false
             let i = k + 1
-            while (i < list.length && list[k][field] === list[i][field] && list[k][field] !== '') {
+            while (
+                i < list.length &&
+                list[k][field] === list[i][field] &&
+                list[k][field] !== undefined &&
+                list[k][field] !== ''
+            ) {
                 list[k][field + 'span']++
                 list[i][field + 'span'] = 1
                 list[i][field + 'dis'] = true
