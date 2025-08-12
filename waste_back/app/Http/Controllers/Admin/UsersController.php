@@ -3,192 +3,133 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\BagHoroo;
 use App\Models\User;
-use Artisan;
+use App\Models\UsersModel;
+use Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
-use Response;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
-use Spatie\FlareClient\Http\Exceptions\NotFound;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Response;
 
 class UsersController extends Controller
 {
-
-    function __construct()
-    {
-        $this->middleware(function ($request, $next) {
-            $user = Auth::user();
-            if (!($user->roles == 'admin' || $user->roles == 'mha' || $user->roles == 'da' || $user->roles == 'zaa')) {
-                abort(403);
-            }
-            return $next($request);
-        });
-    }
     /**
-     * Display a listing of the User.
+     * Display a listing of the UsersModel.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index()
     {
-        $input = Request::all(["search", ...User::$searchIn]);
-        $user = Auth::user();
-
-        if (!($user->roles == 'admin' || $user->roles == 'zaa')) {
-            $input['soum_district_id'] = $user->soum_district_id;
-        }
-        if (!$input['roles']) {
-            //$input['roles'] = 'none';
-        }
-        if ($user->roles == 'mha') {
-            $input['roles'] = ['mha', 'zaa', 'da'];
-        }
-        $users = User::filter($input)->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name');
+        $users = UsersModel::filter(Request::all(["search", ...UsersModel::$searchIn]))->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name')->with('place:id,name')
+            ->orderBy(Request::input('orderBy') ?? 'id', Request::input('dir') ?? 'asc');
 
         if (Request::has('only')) {
-            return json_encode($users->paginate(Request::input('per_page'), ['id', 'name']));
+            return json_encode($users->cursorPaginate(Request::input('per_page'), ['id', 'name']));
         }
+
         return Inertia::render('Admin/users_models/Index', [
-            'filters' => $input,
+            'filters' => Request::only(["search", ...UsersModel::$searchIn, 'orderBy', 'dir']),
             'datas' => $users
                 ->paginate(Request::input('per_page'))
-                ->withQueryString()
-                ->toArray(),
-
-            'host' => config('app.url'),
+                ->withQueryString(),
         ]);
     }
 
     /**
-     * Show the form for creating a new User.
+     * Show the form for creating a new UsersModel.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function create()
     {
-        return Inertia::render('Admin/users_models/Create', [
-            'host' => config('app.url'),
-            'aimag_city' => Auth::user()->aimag_city,
-            'soum_district' => Auth::user()->soum_district,
-        ]);
+        return Inertia::render('Admin/users_models/Create', ['host' => config('app.url')]);
     }
 
     /**
-     * Store a newly created User in storage.
+     * Store a newly created UsersModel in storage.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store()
     {
-        $rules = User::$rules;
-        $rules['username'] = 'required|string|max:255|unique:' . User::class;
-        $rules['password'] = ['required', 'confirmed', Rules\Password::defaults()];
-        $rules['bag_horoo_id'] = 'nullable';
+        $rule = UsersModel::$rules;
+        $rule['username'] = 'required|string|max:255|unique:' . User::class;
+        $rule['password'] = ['required', Password::defaults()];
+        $rule['bag_horoo_id'] = 'nullable';
 
-        $input = Request::validate($rules);
-        if ($input['roles'] == 'mha' || $input['roles'] == 'da') {
-            if (!$input['bag_horoo_id']) {
-                $input['bag_horoo_id'] = BagHoroo::whereSoumDistrictId($input['soum_district_id'])->first()->id;
-            }
-        } else {
-            Request::validate([
-                'bag_horoo_id' => 'required',
-            ]);
-        }
-
+        $input = Request::validate($rule);
 
 
         $input['password'] = Hash::make($input['password']);
-        $user = User::create($input);
-        $user->sendUserCreated();
-        return Redirect::route('admin.users.index')->with('success', 'Хэрэглэгчийг амжилттай бүртгэлээ.');
+        $user = UsersModel::create($input);
+
+        return redirect(Request::header('back') ?? route('admin.users.show', $user->getKey()))->with('success', 'Амжилттай үүсгэлээ.');
     }
 
     /**
-     * Show the form for editing the specified User.
+     * Show the form for editing the specified UserModel.
      *
-     * @param User $user
+     * @param UsersModel $user
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
-    public function edit(User $user)
+    public function show(UsersModel $user)
     {
-        $user->load('aimag_city:id,name')->load('bag_horoo:id,name')->load('soum_district:id,name');
-        return Inertia::render('Admin/users_models/Edit', [
+        $user->load('aimag_city:id,name')->load('bag_horoo:id,name')->load('soum_district:id,name')->load('place:id,name');
+        return Inertia::render('Admin/users_models/Show', [
             'data' => $user,
-            'host' => config('app.url'),
-            'aimag_city' => Auth::user()->aimag_city,
-            'soum_district' => Auth::user()->soum_district,
         ]);
     }
 
     /**
-     * Update the specified User in storage.
+     * Show the form for editing the specified UsersModel.
      *
-     * @param User $user
+     * @param UsersModel $user
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
-    public function update(User $user)
+    public function edit(UsersModel $user)
     {
-        $rules = User::$rules;
-        unset($rules['username']);
-        $rules['password'] = 'sometimes';
-        $input = Request::validate($rules);
+        $user->load('aimag_city:id,name')->load('bag_horoo:id,name')->load('soum_district:id,name')->load('place:id,name');
+        return Inertia::render('Admin/users_models/Edit', [
+            'data' => $user,
+        ]);
+    }
+
+    /**
+     * Update the specified UsersModel in storage.
+     *
+     * @param UsersModel $user
+     *
+     * @return \Inertia\Response|Response|string|bool
+     */
+    public function update(UsersModel $user)
+    {
+        $rule = UsersModel::$rules;
+        unset($rule['username']);
+        $rule['password'] = 'sometimes';
+
+        $input = Request::validate($rule);
         if (isset($input['password']))
             $input['password'] = Hash::make($input['password']);
         $user->update($input);
-        return Redirect::route('admin.users.index')->with('success', 'Хэрэглэгчийг амжилттай заслаа.');
+
+        return redirect(Request::header('back') ?? route('admin.users.show', $user->getKey()))->with('success', 'Ажилттай хадгаллаа.');
     }
 
     /**
-     * Remove the specified User from storage.
+     * Remove the specified UsersModel from storage.
      *
-     * @param User $user
+     * @param UsersModel $user
      *
      * @throws \Exception
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
-    public function destroy(User $user)
+    public function destroy(UsersModel $user)
     {
         $user->delete();
-        return Redirect::back()->with('success', 'Хэрэглэгчийг идэвхигүй болголоо.');
-    }
-
-    /**
-     * Update the specified User in storage.
-     *
-     * @param User $user
-     *
-     * @return Response
-     */
-    public function mklink()
-    {
-        $user = Auth::user();
-        if ($user->roles !== 'admin') {
-            abort(403);
-        }
-
-        echo Artisan::call('cache:clear');
-        echo Artisan::call('config:clear');
-        echo Artisan::call('route:clear');
-        echo Artisan::call('view:clear');
-        echo Artisan::call('optimize:clear');
-        echo Artisan::call('optimize');
-        echo Artisan::call('config:cache');
-        echo Artisan::call('event:cache');
-        echo Artisan::call('route:cache');
-        echo Artisan::call('view:cache');
-        echo Artisan::call('storage:link');
-
-        // Optionally, get the output
-        $output = Artisan::output();
-        echo $output;
+        return redirect(Request::header('back') ?? route('admin.users.index'))->with('success', 'Мэдээлэл устгагдлаа.');
     }
 }

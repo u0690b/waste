@@ -61,7 +61,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
  * @property-read \App\Models\SoumDistrict $soum_district
  * @method static \Illuminate\Database\Eloquent\Builder|User filter(array $filters)
  */
-class User extends Model  implements
+class User extends UsersModel implements
     AuthenticatableContract,
     AuthorizableContract,
     CanResetPasswordContract
@@ -72,23 +72,7 @@ class User extends Model  implements
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    public $fillable = [
-        'name',
-        'username',
-        'phone',
-        'password',
-        'aimag_city_id',
-        'soum_district_id',
-        'bag_horoo_id',
-        'roles',
-        'push_token',
-        "position",
-    ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -103,43 +87,8 @@ class User extends Model  implements
 
 
 
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'id' => 'integer',
-        'name' => 'string',
-        'phone' => 'string',
-        'username' => 'string',
-        'aimag_city_id' => 'integer',
-        'soum_district_id' => 'integer',
-        'bag_horoo_id' => 'integer',
-        'roles' => 'string',
-        'push_token' => 'string',
-        "position" => 'string',
-    ];
 
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        'name' => 'required|string|max:255',
-        'username' => 'required|string|max:255',
-        'phone' => 'required|string|max:12',
-        'password' => 'required|string|max:255',
-        'aimag_city_id' => 'required',
-        'soum_district_id' => 'required',
-        'bag_horoo_id' => 'required',
-        'roles' => 'required|string',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable',
-        'push_token' => 'nullable',
-        "position" => 'required|string'
-    ];
+
     public static $rolesModel = [
         "admin" => "Админ",
         "zaa" => "Захирагчийн ажлын алба",
@@ -152,52 +101,7 @@ class User extends Model  implements
         "emy" => "Эрүүл мэндийн яам",
         "none" => "Идэвхигүй",
     ];
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
-    public function aimag_city()
-    {
-        return $this->belongsTo(\App\Models\AimagCity::class, 'aimag_city_id');
-    }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
-    public function bag_horoo()
-    {
-        return $this->belongsTo(\App\Models\BagHoroo::class, 'bag_horoo_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
-    public function soum_district()
-    {
-        return $this->belongsTo(\App\Models\SoumDistrict::class, 'soum_district_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function registers()
-    {
-        return $this->hasMany(\App\Models\Register::class, 'user_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function registerHistories()
-    {
-        return $this->hasMany(\App\Models\RegisterHistory::class, 'user_id');
-    }
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function notifications()
-    {
-        return $this->hasMany(\App\Models\Notification::class, 'user_id');
-    }
 
 
     /**
@@ -206,16 +110,17 @@ class User extends Model  implements
     public static $searchIn = [
         'name',
         'username',
-        'phone',
         'aimag_city_id',
         'soum_district_id',
         'bag_horoo_id',
-        'roles',
+        'phone',
+        'place_id',
+        'roles'
     ];
 
     /**
      * Filter Model
-     * 
+     *
      * @return array
      */
     public function getSearchIn()
@@ -225,8 +130,8 @@ class User extends Model  implements
 
     /**
      * Filter Model
-     * 
-     * @return array
+     *
+     * @return void
      */
     public function sendUserCreated()
     {
@@ -234,7 +139,7 @@ class User extends Model  implements
             'user_id' => $this->id,
             'type' => 'user',
             'title' => 'Тавтай морил',
-            'content' =>  'Шинэ хэрэглэгч бүртгэгдсэн',
+            'content' => 'Шинэ хэрэглэгч бүртгэгдсэн',
         ]);
 
         $users = User::whereSoumDistrictId($this->soum_district_id)
@@ -249,7 +154,7 @@ class User extends Model  implements
                 'user_id' => $user->id,
                 'type' => 'user',
                 'title' => 'Шинэ хэрэглэгч бүртгэгдсэн',
-                'content' =>   $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч',
+                'content' => $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч',
             ]);
         }
 
@@ -258,7 +163,7 @@ class User extends Model  implements
             $messagingService = new FirebaseMessagingService();
             foreach ($tokens as $key => $token) {
                 $title = 'Зөрчил шийдвэрлэгдлээ';
-                $body =   $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч';
+                $body = $this->name . ' /' . $this->username . '/ шинэ хэрэглэгч';
                 $customData = [
                     'id' => $this->id,
                     'type' => 'register',

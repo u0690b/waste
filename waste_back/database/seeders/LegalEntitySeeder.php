@@ -26,13 +26,11 @@ class LegalEntitySeeder extends Seeder
 
         $chunked = array_chunk($json, 5000);
         foreach ($chunked as $chunk) {
-            DB::beginTransaction();
-            foreach ($chunk as $legacy) {
-                LegalEntity::insert($legacy);
-            }
+            // DB::beginTransaction();
+            LegalEntity::insert($chunk);
             $rec += 5000;
             $this->command->info($rec . ' records inserted');
-            DB::commit();
+            // DB::commit();
         }
     }
 }

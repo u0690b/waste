@@ -79,6 +79,7 @@ class DatabaseSeeder extends Seeder
 
         Status::create(['name' => 'Ноорог /Серверт илгээгээгүй/']);
         Status::create(['name' => 'Илгээсэн']);
+        Status::create(['name' => 'Шилжүүлсэн']);
         Status::create(['name' => 'Шийдвэрлэсэн']);
 
 

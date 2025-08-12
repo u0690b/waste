@@ -22,7 +22,7 @@ class Industry extends Model
     use HasFilter;
 
     public $table = 'industries';
-    
+    public $timestamps = false;
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -52,7 +52,7 @@ class Industry extends Model
         'name' => 'required|string|max:255'
     ];
 
-    
+
 
     /**
      * @var array
@@ -63,7 +63,7 @@ class Industry extends Model
 
     /**
      * Filter Model
-     * 
+     *
      * @return array
      */
     public function getSearchIn()

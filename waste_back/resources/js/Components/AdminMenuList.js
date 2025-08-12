@@ -11,6 +11,7 @@ export const AdminMenu = [
     { text:'Notifications',href:'/admin/notifications',icon: 'ti-receipt'},
     { text:'Industries',href:'/admin/industries',icon: 'ti-receipt'},
     { text:'Legal Entities',href:'/admin/legal_entities',icon: 'ti-receipt'},
+    { text:'Users Models',href:'/admin/users_models',icon: 'ti-receipt'},
     // admin_menu
 ];
 

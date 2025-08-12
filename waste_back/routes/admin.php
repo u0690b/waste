@@ -63,3 +63,6 @@ Route::resource('statuses', App\Http\Controllers\Admin\StatusController::class);
 
 // Resolves
 Route::resource('resolves', App\Http\Controllers\Admin\ResolveController::class);
+
+
+// UsersModels

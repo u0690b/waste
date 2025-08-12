@@ -172,7 +172,7 @@ return [
     */
 
     'attributes' => [
-        'username' => 'Нэвтрэх нэр эсвэл утасны дугаар',
+        'username' => 'Нэвтрэх нэр ',
         'password' => 'Нууц үг'
     ],
 

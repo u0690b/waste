@@ -25,7 +25,7 @@
                             <img :src="row[header.key]" :class="header.class" />
                         </template>
                         <template v-else>
-                            <ILink v-if="url" :href="url + '/' + row.id + '?' + (callback ?? '')"
+                            <ILink v-if="!noadd && url" :href="url + '/' + row.id + '?' + (callback ?? '')"
                                 class="items-center focus:text-primary-500">
                                 {{ parseVal(row, header.key) }}
                             </ILink>
@@ -33,11 +33,11 @@
                         </template>
                     </td>
                     <td class="py-1 pl-2 text-center">
-                        <DestroyButton :href="url + '/' + row.id" title="устгах" class="inline-block px-1 py-0"><i
-                                class="ti-trash" />
+                        <DestroyButton v-if="!nodelete && url" :href="url + '/' + row.id" title="устгах"
+                            class="inline-block px-1 py-0"><i class="ti-trash" />
                         </DestroyButton>
 
-                        <ILink v-if="url" :href="url + '/' + row.id + '/edit?' + (callback ?? '')"
+                        <ILink v-if="!noedit && url" :href="url + '/' + row.id + '/edit?' + (callback ?? '')"
                             class="inline-block px-2 text-white bg-orange-500 rounded hover:bg-orange-700 "
                             title="Засах">
                             <i class="ti-pencil-alt" />
@@ -63,6 +63,9 @@ export default {
         datas: { type: Object, required: true },
         url: String,
         showAdd: { type: [Boolean], default: false },
+        nodelete: { type: Boolean, default: false },
+        noadd: { type: Boolean, default: false },
+        noedit: { type: Boolean, default: false },
     },
     emits: ['orderBy', 'showAdd', 'update:showAdd'],
     setup(props, { emit }) {

@@ -6,60 +6,51 @@ use Illuminate\Database\Eloquent\Builder;
 
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class UsersModel
- *
  * @package App\Models
- * @version November 25, 2022, 1:42 pm UTC
+ * @version August 12, 2025, 9:08 pm +08
+ *
  * @property \App\Models\AimagCity $aimagCity
  * @property \App\Models\BagHoroo $bagHoroo
  * @property \App\Models\SoumDistrict $soumDistrict
- * @property \Illuminate\Database\Eloquent\Collection $registers
+ * @property \Illuminate\Database\Eloquent\Collection $notifications
  * @property \Illuminate\Database\Eloquent\Collection $registerHistories
+ * @property \Illuminate\Database\Eloquent\Collection $registerHistory1s
+ * @property \Illuminate\Database\Eloquent\Collection $registers
+ * @property \Illuminate\Database\Eloquent\Collection $register2s
+ * @property \Illuminate\Database\Eloquent\Collection $register3s
  * @property string $name
  * @property string $username
  * @property string $password
  * @property integer $aimag_city_id
  * @property integer $soum_district_id
  * @property integer $bag_horoo_id
+ * @property string $phone
+ * @property string $place_id
  * @property string $roles
  * @property string $remember_token
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\AimagCity $aimag_city
- * @property-read \App\Models\BagHoroo $bag_horoo
- * @property-read int|null $register_histories_count
- * @property-read int|null $registers_count
- * @property-read \App\Models\SoumDistrict $soum_district
- * @method static \Database\Factories\UsersModelFactory factory(...$parameters)
- * @method static Builder|UsersModel filter(array $filters)
- * @method static Builder|UsersModel newModelQuery()
- * @method static Builder|UsersModel newQuery()
- * @method static Builder|UsersModel query()
- * @method static Builder|UsersModel whereAimagCityId($value)
- * @method static Builder|UsersModel whereBagHorooId($value)
- * @method static Builder|UsersModel whereCreatedAt($value)
- * @method static Builder|UsersModel whereId($value)
- * @method static Builder|UsersModel whereName($value)
- * @method static Builder|UsersModel wherePassword($value)
- * @method static Builder|UsersModel whereRememberToken($value)
- * @method static Builder|UsersModel whereRoles($value)
- * @method static Builder|UsersModel whereSoumDistrictId($value)
- * @method static Builder|UsersModel whereUpdatedAt($value)
- * @method static Builder|UsersModel whereUsername($value)
- * @mixin \Eloquent
+ * @property string $push_token
  */
 class UsersModel extends Model
 {
-
     use HasFactory;
+    use SoftDeletes;
+
+    use HasFilter;
 
     public $table = 'users';
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'push_token',
+    ];
 
 
 
@@ -71,8 +62,11 @@ class UsersModel extends Model
         'aimag_city_id',
         'soum_district_id',
         'bag_horoo_id',
+        'phone',
+        'place_id',
         'roles',
-        'remember_token'
+        'remember_token',
+        'push_token'
     ];
 
     /**
@@ -88,8 +82,11 @@ class UsersModel extends Model
         'aimag_city_id' => 'integer',
         'soum_district_id' => 'integer',
         'bag_horoo_id' => 'integer',
+        'phone' => 'string',
+        'place_id' => 'integer',
         'roles' => 'string',
-        'remember_token' => 'string'
+        'remember_token' => 'string',
+        'push_token' => 'string'
     ];
 
     /**
@@ -102,12 +99,16 @@ class UsersModel extends Model
         'username' => 'required|string|max:255',
         'password' => 'required|string|max:255',
         'aimag_city_id' => 'required',
-        'soum_district_id' => 'required',
-        'bag_horoo_id' => 'required',
-        'roles' => 'required|string',
+        'soum_district_id' => 'nullable',
+        'bag_horoo_id' => 'nullable',
+        'phone' => 'required|string|max:255',
+        'place_id' => 'required',
+        'roles' => 'required|string|max:255',
         'remember_token' => 'nullable|string|max:100',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable'
+        'push_token' => 'nullable|string|max:255',
+        'created_at' => 'nullable|string',
+        'updated_at' => 'nullable|string',
+        'deleted_at' => 'nullable|string'
     ];
 
     /**
@@ -133,13 +134,20 @@ class UsersModel extends Model
     {
         return $this->belongsTo(\App\Models\SoumDistrict::class, 'soum_district_id');
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function place()
+    {
+        return $this->belongsTo(\App\Models\Place::class, 'place_id');
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function registers()
+    public function mynotifications()
     {
-        return $this->hasMany(\App\Models\Register::class, 'user_id');
+        return $this->hasMany(\App\Models\Notification::class, 'user_id');
     }
 
     /**
@@ -147,7 +155,39 @@ class UsersModel extends Model
      **/
     public function registerHistories()
     {
-        return $this->hasMany(\App\Models\RegisterHistory::class, 'user_id');
+        return $this->hasMany(\App\Models\RegisterHistory::class, 'comf_user_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function registerHistory1s()
+    {
+        return $this->hasMany(\App\Models\RegisterHistory::class, 'reg_user_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function registers()
+    {
+        return $this->hasMany(\App\Models\Register::class, 'allocate_by');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function register2s()
+    {
+        return $this->hasMany(\App\Models\Register::class, 'comf_user_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function register3s()
+    {
+        return $this->hasMany(\App\Models\Register::class, 'reg_user_id');
     }
 
     /**
@@ -160,20 +200,20 @@ class UsersModel extends Model
         'aimag_city_id',
         'soum_district_id',
         'bag_horoo_id',
+        'phone',
+        'place_id',
         'roles',
-        'remember_token'
+        'remember_token',
+        'push_token'
     ];
 
     /**
      * Filter Model
-     * @param Array $filters
-     * @return App\Models\UsersModel
+     *
+     * @return array
      */
-    public function scopeFilter(Builder $query, array $filters)
+    public function getSearchIn()
     {
-        if (count($filters)) {
-            $this->buildFilter($query, $filters, UsersModel::$searchIn);
-        }
-        return $query;
+        return UsersModel::$searchIn;
     }
 }

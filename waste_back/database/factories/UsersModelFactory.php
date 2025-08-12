@@ -23,15 +23,19 @@ class UsersModelFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'username' => $this->faker->word,
-            'password' => $this->faker->word,
-            'aimag_city_id' => $this->faker->word,
-            'soum_district_id' => $this->faker->word,
-            'bag_horoo_id' => $this->faker->word,
-            'roles' => $this->faker->text,
-            'remember_token' => $this->faker->word,
-            'created_at' => $this->faker->date('Y-m-d H:i:s'),
-            'updated_at' => $this->faker->date('Y-m-d H:i:s')
+        'username' => $this->faker->word,
+        'password' => $this->faker->word,
+        'aimag_city_id' => $this->faker->word,
+        'soum_district_id' => $this->faker->word,
+        'bag_horoo_id' => $this->faker->word,
+        'phone' => $this->faker->word,
+        'place_id' => $this->faker->word,
+        'roles' => $this->faker->word,
+        'remember_token' => $this->faker->word,
+        'push_token' => $this->faker->word,
+        'created_at' => $this->faker->word,
+        'updated_at' => $this->faker->word,
+        'deleted_at' => $this->faker->word
         ];
     }
 }
