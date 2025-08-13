@@ -23,7 +23,8 @@ class LegalEntityAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = LegalEntity::filter( $request->all(["search", ...LegalEntity::$searchIn]));
+        $input = $request->validate(['search' => 'sometimes|string|min:3|max:255', ...LegalEntity::$searchIn]);
+        $query = LegalEntity::filter($request->all(["search", ...LegalEntity::$searchIn]));
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));

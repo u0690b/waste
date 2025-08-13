@@ -44,16 +44,16 @@ class UserAPIController extends AppBaseController
     {
         $input = $request->all(["search", ...User::$searchIn]);
         $user = Auth::user();
-        $input['soum_district_id'] =  $user->soum_district_id;
+        $input['soum_district_id'] = $user->soum_district_id;
         switch ($user->roles) {
             case 'mha':
-                $input['roles'] = ['mha',  'zaa', 'da'];
+                $input['roles'] = ['mha', 'zaa', 'da'];
                 break;
             case 'da':
-                $input['roles'] = ['mha',  'hd'];
+                $input['roles'] = ['mha', 'hd'];
                 break;
             case 'zaa':
-                $input['roles'] = ['da',  'mha'];
+                $input['roles'] = ['da', 'mha'];
                 break;
             default:
                 $input['roles'] = 'null';
@@ -95,7 +95,7 @@ class UserAPIController extends AppBaseController
             }
 
 
-            $input['id'] = ['mha',  'zaa', 'da'];
+            $input['id'] = ['mha', 'zaa', 'da'];
         }
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));
@@ -112,10 +112,10 @@ class UserAPIController extends AppBaseController
             } else {
                 $name = $v->name . ' /' . $roles[$v->roles] . '/';
             }
-            return array_merge($v->toArray(), ["name" =>  $name]);
+            return array_merge($v->toArray(), ["name" => $name]);
         });
 
-        return   $statuses->toJson();
+        return $statuses->toJson();
     }
 
     /**
@@ -141,7 +141,7 @@ class UserAPIController extends AppBaseController
 
         $user->token = $user->createToken('token')->plainTextToken;
 
-        return  Response::json($user->toArray(), 200, [], JSON_UNESCAPED_SLASHES);
+        return Response::json($user->toArray(), 200, [], JSON_UNESCAPED_SLASHES);
     }
 
     /**
@@ -153,14 +153,14 @@ class UserAPIController extends AppBaseController
     {
         $rules = User::$rules;
         $rules['username'] = 'required|string|max:255|unique:' . User::class;
-        $rules['password'] = ['required',  \Illuminate\Validation\Rules\Password::defaults()];
+        $rules['password'] = ['required', \Illuminate\Validation\Rules\Password::defaults()];
         $rules['soum_district_id'] = 'nullable';
         $rules['bag_horoo_id'] = 'nullable';
         $rules['aimag_city_id'] = 'nullable';
         $rules['position'] = 'required';
         unset($rules['roles']);
 
-        $input =  $request->validate($rules);
+        $input = $request->validate($rules);
         $input['aimag_city_id'] = 7;
         if (!$input['soum_district_id']) {
             $input['soum_district_id'] = 154;
@@ -185,7 +185,7 @@ class UserAPIController extends AppBaseController
      */
     public function user(Request $request)
     {
-        return  Auth::user()->load('aimag_city:id,name')->load('bag_horoo:id,name')->load('soum_district:id,name');
+        return Auth::user()->load('aimag_city:id,name')->load('bag_horoo:id,name')->load('soum_district:id,name');
     }
 
     /**

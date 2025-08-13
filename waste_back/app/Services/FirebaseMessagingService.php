@@ -67,7 +67,7 @@ class FirebaseMessagingService
         // Build the message targeting the specific device token
         $message = CloudMessage::withTarget('token', $deviceToken)
             ->withNotification($notification)
-             //->withWebPushConfig($config)
+            //->withWebPushConfig($config)
             ->withData($data); // Add any custom data
 
         try {
@@ -81,9 +81,9 @@ class FirebaseMessagingService
             return ['success' => true, 'messageId' => $sendReport];
         } catch (Exception $e) {
             // Handle exceptions (e.g., invalid token, network issues)
-            // In a real app, you'd log the error: 
+            // In a real app, you'd log the error:
             Log::error('FCM Send Error', ['error' => $e->getMessage(), 'token' => $deviceToken]);
-            echo "Error sending FCM message: " . $e->getMessage(); // For demonstration
+            ////echo "Error sending FCM message: " . $e->getMessage(); // For demonstration
 
             return ['success' => false, 'error' => $e->getMessage()];
         }
@@ -121,8 +121,8 @@ class FirebaseMessagingService
             return ['success' => true, 'messageId' => $sendReport];
         } catch (Exception $e) {
             // Handle exceptions
-             Log::error('FCM Topic Send Error', ['error' => $e->getMessage(), 'topic' => $topic]);
-            echo "Error sending FCM message to topic: " . $e->getMessage(); // For demonstration
+            Log::error('FCM Topic Send Error', ['error' => $e->getMessage(), 'topic' => $topic]);
+            //echo "Error sending FCM message to topic: " . $e->getMessage(); // For demonstration
 
             return ['success' => false, 'error' => $e->getMessage()];
         }

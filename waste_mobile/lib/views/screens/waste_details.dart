@@ -256,14 +256,12 @@ class _WasteDetailsState extends State<WasteDetails> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          if (widget.waste.statusId != 3 &&
-                              (['admin'].contains(AuthController.user!.roles) ||
-                                  ['da'].contains(AuthController.user!.roles) ||
-                                  [
-                                    'mha',
-                                  ].contains(AuthController.user!.roles) ||
-                                  widget.waste.comfUserId ==
-                                      AuthController.user!.id))
+                          if (widget.waste.statusId != 4 &&
+                              [
+                                'admin',
+                                'da',
+                                'mha',
+                              ].contains(AuthController.user!.roles))
                             ElevatedButton(
                               onPressed: () async {
                                 final ret = await Get.to<bool?>(

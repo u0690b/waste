@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -20,8 +19,8 @@ return new class extends Migration
             $table->string('register')->nullable()->comment('Регистрийн дугаар');
             $table->string('chiglel')->nullable()->comment('Үйл ажиллагааны чиглэл');
             $table->foreignId('aimag_city_id')->comment('Аймаг,Нийслэл')->constrained('aimag_cities');
-            $table->foreignId('soum_district_id')->comment('Сум,Дүүрэг')->constrained('soum_districts');
-            $table->foreignId('bag_horoo_id')->comment('Баг,Хороо')->constrained('bag_horoos');
+            $table->foreignId('soum_district_id')->nullable()->comment('Сум,Дүүрэг')->constrained('soum_districts');
+            $table->foreignId('bag_horoo_id')->nullable()->comment('Баг,Хороо')->constrained('bag_horoos');
             $table->string('address', 500)->nullable()->comment('Хаяг, байршилд');
             $table->string('description', 2000)->comment('Гаргасан зөрчлийн байдал');
             $table->foreignId('reason_id')->comment('Зөрчлийн төрөл')->constrained('reasons');

@@ -22,8 +22,8 @@
                     </li>
                     <li class="-mb-px mr-2 last:mr-0 flex-auto text-center">
                         <a class="text-xs font-bold uppercase px-5 py-3 shadow-lg rounded block leading-normal text-blue-600 bg-white"
-                            @click="form.status_id = 3" v-bind:class="{ '!text-white bg-blue-600': openTab === 3 }">
-                            Хуваарилсан
+                            @click="form.status_id = 3" v-bind:class="{ '!text-white !bg-blue-600': openTab === 3 }">
+                            Шилжүүлсэн
                         </a>
                     </li>
                     <li class="flex-auto mr-2 -mb-px text-center last:mr-0">
@@ -85,7 +85,7 @@
                                                     <div class="px-4">
                                                         <div>
                                                             <a href="#" class="text-gray-600 font-bolder">{{ data.name
-                                                                }}</a>
+                                                            }}</a>
                                                         </div>
                                                         <div class="text-sm font-bold">
                                                             {{ data.register }}
@@ -156,7 +156,7 @@
                                                                         :class="[active ? 'bg-blue-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-1 py-2 text-sm',]">
                                                                         <i
                                                                             class="ti ti-direction-alt  text-gray-500 font-bold  mr-2" />
-                                                                        Хуваарилах
+                                                                        Шилжүүлсэн
                                                                     </ILink>
                                                                     </MenuItem>
                                                                     <MenuItem v-if="data.status_id != 4"

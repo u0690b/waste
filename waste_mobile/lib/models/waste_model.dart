@@ -28,21 +28,26 @@ class WasteModel {
   DateTime? updated_at;
   DateTime? reg_at;
 
-  NameModel get reason =>
-      Constants.reasons.firstWhere((element) => element.id == reason_id,
-          orElse: () => NameModel(name: '', id: -1));
-  NameModel get status =>
-      Constants.status.firstWhere((element) => element.id == status_id,
-          orElse: () => NameModel(name: '', id: -1));
-  NameModel get aimag_city =>
-      Constants.aimagCities.firstWhere((element) => element.id == aimag_city_id,
-          orElse: () => NameModel(name: '', id: -1));
+  NameModel get reason => Constants.reasons.firstWhere(
+    (element) => element.id == reason_id,
+    orElse: () => NameModel(name: '', id: -1),
+  );
+  NameModel get status => Constants.status.firstWhere(
+    (element) => element.id == status_id,
+    orElse: () => NameModel(name: '', id: -1),
+  );
+  NameModel get aimag_city => Constants.aimagCities.firstWhere(
+    (element) => element.id == aimag_city_id,
+    orElse: () => NameModel(name: '', id: -1),
+  );
   NameModel get soum_district => Constants.soumDistricts.firstWhere(
-      (element) => element.id == soum_district_id,
-      orElse: () => NameModel(name: '', id: -1));
-  NameModel get bag_horoo =>
-      Constants.bagHoroos.firstWhere((element) => element.id == bag_horoo_id,
-          orElse: () => NameModel(name: '', id: -1));
+    (element) => element.id == soum_district_id,
+    orElse: () => NameModel(name: '', id: -1),
+  );
+  NameModel get bag_horoo => Constants.bagHoroos.firstWhere(
+    (element) => element.id == bag_horoo_id,
+    orElse: () => NameModel(name: '', id: -1),
+  );
 
   String fullAddress() {
     return "${aimag_city.name} ${soum_district.name} ${bag_horoo.name}";
@@ -75,28 +80,28 @@ class WasteModel {
   }
 
   Map<String, dynamic> toJson([isLocal = true]) => {
-        'long': long,
-        'lat': lat,
-        'register': register,
-        'whois': whois,
-        'name': name,
-        'chiglel': chiglel,
-        'zuil_zaalt': zuil_zaalt,
-        'description': description,
-        'resolve_desc': resolve_desc,
-        'reason_id': reason_id,
-        'status_id': status_id,
-        'aimag_city_id': aimag_city_id,
-        'soum_district_id': soum_district_id,
-        'bag_horoo_id': bag_horoo_id,
-        'address': address,
-        'user_id': user_id,
-        if (isLocal) 'images': imageFileList ?? [],
-        if (isLocal) 'video': videoFile,
-        'created_at': created_at?.toIso8601String(),
-        'updated_at': updated_at?.toIso8601String(),
-        'reg_at': (reg_at ?? DateTime.now()).toIso8601String(),
-      };
+    'long': long,
+    'lat': lat,
+    'register': register,
+    'whois': whois,
+    'name': name,
+    'chiglel': chiglel,
+    'zuil_zaalt': zuil_zaalt,
+    'description': description,
+    'resolve_desc': resolve_desc,
+    'reason_id': reason_id,
+    'status_id': status_id,
+    'aimag_city_id': aimag_city_id,
+    'soum_district_id': soum_district_id,
+    'bag_horoo_id': bag_horoo_id,
+    'address': address,
+    'user_id': user_id,
+    if (isLocal) 'images': imageFileList ?? [],
+    if (isLocal) 'video': videoFile,
+    'created_at': created_at?.toIso8601String(),
+    'updated_at': updated_at?.toIso8601String(),
+    'reg_at': (reg_at ?? DateTime.now()).toIso8601String(),
+  };
 
   static WasteModel fromJson(Map<String, dynamic> snap) {
     return WasteModel(
@@ -116,17 +121,19 @@ class WasteModel {
       bag_horoo_id: snap['bag_horoo_id'],
       address: snap['address'],
       user_id: snap['user_id'],
-      imageFileList: snap['images'] != null
-          ? (snap['images'] as List)
-              .map((e) => (e as List).map((v) => v as int).toList())
-              .toList()
-          : [],
-      videoFile: snap['video'] != null
-          ? (snap['video'] as List).map((e) => e as int).toList()
-          : null,
+      imageFileList:
+          snap['images'] != null
+              ? (snap['images'] as List)
+                  .map((e) => (e as List).map((v) => v as int).toList())
+                  .toList()
+              : [],
+      videoFile:
+          snap['video'] != null
+              ? (snap['video'] as List).map((e) => e as int).toList()
+              : null,
       created_at: DateTime.tryParse(snap['created_at'] ?? ''),
       updated_at: DateTime.tryParse(snap['updated_at'] ?? ''),
-      reg_at: DateTime.tryParse(snap['reg_at']) ?? DateTime.now(),
+      reg_at: DateTime.tryParse(snap['reg_at'] ?? '') ?? DateTime.now(),
     );
   }
 }

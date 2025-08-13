@@ -16,6 +16,7 @@ import 'package:waste_mobile/utils/contants.dart';
 class NameModel {
   final int id;
   final String name;
+  final String? descrip;
   final int? aimag_city_id;
   final int? soum_district_id;
   final DateTime? updated_at;
@@ -24,6 +25,7 @@ class NameModel {
   NameModel({
     required this.id,
     required this.name,
+    this.descrip,
     this.soum_district_id,
     this.aimag_city_id,
     this.updated_at,
@@ -49,6 +51,7 @@ class NameModel {
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
+    'descrip': descrip,
     'soum_district_id': soum_district_id,
     'aimag_city_id': aimag_city_id,
     'updated_at': updated_at?.toIso8601String(),
@@ -60,6 +63,7 @@ class NameModel {
     name: snap['name'],
     aimag_city_id: snap['aimag_city_id'],
     soum_district_id: snap['soum_district_id'],
+    descrip: snap['sub_group'],
     updated_at:
         snap['updated_at'] == null
             ? null

@@ -49,10 +49,10 @@ class CommonController extends Controller
 
         if ($user = auth()->guard('sanctum')->user()) {
             $where = '';
-            if ($user->roles == 'mha' || $user->roles == 'da') {
+            if ($user->roles == 'da') {
                 $where .= " soum_district_id=" . $user->soum_district_id . ' and ';
             }
-            if ($user->roles == 'hd' || $user->roles == 'onb') {
+            if ($user->roles == 'onb') {
                 $where .= " soum_district_id=" . $user->soum_district_id . ' and ';
                 $where .= " bag_horoo_id=" . $user->bag_horoo_id . ' and ';
             }
@@ -65,7 +65,7 @@ class CommonController extends Controller
                 $haha = collect([['name' => 'Хоосон', 'niit' => 1]])->pluck('niit', 'reason');
             }
         }
-        return  [
+        return [
             'places' => Place::where('updated_at', '>', $places_date)->orWhere('created_at', '>', $places_date)->count() ? Place::all() : [],
             'reasons' => Reason::where('updated_at', '>', $reasons_date)->orWhere('created_at', '>', $reasons_date)->count() ? Reason::all() : [],
             'statuses' => Status::where('updated_at', '>', $statuses_date)->orWhere('created_at', '>', $statuses_date)->count() ? Status::all() : [],

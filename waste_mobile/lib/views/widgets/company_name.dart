@@ -79,6 +79,9 @@ class _CompanyNameFormField extends State<CompanyNameFormField> {
       ),
       suggestionsCallback: (pattern) {
         widget.changeCompanyName(pattern);
+        if (pattern.isEmpty || pattern.length < 3) {
+          return Future.value([]);
+        }
         return _getOptions(pattern);
       },
       itemBuilder: (context, suggestion) {

@@ -59,7 +59,7 @@ class _HomeViewState extends State<HomeView> {
     tag: 'Илгээгээгүй',
   );
   final WasteController wasteController2 = Get.find(tag: 'Бүртгэсэн');
-
+  final WasteController wasteController3 = Get.find(tag: 'Хуваарилагдсан');
   final WasteController wasteController5 = Get.find(tag: 'Шийдвэрлэгдсэн');
 
   late MessagingService service;
@@ -118,6 +118,8 @@ class _HomeViewState extends State<HomeView> {
     initConnectivity();
     subscription = listenToConnectivitySubscription();
     if (AuthController.user!.isMHA) wasteController2.refresh();
+
+    wasteController3.refresh();
 
     wasteController5.refresh();
     wasteController_ilgeegeegui.initWasteModel().then(
@@ -241,17 +243,6 @@ class _HomeViewState extends State<HomeView> {
                                             fontWeight: FontWeight.w800,
                                           ),
                                         ),
-                                        Text(
-                                          AuthController.user?.position ?? '',
-                                          softWrap: true,
-                                          maxLines: 2,
-                                          textAlign: TextAlign.end,
-                                          style: const TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.black45,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
                                       ],
                                     ),
                                   ),
@@ -319,7 +310,25 @@ class _HomeViewState extends State<HomeView> {
                                       ),
                                     ),
                                     const SizedBox(height: 15.0),
-
+                                    TextButton(
+                                      onPressed:
+                                          isOnline
+                                              ? () => Get.to(
+                                                () => WasteList(
+                                                  title: 'Хуваарилагдсан',
+                                                ),
+                                              )
+                                              : noConnection,
+                                      child: TaskColumn(
+                                        icon: Icons.blur_circular,
+                                        wasteController: wasteController3,
+                                        iconBackgroundColor:
+                                            LightColors.kDarkYellow,
+                                        title: 'Хуваарилагдсан',
+                                        subtitle: 'Бүртгэл',
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15.0),
                                     TextButton(
                                       onPressed:
                                           isOnline

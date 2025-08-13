@@ -34,54 +34,52 @@ class RegisterAPIController extends AppBaseController
         $user = Auth::user();
 
 
-        if (!($user->roles == 'admin' || $user->roles == 'zaa')) {
-            $input['soum_district_id'] = $user->soum_district_id;
+        if (!($user->roles == 'admin')) {
+            $input['aimag_city_id'] = $user->aimag_city_id;
+            if ($user->aimag_city_id == 7) {
+                $input['soum_district_id'] = $user->soum_district_id;
+            }
         }
-        if ($user->roles == 'onb' || $user->roles == 'hd') {
-            $input['bag_horoo_id'] = $user->bag_horoo_id;
-        }
-
         if (!$input['status_id']) {
             $input['status_id'] = 2;
         }
-        $query = Register::filter($input)
+        $registers = Register::filter($input)
 
             ->with('reg_user:id,name')
             ->with('comf_user:id,name')
             ->with('attached_images:id,register_id,path')
             ->with('attached_video:id,register_id,path');
 
-        if (!$input['status_id'] || $input['status_id'] == 2) {
-            if ($user->roles == 'onb') {
-                $query = $query->where('reg_user_id', $user->id);
-            }
-        } elseif ($input['status_id'] == 3) {
-            if ($user->roles != 'da') {
-                $query = $query->where('reg_user_id', $user->id);
-                $query = $query->orWhere(function ($query) use ($user) {
 
-                    $query->where('status_id', '=', 3)
-                        ->Where('comf_user_id', '=', $user->id);
-                });
-            }
-        } elseif ($input['status_id'] == 4) {
-            if ($user->roles != 'da') {
-                $query = $query->where(function ($query) use ($user) {
-                    $query->where('comf_user_id', '=', $user->id)
-                        ->orWhere('reg_user_id', '=', $user->id);
-                });
-            }
+        if ($user->roles == 'da' || $user->roles == 'admin') {
+            $registers = $registers->orWhere(function ($query) use ($user, $input) {
+                $query->where('reg_user_id', '=', $user->id)
+                    ->where('status_id', '=', $input['status_id']);
+            });
+        } else {
+            $registers = $registers->where(function ($query) use ($user, $input) {
+                $query->where('reg_user_id', '=', $user->id)
+                    ->where('status_id', '=', $input['status_id']);
+            });
         }
 
+
+        if (!$input['status_id'] || $input['status_id'] != 2) {
+            $registers = $registers->orWhere(function ($query) use ($user, $input) {
+                $query->where('comf_user_id', '=', $user->id)
+                    ->where('status_id', '=', $input['status_id']);
+            });
+
+        }
         if ($request->get('skip')) {
-            $query->skip($request->get('skip'));
+            $registers->skip($request->get('skip'));
         }
         if ($request->get('limit')) {
-            $query->limit($request->get('limit'));
+            $registers->limit($request->get('limit'));
         }
 
-        $total = $query->toBase()->getCountForPagination();
-        $pagination = $query->orderByDesc('updated_at')->orderByDesc('id')->cursorPaginate(null, ['*'], 'cursor', $request->input('next_cursor'))->toArray();
+        $total = $registers->toBase()->getCountForPagination();
+        $pagination = $registers->orderByDesc('updated_at')->orderByDesc('id')->cursorPaginate(null, ['*'], 'cursor', $request->input('next_cursor'))->toArray();
         $pagination['total'] = $total;
         return $pagination;
     }
@@ -209,7 +207,7 @@ class RegisterAPIController extends AppBaseController
 
             /** @var Register $register */
             $input['comf_user_id'] = $request->user()->id;
-            $input['status_id'] = 3;
+            $input['status_id'] = 4;
             $input['resolved_at'] = Date::now();
 
             $register->fill($input);

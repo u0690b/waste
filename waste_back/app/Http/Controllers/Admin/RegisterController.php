@@ -51,25 +51,23 @@ class RegisterController extends Controller
             ->with('attached_images:id,register_id,path')
             ->with('attached_video:id,register_id,path');
 
+        if ($user->roles == 'da' || $user->roles == 'admin') {
+            $registers = $registers->orWhere(function ($query) use ($user, $input) {
+                $query->where('reg_user_id', '=', $user->id)
+                    ->where('status_id', '=', $input['status_id']);
+            });
+        } else {
+            $registers = $registers->where(function ($query) use ($user, $input) {
+                $query->where('reg_user_id', '=', $user->id)
+                    ->where('status_id', '=', $input['status_id']);
+            });
+        }
 
-        if (!$input['status_id'] || $input['status_id'] == 2) {
-            if ($user->roles == 'mha') {
-                $registers = $registers->where('reg_user_id', $user->id);
-            }
-        } elseif ($input['status_id'] == 3) {
-            if ($user->roles != 'da') {
-                $registers = $registers->where(function ($registers) use ($user) {
-                    $registers->where('comf_user_id', '=', $user->id)
-                        ->orWhere('reg_user_id', '=', $user->id);
-                });
-            }
-        } elseif ($input['status_id'] == 4) {
-            if ($user->roles != 'da') {
-                $registers = $registers->where(function ($registers) use ($user) {
-                    $registers->where('comf_user_id', '=', $user->id)
-                        ->orWhere('reg_user_id', '=', $user->id);
-                });
-            }
+        if (!$input['status_id'] || $input['status_id'] != 2) {
+            $registers = $registers->orWhere(function ($query) use ($user, $input) {
+                $query->where('comf_user_id', '=', $user->id)
+                    ->where('status_id', '=', $input['status_id']);
+            });
 
         }
 

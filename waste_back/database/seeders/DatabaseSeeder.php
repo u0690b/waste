@@ -105,7 +105,6 @@ class DatabaseSeeder extends Seeder
 
 
 
-        // Register::factory(100)->create();
-        // AttachedFile::factory(150)->create();
+
     }
 }

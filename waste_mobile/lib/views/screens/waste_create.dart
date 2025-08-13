@@ -327,10 +327,11 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                         const SizedBox(height: 20),
                         // Аймаг,Нийслэл:
                         DropdownButtonFormField(
+                          isExpanded: true,
                           validator:
                               (p0) => p0 == null ? 'Заавал бөглөх' : null,
                           decoration: InputDecoration(
-                            labelText: "Сум,Дүүрэг",
+                            labelText: "Аймаг,Нийслэл:",
                             contentPadding: const EdgeInsets.symmetric(
                               horizontal: 20.0,
                               vertical: 15.0,
@@ -345,7 +346,10 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                                   .map(
                                     (e) => DropdownMenuItem(
                                       value: e.id,
-                                      child: Text(e.name),
+                                      child: Text(
+                                        e.name,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   )
                                   .toList(),
@@ -358,77 +362,60 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                             });
                           },
                         ),
-
                         const SizedBox(height: 20),
+
                         //  Сум,Дүүрэг
-                        if ([
-                          'da',
-                          'hd',
-                          'onb',
-                          'mha',
-                        ].contains(AuthController.user!.roles))
-                          TextFormField(
-                            validator:
-                                (p0) => p0 == null ? 'Заавал бөглөх' : null,
-                            initialValue:
-                                Constants.soumDistricts
-                                    .firstWhere(
-                                      (element) => element.id == soumDistrict,
-                                    )
-                                    .name,
-                            enabled: false,
-                            decoration: InputDecoration(
-                              labelText: "Сум,Дүүрэг:",
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0,
-                                vertical: 15.0,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
+                        DropdownButtonFormField(
+                          validator:
+                              (p0) =>
+                                  p0 == null &&
+                                          aimagCity != null &&
+                                          aimagCity! <= 22
+                                      ? 'Заавал бөглөх'
+                                      : null,
+                          decoration: InputDecoration(
+                            labelText: "Сум,Дүүрэг",
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20.0,
+                              vertical: 15.0,
                             ),
-                          )
-                        else
-                          DropdownButtonFormField(
-                            validator:
-                                (p0) => p0 == null ? 'Заавал бөглөх' : null,
-                            decoration: InputDecoration(
-                              labelText: "Сум,Дүүрэг",
-                              contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0,
-                                vertical: 15.0,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                              ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
                             ),
-                            enableFeedback: aimagCity == null,
-                            items:
-                                Constants.soumDistricts
-                                    .where(
-                                      (el) =>
-                                          el.aimag_city_id == (aimagCity ?? -1),
-                                    )
-                                    .map(
-                                      (e) => DropdownMenuItem(
-                                        value: e.id,
-                                        child: Text(e.name),
-                                      ),
-                                    )
-                                    .toList(),
-                            value: soumDistrict,
-                            onChanged: (int? value) {
-                              setState(() {
-                                soumDistrict = value;
-                                bagHoroo = null;
-                              });
-                            },
                           ),
+                          enableFeedback: aimagCity == null,
+                          items:
+                              Constants.soumDistricts
+                                  .where(
+                                    (el) =>
+                                        el.aimag_city_id == (aimagCity ?? -1),
+                                  )
+                                  .map(
+                                    (e) => DropdownMenuItem(
+                                      value: e.id,
+                                      child: Text(e.name),
+                                    ),
+                                  )
+                                  .toList(),
+                          value: soumDistrict,
+                          onChanged: (int? value) {
+                            setState(() {
+                              soumDistrict = value;
+                              bagHoroo = null;
+                            });
+                          },
+                        ),
                         const SizedBox(height: 20),
                         // Баг,Хороо:
                         DropdownButtonFormField(
+                          isExpanded: true,
                           validator:
-                              (p0) => p0 == null ? 'Заавал бөглөх' : null,
+                              (p0) =>
+                                  p0 == null &&
+                                          aimagCity != null &&
+                                          aimagCity! <= 22
+                                      ? 'Заавал бөглөх'
+                                      : null,
                           decoration: InputDecoration(
                             labelText: "Баг,Хороо:",
                             contentPadding: const EdgeInsets.symmetric(
@@ -450,7 +437,10 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                                   .map(
                                     (e) => DropdownMenuItem(
                                       value: e.id,
-                                      child: Text(e.name),
+                                      child: Text(
+                                        e.name,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   )
                                   .toList(),
@@ -541,7 +531,21 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                                   .map(
                                     (e) => DropdownMenuItem(
                                       value: e.id,
-                                      child: Text(e.name),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            e.descrip ?? '',
+                                            style: TextStyle(fontSize: 8),
+                                          ),
+                                          Text(
+                                            "    " + e.name,
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   )
                                   .toList(),
@@ -562,7 +566,8 @@ class WasteRegisterFormState extends State<WasteRegisterForm> {
                               horizontal: 20.0,
                               vertical: 15.0,
                             ),
-                            labelText: 'Зөрчсөн хууль тогтоомжийн зүйл, заалт:',
+                            labelText:
+                                'Зөрчсөн хууль тогтоомжийн зүйл, заалт тайлбар:',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0),
                             ),

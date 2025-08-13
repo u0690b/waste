@@ -32,7 +32,7 @@ class WasteController extends GetxController
       if (AuthController.user!.isMH && !AuthController.user!.isMHA)
         headers['comf_user_id'] = AuthController.user!.id;
     } else if (title == 'Шийдвэрлэгдсэн') {
-      ss = 'status_id=3';
+      ss = 'status_id=4';
       if (AuthController.user!.isMH && !AuthController.user!.isMHA)
         headers['comf_user_id'] = AuthController.user!.id;
     } else
