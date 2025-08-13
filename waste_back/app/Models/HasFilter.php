@@ -42,6 +42,10 @@ trait HasFilter
                         ->whereColumn($has[0] . '.' . $has[1], $has[2])
                         ->where($has[3], $value);
                 });
+            } elseif ($this->casts[$key] == 'string') {
+                $query = $query->whereRaw("lower($key) like ?", ["%" . mb_strtolower($value) . "%"]);
+            } elseif ($this->casts[$key] == 'date:Y-m-d') {
+                $query = $query->whereRaw("to_char($key,'yyyy-mm-dd') = ?", [$value]);
             } else {
                 $query = $query->where($key, $value);
             }

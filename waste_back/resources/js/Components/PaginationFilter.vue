@@ -10,7 +10,7 @@
             </span>
             <input id="search" name="search" type="search" :value="search" @input="updateSearch($event.target.value)"
                 class="w-full py-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-md focus:outline-none focus:ring-gray-500 focus:z-10"
-                placeholder="Шалтгаан хайх" />
+                placeholder="Хайх" />
         </div>
 
         <select :value="modelValue" @change="updateModelValue($event.target.value)"
