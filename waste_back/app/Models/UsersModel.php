@@ -102,7 +102,7 @@ class UsersModel extends Model
         'soum_district_id' => 'nullable',
         'bag_horoo_id' => 'nullable',
         'phone' => 'required|string|max:255',
-        'place_id' => 'required',
+        'place_id' => 'nullable',
         'roles' => 'required|string|max:255',
         'remember_token' => 'nullable|string|max:100',
         'push_token' => 'nullable|string|max:255',
