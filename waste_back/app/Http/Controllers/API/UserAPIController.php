@@ -131,7 +131,7 @@ class UserAPIController extends AppBaseController
             'password' => 'required',
         ]);
 
-        $user = User::where('username', $request->username)->where('roles', '<>', 'none')->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name')->first();
+        $user = User::where('username', $request->username)->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name')->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
