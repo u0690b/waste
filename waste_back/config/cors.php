@@ -20,7 +20,7 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'http://localhost:58862',
+        'http://localhost:55766',
         'http://localhost:3000',
     ],
 

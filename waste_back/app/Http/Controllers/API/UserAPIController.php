@@ -157,7 +157,7 @@ class UserAPIController extends AppBaseController
         $rules['soum_district_id'] = 'nullable';
         $rules['bag_horoo_id'] = 'nullable';
         $rules['aimag_city_id'] = 'nullable';
-        $rules['position'] = 'required';
+
         unset($rules['roles']);
 
         $input = $request->validate($rules);
