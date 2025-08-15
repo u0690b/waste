@@ -13,7 +13,11 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
-
+    'dan' => [
+        'client_id' => env('OAUTH_CLIENT_ID'),
+        'client_secret' => env('OAUTH_CLIENT_SECRET'),
+        'redirect' => env('OAUTH_REDIRECT_URI'),
+    ],
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

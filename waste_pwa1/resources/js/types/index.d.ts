@@ -21,18 +21,28 @@ export type AppPageProps<T extends Record<string, unknown> = Record<string, unkn
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
+    flash: { message: string; success: string; warning: string; error: string };
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
 };
 
 export interface User {
-    id: number;
-    name: string;
-    email: string;
-    avatar?: string;
-    email_verified_at: string | null;
+
     created_at: string;
     updated_at: string;
+    regnum: string;
+    firstname: string;
+    gender: string;
+    image: string;
+    lastname: string;
+    nationality: string;
+    passportAddress: string;
+    passportExpireDate: string;
+    passportIssueDate: string;
+    soumDistrictCode: string;
+    soumDistrictName: string;
+    surname: string;
+    token: string;
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;

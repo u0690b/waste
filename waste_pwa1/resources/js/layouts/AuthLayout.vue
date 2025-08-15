@@ -9,8 +9,11 @@ defineProps<{
 </script>
 
 <template>
-    <ColorModeButton></ColorModeButton>
-    <AuthLayout :title="title" :description="description">
-        <slot />
-    </AuthLayout>
+    <div class="min-h-screen">
+        <ColorModeButton></ColorModeButton>
+
+        <AuthLayout :title="title" :description="description">
+            <slot />
+        </AuthLayout>
+    </div>
 </template>
