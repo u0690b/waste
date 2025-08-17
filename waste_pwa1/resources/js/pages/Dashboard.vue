@@ -5,6 +5,7 @@ import { Head } from '@inertiajs/vue3';
 import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 import { CardTitle, CardDescription, Card, CardContent, CardAction } from '@/components/ui/card';
 
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',
@@ -20,6 +21,8 @@ const props = defineProps({
     totalUsers: [Number],
     lastMonth: [Object, Array],
 })
+
+
 
 const card = [
     {
@@ -56,7 +59,7 @@ const card = [
                 <Card v-for="value in card" :key="value.title">
                     <CardContent>
                         <CardTitle class="flex justify-between">
-                            <h3 class="text-sm font-medium">Нийт хэрэглэгч</h3>
+                            <h3 class="text-sm font-medium">{{value.title}}</h3>
                             <UIcon :name="value.icon" />
                         </CardTitle>
                         <div class="text-3xl font-bold">{{ value.total }}</div>

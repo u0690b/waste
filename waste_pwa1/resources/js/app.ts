@@ -6,7 +6,9 @@ import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
 import { initializeTheme } from './composables/useAppearance';
-import ui from '@nuxt/ui/vue-plugin'
+import ui from '@nuxt/ui/vue-plugin';
+import { createPinia } from 'pinia';
+const pinia = createPinia();
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
@@ -15,6 +17,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(pinia)
             .use(ZiggyVue)
             .use(ui)
             .mount(el);
@@ -26,3 +29,10 @@ createInertiaApp({
 
 // This will set light / dark mode on page load...
 initializeTheme();
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+        .register('/sw.js')
+        .then((reg) => console.log('service worker registered', reg))
+        .catch((err) => console.log('service worker not registered', err));
+}

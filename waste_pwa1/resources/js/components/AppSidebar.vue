@@ -20,17 +20,17 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Илгээгээгүй',
-        href: '/list',
+        href: '/draft',
         icon: WifiOff,
     },
     {
         title: 'Илгээсэн',
-        href: '/registered',
+        href: '/send',
         icon: MailCheck,
     },
     {
         title: 'Шийдвэрлэсэн',
-        href: '/registered',
+        href: '/solved',
         icon: LaptopMinimalCheck,
     },
 ];

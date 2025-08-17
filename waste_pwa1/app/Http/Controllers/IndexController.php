@@ -93,4 +93,18 @@ class IndexController extends Controller
     {
         return Inertia::render('waste/Create');
     }
+
+    public function draft()
+    {
+        return Inertia::render('waste/Draft');
+    }
+
+    public function send()
+    {
+        return Inertia::render('waste/Send');
+    }
+    public function solved()
+    {
+        return Inertia::render('waste/Solved');
+    }
 }

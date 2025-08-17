@@ -9,5 +9,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::get('commin', [CommonController::class, 'index'])
+Route::get('common', [CommonController::class, 'index'])
     ->name('common');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\AimagCity;
 use App\Models\BagHoroo;
+use App\Models\Industry;
 use App\Models\Place;
 use App\Models\Reason;
 use App\Models\Register;
@@ -51,6 +52,7 @@ class CommonController extends Controller
             'soum_districts' => SoumDistrict::where('updated_at', '>', $soum_districts_date)->orWhere('created_at', '>', $soum_districts_date)->count() ? SoumDistrict::all() : [],
             'bag_horoos' => BagHoroo::where('updated_at', '>', $bag_horoos_date)->orWhere('created_at', '>', $bag_horoos_date)->count() ? BagHoroo::all() : [],
             "resolves" => Resolve::where('updated_at', '>', $resolves_date)->orWhere('created_at', '>', $resolves_date)->count() ? Resolve::all() : [],
+            "industry" => Industry::all(),
         ];
     }
 }

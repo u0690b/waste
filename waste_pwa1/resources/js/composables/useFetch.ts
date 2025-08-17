@@ -2,18 +2,18 @@ import axios, { AxiosError } from 'axios';
 import { ref, Ref } from 'vue';
 
 interface UseFetchOptions<T, R> {
-    transform?: (data: T) => R;
+    transform?: (data: T) => R|null;
     immediate?: boolean;
 }
 
 export function useFetch<T = any, R = T>(url: string, options: UseFetchOptions<T, R> = {}) {
-    const { transform = (data: any) => data, immediate = true } = options;
+    const { transform = (data: any):any|null => data, immediate = true } = options;
 
     const data: Ref<R | null> = ref(null);
     const error: Ref<AxiosError | null> = ref(null);
     const loading: Ref<boolean> = ref(false);
 
-    const fetchData = async () => {
+    const execute = async () => {
         loading.value = true;
         error.value = null;
         try {
@@ -26,9 +26,9 @@ export function useFetch<T = any, R = T>(url: string, options: UseFetchOptions<T
         }
     };
 
-    if (immediate) fetchData();
+    if (immediate) execute();
 
-    return { data, error, loading, fetchData };
+    return { data, error, loading, execute };
 }
 
 

@@ -28,8 +28,12 @@ const submit = () => {
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
             {{ status }}
         </div>
-
+        <div >
+            <h2 class="border mx-4 p-2 rounded-md text-balance border-green-500 text-lg text-center mb-8 font-bold">БОХИРДОЛ БАГАСАХАД БҮГДИЙН ОРОЛЦОО ЧУХАЛ , ОРЧНОО ЦЭВЭРЛЭ, ИРЭЭДҮЙГЭЭ ГЭРЭЛТҮҮЛ, ЦЭВЭР ОРЧИН  ЦЭГЦЭРСЭН
+                АМЬДРАЛ</h2>
+        </div>
         <form method="POST" @submit.prevent="submit" class="space-y-4 mx-auto max-w-fit text-sm">
+
             <div class="grid gap-6">
                 <!-- <div class="grid gap-2">
                     <Label for="email">Email address</Label>
@@ -57,7 +61,8 @@ const submit = () => {
                         <span>Remember me</span>
                     </Label>
                 </div> -->
-                <UButton type="submit" :loading="form.processing" class="uppercase"> ДАН-р нэврэх</UButton>
+
+                <UButton type="submit" :loading="form.processing" class="uppercase">нэврэх</UButton>
                 <!-- <Button type="submit" class="mt-4 w-full" :tabindex="4" :disabled="form.processing">
                     <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
                     ДАН Танилт нэвтрэлтийн

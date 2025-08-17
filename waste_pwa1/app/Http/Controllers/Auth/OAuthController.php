@@ -49,6 +49,7 @@ class OAuthController extends Controller
         //     ]
         // );
         // Log in this customer
+        // Auth::logout();
         $customer = Customer::first();
         Auth::login($customer, true);
         return  redirect('/');
