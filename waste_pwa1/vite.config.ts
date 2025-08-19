@@ -3,7 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import ui from '@nuxt/ui/vite'
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
-const suff = 'v8';
+const suff = 'v9';
 export default defineConfig({
     base: '/mobile/build/',
     build: {
