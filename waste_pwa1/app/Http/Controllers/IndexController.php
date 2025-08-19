@@ -19,6 +19,7 @@ use Laravel\Socialite\Facades\Socialite;
 use League\OAuth2\Client\Provider\GenericProvider;
 use Storage;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 class IndexController extends Controller
 {
     public function index()
@@ -165,6 +166,54 @@ class IndexController extends Controller
                 ->paginate($request->input('per_page'))
                 ->withQueryString(),
         ]);
+    }
+
+
+    public function storage($filename)
+    {
+        $path = 'public/' . $filename;
+
+        if (!Storage::exists($path)) {
+            abort(404, 'File not found.');
+        }
+
+        $fullPath = Storage::path($path);
+
+        $mime = Storage::mimeType($path);
+        $size = filesize($fullPath);
+
+        $start = 0;
+        $end = $size - 1;
+
+        if ($range = Request::header('Range')) {
+            preg_match('/bytes=(\d+)-(\d*)/', $range, $matches);
+            $start = intval($matches[1]);
+            if (!empty($matches[2])) {
+                $end = intval($matches[2]);
+            }
+        } else {
+            $file = Storage::get($path);
+            return response($file, 200)
+                ->header('Content-Type', $mime);
+        }
+
+        $length = $end - $start + 1;
+        $headers = [
+            'Content-Type' => $mime,
+            'Content-Length' => $length,
+            'Content-Range' => "bytes $start-$end/$size",
+            'Accept-Ranges' => 'bytes',
+            'Cache-Control' => 'public, max-age=86400',
+        ];
+
+        $response = new StreamedResponse(function () use ($fullPath, $start, $length) {
+            $handle = fopen($fullPath, 'rb');
+            fseek($handle, $start);
+            echo fread($handle, $length);
+            fclose($handle);
+        }, 206, $headers);
+
+        return $response;
     }
     public function offline()
     {

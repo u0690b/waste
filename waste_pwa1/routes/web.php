@@ -16,6 +16,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/show/{register}', [IndexController::class, 'show'])->name('show');
     Route::get('/offline', [IndexController::class, 'offline'])->name('offline');
     Route::get('/notifications', [IndexController::class, 'notifications'])->name('notifications');
+    Route::get('/storage/{filename}', [IndexController::class, 'storage'])->where('filename', '.*')->name('storage');
 
 });
 
