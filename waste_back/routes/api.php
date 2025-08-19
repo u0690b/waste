@@ -117,3 +117,13 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'admin'], function () {
     Route::resource('users_models', App\Http\Controllers\API\UsersModelAPIController::class);
 });
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('customers', App\Http\Controllers\API\CustomerAPIController::class);
+});
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::resource('registers', App\Http\Controllers\API\RegisterAPIController::class);
+});

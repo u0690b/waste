@@ -239,7 +239,7 @@
         </div>
     </div>
 
-    <div v-if="data.comf_user" class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-1 sm:px-8">
+    <div v-if="data.allocated" class="grid grid-cols-1 gap-4 px-4 mt-8 sm:grid-cols-1 sm:px-8">
         <div class="px-4 py-2 overflow-hidden bg-white border rounded-md shadow">
             <h3 class="mb-4 text-lg text-gray-600">Хуваарилагдсан мэдээлэл</h3>
             <div class="grid grid-cols-2 gap-2 py-2">
@@ -247,7 +247,7 @@
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="name">Хуваарилсан
                         хэрэглэгч
                     </label>
-                    <input :value="data.comf_user?.name" type="text" :error="errors.name" class="bg-gray-50 border
+                    <input :value="data.allocated?.name" type="text" :error="errors.name" class="bg-gray-50 border
                                         border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block
                                         w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
                                         dark:focus:ring-blue-500 dark:focus:border-blue-500" />

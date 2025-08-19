@@ -66,3 +66,7 @@ Route::resource('resolves', App\Http\Controllers\Admin\ResolveController::class)
 
 
 // UsersModels
+
+
+// Customers
+Route::resource('customers', App\Http\Controllers\Admin\CustomerController::class);

@@ -4,15 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Register;
-use App\Models\User;
 use Auth;
 use Date;
 use DB;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
-use Log;
 use Response;
 use Storage;
 
@@ -21,7 +18,7 @@ class RegisterController extends Controller
     /**
      * Display a listing of the Register.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function index()
     {
@@ -87,7 +84,7 @@ class RegisterController extends Controller
     /**
      * Show the form for creating a new Register.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function create()
     {
@@ -97,27 +94,28 @@ class RegisterController extends Controller
     /**
      * Store a newly created Register in storage.
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
     public function store()
     {
-        Register::create(Request::validate(Register::$rules));
-
-        return Redirect::route('admin.registers.index')->with('success', 'Register created.');
+        $rule = Register::$rules;
+        $input = Request::validate($rule);
+        $register = Register::create($input);
+        return redirect(Request::header('back') ?? route('admin.registers.show', $register->getKey()))->with('success', 'Амжилттай үүсгэлээ.');
     }
 
     /**
-     * Show the form for editing the specified Register.
+     * Show the form for editing the specified UserModel.
      *
      * @param Register $register
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
-    public function edit(Register $register)
+    public function show(Register $register)
     {
-        return Inertia::render('Admin/registers/Edit', [
+        $register->load('aimag_city:id,name')->load('allocated:id,name')->load('bag_horoo:id,name')->load('comf_user:id,name')->load('reason:id,name')->load('reg_user:id,name')->load('resolve:id,name')->load('soum_district:id,name')->load('status:id,name');
+        return Inertia::render('Admin/registers/Show', [
             'data' => $register,
-            'host' => config('app.url'),
         ]);
     }
 
@@ -126,8 +124,49 @@ class RegisterController extends Controller
      *
      * @param Register $register
      *
-     * @return Response
+     * @return \Inertia\Response|Response|string|bool
      */
+    public function edit(Register $register)
+    {
+        $register->load('aimag_city:id,name')->load('allocated:id,name')->load('bag_horoo:id,name')->load('comf_user:id,name')->load('reason:id,name')->load('reg_user:id,name')->load('resolve:id,name')->load('soum_district:id,name')->load('status:id,name');
+        return Inertia::render('Admin/registers/Edit', [
+            'data' => $register,
+        ]);
+    }
+
+    /**
+     * Update the specified Register in storage.
+     *
+     * @param Register $register
+     *
+     * @return \Inertia\Response|Response|string|bool
+     */
+    public function update(Register $register)
+    {
+        $rule = Register::$rules;
+        $input = Request::validate($rule);
+        $register->update($input);
+
+        return redirect(Request::header('back') ?? route('admin.registers.show', $register->getKey()))->with('success', 'Ажилттай хадгаллаа.');
+    }
+
+    /**
+     * Remove the specified Register from storage.
+     *
+     * @param Register $register
+     *
+     * @throws \Exception
+     *
+     * @return \Inertia\Response|Response|string|bool
+     */
+    public function destroy(Register $register)
+    {
+        $register->delete();
+        return redirect(Request::header('back') ?? route('admin.registers.index'))->with('success', 'Мэдээлэл устгагдлаа.');
+    }
+
+
+
     public function allocation(Register $register)
     {
         $register
@@ -136,6 +175,8 @@ class RegisterController extends Controller
             ->load('comf_user:id,name')
             ->load('reason:id,name')
             ->load('reg_user:id,name')
+            ->load('allocated:id,name')
+
             ->load('soum_district:id,name')
             ->load('status:id,name')
             ->load('attached_images:id,register_id,path')
@@ -145,17 +186,9 @@ class RegisterController extends Controller
             'host' => config('app.url'),
         ]);
     }
-
-    /**
-     * Show the form for editing the specified Register.
-     *
-     * @param Register $register
-     *
-     * @return Response
-     */
     public function allocation_store(Register $register)
     {
-        $input = Request::validate(['comf_user_id' => 'required']);
+        $input = Request::validate(['allocate_by' => 'required']);
         $input['status_id'] = 3;
         $register->update($input);
         ;
@@ -164,39 +197,6 @@ class RegisterController extends Controller
         return Redirect::route('admin.registers.index')->with('success', 'Register updated.');
     }
 
-    /**
-     * Show the form for editing the specified Register.
-     *
-     * @param Register $register
-     *
-     * @return Response
-     */
-    public function show(Register $register)
-    {
-        $register
-            ->load('aimag_city:id,name')
-            ->load('bag_horoo:id,name')
-            ->load('comf_user:id,name')
-            ->load('reason:id,name')
-            ->load('reg_user:id,name')
-            ->load('resolve:id,name')
-            ->load('soum_district:id,name')
-            ->load('status:id,name')
-            ->load('attached_images:id,register_id,path')
-            ->load('attached_video:id,register_id,path');
-        return Inertia::render('Admin/registers/Show', [
-            'data' => $register,
-            'host' => config('app.url'),
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified Register.
-     *
-     * @param Register $register
-     *
-     * @return Response
-     */
     public function show_resolve(Register $register)
     {
         $register
@@ -215,14 +215,7 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Resolve the specified Register in storage.
-     * PUT/PATCH /registers/{id}
-     *
-     * @param Register $registers
-     *
-     * @return Response
-     */
+
     public function resolve(Register $register)
     {
         $input = Request::validate([
@@ -261,32 +254,5 @@ class RegisterController extends Controller
 
 
         return Redirect::route('admin.registers.index')->with('success', 'Register updated.');
-    }
-    /**
-     * Update the specified Register in storage.
-     *
-     * @param Register $register
-     *
-     * @return Response
-     */
-    public function update(Register $register)
-    {
-        $register->update(Request::validate(Register::$rules));
-        return Redirect::route('admin.registers.index')->with('success', 'Register updated.');
-    }
-
-    /**
-     * Remove the specified Register from storage.
-     *
-     * @param Register $register
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
-    public function destroy(Register $register)
-    {
-        $register->delete();
-        return Redirect::route('admin.registers.index')->with('success', 'Register deleted.');
     }
 }

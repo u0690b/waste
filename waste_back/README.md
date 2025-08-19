@@ -12,6 +12,7 @@ php artisan deto:api_scaffold Resolve --fromTable --tableName=resolves
 php artisan deto:api_scaffold Notification --fromTable --tableName=notifications
 php artisan deto:api_scaffold Industry --fromTable --tableName=industries
 php artisan deto:api_scaffold LegalEntity --fromTable --tableName=legal_entity
+php artisan deto:api_scaffold Customer --fromTable --tableName=customers
 
 -   [x] Mobile deer ilgeesen shiidvelesen huuvarilan hed baigaa too ird taliin icon deer
 -   [ ] gazriin zurgiin markiig shiidsen shiideegui unguur ulaandeer darhaar zurchliin medeelel haragdaval zugeer
