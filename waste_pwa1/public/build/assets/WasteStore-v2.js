@@ -1,1 +1,0 @@
-import{a3 as s,y as a,G as r}from"./app-v2.js";const i=s("wasteList",()=>{const t=a(JSON.parse(localStorage.getItem("wasteList")||"[]"));return r(t,e=>{localStorage.setItem("wasteList",JSON.stringify(e))},{deep:!0}),{wasteList:t}});export{i as u};

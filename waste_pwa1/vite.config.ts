@@ -5,13 +5,14 @@ import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 const suff = 'v2';
 export default defineConfig({
-    base: '/mobile/build/',
+    // base: '/mobile/build/',
     build: {
         rollupOptions: {
             output: {
-                entryFileNames: 'assets/[name]-' + suff + '.js',
-                chunkFileNames: 'assets/[name]-' + suff + '.js',
-                assetFileNames: 'assets/[name]-' + suff + '[extname]',
+                manualChunks: undefined,
+                inlineDynamicImports: true,
+                entryFileNames: '[name].js', // currently does not work for the legacy bundle
+                assetFileNames: '[name].[ext]', // currently does not work for images
             },
         },
     },

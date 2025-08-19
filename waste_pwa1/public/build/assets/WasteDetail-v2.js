@@ -1,1 +1,0 @@
-import{_ as o}from"./WasteDetail.vue_vue_type_script_setup_true_lang-v2.js";import"./Button-v2.js";import"./app-v2.js";import"./Carousel.vue_vue_type_script_setup_true_lang-v2.js";import"./App-v22.js";import"./useForwardExpose-v2.js";import"./AppLayout.vue_vue_type_script_setup_true_lang-v2.js";import"./index-v2.js";import"./index-v22.js";export{o as default};
