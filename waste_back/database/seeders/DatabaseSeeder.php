@@ -77,7 +77,7 @@ class DatabaseSeeder extends Seeder
         Industry::create(['name' => 'Удирдлагын болон дэмжлэг үзүүлэх үйл ажиллагаа']);
 
 
-        Status::create(['name' => 'Ноорог /Серверт илгээгээгүй/']);
+        Status::create(['name' => 'Илгээгээгүй']);
         Status::create(['name' => 'Илгээсэн']);
         Status::create(['name' => 'Шилжүүлсэн']);
         Status::create(['name' => 'Шийдвэрлэсэн']);

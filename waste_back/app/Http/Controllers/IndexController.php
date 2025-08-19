@@ -114,9 +114,12 @@ class IndexController extends Controller
     public function map()
     {
         $input = Request::all(Register::$searchIn);
-        if (!$input['soum_district_id']) {
+        if (!$input['aimag_city_id']) {
+            $input['aimag_city_id'] = Auth::user()->aimag_city->toArray();
+        } else if ($input['aimag_city_id'] == 7) {
             $input['soum_district_id'] = Auth::user()->soum_district->toArray();
         }
+
         $registers = Register::filter($input);
 
 

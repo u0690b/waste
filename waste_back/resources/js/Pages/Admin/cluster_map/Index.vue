@@ -2,8 +2,10 @@
     <Layout>
 
         <div class="flex p-4 bg-gray">
-            <MySelect v-model="form.model.soum_district_id" class="w-52" label="Дүүрэг сонгох"
-                :url="`/admin/soum_districts`" />
+            <MySelect v-model="form.model.aimag_city_id" class="w-52" label="Аймаг нийслэл" :url="`/admin/aimag_cities`"
+                @update:model-value="() => (form.model.soum_district_id = undefined)" />
+            <MySelect v-model="form.model.soum_district_id" :key="`${form.model.aimag_city_id.id}_sum`" class="w-52"
+                label="Дүүрэг сонгох" :url="`/admin/soum_districts?aimag_city_id=${form.model.aimag_city_id.id}`" />
             <MySelect v-model="form.model.status_id" class="px-3 w-52" label="Төлөв сонгох" :url="`/admin/statuses`" />
         </div>
 

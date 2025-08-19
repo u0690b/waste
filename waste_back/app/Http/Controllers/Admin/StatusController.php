@@ -18,11 +18,11 @@ class StatusController extends Controller
      */
     public function index()
     {
-        $statuses = Status::filter(Request::all(["search", ...Status::$searchIn]))
+        $statuses = Status::filter(Request::all(["search", ...Status::$searchIn]))->where('id', '!=', 1)
             ->orderBy(Request::input('orderBy') ?? 'id', Request::input('dir') ?? 'asc');
-        
+
         if (Request::has('only')) {
-            return json_encode($statuses->cursorPaginate(Request::input('per_page'),['id', 'name']));
+            return json_encode($statuses->cursorPaginate(Request::input('per_page'), ['id', 'name']));
         }
 
         return Inertia::render('Admin/statuses/Index', [
@@ -51,7 +51,7 @@ class StatusController extends Controller
     public function store()
     {
         $rule = Status::$rules;
-        $input =  Request::validate($rule);
+        $input = Request::validate($rule);
         $status = Status::create($input);
         return redirect(Request::header('back') ?? route('admin.statuses.show', $status->getKey()))->with('success', 'Амжилттай үүсгэлээ.');
     }
@@ -67,7 +67,7 @@ class StatusController extends Controller
     {
         $status;
         return Inertia::render('Admin/statuses/Show', [
-            'data' =>  $status,
+            'data' => $status,
         ]);
     }
 
@@ -82,7 +82,7 @@ class StatusController extends Controller
     {
         $status;
         return Inertia::render('Admin/statuses/Edit', [
-            'data' =>  $status,
+            'data' => $status,
         ]);
     }
 
@@ -96,9 +96,9 @@ class StatusController extends Controller
     public function update(Status $status)
     {
         $rule = Status::$rules;
-        $input =  Request::validate($rule);
+        $input = Request::validate($rule);
         $status->update($input);
-        
+
         return redirect(Request::header('back') ?? route('admin.statuses.show', $status->getKey()))->with('success', 'Ажилттай хадгаллаа.');
     }
 

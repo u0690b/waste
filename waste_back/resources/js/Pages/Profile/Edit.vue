@@ -1,14 +1,14 @@
 <script setup>
-    import Layout from "@/Layouts/Admin.vue";
-    import DeleteUserForm from './Partials/DeleteUserForm.vue';
-    import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
-    import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
-    import { Head } from '@inertiajs/vue3';
+import Layout from "@/Layouts/Admin.vue";
+import DeleteUserForm from './Partials/DeleteUserForm.vue';
+import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
+import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
+import { Head } from '@inertiajs/vue3';
 
-    defineProps({
-        mustVerifyEmail: Boolean,
-        status: Boolean,
-    });
+defineProps({
+    mustVerifyEmail: Boolean,
+    status: Boolean,
+});
 </script>
 
 <template>
@@ -18,7 +18,7 @@
     <Layout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Profile
+                Нууц үг солих
             </h2>
         </template>
 

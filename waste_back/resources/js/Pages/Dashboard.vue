@@ -74,9 +74,7 @@ const regionOptions = computed(() => {
 
                 <div class="flex justify-end flex-1 w-full gap-4 mr-8 fade-in">
                     <!-- <img src="@/assets/App_Store.svg" class="h-12 pr-4 bounce-top-icons"> -->
-                    <a href="https://waste.mecc.gov.mn/waste.apk" target="_blank">
-                        <img src="@/assets/Play_Store.svg" class="h-12 bounce-top-icons">
-                    </a>
+
                     <a href="https://waste.mecc.gov.mn/mobile" target="_blank">
                         <img src="@/assets/pwa.png" class="h-12 bounce-top-icons">
                     </a>
