@@ -71,9 +71,9 @@ const card = [
                     </CardContent>
 
                 </Card>
-                <UButton :to="route('create')" class="w-full h-full" title="Зөрчил бүртгэх">
-                    <Plus :size="40"  class="text-white mx-auto" />
-                </UButton>
+                <ILink :to="route('create')" class="rounded-md border bg-primary w-full h-full" title="Зөрчил бүртгэх">
+                    <Plus :size="40" class="text-white mx-auto" />
+                </ILink>
             </div>
         </div>
     </AppLayout>

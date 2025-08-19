@@ -40,9 +40,9 @@ const noti = computed(()=>page.props.new_noti??0)
         <AppLayout :breadcrumbs="breadcrumbs" class="bg-default max-md:pb-22 " data-vaul-drawer-wrapper>
             <template #actionSide>
                 <UChip :text="noti" :show="noti!==0">
-                    <ULink :to="route('notifications')" class="bg-neutral-300 rounded-md p-1">
+                    <ILink :to="route('notifications')" class="bg-neutral-300 rounded-md p-1 hover:bg-neutral-400">
                         <Bell class="text-neutral-500" :size="18" />
-                    </ULink>
+                    </ILink>
                 </UChip>
             </template>
             <slot />
