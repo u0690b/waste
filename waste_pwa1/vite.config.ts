@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 const suff = 'v2';
 export default defineConfig({
-    base: '/mobile/',
+    base: '/mobile/build/',
     build: {
         rollupOptions: {
             output: {
