@@ -50,7 +50,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'new_noti'=>Notification::where('user_id', $request->user()->id)->where('type', '2')->whereNull('read_at')->count(),
+            'new_noti'=>Notification::where('user_id', $request->user()?->id)->where('type', '2')->whereNull('read_at')->count(),
             'ziggy' => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
