@@ -17,6 +17,7 @@ export function useFetch<T = any, R = T>(url: string, options: UseFetchOptions<T
         loading.value = true;
         error.value = null;
         try {
+
             const response = await axios.get<T>(url);
             data.value = transform(response.data);
         } catch (err) {

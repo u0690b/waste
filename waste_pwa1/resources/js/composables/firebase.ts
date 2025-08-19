@@ -27,6 +27,7 @@ export const useFirebase = defineStore('firebase', () => {
             const permission = await Notification.requestPermission();
             if (permission === 'granted') {
                 try {
+
                     token.value = await getToken(messaging, { vapidKey });
                     axios.post('save_token', { push_token: token.value });
                     // 👉 Send token to backend so you can push notifications

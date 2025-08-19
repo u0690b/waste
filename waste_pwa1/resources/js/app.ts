@@ -10,6 +10,18 @@ import ui from '@nuxt/ui/vue-plugin';
 import { createPinia } from 'pinia';
 const pinia = createPinia();
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+import axios from 'axios';
+
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+// Grab token from meta tag
+const token = document.head.querySelector('meta[name="csrf-token"]') as HTMLMetaElement | null;
+
+if (token) {
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
