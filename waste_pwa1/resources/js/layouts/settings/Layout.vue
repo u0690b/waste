@@ -9,7 +9,7 @@ const sidebarNavItems: NavItem[] = [
 
     {
         title: 'Appearance',
-        href: 'settings/appearance',
+        href: route('appearance'),
     },
 ];
 

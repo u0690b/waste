@@ -7,17 +7,17 @@ import { Rocket, RocketIcon, Ship, ShipIcon, Truck } from 'lucide-vue-next';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',
-        href: '',
+        href: route('dashboard'),
     },
     {
         title: 'Илгээсэн',
-        href: 'draft',
+        href: route('send'),
     },
 ];
 
 defineProps<{ datas: WasteModel[] }>()
 const more = (id:number)=>{
-    router.visit(`/show/${id}`)
+    router.visit(route(`show`, id ))
 }
 
 </script>

@@ -55,4 +55,9 @@ class Customer extends Authenticatable
             'token' => 'string',
         ];
     }
+
+    public function registers()
+    {
+        return $this->hasMany(\App\Models\Register::class, 'reg_user_id');
+    }
 }

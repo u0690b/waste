@@ -131,7 +131,7 @@ const onSubmit = ()=>{
 
     wasteStore.wasteList.push(form.model)
     console.log("object");
-    router.visit('/draft')
+    router.visit(route('draft'))
 }
 </script>
 

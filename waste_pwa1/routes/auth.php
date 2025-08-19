@@ -24,7 +24,7 @@ Route::middleware('guest')->group(function () {
 
     Route::post('login', [fn() => Socialite::driver('dan')->redirect()]);
 
-    Route::get('/logindan', [fn() => Socialite::driver('dan')->redirect()]);
+    Route::get('/logindan', [fn() => Socialite::driver('dan')->redirect()])->name('logindan');
     Route::get('/hook', [OAuthController::class, 'hook']);
 
 

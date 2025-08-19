@@ -16,11 +16,11 @@ const props = withDefaults(defineProps<{ waste: WasteModel, islocal: boolean }>(
 const breadcrumbs = [
     {
         title: 'Дашбоард',
-        href: '',
+        href: route('dashboard'),
     },
     {
         title: 'Илгээгээгүй',
-        href: 'draft',
+        href: route('draft'),
     },
     {
         title: props.waste?.name ?? '',
@@ -44,7 +44,7 @@ const fields = [
         { label: 'Зөрчсөн хууль тогтоомжийн зүйл, заалт', value: props.waste?.zuil_zaalt },
         { label: 'Уртраг', value: props.waste?.long },
         { label: 'Өргөрөг', value: props.waste?.lat },
-        { label: 'Бүртгэсэн хүн', value: props.waste?.reg_user_id ?? '' },
+        { label: 'Бүртгэсэн хүн', value: props.waste?.reg_user?.firstname ?? '' },
         { label: 'Үүсгэсэн', value: props.waste?.created_at },
         { label: 'Төлөв', value: props.waste?.status_id ?? 'Илгээгээгүй' },
 

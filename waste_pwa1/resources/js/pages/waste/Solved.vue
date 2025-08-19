@@ -6,17 +6,17 @@ import { WasteModel } from '@/types/type';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',
-        href: '',
+        href: route('dashboard'),
     },
     {
         title: 'Шийдвэрлэсэн',
-        href: 'solved',
+        href: route('solved'),
     },
 ];
 
 defineProps<{ datas: WasteModel[] }>()
 const more = (id: number) => {
-    router.visit(`/show/${id}`)
+    router.visit(route(`show`, id))
 }
 
 </script>

@@ -11,11 +11,11 @@ import Heading from '@/components/Heading.vue';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',
-        href: '',
+        href: route('dashboard'),
     },
     {
         title: 'Илгээгээгүй',
-        href: 'draft',
+        href: route('draft'),
     },
 ];
 
@@ -38,7 +38,7 @@ const send = () => {
         (data.images ??= []).push(base64ToFile(v, `img${i}.png`))
     })
     delete data.imageBase64List
-    router.post('/store', {
+    router.post(route('store'), {
         _method: 'put',
         ...data
     }, {

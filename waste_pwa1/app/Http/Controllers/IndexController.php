@@ -55,7 +55,7 @@ class IndexController extends Controller
         }
         $input['reg_user_id'] = $user->id;
         $registers = Register::filter($input)
-            ->with('reg_user:id,name')
+            ->with('reg_user:id,firstname,lastname')
             ->with('comf_user:id,name')
             ->with('attached_images:id,register_id,path')
             ->with('attached_video:id,register_id,path');
@@ -77,7 +77,7 @@ class IndexController extends Controller
         $input['reg_user_id'] = $user->id;
         $registers = Register::filter($input)
 
-            ->with('reg_user:id,name')
+            ->with('reg_user:id,firstname,lastname')
             ->with('comf_user:id,name')
             ->with('attached_images:id,register_id,path')
             ->with('attached_video:id,register_id,path');
@@ -136,7 +136,7 @@ class IndexController extends Controller
             ->load('bag_horoo:id,name')
             ->load('comf_user:id,name')
             ->load('reason:id,name')
-            ->load('reg_user:id,name')
+            ->load('reg_user:id,firstname')
             ->load('resolve:id,name')
             ->load('soum_district:id,name')
             ->load('status:id,name')

@@ -6,11 +6,11 @@ import { WifiOff } from 'lucide-vue-next';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',
-        href: '',
+        href: route('dashboard'),
     },
     {
         title: 'Илгээсэн',
-        href: 'draft',
+        href: route('draft'),
     },
 ];
 

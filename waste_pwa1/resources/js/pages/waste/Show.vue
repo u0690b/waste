@@ -14,16 +14,16 @@ const props = defineProps<{ waste: WasteModel }>()
 const breadcrumbs = [
     {
         title: 'Дашбоард',
-        href: '',
+        href: route('dashboard'),
     },
     props.waste.status_id == 4 ?
-    {
-        title: 'Шийдвэрлэсэн',
-        href: 'solved',
-    } : {
-        title: 'Илгээсэн',
-        href: 'send',
-    },
+        {
+            title: 'Шийдвэрлэсэн',
+            href: route('solved'),
+        } : {
+            title: 'Илгээсэн',
+            href: route('send'),
+        },
     {
         title: props.waste?.name ?? '',
         href: '#',
@@ -46,7 +46,7 @@ const fields = [
         { label: 'Зөрчсөн хууль тогтоомжийн зүйл, заалт', value: props.waste?.zuil_zaalt },
         { label: 'Уртраг', value: props.waste?.long },
         { label: 'Өргөрөг', value: props.waste?.lat },
-        { label: 'Бүртгэсэн хүн', value: props.waste?.reg_user?.name ?? '' },
+        { label: 'Бүртгэсэн хүн', value: props.waste?.reg_user?.firstname ?? '' },
         { label: 'Үүсгэсэн', value: props.waste?.created_at },
         { label: 'Төлөв', value: props.waste?.status?.name ?? 'Илгээгээгүй' },
 
@@ -87,7 +87,7 @@ const step = computed(() => {
 const items = ref<StepperItem[]>([
     {
         title: 'Илгээсэн',
-        description: props.waste?.reg_user?.name ?? '',
+        description: props.waste?.reg_user?.firstname ?? '',
         icon: 'i-lucide-rocket'
     },
     {
@@ -98,7 +98,7 @@ const items = ref<StepperItem[]>([
     {
         title: 'Шийдвэрлэх',
         icon: 'i-lucide-laptop-minimal-check',
-        description: (props.waste?.comf_user_name ?? '') + ": "+props.waste?.resolve_desc,
+        description: (props.waste?.comf_user_name ?? '') + ": " + props.waste?.resolve_desc,
     }
 ])
 </script>
