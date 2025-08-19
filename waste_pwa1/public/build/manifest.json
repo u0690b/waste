@@ -1,23 +1,23 @@
 {
   "resources/js/app.ts": {
-    "file": "app-v3.js",
+    "file": "app-v4.js",
     "name": "app",
     "src": "resources/js/app.ts",
     "isEntry": true,
     "css": [
-      "app-v3.css"
+      "app-v4.css"
     ],
     "assets": [
-      "logo1-v3.png",
-      "logo-v3.png"
+      "logo1-v4.png",
+      "logo-v4.png"
     ]
   },
   "resources/js/assets/logo.png": {
-    "file": "logo-v3.png",
+    "file": "logo-v4.png",
     "src": "resources/js/assets/logo.png"
   },
   "resources/js/assets/logo1.png": {
-    "file": "logo1-v3.png",
+    "file": "logo1-v4.png",
     "src": "resources/js/assets/logo1.png"
   }
 }
