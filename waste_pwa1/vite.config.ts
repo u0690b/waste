@@ -11,8 +11,8 @@ export default defineConfig({
             output: {
                 manualChunks: undefined,
                 inlineDynamicImports: true,
-                entryFileNames: '[name].js', // currently does not work for the legacy bundle
-                assetFileNames: '[name].[ext]', // currently does not work for images
+                entryFileNames: `[name]-${suff}.js`, // currently does not work for the legacy bundle
+                assetFileNames: `[name]-${suff}.[ext]`, // currently does not work for images
             },
         },
     },
