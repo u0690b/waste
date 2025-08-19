@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Place;
 use App\Models\User;
 use App\Models\UsersModel;
 use Auth;
@@ -61,12 +62,15 @@ class UsersController extends Controller
         }
         if ($user->roles != 'admin') {
             $input['roles'] = ['mha'];
-
         }
 
 
-        $users = UsersModel::filter($input)->with('aimag_city:id,name')->with('bag_horoo:id,name')->with('soum_district:id,name')->with('place:id,name')
-            ->orderBy(Request::input('orderBy') ?? 'id', Request::input('dir') ?? 'asc');
+        $users = UsersModel::filter($input)
+            ->with('aimag_city:id,name')
+            ->with('bag_horoo:id,name')
+            ->with('soum_district:id,name')
+            ->with('place:id,name')
+            ->orderBy(Request::input('orderBy') ?? 'roles', Request::input('dir') ?? 'asc');
 
 
 
@@ -75,10 +79,15 @@ class UsersController extends Controller
         }
 
         return Inertia::render('Admin/users_models/Index', [
-            'filters' => Request::only(["search", ...UsersModel::$searchIn, 'orderBy', 'dir']),
+            'filters' => [
+                ...Request::only(["search", ...UsersModel::$searchIn, 'orderBy', 'dir']),
+                ...$user->roles != 'admin' ? ['aimag_city_id' => $user->aimag_city_id] : [],
+                ...$user->roles != 'admin' && $user->aimag_city_id == 7 ? ['soum_district_id' => $user->soum_district_id] : [],
+            ],
             'datas' => $users
                 ->paginate(Request::input('per_page'))
                 ->withQueryString(),
+            'places' => Place::all(),
         ]);
     }
 

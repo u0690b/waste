@@ -1,15 +1,14 @@
 <template>
     <Layout :title="title">
         <div class="px-4 ">
-            <div class="flex flex-wrap ">
+            <div v-if="auth.user.roles == 'admin'" class="flex flex-wrap ">
                 <div class="w-full">
                     <div class="flex flex-wrap gap-2 pt-3 pb-4 mb-0">
-
-                        <div v-for="role in roles" class="">
+                        <div v-for="place in places" class="">
                             <a class="block px-5 py-3 text-xs font-bold leading-normal text-[#406f47] uppercase bg-white rounded shadow-lg"
-                                :class="{ '!text-white !bg-[#406f47]': form.model.roles == role.id }"
-                                @click="form.model.roles = role.id">
-                                {{ role.name }}
+                                :class="{ '!text-white !bg-[#406f47]': form.model.place_id == place.id }"
+                                @click="form.model.place_id = place.id">
+                                {{ place.name }}
                             </a>
                         </div>
                     </div>
@@ -45,27 +44,35 @@ import { debounce } from '@/utils/useDebouncedRef'
 import orderBy from '@/utils/orderBy'
 import MySelect from '@/Components/MySelect.vue'
 import MyInput from '@/Components/MyInput.vue'
+import { computed } from 'vue'
 
 const props = defineProps({
     datas: Object,
     filters: { type: Object, default: () => ({ search: '' }) },
+    places: Array,
 });
 
 const title = 'Хэрэглэгч жагсаалт'
+const auth = usePage().props.auth;
+const form = useForm({ model: { ...props.filters, per_page: props.datas.per_page } })
+    .transform(data => data.model)
 
-const headers = [
+
+const headers = computed(() => [
     { key: 'name', name: 'Нэр', order: 'name', filter: true },
     { key: 'username', name: 'Нэвтрэх нэр', order: 'username', filter: true },
     { key: 'aimag_city.name', name: 'Айман/нийслэл', order: 'aimag_city_id', url: '/admin/aimag_cities', filter: true },
-    { key: 'soum_district.name', name: 'Сум/Дүүрэг', order: 'soum_district_id', url: '/admin/soum_districts', filter: true },
-    { key: 'bag_horoo.name', name: 'Баг хороо', order: 'bag_horoo_id', url: '/admin/bag_horoos', filter: true },
+    { key: 'soum_district.name', name: 'Сум/Дүүрэг', order: 'soum_district_id', url: `/admin/soum_districts?aimag_city_id=${props.filters.aimag_city_id}`, filter: true },
+    { key: 'bag_horoo.name', name: 'Баг хороо', order: 'bag_horoo_id', url: `/admin/bag_horoos?soum_district_id=${props.filters.soum_district_id}`, filter: true },
     { key: 'phone', name: 'Утас', order: 'phone', filter: true },
-    { key: 'place.name', name: 'Харьялах нэгж', order: 'place_id', url: '/admin/places', filter: true },
-    // { key: 'roles', name: 'Эхийн түвшин', order: 'roles', filter: true },
-]
+    auth.user.roles == 'admin' ?
+        { key: 'roles', name: 'Эхийн түвшин', order: 'roles', filter: true } :
+        { key: 'place.name', name: 'Харьялах нэгж', order: 'place_id', url: '/admin/places', filter: true },
+
+])
 
 
-const auth = usePage().props.auth;
+
 const roles = auth.user.roles == 'admin' ?
     [
         { id: "admin", name: "Админ" },
@@ -77,8 +84,7 @@ const roles = auth.user.roles == 'admin' ?
     ] : []
 
 
-const form = useForm({ model: { ...props.filters, per_page: props.datas.per_page } })
-    .transform(data => data.model)
+
 
 watch(() => form.model, debounce(() => form.get('', { preserveState: true }), 150), { deep: true })
 
