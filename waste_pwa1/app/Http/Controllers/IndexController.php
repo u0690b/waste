@@ -169,7 +169,7 @@ class IndexController extends Controller
     }
 
 
-    public function storage($filename)
+    public function storage(Request $request,$filename)
     {
         $path =  $filename;
 
@@ -185,7 +185,7 @@ class IndexController extends Controller
         $start = 0;
         $end = $size - 1;
 
-        if ($range = Request::header('Range')) {
+        if ($range = $request->header('Range')) {
             preg_match('/bytes=(\d+)-(\d*)/', $range, $matches);
             $start = intval($matches[1]);
             if (!empty($matches[2])) {
