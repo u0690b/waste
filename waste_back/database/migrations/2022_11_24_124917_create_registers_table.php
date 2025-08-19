@@ -33,6 +33,7 @@ return new class extends Migration {
             $table->string('resolve_image', 500)->nullable()->comment('Шийдвэрлэсэн зураг');
             $table->timestamp('resolved_at')->nullable()->comment('Шийдвэрлэсэн огноо');
             $table->foreignId('comf_user_id')->nullable()->comment('Шийдвэрлэсэн хүн')->constrained('users');
+            $table->foreignId('comf_user_name')->nullable()->comment('Шийдвэрлэсэн хүн')->constrained('users');
             $table->foreignId('status_id')->comment('Төлөв')->constrained('statuses');
             $table->timestamp('reg_at')->nullable()->comment('Үүсгэсэн');
             $table->foreignId('allocate_by')->nullable()->comment('Хуваарилсан хүн')->constrained('users');

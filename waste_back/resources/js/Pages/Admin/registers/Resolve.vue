@@ -7,9 +7,12 @@
                     <div class="grid grid-cols-2">
                         <form @submit.prevent="submit">
                             <MySelect :value="data.resolve_id" :error="errors.resolve_id"
-                                class=" text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-80 p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                class=" text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-80 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 label="Шийдвэрийн төрөл" :url="`/admin/resolves`"
                                 @changeId="(id) => (form.resolve_id = id)" />
+                            <MyInput v-model="form.comf_user_name"
+                                label="Шийдвэрлэж байгаа /Байцаагч, Мэргэжилтэн.../ нэр" class="mb-4" required
+                                :error="errors.comf_user_name" />
                             <div
                                 class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
                                 <div class="flex items-center justify-between px-3 py-2 border-b dark:border-gray-600">
@@ -40,11 +43,12 @@
                                     </div>
                                 </div>
                                 <div class="px-4 py-2 bg-white rounded-b-lg dark:bg-gray-800">
-                                    <label for="editor" class="sr-only">Publish post</label>
+                                    <label v-if="errors.resolve_desc" for="editor">{{ errors.resolve_desc }}</label>
                                     <textarea id="editor" rows="4" v-model="form.resolve_desc"
                                         :error="errors.resolve_desc"
                                         class="block w-full px-0 text-sm text-gray-800 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
-                                        placeholder="Write an article..." required></textarea>
+                                        placeholder="Тайлбар бичих..." required></textarea>
+
                                 </div>
                             </div>
                             <!-- <TextareaInput v-model="form.resolve_desc" :error="errors.resolve_desc" class="bg-gray-50
@@ -123,6 +127,7 @@ export default {
             form: this.$inertia.form({
                 id: this.data.id,
                 resolve_id: this.data.resolve_id,
+                comf_user_name: null,
                 image: null,
                 resolve_desc: this.data.resolve_desc,
             }),

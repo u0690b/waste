@@ -56,16 +56,16 @@ const fields = [
         { label: 'Шийдвэрлэсэн байдал', value: props.waste?.resolve_desc },
         { label: 'Шийдвэрлэсэн зураг', value: props.waste?.resolve_image },
         { label: 'Шийдвэрлэсэн огноо', value: props.waste?.resolved_at },
-        { label: 'Шийдвэрлэсэн', value: props.waste?.comf_user_id ?? '' },
+        { label: 'Шийдвэрлэсэн', value: props.waste?.comf_user_name ?? '' },
         { label: 'Шилжүүлсэн', value: props.waste?.allocated?.name ?? '' },
         { label: 'Хуваарилсан', value: props.waste?.comf_user?.name ?? '' },
-        { label: 'Үүсгэсэн', value: props.waste?.reg_at },
+        { label: 'Хуваарилсан огноо', value: props.waste?.reg_at },
 
     ] : [],
     ...props.waste?.status_id == 3 ? [
         { label: 'Шилжүүлсэн', value: props.waste?.allocated?.name ?? '' },
         { label: 'Хуваарилсан', value: props.waste?.comf_user?.name ?? '' },
-        { label: 'Хуваарилсан', value: props.waste?.updated_at },
+        { label: 'Хуваарилсан огноо', value: props.waste?.reg_at },
 
     ] : [],
 ]

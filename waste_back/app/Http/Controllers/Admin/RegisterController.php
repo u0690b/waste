@@ -22,19 +22,14 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        $input = Request::all(["search", ...Register::$searchIn]);
+        $input = Request::all(["search", "status_id"]);
         $user = Auth::user();
 
         if (!$input['status_id']) {
             $input['status_id'] = 2;
         }
 
-        if (!($user->roles == 'admin')) {
-            $input['aimag_city_id'] = $user->aimag_city_id;
-            if ($user->aimag_city_id == 7) {
-                $input['soum_district_id'] = $user->soum_district_id;
-            }
-        }
+
 
 
         $registers = Register::filter($input)
@@ -48,19 +43,27 @@ class RegisterController extends Controller
             ->with('attached_images:id,register_id,path')
             ->with('attached_video:id,register_id,path');
 
-        if ($user->roles == 'da' || $user->roles == 'admin') {
-            $registers = $registers->orWhere(function ($query) use ($user, $input) {
-                $query->where('reg_user_id', '=', $user->id)
+        if (!($user->roles == 'admin')) {
+            $registers = $registers->where('aimag_city_id', $user->aimag_city_id);
+
+            if ($user->aimag_city_id == 7) {
+                $registers = $registers->where('soum_district_id', $user->soum_district_id);
+            }
+
+            if ($user->roles == 'da') {
+                $registers = $registers->orWhere(function ($query) use ($user, $input) {
+                    $query->where('comf_user_id', '=', $user->id)
+                        ->where('status_id', '=', $input['status_id']);
+                });
+            } else {
+                $registers = $registers->where('comf_user_id', '=', $user->id)
                     ->where('status_id', '=', $input['status_id']);
-            });
-        } else {
-            $registers = $registers->where(function ($query) use ($user, $input) {
-                $query->where('reg_user_id', '=', $user->id)
-                    ->where('status_id', '=', $input['status_id']);
-            });
+
+            }
         }
 
-        if (!$input['status_id'] || $input['status_id'] != 2) {
+
+        if ($input['status_id'] != 2) { //ilgeesensees busad shiuljuulj irsen baibal hariyalal hargalzahgui huleen avah
             $registers = $registers->orWhere(function ($query) use ($user, $input) {
                 $query->where('comf_user_id', '=', $user->id)
                     ->where('status_id', '=', $input['status_id']);
@@ -188,13 +191,16 @@ class RegisterController extends Controller
     }
     public function allocation_store(Register $register)
     {
-        $input = Request::validate(['allocate_by' => 'required']);
+        $input = Request::validate(['comf_user_id' => 'required']);
         $input['status_id'] = 3;
+        $input['allocate_by'] = Auth::user()->id;
+        $input['reg_at'] = Date::now();
+
         $register->update($input);
         ;
         $register->sendAllocationWasteNotify();
 
-        return Redirect::route('admin.registers.index')->with('success', 'Register updated.');
+        return Redirect::route('admin.registers.show', $register->id)->with('success', 'Register updated.');
     }
 
     public function show_resolve(Register $register)
@@ -222,6 +228,7 @@ class RegisterController extends Controller
             'resolve_desc' => 'required|string|max:2000',
             'resolve_id' => 'required|integer',
             'image' => 'nullable|file',
+            "comf_user_name" => "required|string",
         ]);
 
 
@@ -252,7 +259,6 @@ class RegisterController extends Controller
         }
 
 
-
-        return Redirect::route('admin.registers.index')->with('success', 'Register updated.');
+        return Redirect::route('admin.registers.show', $register->id)->with('success', 'Register updated.');
     }
 }

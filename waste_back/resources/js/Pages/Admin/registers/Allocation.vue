@@ -8,10 +8,10 @@
                         <div>
                             <label class="text-sm font-medium text-gray-900 dark:text-white"
                                 for="address">Бүртгэгч</label>
-                            <MySelect :value="data.allocated" :error="errors.allocate_by"
+                            <MySelect :value="data.comf_user" :error="errors.comf_user_id"
                                 class="text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 :url="`/admin/users?soum_district_id=${data.soum_district_id}`"
-                                @changeId="(id) => (form.allocate_by = id)" />
+                                @changeId="(id) => (form.comf_user_id = id)" />
                         </div>
 
                         <div class="py-1">
@@ -89,6 +89,7 @@ export default {
         return {
             selected: null,
             form: this.$inertia.form({
+                allocate_by: null,
                 id: this.data.id,
                 comf_user_id: this.data.comf_user_id,
             }),

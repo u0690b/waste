@@ -155,14 +155,14 @@
                                                                         </MenuItem>
 
                                                                         <MenuItem
-                                                                            v-if="data.status_id != 4 && auth.user.roles == 'da'"
+                                                                            v-if="data.status_id != 4 && (auth.user.roles == 'da' || auth.user.roles == 'admin')"
                                                                             v-slot="{ active }">
                                                                         <ILink
                                                                             :href="route('admin.register.allocation', data.id)"
                                                                             :class="[active ? 'bg-blue-400 text-white' : 'text-gray-900', 'group flex rounded-md items-center w-full px-1 py-2 text-sm',]">
                                                                             <i
                                                                                 class="ti ti-direction-alt  text-gray-500 font-bold  mr-2" />
-                                                                            Шилжүүлсэн
+                                                                            Шилжүүлэх
                                                                         </ILink>
                                                                         </MenuItem>
                                                                         <MenuItem v-if="data.status_id != 4"

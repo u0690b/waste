@@ -83,9 +83,10 @@ class Register extends Model
         'resolve_image',
         'resolved_at',
         'comf_user_id',
+        'comf_user_name',
         'status_id',
         'reg_at',
-        'allocate_by'
+        'allocate_by',
     ];
 
     /**
@@ -114,6 +115,7 @@ class Register extends Model
         'resolve_image' => 'string',
         'resolved_at' => 'date:Y-m-d h:i',
         'comf_user_id' => 'integer',
+        'comf_user_name' => 'string',
         'status_id' => 'integer',
         'reg_at' => 'date:Y-m-d h:i',
         'allocate_by' => 'integer',
@@ -151,7 +153,6 @@ class Register extends Model
         'images.*' => 'sometimes|file',
         'video' => 'sometimes|file',
         'reg_at' => 'nullable',
-        'resolved_at' => 'nullable',
         "allocate_by" => 'nullable'
     ];
 
@@ -277,6 +278,7 @@ class Register extends Model
         'resolve_image',
         'resolved_at',
         'comf_user_id',
+        'comf_user_name',
         'status_id',
         'reg_at',
         'allocate_by'
