@@ -4,9 +4,10 @@ deployment:
     - export DEPLOYPATH_MOBILE=/home/wastemecc2/repositories/waste/waste_pwa1/
     - /bin/cp -Rf $DEPLOYPATH/public/build /home/wastemecc2/public_html/
     - cd $DEPLOYPATH
-    - /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
-    - php artisan migrate:fresh --seed --force
+    # - /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
+    # - php artisan migrate:fresh --seed --force
     - cd $DEPLOYPATH_MOBILE
-    - /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
-    - ln -s /home/wastemecc2/public_html/mobile $DEPLOYPATH_MOBILE/public
+    # - /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
+    - ln -s $DEPLOYPATH_MOBILE/public /home/wastemecc2/public_html/mobile
+    - php artisan storage:link
     
