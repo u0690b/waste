@@ -14,30 +14,29 @@ const assets = [
     '/build/assets/app-v2.css',
     '/build/assets/WasteStore-v2.js',
     '/build/assets/loader-circle-v2.js',
-    '/build/assets/usePortal-v2.js',
-    '/build/assets/HeadingSmall.vue_vue_type_script_setup_true_lang-v2.js',
     '/build/assets/WasteDetail-v2.js',
+    '/build/assets/HeadingSmall.vue_vue_type_script_setup_true_lang-v2.js',
+    '/build/assets/Heading.vue_vue_type_script_setup_true_lang-v2.js',
     '/build/assets/useKbd-v2.js',
-    '/build/assets/TextLink.vue_vue_type_script_setup_true_lang-v2.js',
     '/build/assets/Label-v2.js',
+    '/build/assets/TextLink.vue_vue_type_script_setup_true_lang-v2.js',
     '/build/assets/embla-carousel-auto-height.esm-v2.js',
+    '/build/assets/Offline-v2.js',
     '/build/assets/useForwardExpose-v2.js',
     '/build/assets/Separator-v2.js',
     '/build/assets/AuthLayout.vue_vue_type_script_setup_true_lang-v2.js',
-    '/build/assets/Send-v2.js',
-    '/build/assets/Card-v2.js',
     '/build/assets/Solved-v2.js',
-    '/build/assets/useLocale-v2.js',
+    '/build/assets/Card-v2.js',
     '/build/assets/Login-v2.js',
     '/build/assets/VerifyEmail-v2.js',
-    '/build/assets/embla-carousel-class-names.esm-v2.js',
     '/build/assets/ConfirmPassword-v2.js',
+    '/build/assets/embla-carousel-class-names.esm-v2.js',
     '/build/assets/Layout.vue_vue_type_script_setup_true_lang-v2.js',
-    '/build/assets/Label.vue_vue_type_script_setup_true_lang-v2.js',
     '/build/assets/ForgotPassword-v2.js',
-    '/build/assets/Draft-v2.js',
+    '/build/assets/Label.vue_vue_type_script_setup_true_lang-v2.js',
     '/build/assets/embla-carousel-autoplay.esm-v2.js',
     '/build/assets/embla-carousel-auto-scroll.esm-v2.js',
+    '/build/assets/Draft-v2.js',
     '/build/assets/ResetPassword-v2.js',
     '/build/assets/Appearance-v2.js',
     '/build/assets/embla-carousel-fade.esm-v2.js',
@@ -46,17 +45,16 @@ const assets = [
     '/build/assets/Password-v2.js',
     '/build/assets/WasteDetail.vue_vue_type_script_setup_true_lang-v2.js',
     '/build/assets/index-v2.js',
-    '/build/assets/embla-carousel-wheel-gestures.esm-v2.js',
-    '/build/assets/Profile-v2.js',
-    '/build/assets/Avatar-v2.js',
-    '/build/assets/TooltipProvider-v2.js',
-    '/build/assets/Show-v2.js',
-    '/build/assets/Icon-v2.js',
-    '/build/assets/index-v22.js',
-    '/build/assets/Button-v2.js',
-    '/build/assets/Carousel.vue_vue_type_script_setup_true_lang-v2.js',
-    '/build/assets/Primitive-v2.js',
     '/build/assets/Welcome-v2.js',
+    '/build/assets/embla-carousel-wheel-gestures.esm-v2.js',
+    '/build/assets/Send-v2.js',
+    '/build/assets/Profile-v2.js',
+    '/build/assets/Notifications-v2.js',
+    '/build/assets/Show-v2.js',
+    '/build/assets/index-v22.js',
+    '/build/assets/Carousel.vue_vue_type_script_setup_true_lang-v2.js',
+    '/build/assets/App-v22.js',
+    '/build/assets/Button-v2.js',
     '/build/assets/Create-v2.js',
     '/build/assets/AppLayout.vue_vue_type_script_setup_true_lang-v2.js',
     '/build/assets/app-v2.js',
@@ -111,8 +109,6 @@ self.addEventListener('fetch', function (event) {
     );
 });
 
-
-
 // web/firebase-messaging-sw.js
 importScripts('https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.11.0/firebase-messaging-compat.js');
@@ -125,8 +121,6 @@ firebase.initializeApp({
     appId: '1:759328300749:web:61cf7919884be1ca7b1384',
     measurementId: 'G-S1NQRYVRED',
 });
-
-
 
 const messaging = firebase.messaging();
 
