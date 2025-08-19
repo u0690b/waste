@@ -52,7 +52,7 @@ class OAuthController extends Controller
         // Auth::logout();
         // $customer = Customer::first();
         Auth::login($customer, true);
-        return  redirect('/');
+        return  redirect('/mobile/');
     }
 
      public function save_token(Request $request)
