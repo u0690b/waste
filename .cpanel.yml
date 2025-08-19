@@ -8,6 +8,6 @@ deployment:
     # - php artisan migrate:fresh --seed --force
     - cd $DEPLOYPATH_MOBILE
     # - /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
-    - ln -s $DEPLOYPATH_MOBILE/public /home/wastemecc2/public_html/mobile
-    - php artisan storage:link
+    - /bin/cp -Rf $DEPLOYPATH_MOBILE/public/build /home/wastemecc2/public_html/mobile/
+    
     
