@@ -171,13 +171,13 @@ class IndexController extends Controller
 
     public function storage($filename)
     {
-        $path = 'public/' . $filename;
+        $path =  $filename;
 
-        if (!Storage::exists($path)) {
+        if (!Storage::disk('public')->exists($path)) {
             abort(404, 'File not found.');
         }
 
-        $fullPath = Storage::path($path);
+        $fullPath = Storage::disk('public')->path($path);
 
         $mime = Storage::mimeType($path);
         $size = filesize($fullPath);
@@ -192,7 +192,7 @@ class IndexController extends Controller
                 $end = intval($matches[2]);
             }
         } else {
-            $file = Storage::get($path);
+            $file = Storage::disk('public')->get($path);
             return response($file, 200)
                 ->header('Content-Type', $mime);
         }
