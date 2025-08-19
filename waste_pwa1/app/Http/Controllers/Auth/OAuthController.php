@@ -31,7 +31,7 @@ class OAuthController extends Controller
 
         $image_name = md5($user['regnum']).'.png';
 
-        Storage::put($image_name, base64_decode($user['image']),'public');
+        Storage::disk('public')->put($image_name, base64_decode($user['image']));
         $customer =  Customer::updateOrCreate(
             ['regnum' => $user['regnum']],
             [
