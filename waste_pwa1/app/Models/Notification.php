@@ -28,7 +28,7 @@ class Notification extends Model
     use HasFilter;
 
     public $table = 'notifications';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -80,7 +80,7 @@ class Notification extends Model
      **/
     public function user()
     {
-        return $this->belongsTo(\App\Models\User::class, 'user_id');
+        return ($this->type=='1')? $this->belongsTo(\App\Models\User::class, 'user_id'): $this->belongsTo(\App\Models\Customer::class, 'user_id');
     }
 
     /**
@@ -97,7 +97,7 @@ class Notification extends Model
 
     /**
      * Filter Model
-     * 
+     *
      * @return array
      */
     public function getSearchIn()

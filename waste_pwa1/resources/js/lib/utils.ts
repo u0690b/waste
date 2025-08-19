@@ -5,8 +5,11 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-function base64ToFile(base64: string, filename: string, mime = 'image/png'):File {
-    const byteChars = atob(base64);
+export function base64ToFile(dataUrl: string, filename: string): File {
+    const [meta, base64] = dataUrl.split(',');
+    const mime = meta?.match(/:(.*?);/)?.[1] ?? 'image/png';
+
+    const byteChars = atob(base64 == undefined ? meta : base64);
     const byteNumbers = new Array(byteChars.length);
 
     for (let i = 0; i < byteChars.length; i++) {
@@ -17,8 +20,11 @@ function base64ToFile(base64: string, filename: string, mime = 'image/png'):File
     return new File([byteArray], filename, { type: mime });
 }
 
-function base64ToBlob(base64:string, mime = ''): Blob {
-    const byteChars = atob(base64);
+export function base64ToBlob(dataUrl: string): Blob {
+    const [meta, base64] = dataUrl.split(',');
+    const mime = meta?.match(/:(.*?);/)?.[1] ?? 'image/png';
+
+    const byteChars = atob(base64 == undefined?meta:base64);
     const byteNumbers = new Array(byteChars.length);
 
     for (let i = 0; i < byteChars.length; i++) {

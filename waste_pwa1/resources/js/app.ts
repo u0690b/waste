@@ -1,6 +1,6 @@
 import '../css/app.css';
 
-import { createInertiaApp } from '@inertiajs/vue3';
+import { createInertiaApp, Link } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
@@ -10,7 +10,6 @@ import ui from '@nuxt/ui/vue-plugin';
 import { createPinia } from 'pinia';
 const pinia = createPinia();
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
-
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
@@ -20,6 +19,7 @@ createInertiaApp({
             .use(pinia)
             .use(ZiggyVue)
             .use(ui)
+            .component('ILink', Link)
             .mount(el);
     },
     progress: {

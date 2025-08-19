@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends UsersModel
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -17,7 +17,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
+    public $fillable = [
         'name',
         'email',
         'password',
@@ -45,4 +45,31 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public static $searchIn = [
+        'name',
+        'username',
+        'password',
+        'aimag_city_id',
+        'soum_district_id',
+        'bag_horoo_id',
+        'phone',
+        'place_id',
+        'roles',
+        'remember_token',
+        'push_token'
+    ];
+
+    public static $rolesModel = [
+        "admin" => "Админ",
+        "zaa" => "Захирагчийн ажлын алба",
+        "mha" => "МХ байцаагч",
+        "da" => "Дүүргийн ЗДТГ",
+        "hd" => "Хорооны засаг дарга",
+        "onb" => "Олон нийтийн байцаагч",
+        "boajy" => "Байгаль орчин, аялал жуулчлалын яам",
+        "bhby" => "Барилга, хот байгуулалтын яам",
+        "emy" => "Эрүүл мэндийн яам",
+        "none" => "Идэвхигүй",
+    ];
 }

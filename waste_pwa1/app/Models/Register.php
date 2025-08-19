@@ -5,44 +5,55 @@ namespace App\Models;
 use App\Services\FirebaseMessagingService;
 use Auth;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Log;
+
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Log;
 
 /**
  * Class Register
  * @package App\Models
- * @version December 13, 2022, 5:49 am UTC
+ * @version August 18, 2025, 1:56 am +08
  *
  * @property \App\Models\AimagCity $aimagCity
+ * @property \App\Models\User $allocateBy
  * @property \App\Models\BagHoroo $bagHoroo
  * @property \App\Models\User $comfUser
  * @property \App\Models\Reason $reason
  * @property \App\Models\User $regUser
+ * @property \App\Models\Resolve $resolve
  * @property \App\Models\SoumDistrict $soumDistrict
  * @property \App\Models\Status $status
- * @property \Illuminate\Database\Eloquent\Collection $registerHistories
- * @property string $name
- * @property string $register
- * @property string $chiglel
- * @property integer $aimag_city_id
- * @property integer $soum_district_id
- * @property integer $bag_horoo_id
- * @property string $address
- * @property string $description
- * @property integer $reason_id
- * @property string $zuil_zaalt
- * @property string $resolve_desc
- * @property number $long
- * @property number $lat
- * @property integer $reg_user_id
- * @property integer $comf_user_id
- * @property integer $status_id
+ * @property \Illuminate\Database\Eloquent\Collection $attachedFiles
+ * @property string $whois Иргэн/ААН
+ * @property string $name Байгууллага, аж ахуйн нэгжийн нэр, иргэний овог нэр
+ * @property string $register Регистрийн дугаар
+ * @property string $chiglel Үйл ажиллагааны чиглэл
+ * @property integer $aimag_city_id Аймаг,Нийслэл
+ * @property integer $soum_district_id Сум,Дүүрэг
+ * @property integer $bag_horoo_id Баг,Хороо
+ * @property string $address Хаяг, байршилд
+ * @property string $description Гаргасан зөрчлийн байдал
+ * @property integer $reason_id Зөрчлийн төрөл
+ * @property string $zuil_zaalt Зөрчсөн хууль тогтоомжийн зүйл, заалт
+ * @property string $long Уртраг
+ * @property string $lat Өргөрөг
+ * @property integer $reg_user_id Бүртгэсэн хүн
+ * @property integer $resolve_id Шийдвэрийн төрөл
+ * @property string $resolve_desc Шийдвэрлэсэн байдал
+ * @property string $resolve_image Шийдвэрлэсэн зураг
+ * @property string $resolved_at Шийдвэрлэсэн огноо
+ * @property integer $comf_user_id Шийдвэрлэсэн хүн
+ * @property integer $status_id Төлөв
+ * @property string $reg_at Үүсгэсэн
+ * @property integer $allocate_by Хуваарилсан хүн
  */
 class Register extends Model
 {
 
     use HasFactory;
+
+    use HasFilter;
 
     public $table = 'registers';
 
@@ -64,17 +75,17 @@ class Register extends Model
         'description',
         'reason_id',
         'zuil_zaalt',
-        'resolve_id',
-        'resolve_desc',
-        'resolve_image',
         'long',
         'lat',
         'reg_user_id',
+        'resolve_id',
+        'resolve_desc',
+        'resolve_image',
+        'resolved_at',
         'comf_user_id',
         'status_id',
         'reg_at',
-        'resolved_at',
-        'allocate_by',
+        'allocate_by'
     ];
 
     /**
@@ -95,17 +106,17 @@ class Register extends Model
         'description' => 'string',
         'reason_id' => 'integer',
         'zuil_zaalt' => 'string',
-        'resolve_desc' => 'string',
-        'resolve_image' => 'string',
         'long' => 'float',
         'lat' => 'float',
         'reg_user_id' => 'integer',
+        'resolve_id' => 'integer',
+        'resolve_desc' => 'string',
+        'resolve_image' => 'string',
+        'resolved_at' => 'string',
         'comf_user_id' => 'integer',
         'status_id' => 'integer',
-        'created_at' => 'date:Y-m-d h:i',
-        'reg_at' => 'date:Y-m-d h:i',
-        'resolved_at' => 'date:Y-m-d h:i',
-        'allocate_by' => 'integer',
+        'reg_at' => 'string',
+        'allocate_by' => 'integer'
     ];
 
     /**
@@ -119,24 +130,28 @@ class Register extends Model
         'register' => 'nullable|string|max:255',
         'chiglel' => 'nullable|string|max:255',
         'aimag_city_id' => 'required',
-        'soum_district_id' => 'nullable|integer',
-        'bag_horoo_id' => 'nullable|integer',
+        'soum_district_id' => 'nullable',
+        'bag_horoo_id' => 'nullable',
         'address' => 'nullable|string|max:500',
         'description' => 'required|string|max:2000',
         'reason_id' => 'required',
         'zuil_zaalt' => 'nullable|string|max:1000',
-        'resolve_desc' => 'nullable|string|max:2000',
         'long' => 'required|numeric',
         'lat' => 'required|numeric',
+        'reg_user_id' => 'nullable',
+        'resolve_id' => 'nullable',
+        'resolve_desc' => 'nullable|string|max:2000',
+        'resolve_image' => 'nullable|string|max:500',
+        'resolved_at' => 'nullable|string',
         'comf_user_id' => 'nullable',
-        'created_at' => 'nullable',
-        'updated_at' => 'nullable',
+        'status_id' => 'nullable',
         'images' => 'sometimes|array',
         'images.*' => 'sometimes|file',
         'video' => 'sometimes|file',
-        'reg_at' => 'nullable',
-        'resolved_at' => 'nullable',
-        "allocate_by" => 'nullable'
+        'reg_at' => 'nullable|string',
+        'allocate_by' => 'nullable',
+        'created_at' => 'nullable|string',
+        'updated_at' => 'nullable|string'
     ];
 
     /**
@@ -145,6 +160,14 @@ class Register extends Model
     public function aimag_city()
     {
         return $this->belongsTo(\App\Models\AimagCity::class, 'aimag_city_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function allocated()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'allocate_by');
     }
 
     /**
@@ -182,12 +205,10 @@ class Register extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function allocate()
+    public function resolve()
     {
-        return $this->belongsTo(\App\Models\User::class, 'allocate_by');
+        return $this->belongsTo(\App\Models\Resolve::class, 'resolve_id');
     }
-
-
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -206,20 +227,13 @@ class Register extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
-    public function resolve()
-    {
-        return $this->belongsTo(\App\Models\Resolve::class, 'resolve_id');
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function registerHistories()
+    public function attachedFiles()
     {
-        return $this->hasMany(\App\Models\RegisterHistory::class, 'register_id');
+        return $this->hasMany(\App\Models\AttachedFile::class, 'register_id');
     }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
@@ -248,32 +262,30 @@ class Register extends Model
         'description',
         'reason_id',
         'zuil_zaalt',
-        'resolve_desc',
         'long',
         'lat',
         'reg_user_id',
+        'resolve_id',
+        'resolve_desc',
+        'resolve_image',
+        'resolved_at',
         'comf_user_id',
-        'status_id'
+        'status_id',
+        'reg_at',
+        'allocate_by'
     ];
-
-    /**
-     * Filter Model
-     * @param Array $filters
-     * @return App\Models\Register
-     */
-    public function scopeFilter(Builder $query, array $filters)
-    {
-        if (count($filters)) {
-            $query = $this->buildFilter($query, $filters, Register::$searchIn);
-        }
-        return $query;
-    }
 
     /**
      * Filter Model
      *
      * @return array
      */
+    public function getSearchIn()
+    {
+        return Register::$searchIn;
+    }
+
+
     public function sendCreatedWasteNotify()
     {
 
@@ -316,11 +328,6 @@ class Register extends Model
         }
     }
 
-    /**
-     * Filter Model
-     *
-     * @return array
-     */
     public function sendResolvedWasteNotify()
     {
         try {
@@ -377,11 +384,7 @@ class Register extends Model
         }
     }
 
-    /**
-     * Filter Model
-     *
-     * @return array
-     */
+
     public function sendAllocationWasteNotify($note = '')
     {
         try {

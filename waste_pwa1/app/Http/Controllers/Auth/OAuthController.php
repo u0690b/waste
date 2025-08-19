@@ -54,4 +54,17 @@ class OAuthController extends Controller
         Auth::login($customer, true);
         return  redirect('/');
     }
+
+     public function save_token(Request $request)
+    {
+        $request->validate([
+            'push_token' => 'required|string',
+        ]);
+
+        Auth::user()->push_token = $request->push_token;
+        Auth::user()->save();
+
+        return true;
+    }
+
 }

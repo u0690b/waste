@@ -6,14 +6,7 @@ import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
 
 const sidebarNavItems: NavItem[] = [
-    {
-        title: 'Profile',
-        href: '/settings/profile',
-    },
-    {
-        title: 'Password',
-        href: '/settings/password',
-    },
+
     {
         title: 'Appearance',
         href: '/settings/appearance',
@@ -27,7 +20,7 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
 
 <template>
     <div class="px-4 py-6">
-        <Heading title="Settings" description="Manage your profile and account settings" />
+        <Heading title="Тохиргоо" description="" />
 
         <div class="flex flex-col lg:flex-row lg:space-x-12">
             <aside class="w-full max-w-xl lg:w-48">

@@ -1,18 +1,23 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types';
+import { Auth, type BreadcrumbItem } from '@/types';
 import { Head,  router,  useForm } from '@inertiajs/vue3';
 import { computed, onMounted, ref } from 'vue';
 import { CustomControl, GoogleMap, Marker } from 'vue3-google-map'
 import { vMaska } from "maska/vue"
 import {  useCommonStore } from '@/composables/store';
-import { useWasteListStore, WasteFormModel } from '@/composables/WasteStore';
+import { useWasteListStore } from '@/composables/WasteStore';
+import { WasteFormModel } from '@/types/type';
+
+
+const props = defineProps<{ auth: Auth }>();
+
 const center = ref({ lat: 40.689247, lng: -74.044502 });
 const errMsg = ref();
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Бүртгэх',
-        href: '/dashboard',
+        href: '/',
     },
 ];
 
@@ -69,13 +74,14 @@ const form = useForm<WasteFormModel>({
         long: undefined,
         lat: undefined,
         reg_user_id: undefined,
-        comf_user_id: undefined,
-        status_id: undefined,
+        comf_user_id: props.auth.user.id,
+        status_id: 1,
         reg_at: undefined,
         resolved_at: undefined,
         allocate_by: undefined,
         imageFileList: undefined,
         imageBase64List:[],
+        created_at: new Date().toISOString(),
     }
 }).transform((data: any): WasteFormModel => data.model);;
 
@@ -110,7 +116,7 @@ const onSubmit = ()=>{
     form.model.long = center.value.lng;
     form.model.lat = center.value.lat;
 
-    form.model.imageFileList!.forEach(element => {
+    form.model.images!.forEach(element => {
         fileToBase64(element, (err, base64) => {
             if (err) {
                 console.error("Error:", err);
@@ -221,7 +227,7 @@ const onSubmit = ()=>{
                                 placeholder="Гаргасан зөрчилийн байдал, тайлбар" class="w-full" />
                         </UFormField>
                         <UFormField required label="Зураг">
-                            <UFileUpload size="lg" v-model="form.model.imageFileList" position="inside" multiple
+                            <UFileUpload size="lg" v-model="form.model.images" position="inside" multiple
                                 class="w-full min-h-38" layout="list" accept="image/*" />
                         </UFormField>
                     </div>

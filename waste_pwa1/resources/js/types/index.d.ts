@@ -19,7 +19,7 @@ export interface NavItem {
 
 export type AppPageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     name: string;
-    quote: { message: string; author: string };
+    new_noti: number;
     auth: Auth;
     flash: { message: string; success: string; warning: string; error: string };
     ziggy: Config & { location: string };
@@ -27,7 +27,7 @@ export type AppPageProps<T extends Record<string, unknown> = Record<string, unkn
 };
 
 export interface User {
-
+    id:number,
     created_at: string;
     updated_at: string;
     regnum: string;

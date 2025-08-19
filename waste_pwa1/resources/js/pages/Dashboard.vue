@@ -2,8 +2,10 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import PlaceholderPattern from '../components/PlaceholderPattern.vue';
-import { CardTitle, CardDescription, Card, CardContent, CardAction } from '@/components/ui/card';
+import { CardTitle, CardDescription, Card, CardContent } from '@/components/ui/card';
+import { computed } from 'vue';
+import { useWasteListStore } from '@/composables/WasteStore';
+import { Plus } from 'lucide-vue-next';
 
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -12,39 +14,42 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
 ];
-const props = defineProps({
-    chart: [Object, Array],
-    totalReportStat: [Number],
-    totalClearStat: [Number],
-    totalClearPrevMonthStat: [Number],
-    totalReportPrevMonthStat: [Object],
-    totalUsers: [Number],
-    lastMonth: [Object, Array],
+const props = defineProps<{
+    status: any[]
+}>()
+
+const wasteStore = useWasteListStore();
+const draftTotal = computed(()=>{
+    return wasteStore.wasteList.length
 })
-
-
 
 const card = [
     {
-        title: "Нийт зөрчил",
+        change: "Нийт зөрчил",
         icon: "lucide:file-text",
-        total: props.totalReportStat?.toString().replace(/\D/g, "") ?? '',
-        change_title: "Өнгөрсөн сараас",
-        change: 'Өнгөрсөн сараас ' + (props.totalReportPrevMonthStat?.percentage_change ?? '') + "%"
+        total: (props.status?.reduce((v, a) => a.total + v, 0)??0) + draftTotal.value,
     },
     {
-        title: "Нийт шийдвэрлэсэн",
-        icon: "lucide:badge-check",
-        total: props.totalClearStat?.toString().replace(/\D/g, "") ?? '',
-        change_title: "Энэ сар",
-        change: 'Энэ сар +' + (props.totalClearPrevMonthStat ?? '') + " шийдвэрлэсэн"
+        change: "Илгээгээгүй",
+        icon: "lucide:save-off",
+        total: draftTotal.value ?? '0',
+
     },
     {
-        title: "Нийт хэрэглэгч",
+        change: "Илгээсэн",
+        icon: "lucide:send",
+        total: props.status?.find(v => v.status_id == 2)?.total ?? '0',
+
+    },
+    {
+        change: "Ажиллгаа хийгдэж байгаа",
+        icon: "lucide:truck",
+        total: props.status?.find(v => v.status_id == 3)?.total ?? '0',
+    },
+    {
+        change: "Шийдвэрлэсэн",
         icon: "lucide:badge-check",
-        total: props.totalUsers?.toString().replace(/\D/g, "") ?? '',
-        change_title: "Бид нэмэгдсээр улам олуулаа болсоор",
-        change: ""
+        total: props.status?.find(v => v.status_id == 3)?.total ?? '0',
     }
 ]
 </script>
@@ -54,32 +59,21 @@ const card = [
     <Head title="Дашбоард" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
-            <div class="grid auto-rows-min gap-4 md:grid-cols-4">
-                <Card v-for="value in card" :key="value.title">
+        <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto ">
+            <div class="grid auto-rows-min gap-4 grid-cols-2 md:grid-cols-3">
+                <Card v-for="value,i in card" :key="i">
                     <CardContent>
                         <CardTitle class="flex justify-between">
-                            <h3 class="text-sm font-medium">{{value.title}}</h3>
+                            <div class="text-3xl font-bold">{{ value.total }}</div>
                             <UIcon :name="value.icon" />
                         </CardTitle>
-                        <div class="text-3xl font-bold">{{ value.total }}</div>
                         <CardDescription>{{ value.change }}</CardDescription>
                     </CardContent>
 
                 </Card>
-                <Card class="bg-green-400">
-                    <CardContent>
-
-                        <CardDescription class="mb-3">Байгалиа хайрлаж, бохирдлыг багасгах нь хүн бүрийн үүрэг</CardDescription>
-                        <CardAction>
-                            <UButton href="/create" trailing-icon="lucide:plus" color="neutral">Зөрчил бүртгэх</UButton>
-                        </CardAction>
-                    </CardContent>
-                </Card>
-            </div>
-            <div
-                class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                <PlaceholderPattern />
+                <UButton to="/create" class="w-full h-full" title="Зөрчил бүртгэх">
+                    <Plus :size="40"  class="text-white mx-auto" />
+                </UButton>
             </div>
         </div>
     </AppLayout>
