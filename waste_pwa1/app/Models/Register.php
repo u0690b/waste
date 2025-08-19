@@ -199,7 +199,7 @@ class Register extends Model
      **/
     public function reg_user()
     {
-        return $this->belongsTo(\App\Models\User::class, 'reg_user_id');
+        return $this->belongsTo(\App\Models\Customer::class, 'reg_user_id');
     }
 
     /**
@@ -289,28 +289,22 @@ class Register extends Model
     public function sendCreatedWasteNotify()
     {
 
-        $regUser = $this->reg_user;
-        $users = User::whereSoumDistrictId($this->soum_district_id)
-            ->where(function ($query) use ($regUser) {
-                $query->where('roles', '=', 'mha')
-                    ->orWhere(
-                        function ($query) use ($regUser) {
-                            $query->where('roles', '=', 'hd')
-                                ->where('bag_horoo_id', '=', $regUser->bag_horoo_id);
-                        }
-                    );
-            })
+        $users = User::where('aimag_city_id', $this->aimag_city_id);
+        if ($this->aimag_city_id == 7) {
+            $users = $users->where('soum_district_id', $this->soum_district_id);
+        }
 
-            ->get();
+        $users = $users->where('roles', '=', 'da')->get();
+
         $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
 
         foreach ($users as $key => $user) {
             Notification::create([
                 'user_id' => $user->id,
-                'type' => 'Шинэ зөрчил бүртгэсэн',
-                'title' => $this->reg_user->name . "-аас танд шинэ зөрчил бүртгэгдлээ ",
+                'type' => '1',
+                'title' => $this->reg_user->lastname . ' ' . $this->reg_user->firstname .'-аас',
                 'rid' => $this->id,
-                'content' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
+                'content' => $this->whois . ' ' . $this->name ." -ны гаргасан зөрчил танд бүртэсэн тухай мэдэгдэл ",
             ]);
         }
 
@@ -328,110 +322,4 @@ class Register extends Model
         }
     }
 
-    public function sendResolvedWasteNotify()
-    {
-        try {
-
-
-            Notification::create([
-                'user_id' => $this->reg_user_id,
-                'type' => 'Шийдвэрлэгдсэн',
-                'rid' => $this->id,
-                'title' => $this->comf_user->name . '/' . User::$rolesModel[$this->comf_user->roles] . '/' . ' зөрчил ' . $this->resolve->name . '-аар шийдвэрлэсэн',
-                'content' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
-            ]);
-            $regUser = $this->reg_user;
-            $users = User::where('aimag_city_id', $this->aimag_city_id)->where('roles', '=', 'da');
-            if ($this->aimag_city_id == 7) {
-                $users = User::where('soum_district_id', $this->soum_district_id);
-            }
-            $tokens = $users->whereNotNull('push_token')->pluck('push_token')->toArray();
-
-
-
-            foreach ($users->get() as $key => $user) {
-
-                Notification::create([
-                    'user_id' => $user->id,
-                    'type' => 'Шийдвэрлэгдсэн',
-                    'rid' => $this->id,
-                    'title' => $this->comf_user->name . '/' . User::$rolesModel[$this->comf_user->roles] . '/' . ' зөрчил ' . $this->resolve->name . '-аар шийдвэрлэсэн',
-                    'content' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил',
-                ]);
-            }
-
-
-            if ($this->reg_user->push_token) {
-                $tokens[] = $this->reg_user->push_token;
-            }
-            // if ($this->comf_user->push_token) {
-            //     $tokens[] = $this->comf_user->push_token;
-            // }
-
-
-            $messagingService = new FirebaseMessagingService();
-            foreach ($tokens as $key => $token) {
-                $title = 'Зөрчил ' . $this->resolve->name . '-аар шийдвэрлэгдлээ';
-                $body = $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил';
-                $customData = [
-                    'id' => $this->id,
-                    'type' => 'register',
-                ];
-                $messagingService->sendNotificationToDevice($token, $title, $body, $customData);
-            }
-        } catch (\Exception $e) {
-            Log::error('Error saving files: ' . $e->getMessage());
-        }
-    }
-
-
-    public function sendAllocationWasteNotify($note = '')
-    {
-        try {
-
-            Notification::create([
-                'user_id' => Auth::user()->id,
-                'type' => 'Шилжүүлсэн',
-                'rid' => $this->id,
-                'title' => ' ' . Auth::user()->name . '/' . User::$rolesModel[Auth::user()->roles] . '/' . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
-                'content' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
-            ]);
-            Notification::create([
-                'user_id' => $this->comf_user_id,
-                'type' => 'Шилжүүлсэн',
-                'rid' => $this->id,
-                'title' => ' ' . Auth::user()->name . '/' . User::$rolesModel[Auth::user()->roles] . '/' . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
-                'content' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
-            ]);
-            Notification::create([
-                'user_id' => $this->reg_user_id,
-                'type' => 'Шилжүүлсэн',
-                'rid' => $this->id,
-                'title' => ' ' . Auth::user()->name . '/' . User::$rolesModel[Auth::user()->roles] . '/' . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ',
-                'content' => $this->whois . ' ' . $this->name . '-ны гаргасан ' . $this->reason->name . ' зөрчил \n' . $note,
-            ]);
-
-
-            $messagingService = new FirebaseMessagingService();
-            $title = ' ' . Auth::user()->name . '-ээс ' . $this->comf_user->name . '-д зөрчил шилжүүлсэн байна. ';
-            $body = $this->reason->name . ' ' . $this->name;
-            $customData = [
-                'id' => $this->id,
-                'type' => 'register',
-            ];
-
-
-
-
-            if ($this->comf_user->push_token) {
-                Log::info($messagingService->sendNotificationToDevice($this->comf_user->push_token, $title, $body, $customData));
-            }
-            if ($this->reg_user->push_token) {
-                Log::info($messagingService->sendNotificationToDevice($this->reg_user->push_token, $title, $body, $customData));
-            }
-
-        } catch (\Exception $e) {
-            Log::error('Error saving files: ' . $e->getMessage());
-        }
-    }
 }
