@@ -7,11 +7,11 @@ import { Rocket, RocketIcon, Ship, ShipIcon, Truck } from 'lucide-vue-next';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',
-        href: '/',
+        href: '',
     },
     {
         title: 'Илгээсэн',
-        href: '/draft',
+        href: 'draft',
     },
 ];
 

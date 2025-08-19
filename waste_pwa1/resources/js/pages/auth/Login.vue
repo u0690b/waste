@@ -15,7 +15,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    window.location.href='/logindan'
+    window.location.href='logindan'
     // router.get('logindan')
 };
 </script>

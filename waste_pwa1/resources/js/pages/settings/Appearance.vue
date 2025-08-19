@@ -11,7 +11,7 @@ import SettingsLayout from '@/layouts/settings/Layout.vue';
 const breadcrumbItems: BreadcrumbItem[] = [
     {
         title: 'Тохиргоо',
-        href: '/settings/appearance',
+        href: 'settings/appearance',
     },
 ];
 </script>

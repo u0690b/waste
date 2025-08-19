@@ -12,11 +12,11 @@ import Pagination from '@/components/My/Pagination.vue';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',
-        href: '/',
+        href: '',
     },
     {
         title: 'Мэдэгдэл',
-        href: '/notifications',
+        href: 'notifications',
     },
 ];
 

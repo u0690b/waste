@@ -16,11 +16,11 @@ const props = withDefaults(defineProps<{ waste: WasteModel, islocal: boolean }>(
 const breadcrumbs = [
     {
         title: 'Дашбоард',
-        href: '/',
+        href: '',
     },
     {
         title: 'Илгээгээгүй',
-        href: '/draft',
+        href: 'draft',
     },
     {
         title: props.waste?.name ?? '',

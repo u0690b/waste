@@ -11,11 +11,11 @@ import Heading from '@/components/Heading.vue';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',
-        href: '/',
+        href: '',
     },
     {
         title: 'Илгээгээгүй',
-        href: '/draft',
+        href: 'draft',
     },
 ];
 

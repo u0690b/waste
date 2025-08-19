@@ -11,27 +11,27 @@ const { isMobile } = useSidebar()
 const mainNavItems: NavItem[] = [
     {
         title: 'Дашбоард',
-        href: '/#home',
+        href: '#home',
         icon: Home,
     },
     {
         title: 'Зөрчил бүртгэх',
-        href: '/create',
+        href: 'create',
         icon: PlusCircle,
     },
     {
         title: 'Илгээгээгүй',
-        href: '/draft',
+        href: 'draft',
         icon: WifiOff,
     },
     {
         title: 'Илгээсэн',
-        href: '/send',
+        href: 'send',
         icon: MailCheck,
     },
     {
         title: 'Шийдвэрлэсэн',
-        href: '/solved',
+        href: 'solved',
         icon: LaptopMinimalCheck,
     },
 ];

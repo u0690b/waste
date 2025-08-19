@@ -98,7 +98,7 @@ export const useCommonStore = defineStore('commons', () => {
         loading,
         error,
         execute,
-    } = useFetch<CommonRootData>('/api/common', {
+    } = useFetch<CommonRootData>('api/common', {
         immediate: false,
         // transform: (data: CommonRootData): CommonNamedData | null => {
         //     return data

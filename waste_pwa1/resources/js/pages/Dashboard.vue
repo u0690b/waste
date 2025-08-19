@@ -11,7 +11,7 @@ import { Plus } from 'lucide-vue-next';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',
-        href: '/dashboard',
+        href: 'dashboard',
     },
 ];
 const props = defineProps<{
@@ -71,7 +71,7 @@ const card = [
                     </CardContent>
 
                 </Card>
-                <UButton to="/create" class="w-full h-full" title="Зөрчил бүртгэх">
+                <UButton to="create" class="w-full h-full" title="Зөрчил бүртгэх">
                     <Plus :size="40"  class="text-white mx-auto" />
                 </UButton>
             </div>

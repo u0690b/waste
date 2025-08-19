@@ -6,11 +6,11 @@ import { WasteModel } from '@/types/type';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',
-        href: '/',
+        href: '',
     },
     {
         title: 'Шийдвэрлэсэн',
-        href: '/solved',
+        href: 'solved',
     },
 ];
 

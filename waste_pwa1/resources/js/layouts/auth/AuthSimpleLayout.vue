@@ -9,7 +9,7 @@ defineProps<{
 
 <template>
     <div>
-        <Link href="/" class="flex flex-col items-center gap-2 font-medium">
+        <Link href="#" class="flex flex-col items-center gap-2 font-medium">
             <img src="@/assets/logo.png" class="rounded-full w-34 h-34 mx-auto mb-10" alt="Logo">
         </Link>
         <slot />

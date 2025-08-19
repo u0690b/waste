@@ -1,18 +1,18 @@
 const staticCacheName = 'waste-static-v2';
 const assets = [
-    '/',
-    '/create',
-    '/draft',
-    '/send',
-    '/solved',
-    '/offline',
-    '/settings/appearance',
-    '/api/common',
-    '/build/manifest.json',
-    '/build/logo1.png',
-    '/build/logo.png',
-    '/build/app.css',
-    '/build/app.js',
+    '/mobile/',
+    '/mobile/create',
+    '/mobile/draft',
+    '/mobile/send',
+    '/mobile/solved',
+    '/mobile/offline',
+    '/mobile/settings/appearance',
+    '/mobile/api/common',
+    '/mobile/build/manifest.json',
+    '/mobile/build/logo1.png',
+    '/mobile/build/logo.png',
+    '/mobile/build/app.css',
+    '/mobile/build/app.js',
 ];
 
 // install event

@@ -17,7 +17,7 @@ const errMsg = ref();
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Бүртгэх',
-        href: '/',
+        href: '',
     },
 ];
 

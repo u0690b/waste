@@ -28,7 +28,7 @@ export const useFirebase = defineStore('firebase', () => {
             if (permission === 'granted') {
                 try {
                     token.value = await getToken(messaging, { vapidKey });
-                    axios.post('/save_token', { push_token: token.value });
+                    axios.post('save_token', { push_token: token.value });
                     // 👉 Send token to backend so you can push notifications
                 } catch (err) {
                     console.error('Token error:', err);

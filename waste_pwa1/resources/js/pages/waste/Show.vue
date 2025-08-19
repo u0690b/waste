@@ -14,15 +14,15 @@ const props = defineProps<{ waste: WasteModel }>()
 const breadcrumbs = [
     {
         title: 'Дашбоард',
-        href: '/',
+        href: '',
     },
     props.waste.status_id == 4 ?
     {
         title: 'Шийдвэрлэсэн',
-        href: '/solved',
+        href: 'solved',
     } : {
         title: 'Илгээсэн',
-        href: '/send',
+        href: 'send',
     },
     {
         title: props.waste?.name ?? '',
