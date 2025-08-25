@@ -116,7 +116,15 @@ class RegisterController extends Controller
      */
     public function show(Register $register)
     {
-        $register->load('aimag_city:id,name')->load('allocated:id,name')->load('bag_horoo:id,name')->load('comf_user:id,name')->load('reason:id,name')->load('reg_user:id,regnum,firstname,lastname')->load('resolve:id,name')->load('soum_district:id,name')->load('status:id,name');
+        $register->load('aimag_city:id,name')->load('allocated:id,name')
+            ->load('bag_horoo:id,name')
+            ->load('comf_user:id,name')
+            ->load('reason:id,name')
+            ->load('reg_user:id,regnum,firstname,lastname')
+            ->load('resolve:id,name')
+            ->load('soum_district:id,name')
+            ->load('attached_images:id,register_id,path')
+            ->load('status:id,name');
         return Inertia::render('Admin/registers/Show', [
             'data' => $register,
         ]);
@@ -131,7 +139,15 @@ class RegisterController extends Controller
      */
     public function edit(Register $register)
     {
-        $register->load('aimag_city:id,name')->load('allocated:id,name')->load('bag_horoo:id,name')->load('comf_user:id,name')->load('reason:id,name')->load('reg_user:id,regnum,firstname,lastname')->load('resolve:id,name')->load('soum_district:id,name')->load('status:id,name');
+        $register->load('aimag_city:id,name')
+            ->load('allocated:id,name')
+            ->load('bag_horoo:id,name')
+            ->load('comf_user:id,name')
+            ->load('reason:id,name')
+            ->load('reg_user:id,regnum,firstname,lastname')
+            ->load('attached_images:id,register_id,path')
+            ->load('resolve:id,name')
+            ->load('soum_district:id,name')->load('status:id,name');
         return Inertia::render('Admin/registers/Edit', [
             'data' => $register,
         ]);
