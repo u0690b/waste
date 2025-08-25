@@ -108,6 +108,7 @@ class IndexController extends Controller
     {
         $input = $request->validate(Register::$rules);
         $input['reg_user_id'] = Auth::user()->id;
+        $input['comf_user_id'] = null;
         $input['status_id'] = 2;
         try {
             DB::beginTransaction();
