@@ -23,7 +23,7 @@ class RegisterAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $query = Register::filter( $request->all(["search", ...Register::$searchIn]))->with('aimag_city:id,name')->with('allocate_by:id,name')->with('bag_horoo:id,name')->with('comf_user:id,name')->with('reason:id,name')->with('reg_user:id,name')->with('resolve:id,name')->with('soum_district:id,name')->with('status:id,name');
+        $query = Register::filter($request->all(["search", ...Register::$searchIn]))->with('aimag_city:id,name')->with('allocate_by:id,name')->with('bag_horoo:id,name')->with('comf_user:id,name')->with('reason:id,name')->with('reg_user:id,regnum,firstname,lastname')->with('resolve:id,name')->with('soum_district:id,name')->with('status:id,name');
 
         if ($request->get('skip')) {
             $query->skip($request->get('skip'));

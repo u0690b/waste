@@ -37,7 +37,7 @@ class RegisterController extends Controller
             ->with('bag_horoo:id,name')
             ->with('comf_user:id,name')
             ->with('reason:id,name')
-            ->with('reg_user:id,name')
+            ->with('reg_user:id,regnum,firstname,lastname')
             ->with('soum_district:id,name')
             ->with('status:id,name')
             ->with('attached_images:id,register_id,path')
@@ -116,7 +116,7 @@ class RegisterController extends Controller
      */
     public function show(Register $register)
     {
-        $register->load('aimag_city:id,name')->load('allocated:id,name')->load('bag_horoo:id,name')->load('comf_user:id,name')->load('reason:id,name')->load('reg_user:id,name')->load('resolve:id,name')->load('soum_district:id,name')->load('status:id,name');
+        $register->load('aimag_city:id,name')->load('allocated:id,name')->load('bag_horoo:id,name')->load('comf_user:id,name')->load('reason:id,name')->load('reg_user:id,regnum,firstname,lastname')->load('resolve:id,name')->load('soum_district:id,name')->load('status:id,name');
         return Inertia::render('Admin/registers/Show', [
             'data' => $register,
         ]);
@@ -131,7 +131,7 @@ class RegisterController extends Controller
      */
     public function edit(Register $register)
     {
-        $register->load('aimag_city:id,name')->load('allocated:id,name')->load('bag_horoo:id,name')->load('comf_user:id,name')->load('reason:id,name')->load('reg_user:id,name')->load('resolve:id,name')->load('soum_district:id,name')->load('status:id,name');
+        $register->load('aimag_city:id,name')->load('allocated:id,name')->load('bag_horoo:id,name')->load('comf_user:id,name')->load('reason:id,name')->load('reg_user:id,regnum,firstname,lastname')->load('resolve:id,name')->load('soum_district:id,name')->load('status:id,name');
         return Inertia::render('Admin/registers/Edit', [
             'data' => $register,
         ]);
@@ -177,7 +177,7 @@ class RegisterController extends Controller
             ->load('bag_horoo:id,name')
             ->load('comf_user:id,name')
             ->load('reason:id,name')
-            ->load('reg_user:id,name')
+            ->load('reg_user:id,regnum,firstname,lastname')
             ->load('allocated:id,name')
 
             ->load('soum_district:id,name')
@@ -210,7 +210,7 @@ class RegisterController extends Controller
             ->load('bag_horoo:id,name')
             ->load('comf_user:id,name')
             ->load('reason:id,name')
-            ->load('reg_user:id,name')
+            ->load('reg_user:id,regnum,firstname,lastname')
             ->load('soum_district:id,name')
             ->load('status:id,name')
             ->load('attached_images:id,register_id,path')

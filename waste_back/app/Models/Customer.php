@@ -39,9 +39,12 @@ class Customer extends Model
 
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
+    protected $appends = array('name');
 
-
-
+    public function getNameAttribute()
+    {
+        return "{$this->regnum} {$this->firstname} {$this->lastname}";
+    }
 
     public $fillable = [
         'regnum',

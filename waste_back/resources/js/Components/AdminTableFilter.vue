@@ -9,13 +9,13 @@
                 <template v-else>
                     <td v-if="!h.url" :key="h.name">
                         <div class="search">
-                            <input v-model="model[h.key]" :type="h.type ?? 'search'" clearable
+                            <input v-model="_model[h.key]" :type="h.type ?? 'search'" clearable
                                 class="w-full p-0 text-sm" />
                         </div>
                     </td>
                     <td v-else :key="i">
-                        <MySelect v-model="model[h.key]" :key="h.url" class="min-w-[100px] p-0 text-sm" :url="h.url"
-                            @changeId="(id) => (model[h.order] = id)" />
+                        <MySelect v-model="_model[h.key]" :key="h.url" class="min-w-[100px] p-0 text-sm" :url="h.url"
+                            @changeId="(id) => (_model[h.order] = id)" />
                     </td>
                 </template>
             </template>
@@ -33,7 +33,7 @@ const props = defineProps({
     model: { type: Object, required: true },
 });
 const emit = defineEmits(["update:model"]);
-const model = computed({
+const _model = computed({
     get: () => props.model,
     set: (v) => emit("update:model", v),
 });

@@ -201,7 +201,7 @@ class Register extends Model
      **/
     public function reg_user()
     {
-        return $this->belongsTo(\App\Models\User::class, 'reg_user_id');
+        return $this->belongsTo(\App\Models\Customer::class, 'reg_user_id');
     }
 
     /**
