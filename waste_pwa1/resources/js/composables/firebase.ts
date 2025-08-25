@@ -38,7 +38,7 @@ export const useFirebase = defineStore('firebase', () => {
                 const toast = useToast();
                 toast.add({
                     title: 'Мэдэгдэл /Notifications/',
-                    description: 'Notifications-ийг зөвшөөгүй тул танд шууд хариу мэдэгдэл ирэхгүйг ангаарна уу',
+                    description: 'Notifications-ийг зөвшөөрөөгүй тул танд шууд хариу мэдэгдэл ирэхгүйг анхаарна уу',
                 });
                 console.warn('Permission not granted for notifications');
             }

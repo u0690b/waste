@@ -42,7 +42,7 @@ const card = [
 
     },
     {
-        change: "Ажиллгаа хийгдэж байгаа",
+        change: "Ажиллагаа хийгдэж байгаа",
         icon: "lucide:truck",
         total: props.status?.find(v => v.status_id == 3)?.total ?? '0',
     },

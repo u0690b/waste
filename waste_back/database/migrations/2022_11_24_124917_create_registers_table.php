@@ -27,7 +27,7 @@ return new class extends Migration {
             $table->string('zuil_zaalt', 1000)->nullable()->comment('Зөрчсөн хууль тогтоомжийн зүйл, заалт');
             $table->double('long')->comment('Уртраг');
             $table->double('lat')->comment('Өргөрөг');
-            $table->foreignId('reg_user_id')->comment('Бүртгэсэн хүн')->constrained('users');
+            $table->foreignId('reg_user_id')->comment('Бүртгэсэн хүн')->constrained('customers');
             $table->foreignId('resolve_id')->nullable()->comment('Шийдвэрийн төрөл')->constrained('resolves');
             $table->string('resolve_desc', 2000)->nullable()->comment('Шийдвэрлэсэн байдал');
             $table->string('resolve_image', 500)->nullable()->comment('Шийдвэрлэсэн зураг');
