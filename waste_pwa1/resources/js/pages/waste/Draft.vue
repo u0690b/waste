@@ -28,8 +28,8 @@ const wasteStore = useWasteListStore();
 const waste = ref<WasteModel>();
 
 const sended = () => {
-    //     wasteStore.wasteList = wasteStore.wasteList.filter((v) => JSON.stringify(v) !== JSON.stringify(waste.value));
-       waste.value = undefined;
+    wasteStore.wasteList = wasteStore.wasteList.filter((v) => JSON.stringify(v) !== JSON.stringify(waste.value));
+    waste.value = undefined;
 };
 
 const open = ref(false);
