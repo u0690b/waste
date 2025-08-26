@@ -23,11 +23,10 @@ class SoumDistrictFactory extends Factory
     {
         return [
             'code' => $this->faker->word,
-        'name' => $this->faker->word,
-        'short' => $this->faker->word,
-        'aimag_city_id' => $this->faker->word,
-        'created_at' => $this->faker->word,
-        'updated_at' => $this->faker->word
+            'name' => $this->faker->word,
+            'short' => $this->faker->word,
+            'aimag_city_id' => $this->faker->word
+
         ];
     }
 }

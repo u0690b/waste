@@ -11,10 +11,14 @@ use Auth;
 use Cache;
 use Date;
 use DB;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
+
+
 use Laravel\Socialite\Facades\Socialite;
 use League\OAuth2\Client\Provider\GenericProvider;
 use Storage;
@@ -22,26 +26,47 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 class IndexController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
         $stat = Register::groupBy('status_id')->selectRaw('status_id,count(*) as total')->where('reg_user_id', Auth::user()->id)->get();
-
-        return Inertia::render('Dashboard', [
+        $res = Inertia::render('Dashboard', [
             'status' => $stat,
         ]);
+        if ($request->header(\Inertia\Support\Header::INERTIA)) {
+            $res = $res->toResponse($request);
+            $res->headers->set('Cache-Control', 'public, max-age=1');
+            return $res;
+            // return new JsonResponse($res->toResponse($request)->getContent(), 200, [\Inertia\Support\Header::INERTIA => 'true', 'Cache-Control'=> 'public, max-age=1']);
+        }
+        return response( $res->toResponse($request)->getContent())->header('Cache-Control', 'public, max-age=1');
     }
 
 
-    public function create()
+    public function create(Request $request)
     {
 
-        return Inertia::render('waste/Create');
+        if ($request->header(\Inertia\Support\Header::INERTIA)) {
+            $res = Inertia::render('waste/Create')->toResponse($request);
+            $res->headers->set('Cache-Control', 'public, max-age=1');
+            return $res;
+
+        }
+        return response(Inertia::render('waste/Create')->toResponse($request)->getContent())->header('Cache-Control', 'public, max-age=1');
+
     }
 
-    public function draft()
+    public function draft(Request $request)
     {
-        return Inertia::render('waste/Draft');
+        $res = Inertia::render('waste/Draft')->toResponse($request);
+        if ($request->header(\Inertia\Support\Header::INERTIA)) {
+
+            $res->headers->set('Cache-Control', 'public, max-age=1');
+            return $res;
+
+        }
+        return response($res->getContent())->header('Cache-Control', 'public, max-age=1');
+
     }
 
     public function send(Request $request)
@@ -58,7 +83,9 @@ class IndexController extends Controller
             ->with('reg_user:id,firstname,lastname')
             ->with('comf_user:id,name')
             ->with('attached_images:id,register_id,path')
-            ->with('attached_video:id,register_id,path');
+            ->with('attached_video:id,register_id,path')
+            ->orderByDesc('id');
+
 
 
         return Inertia::render('waste/Send', ["datas" => $registers->get()]);
@@ -170,9 +197,9 @@ class IndexController extends Controller
     }
 
 
-    public function storage(Request $request,$filename)
+    public function storage(Request $request, $filename)
     {
-        $path =  $filename;
+        $path = $filename;
 
         if (!Storage::disk('public')->exists($path)) {
             abort(404, 'File not found.');
@@ -216,10 +243,15 @@ class IndexController extends Controller
 
         return $response;
     }
-    public function offline()
+    public function offline(Request $request): JsonResponse|Response
     {
+        if ($request->header(\Inertia\Support\Header::INERTIA)) {
 
-        return Inertia::render('waste/Offline');
+             $res = Inertia::render('waste/Offline')->toResponse($request);
+             $res->headers->set('Cache-Control', 'public, max-age=1');
+             return $res;
+        }
+        return response(Inertia::render('waste/Offline')->toResponse($request)->getContent())->header('Cache-Control', 'public, max-age=1');
     }
 
 }

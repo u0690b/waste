@@ -7,7 +7,7 @@ import { Head } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { GoogleMap, Marker } from 'vue3-google-map';
 
-const emit = defineEmits(['sended','send'])
+const emit = defineEmits(['sended','send','edit'])
 
 const props = withDefaults(defineProps<{ waste: WasteModel, islocal: boolean }>(), {
     islocal: false
@@ -82,6 +82,12 @@ const center = computed(() => ({ lat: props.waste?.lat, lng: props.waste?.long }
 
 <AppLayout :breadcrumbs="breadcrumbs">
         <div class="relative">
+            <UButton v-if="(props.waste!.status_id ?? 1) == 1" title="Сервэрт илгээх"
+                @click="emit('edit')"
+                icon="i-lucide-rocket" color="success" variant="subtle" :ui="{ leadingIcon: 'text-primary' }"
+                class="fixed bottom-16 right-28 z-40">
+                Засах
+            </UButton>
             <UButton v-if="(props.waste!.status_id ?? 1) == 1" @click="emit('send')" title="Сервэрт илгээх"
                 icon="i-lucide-rocket" color="success" variant="subtle" :ui="{ leadingIcon: 'text-primary' }"
                 class="fixed bottom-16 right-2 z-40">
@@ -90,7 +96,8 @@ const center = computed(() => ({ lat: props.waste?.lat, lng: props.waste?.long }
             <div class="p-4   rounded shadow pb-10">
                 <div class="grid gap-2">
                     <GoogleMap api-key="AIzaSyBX2h1XKlleDEXJCKTekPVDk2lI2LNDFNc" class="w-full h-56" :center="center"
-                        :zoom="15">
+                        :zoom="15"
+                        >
                         <Marker :options="{ position: center }" />
                     </GoogleMap>
                     <div v-for="item in fields" :key="item.label" v-bind="item"

@@ -3,9 +3,9 @@ import laravel from 'laravel-vite-plugin';
 import ui from '@nuxt/ui/vite'
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
-const suff = 'v10';
+const suff = 'v13';
 export default defineConfig({
-    base: '/mobile/build/',
+    // base: '/mobile/build/',
     build: {
         rollupOptions: {
             output: {

@@ -72,6 +72,12 @@
                                                     <th class="text-left text-gray-600">ЗӨРЧЛИЙН МЭДЭЭЛЭЛ</th>
                                                     <th class="text-left text-gray-600">ЗӨРЧЛИЙН ТӨРӨЛ</th>
                                                     <th class="text-left text-gray-600">ХЭРЭГЛЭГЧ</th>
+                                                    <th v-if="form.model.status_id !== 2"
+                                                        class="text-left text-gray-600">
+                                                        ШИЛЖҮҮЛСЭН ХЭРЭГЛЭГЧ</th>
+                                                    <th v-if="form.model.status_id === 4"
+                                                        class="text-left text-gray-600">
+                                                        ШИЙДВЭРЛЭСЭН</th>
                                                     <th class="text-left text-gray-600">ТӨЛӨВ</th>
                                                     <th class="text-left text-gray-600">ЗАРЦУУЛСАН ХУГАЦАА</th>
                                                     <th class="text-left text-gray-600">БҮРТГЭСЭН ОГНОО</th>
@@ -98,8 +104,11 @@
                                                         </div>
                                                     </td>
                                                     <td>{{ data.reason?.name ?? '' }}</td>
-                                                    <td>{{ data.status_id == 2 ? data.reg_user?.name ?? '' :
-                                                        data.comf_user?.name ?? '' }}</td>
+                                                    <td>{{ data.reg_user?.name ?? '' }}</td>
+                                                    <td v-if="data.status_id !== 2">{{ data.comf_user?.name ?? '' }}
+                                                    </td>
+                                                    <td v-if="data.status_id === 4">{{ data.comf_user_name ?? '' }}
+                                                    </td>
 
                                                     <td>
                                                         <span v-if="data.status_id == 2"

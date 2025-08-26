@@ -36,9 +36,8 @@ class CustomerFactory extends Factory
             'surname' => $this->faker->word,
             'token' => $this->faker->word,
             'remember_token' => $this->faker->word,
-            'push_token' => $this->faker->word,
-            'created_at' => $this->faker->word,
-            'updated_at' => $this->faker->word
+            'push_token' => $this->faker->word
+
         ];
     }
 }

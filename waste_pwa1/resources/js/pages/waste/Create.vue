@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Auth, type BreadcrumbItem } from '@/types';
-import { Head,  router,  useForm } from '@inertiajs/vue3';
+import { Head,    useForm } from '@inertiajs/vue3';
 import { computed, onMounted, ref } from 'vue';
 import { CustomControl, GoogleMap, Marker } from 'vue3-google-map'
 import { vMaska } from "maska/vue"
@@ -57,6 +57,7 @@ const commonStore = useCommonStore();
 const wasteStore = useWasteListStore()
 const form = useForm<WasteFormModel>({
     model:{
+        id:(new Date()).valueOf(),
         whois: false,
         name: undefined,
         register: undefined,
@@ -73,8 +74,8 @@ const form = useForm<WasteFormModel>({
         resolve_image: undefined,
         long: undefined,
         lat: undefined,
-        reg_user_id: undefined,
-        comf_user_id: props.auth.user.id,
+        reg_user_id: props.auth.user.id,
+        comf_user_id: undefined,
         status_id: 1,
         reg_at: undefined,
         resolved_at: undefined,
@@ -131,7 +132,7 @@ const onSubmit = ()=>{
 
     wasteStore.wasteList.push(form.model)
     console.log("object");
-    router.visit(route('draft'))
+    window.location.pathname = 'draft'
 }
 </script>
 

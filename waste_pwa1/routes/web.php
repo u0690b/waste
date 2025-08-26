@@ -5,6 +5,7 @@ use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// Route::prefix("/mobile")->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/save_token', [OAuthController::class, 'save_token'])->name('save_token');
     Route::get('/', [IndexController::class, 'index'])->name('dashboard');
@@ -22,3 +23,4 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
+// });

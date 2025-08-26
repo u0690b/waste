@@ -23,10 +23,10 @@ use Inertia\Inertia;
 Route::get('/test/{token}', [IndexController::class, 'sendNotificationrToUser'])->name('reg.sendNotificationrToUser');
 
 // Registers
-Route::get('/reg', [IndexController::class, 'register'])->name('reg.index');
-Route::get('/reg/{register}', [IndexController::class, 'show'])->name('reg.show');
+// Route::get('/reg', [IndexController::class, 'register'])->name('reg.index');
+// Route::get('/reg/{register}', [IndexController::class, 'show'])->name('reg.show');
 Route::get('/', [IndexController::class, 'index'])->name('home');
-Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard');
+
 Route::get('/storage/{filename}', [IndexController::class, 'storage'])->where('filename', '.*')->name('storage');
 // Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard');
 
@@ -44,6 +44,7 @@ require __DIR__ . '/auth.php';
 
 
 Route::middleware('auth')->prefix('/admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [IndexController::class, 'dash'])->name('dashboard');
     Route::get('/report', [App\Http\Controllers\ReportController::class, 'index'])->name('tailan');
     require __DIR__ . '/admin.php';
 

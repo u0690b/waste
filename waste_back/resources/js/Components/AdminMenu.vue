@@ -40,7 +40,7 @@ const menus = ref([
     {
         icon: markRaw(HomeIcon),
         text: "Нүүр хуудас",
-        href: "/dashboard",
+        href: route("admin.dashboard"),
     },
     {
         icon: markRaw(ChartBarIcon),

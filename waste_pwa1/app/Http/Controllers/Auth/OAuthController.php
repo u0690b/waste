@@ -20,37 +20,37 @@ class OAuthController extends Controller
      */
     public function hook(Request $request)
     {
-        if($request->input("error")) {
-            $request->session()->flash('error', 'Task was successful!');
-            return redirect('login')->with("error", $request->input("error"));
-        }
+        // if($request->input("error")) {
+        //     $request->session()->flash('error', 'Task was successful!');
+        //     return redirect('login')->with("error", $request->input("error"));
+        // }
 
 
-        $danUser = Socialite::driver('dan')->stateless()->user();
-         $user =$danUser->user;
+        // $danUser = Socialite::driver('dan')->stateless()->user();
+        //  $user =$danUser->user;
 
-        $image_name = md5($user['regnum']).'.png';
+        // $image_name = md5($user['regnum']).'.png';
 
-        Storage::disk('public')->put($image_name, base64_decode($user['image']));
-        $customer =  Customer::updateOrCreate(
-            ['regnum' => $user['regnum']],
-            [
-                'firstname' => $user['firstname'],
-                'gender' => $user['gender'],
-                'image' =>  'storage/'.$image_name,
-                'lastname' => $user['lastname'],
-                'nationality' => $user['nationality'],
-                'passportAddress' => $user['passportAddress'],
-                'passportExpireDate' => $user['passportExpireDate'],
-                'passportIssueDate' => $user['passportIssueDate'],
-                'soumDistrictCode' => $user['soumDistrictCode'],
-                'soumDistrictName' => $user['soumDistrictName'],
-                'surname' => $user['surname'],
-            ]
-        );
+        // Storage::disk('public')->put($image_name, base64_decode($user['image']));
+        // $customer =  Customer::updateOrCreate(
+        //     ['regnum' => $user['regnum']],
+        //     [
+        //         'firstname' => $user['firstname'],
+        //         'gender' => $user['gender'],
+        //         'image' =>  'storage/'.$image_name,
+        //         'lastname' => $user['lastname'],
+        //         'nationality' => $user['nationality'],
+        //         'passportAddress' => $user['passportAddress'],
+        //         'passportExpireDate' => $user['passportExpireDate'],
+        //         'passportIssueDate' => $user['passportIssueDate'],
+        //         'soumDistrictCode' => $user['soumDistrictCode'],
+        //         'soumDistrictName' => $user['soumDistrictName'],
+        //         'surname' => $user['surname'],
+        //     ]
+        // );
         // Log in this customer
-        // Auth::logout();
-        //  $customer = Customer::first();
+        Auth::logout();
+         $customer = Customer::first();
         Auth::login($customer, true);
         return  redirect('/');
     }

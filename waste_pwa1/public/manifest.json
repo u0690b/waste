@@ -1,13 +1,15 @@
 {
-    "name": "Орчний олон нийтийн хяналт",
-    "short_name": "Орчний олон нийтийн хяналт",
-    "start_url": ".",
+    "name": "Орчны олон нийтийн хяналт",
+    "short_name": "Орчны олон нийтийн хяналт",
+    "start_url": "/?source=pwa",
+    "scope": "/",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
     "description": " БОХИРДОЛ БАГАСАХАД БҮГДИЙН ОРОЛЦОО ЧУХАЛ , ОРЧНОО ЦЭВЭРЛЭ, ИРЭЭДҮЙГЭЭ ГЭРЭЛТҮҮЛ, ЦЭВЭР ОРЧИН — ЦЭГЦЭРСЭН АМЬДРАЛ",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
+    "form_factor": "narrow",
     "icons": [
         {
             "src": "icons/Icon-192.png",
@@ -30,6 +32,26 @@
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "screenshots/screenshot1.png",
+            "sizes": "1280x750",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "screenshots/screenshot1.png",
+            "sizes": "720x1280",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+         {
+            "src": "screenshots/screenshot3.png",
+            "sizes": "720x1280",
+            "type": "image/png",
+            "form_factor": "narrow"
         }
     ]
 }

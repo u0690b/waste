@@ -3,9 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\AimagCity;
+use App\Models\Customer;
 use App\Models\SoumDistrict;
 use App\Models\User;
 use App\Models\UsersModel;
+use Database\Factories\CustomerFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Register;
@@ -19,7 +21,8 @@ class RegisterSeeder extends Seeder
      */
     public function run()
     {
-          Register::factory(100)->create();
+        Customer::factory(1)->create();
+        Register::factory(100)->create();
         AttachedFile::factory(150)->create();
     }
 }

@@ -57,7 +57,7 @@ const regionOptions = computed(() => {
         <div class="container ml-8">
             <div class="flex justify-between px-4 mt-4 sm:px-8">
                 <h2 class="text-xl text-gray-600">
-                    <ILink class="flex font-bold text-black hover:text-gray-800" :href="route('dashboard')">
+                    <ILink class="flex font-bold text-black hover:text-gray-800" :href="route('admin.dashboard')">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round"

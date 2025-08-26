@@ -1,23 +1,33 @@
 {
   "resources/js/app.ts": {
-    "file": "app-v10.js",
+    "file": "app-v13.js",
     "name": "app",
     "src": "resources/js/app.ts",
     "isEntry": true,
     "css": [
-      "app-v10.css"
+      "app-v13.css"
     ],
     "assets": [
-      "logo1-v10.png",
-      "logo-v10.png"
+      "ios_add-v13.png",
+      "and_add-v13.png",
+      "logo1-v13.png",
+      "logo-v13.png"
     ]
   },
+  "resources/js/assets/and_add.png": {
+    "file": "and_add-v13.png",
+    "src": "resources/js/assets/and_add.png"
+  },
+  "resources/js/assets/ios_add.png": {
+    "file": "ios_add-v13.png",
+    "src": "resources/js/assets/ios_add.png"
+  },
   "resources/js/assets/logo.png": {
-    "file": "logo-v10.png",
+    "file": "logo-v13.png",
     "src": "resources/js/assets/logo.png"
   },
   "resources/js/assets/logo1.png": {
-    "file": "logo1-v10.png",
+    "file": "logo1-v13.png",
     "src": "resources/js/assets/logo1.png"
   }
 }
