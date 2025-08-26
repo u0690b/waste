@@ -11,6 +11,7 @@ import { createPinia } from 'pinia';
 const pinia = createPinia();
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 import axios from 'axios';
+import { useIsOnlineStore } from './composables/useIsOnline';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -26,6 +27,7 @@ createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
+
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(pinia)
@@ -33,6 +35,8 @@ createInertiaApp({
             .use(ui)
             .component('ILink', Link)
             .mount(el);
+             const isOnlineStore = useIsOnlineStore();
+             isOnlineStore.startListening();
     },
     progress: {
         color: '#4B5563',

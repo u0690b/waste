@@ -10,6 +10,7 @@ import { Head, router } from '@inertiajs/vue3';
 import { LoaderIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
 import Edit from './Edit.vue';
+import { useIsOnlineStore } from '@/composables/useIsOnline';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',
@@ -63,6 +64,7 @@ const send = () => {
         },
     );
 };
+const isOnlineStore = useIsOnlineStore();
 const done= ()=>{
     isEdit.value=false;
     waste.value=undefined;
@@ -95,6 +97,7 @@ const done= ()=>{
                                 </div>
                             </div>
                             <UButton
+                            v-if="isOnlineStore.isOnline"
                                 @click="send"
                                 title="Сервэрт илгээх"
                                 icon="i-lucide-rocket"

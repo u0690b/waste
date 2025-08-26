@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import Carousel from '@/components/My/Carousel.vue';
+import { useIsOnlineStore } from '@/composables/useIsOnline';
 import AppLayout from '@/layouts/AppLayout.vue';
 import {  WasteModel } from '@/types/type';
 import { Head } from '@inertiajs/vue3';
@@ -8,7 +9,7 @@ import { computed } from 'vue';
 import { GoogleMap, Marker } from 'vue3-google-map';
 
 const emit = defineEmits(['sended','send','edit'])
-
+const isOnlineStore = useIsOnlineStore();
 const props = withDefaults(defineProps<{ waste: WasteModel, islocal: boolean }>(), {
     islocal: false
 });
@@ -88,7 +89,7 @@ const center = computed(() => ({ lat: props.waste?.lat, lng: props.waste?.long }
                 class="fixed bottom-16 right-28 z-40">
                 Засах
             </UButton>
-            <UButton v-if="(props.waste!.status_id ?? 1) == 1" @click="emit('send')" title="Сервэрт илгээх"
+            <UButton v-if="(props.waste!.status_id ?? 1) == 1 && isOnlineStore.isOnline" @click="emit('send')" title="Сервэрт илгээх"
                 icon="i-lucide-rocket" color="success" variant="subtle" :ui="{ leadingIcon: 'text-primary' }"
                 class="fixed bottom-16 right-2 z-40">
                 Илгээх

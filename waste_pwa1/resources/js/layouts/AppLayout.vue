@@ -2,7 +2,6 @@
 import NotInstalled from '@/components/My/NotInstalled.vue';
 import { useFirebase } from '@/composables/firebase';
 import { useCommonStore } from '@/composables/store';
-import { useIsOnlineStore } from '@/composables/useIsOnline';
 import AppLayout from '@/layouts/app/AppSidebarLayout.vue';
 import type { BreadcrumbItemType } from '@/types';
 import { usePage } from '@inertiajs/vue3';
@@ -19,7 +18,7 @@ withDefaults(defineProps<Props>(), {
 
 const commonStore = useCommonStore();
 const tokenStore = useFirebase();
-const isOnlineStore = useIsOnlineStore();
+
 
 const isInstalled = ref(false);
 
@@ -32,7 +31,7 @@ onMounted(() => {
             isInstalled.value = true;
         }
     });
-    isOnlineStore.startListening();
+
 });
 // Request Notification Permission
 
