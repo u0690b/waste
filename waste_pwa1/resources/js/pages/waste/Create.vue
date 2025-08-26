@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Auth, type BreadcrumbItem } from '@/types';
-import { Head,    useForm } from '@inertiajs/vue3';
+import { Head,    router,    useForm } from '@inertiajs/vue3';
 import { computed, onMounted, ref } from 'vue';
 import { CustomControl, GoogleMap, Marker } from 'vue3-google-map'
 import { vMaska } from "maska/vue"
@@ -132,7 +132,7 @@ const onSubmit = ()=>{
 
     wasteStore.wasteList.push(form.model)
     console.log("object");
-    window.location.pathname = 'draft'
+    router.visit(route('draft'), { replace: true });
 }
 </script>
 
