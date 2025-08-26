@@ -5,7 +5,7 @@ deployment:
     - /bin/cp -Rf $DEPLOYPATH/public/build /home/wastemecc2/public_html/
     - cd $DEPLOYPATH
     # - /opt/cpanel/composer/bin/composer install --no-dev --optimize-autoloader
-    - php artisan migrate:fresh --seed --force
+    # - php artisan migrate:fresh --seed --force
     # - php artisan key:generate 
     - cd $DEPLOYPATH_MOBILE
     #- php artisan key:generate 
