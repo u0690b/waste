@@ -83,16 +83,17 @@ const center = computed(() => ({ lat: props.waste?.lat, lng: props.waste?.long }
 
 <AppLayout :breadcrumbs="breadcrumbs">
         <div class="relative">
-            <UButton v-if="(props.waste!.status_id ?? 1) == 1" title="Сервэрт илгээх"
-                @click="emit('edit')"
-                icon="i-lucide-rocket" color="success" variant="subtle" :ui="{ leadingIcon: 'text-primary' }"
-                class="fixed bottom-16 right-28 z-40">
-                Засах
-            </UButton>
+
             <UButton v-if="(props.waste!.status_id ?? 1) == 1 && isOnlineStore.isOnline" @click="emit('send')" title="Сервэрт илгээх"
                 icon="i-lucide-rocket" color="success" variant="subtle" :ui="{ leadingIcon: 'text-primary' }"
-                class="fixed bottom-16 right-2 z-40">
+                class="fixed bottom-16 right-28 z-40">
                 Илгээх
+            </UButton>
+             <UButton v-if="(props.waste!.status_id ?? 1) == 1" title="Сервэрт илгээх"
+                @click="emit('edit')"
+                icon="i-lucide-pencil" color="secondary" variant="subtle" :ui="{ leadingIcon: 'text-primary' }"
+                class="fixed bottom-16 right-2 z-40">
+                Засах
             </UButton>
             <div class="p-4   rounded shadow pb-10">
                 <div class="grid gap-2">
