@@ -45,8 +45,8 @@ const noti = computed(() => page.props.new_noti ?? 0);
 </script>
 
 <template>
-    <NotInstalled v-if="!isInstalled" />
-    <UApp v-else :toaster="{ position: 'top-right' }">
+
+    <UApp :toaster="{ position: 'top-right' }">
         <AppLayout  :breadcrumbs="breadcrumbs" class="bg-default max-md:pb-22" data-vaul-drawer-wrapper>
             <template #actionSide>
                 <NotificationButton />
