@@ -8,7 +8,8 @@ use Inertia\Inertia;
 // Route::prefix("/mobile")->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/save_token', [OAuthController::class, 'save_token'])->name('save_token');
-    Route::get('/', [IndexController::class, 'index'])->name('dashboard');
+    Route::get('/', [IndexController::class, 'index'])->name('home');
+    Route::get('/home', [IndexController::class, 'index'])->name('dashboard');
     Route::get('/create', [IndexController::class, 'create'])->name('create');
     Route::get('/draft', [IndexController::class, 'draft'])->name('draft');
     Route::get('/send', [IndexController::class, 'send'])->name('send');
