@@ -60,13 +60,16 @@ self.addEventListener('activate', (event) => {
         ),
     );
 });
+const exludeUrls = ['/save_token','/send','/solved'];
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
     if (event.request.headers.get('X-Inertia') === 'true') {
-        event.respondWith(cacheInertiaRequest(event.request));
+        if (exludeUrls.findIndex( v=>url.pathname.startsWith(v))==-1) {
+            event.respondWith(cacheInertiaRequest(event.request));
+        }
     } else {
         // Only intercept your API calls
-        if (!url.pathname.startsWith('/save_token')) {
+        if (exludeUrls.findIndex( v=>url.pathname.startsWith(v)) == -1) {
             event.respondWith(handleApiRequest(event.request));
         }
     }
