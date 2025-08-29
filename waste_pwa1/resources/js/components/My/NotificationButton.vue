@@ -2,7 +2,7 @@
 import { useFirebase } from '@/composables/firebase';
 import { router, usePage } from '@inertiajs/vue3';
 import { Bell } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 const page = usePage();
 const noti = computed(() => page.props.new_noti ?? 0);
@@ -13,6 +13,9 @@ const onCLick = () => {
     router.visit(route('notifications'));
     console.log('Notification button clicked');
 };
+onMounted(() => {
+    tokenStore.checkPremisstion();
+});
 </script>
 
 <template>
