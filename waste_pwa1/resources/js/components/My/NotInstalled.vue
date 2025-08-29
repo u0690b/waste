@@ -52,7 +52,7 @@ const isIos = computed(() => {
             <img src="@/assets/and_add.png" class="mx-auto w-96" />
         </div>
         <div v-if="!showInstallButton" class="text-center">
-            <a href="/mobile/?source=pwa" target="_blank">Энд дарж програмаар орох</a>
+            <a href="/mobile/?source=pwa" target="_blank">та суулгасан програмаар нэвтэрч ороорой</a>
         </div>
     </div>
 </template>

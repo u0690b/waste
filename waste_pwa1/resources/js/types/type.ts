@@ -72,6 +72,12 @@ export interface WasteFormModel extends Record<string, FormDataConvertible> {
 //     user?:User
 // }
 
+export interface LegalEntity {
+    id: number;
+    register: string;
+    name: string;
+    industry: string;
+}
 export interface Header {
     name: string;
     key: string;
@@ -80,7 +86,6 @@ export interface Header {
     order?: string;
     class?: string;
 }
-
 export interface Row {
     id: number | string;
     [key: string]: any;

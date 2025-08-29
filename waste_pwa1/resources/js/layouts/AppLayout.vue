@@ -5,9 +5,7 @@ import { useFirebase } from '@/composables/firebase';
 import { useCommonStore } from '@/composables/store';
 import AppLayout from '@/layouts/app/AppSidebarLayout.vue';
 import type { BreadcrumbItemType } from '@/types';
-import { usePage } from '@inertiajs/vue3';
-import { Bell } from 'lucide-vue-next';
-import { computed, onMounted, ref } from 'vue';
+import {  onMounted, ref } from 'vue';
 
 interface Props {
     breadcrumbs?: BreadcrumbItemType[];
@@ -40,8 +38,6 @@ tokenStore.onMsg((payload: any) => {
     alert(payload.notification?.title || 'New Notification');
 });
 
-const page = usePage();
-const noti = computed(() => page.props.new_noti ?? 0);
 </script>
 
 <template>

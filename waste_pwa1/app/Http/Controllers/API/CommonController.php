@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AimagCity;
 use App\Models\BagHoroo;
 use App\Models\Industry;
+use App\Models\LegalEntity;
 use App\Models\Place;
 use App\Models\Reason;
 use App\Models\Register;
@@ -55,4 +56,26 @@ class CommonController extends Controller
             "industry" => Industry::all(),
         ];
     }
+
+    public function legal(Request $request)
+    {
+        $input = $request->validate(['search' => 'sometimes|string|min:3|max:255', ...LegalEntity::$searchIn]);
+        $query = LegalEntity::
+            whereLike('name', $input['search'].'%' ?? '')
+            ->orderBy('name');
+
+        if ($request->get('skip')) {
+            $query->skip($request->get('skip'));
+        }
+        if ($request->get('limit')) {
+            $query->limit($request->get('limit'));
+        }else{
+            $query->limit(50);
+        }
+
+        $legalEntities = $query->get();
+
+        return $legalEntities->toJson();
+    }
+
 }

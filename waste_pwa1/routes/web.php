@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CommonController;
 use App\Http\Controllers\Auth\OAuthController;
 use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/offline', [IndexController::class, 'offline'])->name('offline');
     Route::get('/notifications', [IndexController::class, 'notifications'])->name('notifications');
     Route::get('/storage/{filename}', [IndexController::class, 'storage'])->where('filename', '.*')->name('storage');
+    Route::get('/legal', [CommonController::class, 'legal'])->name('legal');
 
 });
 
