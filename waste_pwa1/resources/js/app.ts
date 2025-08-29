@@ -49,7 +49,7 @@ initializeTheme();
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-        .register('/sw.js')
+        .register('/sw.js?v16')
         .then((reg) => console.log('service worker registered', reg))
         .catch((err) => console.log('service worker not registered', err));
 }
