@@ -17,7 +17,7 @@ defineOptions({
 
 const props = defineProps<{ auth: Auth }>();
 
-const center = ref({ lat: 40.689247, lng: -74.044502 });
+const center = ref({ lat: 47.9349691, lng: 106.9210184 });
 const errMsg = ref();
 const breadcrumbs: BreadcrumbItem[] = [
     {
