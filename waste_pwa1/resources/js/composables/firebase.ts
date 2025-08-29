@@ -22,25 +22,16 @@ const vapidKey = 'BOfqIP7ovgHpNWUtnPOtWqVDMgtbsJTdbRKjD3-QVZ88y7X3nGruKjYqvRREca
 
 export const useFirebase = defineStore('firebase', () => {
     const token = ref<string>();
+    const isAdded = ref<boolean>(false);
     const checkPremisstion = () => {
-        if (Notification.permission !== 'granted') {
+        if (Notification.permission !== 'granted' && !isAdded.value) {
+
             const toast = useToast();
             toast.add({
-                title: 'Мэдэгдэл /Notifications/',
-                description: 'Notifications-ийг зөвшөөрөөгүй тул танд шууд хариу мэдэгдэл ирэхгүйг анхаарна уу',
-                actions: [
-                    {
-                        icon: 'i-lucide-refresh-cw',
-                        label: 'Permission дахин авах',
-                        color: 'neutral',
-                        variant: 'outline',
-                        onClick: (e) => {
-                            requestPermission();
-                            e?.stopPropagation();
-                        },
-                    },
-                ],
+                title: 'Notification permission',
+                description: 'Үйлдэлийн системийн тохиргооны Premissions цэснээс /Notification/ зөвшөөрнө үү',
             });
+            isAdded.value = true;
             console.warn('Permission not granted for notifications');
         }
     };

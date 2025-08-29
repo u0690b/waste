@@ -3,12 +3,17 @@ import LegalInput from '@/components/My/LegalInput.vue';
 import { useCommonStore } from '@/composables/store';
 import { useWasteListStore } from '@/composables/WasteStore';
 import AppLayout from '@/layouts/AppLayout.vue';
+import PersistentLayout from '@/layouts/PersistentLayout.vue';
 import { Auth, type BreadcrumbItem } from '@/types';
 import { WasteFormModel } from '@/types/type';
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { vMaska } from 'maska/vue';
 import { computed, onMounted, ref } from 'vue';
 import { CustomControl, GoogleMap, Marker } from 'vue3-google-map';
+
+defineOptions({
+    layout: PersistentLayout,
+});
 
 const props = defineProps<{ auth: Auth }>();
 
@@ -46,9 +51,25 @@ const error = (err: any) => {
             break;
     }
 };
-const getCurrentLocation = () => {
-    navigator.geolocation.getCurrentPosition(success, error, { maximumAge: 30000, timeout: 27000, enableHighAccuracy: true });
-};
+
+function handlePermission() {
+    navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+        if (result.state === 'granted' ||result.state === 'prompt') {
+            navigator.geolocation.getCurrentPosition(success, error, { maximumAge: 30000, timeout: 27000, enableHighAccuracy: true });
+        } else if (result.state === 'denied') {
+            report(result.state);
+        }
+        result.addEventListener('change', () => {
+
+            report(result.state);
+        });
+    });
+}
+function report(state:PermissionState) {
+    errMsg.value = `Permission ${state}`;
+    console.log(`Permission ${state}`);
+}
+const getCurrentLocation = () => handlePermission();
 
 const commonStore = useCommonStore();
 const wasteStore = useWasteListStore();
@@ -138,6 +159,7 @@ const onSubmit = () => {
                             <UButton icon="lucide:locate" class="ml-4" @click="getCurrentLocation"> </UButton>
                         </CustomControl>
                     </GoogleMap>
+                    {{errMsg}}
                     {{ center.lat }},
                     {{ center.lng }}
                 </div>

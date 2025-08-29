@@ -9,6 +9,9 @@ import { Head, router, useForm } from '@inertiajs/vue3';
 import { vMaska } from 'maska/vue';
 import { computed, onMounted, ref } from 'vue';
 import { CustomControl, GoogleMap, Marker } from 'vue3-google-map';
+import PersistentLayout from '@/layouts/PersistentLayout.vue';
+
+defineOptions({layout: PersistentLayout})
 
 const props = defineProps<{ auth: Auth; waste?: WasteModel }>();
 const emit = defineEmits(['done']);

@@ -8,6 +8,9 @@ import { StepperItem } from '@nuxt/ui';
 import { computed, ref } from 'vue';
 import { GoogleMap, Marker } from 'vue3-google-map';
 
+import PersistentLayout from '@/layouts/PersistentLayout.vue';
+
+defineOptions({layout: PersistentLayout})
 
 const props = defineProps<{ waste: WasteModel }>()
 

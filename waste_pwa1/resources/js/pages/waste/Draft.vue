@@ -11,6 +11,13 @@ import { LoaderIcon } from 'lucide-vue-next';
 import { ref } from 'vue';
 import Edit from './Edit.vue';
 import { useIsOnlineStore } from '@/composables/useIsOnline';
+import PersistentLayout from '@/layouts/PersistentLayout.vue';
+
+defineOptions({
+    layout: PersistentLayout,
+})
+
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',

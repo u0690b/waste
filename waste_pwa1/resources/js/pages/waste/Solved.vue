@@ -3,6 +3,10 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 import { WasteModel } from '@/types/type';
+import PersistentLayout from '@/layouts/PersistentLayout.vue';
+
+defineOptions({layout: PersistentLayout})
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',

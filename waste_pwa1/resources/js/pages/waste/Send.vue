@@ -5,6 +5,10 @@ import { type BreadcrumbItem } from '@/types';
 import { WasteModel } from '@/types/type';
 import { Head, router } from '@inertiajs/vue3';
 import { RocketIcon, Truck } from 'lucide-vue-next';
+import PersistentLayout from '@/layouts/PersistentLayout.vue';
+
+defineOptions({layout: PersistentLayout})
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',

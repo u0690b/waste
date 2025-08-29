@@ -6,6 +6,11 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 import { Plus } from 'lucide-vue-next';
 import { computed } from 'vue';
+import PersistentLayout from '@/layouts/PersistentLayout.vue';
+
+defineOptions({
+    layout: PersistentLayout,
+})
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

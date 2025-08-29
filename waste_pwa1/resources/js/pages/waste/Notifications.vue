@@ -9,6 +9,11 @@ import AdminTable from '@/components/My/AdminTable.vue';
 import useOrderBy from '@/composables/useOrder';
 import PaginationFilter from '@/components/My/PaginationFilter.vue';
 import Pagination from '@/components/My/Pagination.vue';
+
+import PersistentLayout from '@/layouts/PersistentLayout.vue';
+
+defineOptions({layout: PersistentLayout})
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Дашбоард',
